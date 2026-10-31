@@ -5,6 +5,7 @@ node_modules/
 .next/
 out/
 .turbo/
+*.tsbuildinfo
 
 # local env
 .env
@@ -21,3 +22,6 @@ Thumbs.db
 
 # 若将来本地拷贝笔记用于构建，build 产物不进入仓库
 content/published/
+
+# local tooling
+.claude/

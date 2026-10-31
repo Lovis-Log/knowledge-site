@@ -1,0 +1,33 @@
+{
+  "name": "knowledge-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "verify": "node scripts/verify-export.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "github-slugger": "2.0.0",
+    "highlight.js": "11.12.0",
+    "katex": "0.19.1",
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-markdown": "10.1.0",
+    "rehype-highlight": "7.0.2",
+    "rehype-katex": "7.0.1",
+    "rehype-slug": "6.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-math": "6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "serve": "14.2.6",
+    "typescript": "5.9.3"
+  }
+}
