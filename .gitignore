@@ -1,27 +1,5 @@
-# dependencies
-node_modules/
-
-# next.js
-.next/
-out/
-.turbo/
-
-# local env
-.env
-.env.local
-.env.*.local
-
-# logs
-*.log
-npm-debug.log*
-
-# os
-.DS_Store
-Thumbs.db
-
-# 笔记绝不进入本仓库；若将来本地拷贝内容用于构建，也一并忽略
-content/published/
-笔记/
-知识网站/
-*.zh.md
-*.en.md
+# 仓库白名单：只跟踪代码与成稿笔记
+/*
+!/.gitignore
+!/project/
+!/Knowledge Site/

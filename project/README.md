@@ -6,13 +6,17 @@
 
 ## 仓库与内容边界
 
+本仓库根目录是整个 Obsidian vault，但 `.gitignore` 使用白名单，只跟踪两类内容：
+
 | 目录 | 内容 | 是否进入 Git |
 |---|---|---|
-| `project/`（本仓库） | Next.js 代码、mock 数据、技术文档 | 是 |
-| `../知识网站/` | 学习笔记 Markdown（未来） | **否，永不提交** |
-| vault 其他目录 | 课程字幕、摘录、私人笔记 | **否** |
+| `project/` | Next.js 代码、mock 数据、技术文档 | 是 |
+| `Knowledge Site/` | 整理成稿的学习笔记 | 是（公开可见） |
+| `CMU AI agent/`、`MIT Linear Algebra(...)/` | YouTube 字幕稿 | **否** |
+| `Clippings/`、`Vibe coding tutorials/` | 网页摘录、原始字幕 | **否** |
+| vault 其他目录 | 私人笔记、配置 | **否** |
 
-本项目是公开仓库。任何笔记正文、字幕、私人资料都不得提交到这里。`.gitignore` 额外排除 `content/published/`，防止将来拷贝笔记时误上传。
+**本仓库是公开的**：提交到 `Knowledge Site/` 的笔记会对所有人可见。字幕稿与摘录永远不提交；不要用 `git add -A` 或 `git add .`，只按目录添加。
 
 ## 技术栈
 
@@ -24,9 +28,10 @@
 ## 本地开发（Phase 1 后可用）
 
 ```bash
+cd project
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # 静态产物输出到 out/
+npm run build      # 静态产物输出到 project/out
 npx serve out      # 以静态服务器验证产物
 ```
 
@@ -34,9 +39,16 @@ npx serve out      # 以静态服务器验证产物
 
 ## 部署
 
-笔记不进入公开仓库，因此不使用 GitHub 自动构建。计划采用本机构建后直传 Cloudflare Pages：
+成稿笔记已在公开仓库中，可使用 Cloudflare Pages 的 Git 集成：
+
+- 仓库根目录：`/`
+- Build command：`cd project && npm ci && npm run build`
+- Output directory：`project/out`
+
+或本机构建后直传：
 
 ```bash
+cd project
 npm run build
 npx wrangler pages deploy out --project-name knowledge-site
 ```
@@ -46,3 +58,4 @@ npx wrangler pages deploy out --project-name knowledge-site
 ## 文档
 
 - [plan.md](./plan.md) — 需求摘要、信息架构、技术方案、分阶段实施计划与验收标准
+- [Knowledge Site/README.md](../Knowledge%20Site/README.md) — 笔记目录、命名与 frontmatter 约定

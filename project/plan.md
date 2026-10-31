@@ -1,8 +1,10 @@
-# 「我的书房」— 个人静态知识网站规划摘要与实施计划
+# 「我的书房」— 个人知识网站规划摘要与实施计划
 
 > 状态：规划已确认，代码尚未开始实现。
-> 代码仓库：`Obsidian Vault/project/`（仅代码与技术文档）
-> 笔记发布目录：`Obsidian Vault/知识网站/`（**不进入 Git**）
+> Git 仓库根：`Obsidian Vault/`（白名单，只跟踪两处）
+> 代码与技术文档：`Obsidian Vault/project/`
+> 成稿笔记：`Obsidian Vault/Knowledge Site/`（进入 Git，公开）
+> 字幕稿与摘录：其他目录（永不进入 Git）
 
 ## Context
 
@@ -12,7 +14,7 @@
 
 参考站已核实：Next.js + Vercel，长文阅读页含面包屑、篇内目录、字号调节；本项目采用同类思路，但不做付费墙、账号与搜索。
 
-**仓库边界**：代码与技术文档放在 `project/` 并纳入 Git；学习笔记放在同级的 `知识网站/`，永远不提交、不推送到 GitHub。
+**仓库边界**：Git 仓库根目录为 vault 根，`.gitignore` 采用白名单，只跟踪 `project/`（代码与技术文档）与 `Knowledge Site/`（成稿笔记）。字幕稿、摘录、私人笔记所在的目录一律被忽略。
 
 ---
 
@@ -33,7 +35,7 @@
 | 来源关联 | 链接到原始来源；来源类型可扩展（视频 / 博客 / 播客 / 文章） |
 | 双语 | 同一章节的中英两个版本；阅读页单栏切换并记住选择；网址只有一个；文件用 `.zh` / `.en` 后缀配对 |
 | 部署目标 | Cloudflare Pages（后续） |
-| 版本管理 | 仅 `project/` 初始化 Git；公开仓库 `knowledge-site`；笔记不同步 |
+| 版本管理 | Git 根为 vault；白名单只跟踪 `project/` 与 `Knowledge Site/`；公开仓库 `knowledge-site`；字幕稿不同步 |
 
 ---
 
@@ -191,7 +193,7 @@ Obsidian Vault/
 │  ├─ public/
 │  ├─ scripts/
 │  └─ package.json
-└─ 知识网站/                      # 唯一发布边界（不进 Git）
+└─ Knowledge Site/                      # 成稿笔记（进入 Git）
    ├─ CMU AI Agents/              # 一课一文件夹
    │  ├─ 01 - What are Agents.zh.md
    │  ├─ 01 - What are Agents.en.md
@@ -201,7 +203,7 @@ Obsidian Vault/
 - 文件名沿用 `NN - 标题` 排序，语言用 `.zh` / `.en` 后缀；同目录、同 `NN` 前缀且同 `slug` 的两个文件合并为一章。
 - 每个文件 frontmatter 必填 `slug`、`title`、`summary`、`updatedAt`、`sources`；语言由后缀推断，无需 `lang` 字段。
 - 只有单一语言时正常显示，不出现切换按钮。
-- 加载器扫描 `知识网站/` 下除 `.` 开头目录外的所有文件夹，一书一文件夹；路径由 `content/index.ts` 中的配置指向 `../知识网站`。
+- 加载器扫描 `Knowledge Site/` 下除 `.` 开头目录外的所有文件夹，一书一文件夹；路径由 `content/index.ts` 中的配置指向 `../Knowledge Site`。
 - 新增/修改/删除笔记 = 增删改 Markdown，无需改代码；中英两版可独立增删。
 - 构建前做最小校验：同章两版 slug/number 一致、slug 唯一、必填字段齐全、章节序号连续、来源 URL 合法；缺失时构建失败并指出文件。
 
@@ -220,10 +222,10 @@ Obsidian Vault/
 其中 `Vibe coding tutorials/` 下的两篇中文学习笔记结构最好（66 个标题、表格、callout、Mermaid、代码块），可作为未来"笔记形态"的参考模板。
 
 ### 版本管理与发布边界
-- Git 仓库根目录：`project/`，只包含代码、mock 数据与技术文档。
-- `知识网站/` 及其中的 `.md` 笔记**永不被提交**；`.gitignore` 额外排除 `content/published/`，防止未来拷贝笔记时误上传。
-- 公开仓库 `knowledge-site` 仅含代码；任何笔记内容都不得出现在 GitHub 历史中。
-- 部署采用"本地构建 + 直传静态产物"，不走 GitHub CI 拉取内容，避免笔记进入云端仓库。
+- Git 仓库根目录：vault 根；`.gitignore` 白名单只放行 `project/` 与 `Knowledge Site/`。
+- `Knowledge Site/` 中的成稿笔记会进入公开仓库并公开可见。
+- 字幕稿、摘录与私人笔记（`CMU AI agent/`、`MIT Linear Algebra(...)/`、`Clippings/`、`Vibe coding tutorials/` 等）永不提交；根 `.gitignore` 的 `/*` 规则会忽略它们。
+- 部署可直接使用公开仓库的 Cloudflare Pages 构建；只有白名单内的成稿笔记会进入构建环境。
 
 ---
 
@@ -278,7 +280,7 @@ export default nextConfig;
 ### 目录结构
 ```
 Obsidian Vault/
-├─ project/                       # Git 仓库根目录
+├─ project/                       # 代码项目
 │  ├─ app/
 │  │  ├─ layout.tsx
 │  │  ├─ page.tsx                 # 书库
@@ -318,7 +320,7 @@ Obsidian Vault/
 │  ├─ package.json
 │  ├─ plan.md
 │  └─ README.md
-└─ 知识网站/                      # 笔记发布边界（不进 Git）
+└─ Knowledge Site/                      # 成稿笔记（进入 Git，公开）
    └─ (未来) CMU AI Agents/ ...
 ```
 
@@ -337,14 +339,19 @@ npx serve out          # 以静态服务器验证真实产物
 静态导出**不能可靠地双击 `index.html` 以 `file://` 打开**，一律用静态服务器访问。
 
 ### Cloudflare Pages（后续）
-由于笔记不能进入公开仓库，采用**本地构建 + 直传产物**，不绑定 GitHub 自动构建：
+成稿笔记已进入公开仓库，可直接使用 Git 集成构建：
+- 仓库：`Lovis-Log/knowledge-site`，根目录为仓库根（vault 根）。
+- Build command：`cd project && npm ci && npm run build`
+- Output directory：`project/out`
+- 无需 `basePath`；`trailingSlash: true` 保证深层链接刷新正常。
+
+也可以本机构建后直传：
 ```bash
+cd project
 npm run build
 npx wrangler pages deploy out --project-name knowledge-site
 ```
-- 发布内容来自你本机的 `知识网站/`，构建后只上传 `out/` 静态文件。
-- GitHub 仓库 `knowledge-site` 仅保存代码，不承担内容构建。
-- 无需 `basePath`；`trailingSlash: true` 保证深层链接刷新正常。
+- 两种方式都只会上传白名单内的代码与 `Knowledge Site/` 成稿笔记；字幕稿不会进入构建。
 - 实际公开发布前会再次向你确认。
 
 ---
@@ -352,7 +359,7 @@ npx wrangler pages deploy out --project-name knowledge-site
 ## 9. ASSUMPTIONS — 暂定假设
 
 1. 站点名暂定「我的书房」，集中在 `lib/site.ts`，一处可改。
-2. 代码在 `project/`，笔记在 `知识网站/`，两者同级；`project/` 是唯一 Git 仓库根。
+2. Git 仓库根为 vault 根，白名单只跟踪 `project/` 与 `Knowledge Site/`；两者同级。
 3. 首版只做浅色主题。
 4. 首版不做搜索框，只预留实现位。
 5. mock 书为 CMU AI Agents、MIT 18.06、Vibe Coding 三本。
@@ -361,7 +368,7 @@ npx wrangler pages deploy out --project-name knowledge-site
 8. 来源类型用可扩展联合类型，新增类型只改 `SourceKind` 与展示映射。
 9. 双语只作用于章节正文与标题；书库/书本页的书籍元信息保持中文，章节标题按中文优先、缺失回落英文。
 10. 中英两版不要求逐段对齐（单栏切换，不做并排对照）。
-11. GitHub 公开仓库 `knowledge-site` 只包含代码与技术文档，不包含任何笔记内容。
+11. GitHub 公开仓库 `knowledge-site` 包含代码、技术文档与 `Knowledge Site/` 成稿笔记；不包含字幕稿、摘录或私人笔记。
 
 ---
 
@@ -373,12 +380,12 @@ npx wrangler pages deploy out --project-name knowledge-site
 4. **URL 稳定性**：中文标题改 slug 会导致旧链接失效，约定 slug 一经发布不修改。
 5. **图片与公式体积**：大量图片会拖慢首屏；后续可加图片尺寸规范与懒加载。
 6. **深层链接刷新**：已用 `trailingSlash: true` 规避，仍需在真实静态服务器上验收。
-7. **误发布风险**：发布边界靠"独立目录"保证；Git 仓库只覆盖 `project/`，且加载器只扫描 `知识网站/`，双重隔离。
+7. **误发布风险**：发布边界靠白名单保证；Git 根 `.gitignore` 只放行 `project/` 与 `Knowledge Site/`，加载器也只扫描 `Knowledge Site/`，双重隔离。
 8. **依赖兼容**：Next 16 + Turbopack 与 rehype 插件均在构建期运行，风险低；首次构建后需确认无警告。
 9. **旧笔记的重复与假图片**：若未来直接把现有字幕复制进发布目录，会把重复正文和坏图片带上线；必须在接入前跑一遍清理/去重脚本（见 §6）。
 10. **双语版本结构漂移**：两版标题层级不一致时会出现两套目录，滚动高亮需按当前语言计算；写作时尽量对齐结构。
 11. **双语页面体积**：两版正文同时进入 HTML，长章节体积约翻倍；个人站可接受，若笔记变大再考虑按语言懒加载。
-12. **部署不含内容仓库**：公开仓库无法自动构建带笔记的站点，必须本机构建后上传；如果以后想自动部署，需要单独规划私有内容源。
+12. **白名单失效风险**：若 `.gitignore` 被误改或使用 `git add -f` 强制添加，字幕稿可能进入公开历史；每次提交前用 `git status` 复核暂存范围。
 
 ---
 
@@ -395,7 +402,7 @@ npx wrangler pages deploy out --project-name knowledge-site
 - [ ] 构建产物无 `/_next/image` 默认优化请求，无运行时 Node 依赖。
 - [ ] 404 页面友好，可返回书库。
 - [ ] `README.md` 写明笔记目录、文件名、frontmatter 与发布约定。
-- [ ] GitHub 仓库中不包含任何笔记文件。
+- [ ] GitHub 仓库包含 `Knowledge Site/` 成稿笔记，但不包含任何字幕稿或摘录文件。
 
 ---
 
@@ -459,4 +466,4 @@ npx serve out
 7. 直接访问 `/books/cmu-ai-agents/01-what-is-an-agent/` 并刷新，页面正常返回。
 8. 访问不存在的章节，出现 404 且能返回书库。
 9. 打开双语章节 → 切到 EN → 标题与右侧目录同步变化 → 刷新后仍为 EN → 切回中文正常。
-10. `git status` 中不出现 `知识网站/` 或任何 `.md` 笔记。
+10. `git status` 中只出现 `project/` 与 `Knowledge Site/`，不出现 CMU / MIT / Clippings / Vibe coding 等字幕稿目录。
