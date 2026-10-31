@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChapterPager } from "@/components/chapter-pager";
 import { Markdown } from "@/components/markdown";
@@ -52,7 +51,6 @@ export default async function ChapterPage({
   if (!langs.length) notFound();
 
   const bilingual = langs.length > 1;
-  const primary = pickVersion(chapter.versions);
   const adjacent = getAdjacentChapters(bookSlug, chapterSlug);
   const tocs = langs.map((lang) => ({
     lang,
@@ -66,47 +64,6 @@ export default async function ChapterPage({
     <div className="shell shell--reading">
       <ReadingProgress bookSlug={book.slug} chapterSlug={chapter.slug} />
 
-      <nav className="breadcrumb" aria-label="面包屑">
-        <Link href="/">书库</Link>
-        <span aria-hidden="true">/</span>
-        <Link href={`/books/${book.slug}/`}>{book.title}</Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{primary.title}</span>
-      </nav>
-
-      <header className="chapter-header">
-        <p className="eyebrow">第 {paddedNumber(chapter.number)} 章</p>
-        {langs.map((lang) => {
-          const version = chapter.versions[lang]!;
-          return (
-            <div key={lang} {...langBlock(lang)}>
-              <h1 className="chapter-title">{version.title}</h1>
-              {version.summary && <p className="chapter-lede">{version.summary}</p>}
-            </div>
-          );
-        })}
-        <div className="chapter-meta">
-          <span>更新于 {formatDate(chapter.updatedAt)}</span>
-          {bilingual && <span className="badge">中 / EN</span>}
-        </div>
-        <ReadingToolbar langs={langs} />
-      </header>
-
-      <details className="toc-inline">
-        <summary>篇内目录</summary>
-        {tocs.map(({ lang, items }) => (
-          <div key={lang} {...langBlock(lang)}>
-            <ul className="toc-inline__list">
-              {items.map((item) => (
-                <li key={item.id} className={`toc__item--h${item.depth}`}>
-                  <a href={`#${item.id}`}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </details>
-
       <ReadingLayout
         aside={
           <>
@@ -118,6 +75,39 @@ export default async function ChapterPage({
           </>
         }
       >
+        <header className="chapter-header">
+          <p className="eyebrow">第 {paddedNumber(chapter.number)} 章</p>
+          {langs.map((lang) => {
+            const version = chapter.versions[lang]!;
+            return (
+              <div key={lang} {...langBlock(lang)}>
+                <h1 className="chapter-title">{version.title}</h1>
+                {version.summary && <p className="chapter-lede">{version.summary}</p>}
+              </div>
+            );
+          })}
+          <div className="chapter-meta">
+            <span>更新于 {formatDate(chapter.updatedAt)}</span>
+            {bilingual && <span className="badge">中 / EN</span>}
+          </div>
+          <ReadingToolbar langs={langs} />
+        </header>
+
+        <details className="toc-inline">
+          <summary>篇内目录</summary>
+          {tocs.map(({ lang, items }) => (
+            <div key={lang} {...langBlock(lang)}>
+              <ul className="toc-inline__list">
+                {items.map((item) => (
+                  <li key={item.id} className={`toc__item--h${item.depth}`}>
+                    <a href={`#${item.id}`}>{item.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </details>
+
         {langs.map((lang) => (
           <div key={lang} className="prose lang-block" {...langBlock(lang)}>
             <Markdown markdown={chapter.versions[lang]!.body} lang={lang} />

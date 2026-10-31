@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
 import { getAllBooks, getBook } from "@/content";
 import { formatDate } from "@/lib/format";
@@ -29,19 +29,16 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
 
   return (
     <div className="shell">
-      <nav className="breadcrumb" aria-label="面包屑">
-        <Link href="/">书库</Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{book.title}</span>
-      </nav>
-
       <header className="book-header">
-        {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
-        <h1 className="book-title">{book.title}</h1>
-        <p className="book-lede">{book.description}</p>
-        <p className="book-meta">
-          {book.chapters.length} 章 · 更新于 {formatDate(book.updatedAt)}
-        </p>
+        <BookCover book={book} size="sm" />
+        <div className="book-header__body">
+          {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
+          <h1 className="book-title">{book.title}</h1>
+          <p className="book-lede">{book.description}</p>
+          <p className="book-meta">
+            {book.chapters.length} 章 · 更新于 {formatDate(book.updatedAt)}
+          </p>
+        </div>
       </header>
 
       <section className="book-chapters" aria-labelledby="chapters-heading">
