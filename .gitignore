@@ -1,5 +1,6 @@
 # 仓库白名单：只跟踪代码与成稿笔记
 /*
 !/.gitignore
+!/README.md
 !/project/
 !/Knowledge Site/
