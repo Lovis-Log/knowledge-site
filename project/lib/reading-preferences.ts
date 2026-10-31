@@ -1,6 +1,7 @@
 export type FontSize = "sm" | "md" | "lg";
 
 export const FONT_SIZE_STORAGE_KEY = "shufang:font-size";
+export const TOC_STORAGE_KEY = "shufang:toc";
 
 export const FONT_SIZES: Array<{ value: FontSize; label: string }> = [
   { value: "sm", label: "小" },

@@ -30,8 +30,8 @@ export default function HomePage() {
           <span className="section-count">{books.length} 本书</span>
         </div>
         <div className="library__grid">
-          {books.map((book) => (
-            <BookCard key={book.slug} book={book} />
+          {books.map((book, index) => (
+            <BookCard key={book.slug} book={book} index={index} />
           ))}
         </div>
       </section>

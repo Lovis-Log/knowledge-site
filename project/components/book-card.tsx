@@ -1,12 +1,17 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
+import { BookCover } from "@/components/book-cover";
 import type { Book } from "@/content/types";
 import { formatDate } from "@/lib/format";
 
-export function BookCard({ book }: { book: Book }) {
+export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
   return (
-    <Link href={`/books/${book.slug}/`} className="book-card">
-      <p className="book-card__kicker">{book.subtitle ?? `${book.chapters.length} 章`}</p>
-      <h2 className="book-card__title">{book.title}</h2>
+    <Link
+      href={`/books/${book.slug}/`}
+      className="book-card"
+      style={{ "--i": index } as CSSProperties}
+    >
+      <BookCover book={book} heading />
       <p className="book-card__desc">{book.description}</p>
       <p className="book-card__meta">
         {book.chapters.length} 章 · 更新于 {formatDate(book.updatedAt)}

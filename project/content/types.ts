@@ -28,6 +28,8 @@ export interface Book {
   title: string;
   subtitle?: string;
   description: string;
+  /** 自备封面图，放在 public/covers/ 下；留空则用内置 SVG 主题封面 */
+  coverImage?: string;
   updatedAt: string;
   chapters: Chapter[];
 }
