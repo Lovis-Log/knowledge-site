@@ -1,9 +1,46 @@
 import GithubSlugger from "github-slugger";
+import katex from "katex";
 
 export interface TocItem {
   id: string;
   text: string;
+  html: string;
   depth: 2 | 3;
+}
+
+const INLINE_MATH_SPLIT = /(\$[^$\n]+\$)/;
+const INLINE_MATH_STRIP = /\$([^$\n]+)\$/g;
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * 目录标题里的 $...$ 在服务端渲染成 KaTeX 标记，
+ * 客户端只拿到 HTML，不必把 katex JS 打进 bundle。
+ */
+function renderInline(raw: string): string {
+  return raw
+    .split(INLINE_MATH_SPLIT)
+    .map((segment, index) => {
+      if (index % 2 === 1) {
+        return katex.renderToString(segment.slice(1, -1), {
+          throwOnError: false,
+          displayMode: false,
+        });
+      }
+      return escapeHtml(segment);
+    })
+    .join("");
+}
+
+function plainInline(raw: string): string {
+  return raw.replace(INLINE_MATH_STRIP, "$1");
 }
 
 /**
@@ -32,13 +69,14 @@ export function buildToc(markdown: string, lang: string): TocItem[] {
     const match = /^(#{2,3})\s+(.+?)\s*#*\s*$/.exec(line);
     if (!match) continue;
 
-    const text = match[2].replace(/`/g, "").trim();
-    if (!text) continue;
+    const raw = match[2].replace(/`/g, "").trim();
+    if (!raw) continue;
 
-    const slug = slugger.slug(text);
+    const slug = slugger.slug(raw);
     items.push({
       id: `${lang}-${slug}`,
-      text,
+      text: plainInline(raw),
+      html: renderInline(raw),
       depth: match[1].length === 2 ? 2 : 3,
     });
   }

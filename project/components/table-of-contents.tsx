@@ -56,10 +56,10 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
           <li key={item.id} className={`toc__item toc__item--h${item.depth}`}>
             <a
               href={`#${item.id}`}
+              aria-label={item.text}
               className={activeId === item.id ? "toc__link is-active" : "toc__link"}
-            >
-              {item.text}
-            </a>
+              dangerouslySetInnerHTML={{ __html: item.html }}
+            />
           </li>
         ))}
       </ul>

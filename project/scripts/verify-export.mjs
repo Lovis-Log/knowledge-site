@@ -1,33 +1,13 @@
 #!/usr/bin/env node
-import { readFile, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import matter from "gray-matter";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const outDir = join(here, "..", "out");
-
-const books = {
-  "cmu-ai-agents": ["01-what-is-an-agent", "02-tool-use", "03-long-context"],
-  "mit-linear-algebra": [
-    "01-geometry-of-equations",
-    "02-elimination-with-matrices",
-    "03-multiplication-and-inverses",
-  ],
-  "vibe-coding": ["01-the-loop", "02-my-ai-workflow"],
-};
-
-const expected = [
-  "index.html",
-  "404.html",
-  "about/index.html",
-  ...Object.entries(books).flatMap(([book, chapters]) => [
-    `books/${book}/index.html`,
-    ...chapters.map((chapter) => `books/${book}/${chapter}/index.html`),
-  ]),
-  "images/agent-loop.svg",
-  "images/linear-map.svg",
-  "images/vibe-loop.svg",
-];
+const projectDir = join(here, "..");
+const outDir = join(projectDir, "out");
+const siteDir = join(projectDir, "..", "Knowledge Site");
 
 const failures = [];
 const htmlCache = new Map();
@@ -38,6 +18,81 @@ async function readHtml(relativePath) {
   }
   return htmlCache.get(relativePath);
 }
+
+// ---- derive expectations from Knowledge Site ----
+
+const taxonomy = JSON.parse(await readFile(join(siteDir, "taxonomy.json"), "utf8"));
+const categorySlugs = new Set((taxonomy.categories ?? []).map((item) => item.slug));
+const categoryNames = new Map((taxonomy.categories ?? []).map((item) => [item.slug, item.name]));
+const contentTypes = new Set([
+  "video-course",
+  "technical-tutorial",
+  "science-explainer",
+  "news",
+  "opinion",
+  "podcast-interview",
+  "reference",
+  "social-post",
+]);
+
+const books = new Map();
+const chapterLangs = new Map();
+
+for (const entry of await readdir(siteDir, { withFileTypes: true })) {
+  if (!entry.isDirectory() || entry.name.startsWith(".")) continue;
+  const bookDir = join(siteDir, entry.name);
+  let bookMeta;
+  try {
+    bookMeta = matter(await readFile(join(bookDir, "_book.md"), "utf8")).data;
+  } catch {
+    failures.push(`缺少 _book.md：Knowledge Site/${entry.name}`);
+    continue;
+  }
+  const slug = String(bookMeta.slug ?? "");
+  if (!slug) {
+    failures.push(`_book.md 缺少 slug：Knowledge Site/${entry.name}`);
+    continue;
+  }
+  if (!bookMeta.category || !categorySlugs.has(String(bookMeta.category))) {
+    failures.push(`书 ${slug} 的 category 未在 taxonomy.json 中声明：${bookMeta.category}`);
+  }
+
+  const chapters = new Set();
+  for (const file of await readdir(bookDir)) {
+    const match = /^(\d{2,3}) - .+?\.(zh|en)\.md$/.exec(file);
+    if (!match) continue;
+    const meta = matter(await readFile(join(bookDir, file), "utf8")).data;
+    if (!meta.slug) {
+      failures.push(`章节缺少 slug：Knowledge Site/${entry.name}/${file}`);
+      continue;
+    }
+    if (!meta.content_type || !contentTypes.has(String(meta.content_type))) {
+      failures.push(`章节 content_type 无效：Knowledge Site/${entry.name}/${file}`);
+    }
+    chapters.add(String(meta.slug));
+    const key = `${slug}/${meta.slug}`;
+    if (!chapterLangs.has(key)) chapterLangs.set(key, new Set());
+    chapterLangs.get(key).add(match[2]);
+  }
+
+  if (!chapters.size) {
+    failures.push(`书 ${slug} 没有章节文件`);
+  }
+  books.set(slug, [...chapters].sort());
+}
+
+const expected = [
+  "index.html",
+  "404.html",
+  "about/index.html",
+  ...[...books.entries()].flatMap(([book, chapters]) => [
+    `books/${book}/index.html`,
+    ...chapters.map((chapter) => `books/${book}/${chapter}/index.html`),
+  ]),
+  "images/agent-loop.svg",
+  "images/linear-map.svg",
+  "images/vibe-loop.svg",
+];
 
 for (const relativePath of expected) {
   try {
@@ -66,7 +121,7 @@ for (const file of htmlFiles) {
 
 try {
   const mathChapter = await readHtml("books/mit-linear-algebra/01-geometry-of-equations/index.html");
-  if (!mathChapter.includes("class=\"katex\"")) {
+  if (!mathChapter.includes('class="katex"')) {
     failures.push("KaTeX 未渲染：out/books/mit-linear-algebra/01-geometry-of-equations/index.html");
   }
   const codeChapter = await readHtml("books/mit-linear-algebra/02-elimination-with-matrices/index.html");
@@ -77,13 +132,39 @@ try {
   // 文件缺失已在上方报告
 }
 
-try {
-  const bilingual = await readHtml("books/cmu-ai-agents/01-what-is-an-agent/index.html");
-  if (!bilingual.includes('data-lang-block="zh"') || !bilingual.includes('data-lang-block="en"')) {
-    failures.push("双语章节缺少中英两份正文：out/books/cmu-ai-agents/01-what-is-an-agent/index.html");
+for (const [key, langs] of chapterLangs) {
+  if (langs.size < 2) continue;
+  const [book, chapter] = key.split("/");
+  try {
+    const html = await readHtml(`books/${book}/${chapter}/index.html`);
+    if (!html.includes('data-lang-block="zh"') || !html.includes('data-lang-block="en"')) {
+      failures.push(`双语章节缺少中英两份正文：out/books/${book}/${chapter}/index.html`);
+    }
+    if (!html.includes('id="en-')) {
+      failures.push(`双语章节的英文锚点未加语言前缀：out/books/${book}/${chapter}/index.html`);
+    }
+  } catch {
+    // 文件缺失已在上方报告
   }
-  if (!bilingual.includes('id="en-')) {
-    failures.push("双语章节的英文锚点未加语言前缀：out/books/cmu-ai-agents/01-what-is-an-agent/index.html");
+}
+
+try {
+  const home = await readHtml("index.html");
+  const usedCategories = new Set();
+  for (const entry of await readdir(siteDir, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.name.startsWith(".")) continue;
+    try {
+      const meta = matter(await readFile(join(siteDir, entry.name, "_book.md"), "utf8")).data;
+      if (meta.category) usedCategories.add(String(meta.category));
+    } catch {
+      // 已在上方报告
+    }
+  }
+  for (const category of usedCategories) {
+    const name = categoryNames.get(category) ?? "未分类";
+    if (!home.includes(`id="category-${category}"`) && !home.includes(name)) {
+      failures.push(`首页缺少分类分组：${name}`);
+    }
   }
 } catch {
   // 文件缺失已在上方报告

@@ -2,7 +2,7 @@
 
 「我的书房」— 一个从 Obsidian vault 发布的个人静态知识网站。纯前端、静态导出、零后端。
 
-当前状态：**第一版已实现**。首页书库、书本页、章节阅读页、双语切换、篇内目录、字号与阅读进度记忆均已可用；mock 数据为 3 本书 / 8 章。实施计划见 [plan.md](./plan.md)。
+当前状态：**第一版已实现**。首页书库按主题分类分组、书本页、章节阅读页、双语切换、篇内目录、字号与阅读进度记忆均已可用；内容来自 `Knowledge Site/` 的 Markdown（3 本书 / 8 章）。实施计划见 [plan.md](./plan.md)。
 
 ## 仓库与内容边界
 
@@ -10,8 +10,8 @@
 
 | 目录 | 内容 | 是否进入 Git |
 |---|---|---|
-| `project/` | Next.js 代码、mock 数据、技术文档 | 是 |
-| `Knowledge Site/` | 整理成稿的学习笔记 | 是（公开可见） |
+| `project/` | Next.js 代码与技术文档 | 是 |
+| `Knowledge Site/` | 整理成稿的学习笔记（站点内容源） | 是（公开可见） |
 | `CMU AI agent/`、`MIT Linear Algebra(...)/` | YouTube 字幕稿 | **否** |
 | `Clippings/`、`Vibe coding tutorials/` | 网页摘录、原始字幕 | **否** |
 | vault 其他目录 | 私人笔记、配置 | **否** |
@@ -46,22 +46,25 @@ project/
 ├─ components/              # 页头、书卡、章节页组件与客户端小岛
 ├─ content/
 │  ├─ types.ts              # Book / Chapter / Source 类型
-│  ├─ index.ts              # 唯一数据接缝（未来替换为 Markdown 加载器）
-│  └─ books/*.ts            # 首版 mock 数据
-├─ lib/                     # 站点配置、目录提取、语言、字号、进度
-├─ public/images/           # mock 示意图（SVG）
+│  └─ index.ts              # 唯一数据接缝（按分类分组、章节查询）
+├─ lib/
+│  ├─ notes.ts              # Knowledge Site/ Markdown 加载器
+│  └─ content-labels.ts     # content_type 的中文标签
+├─ public/images/           # 示意图（SVG）
 └─ scripts/verify-export.mjs
 ```
 
-页面不直接读文件，只通过 `content/index.ts` 取数据。未来接入 `Knowledge Site/` 时只改这一层。
+页面不直接读文件，只通过 `content/index.ts` 取数据；Markdown 解析集中在 `lib/notes.ts`。默认读取仓库根目录的 `Knowledge Site/`，可用环境变量 `KNOWLEDGE_SITE_DIR` 覆盖。
 
 ## 内容维护约定
 
 成稿笔记放在仓库根目录的 `Knowledge Site/`，约定详见 [Knowledge Site/README.md](../Knowledge%20Site/README.md)：
 
-- 一课一文件夹，文件夹名即书名；章节文件用 `NN - 标题` 命名，序号两位补零。
-- 中英双版用 `.zh` / `.en` 后缀配对，同一章的 `slug` 与 `number` 必须一致。
+- 一课一文件夹，文件夹名即书名；每本书有 `_book.md` 声明 slug、`category` 与简介。
+- 章节文件用 `NN - 标题` 命名，序号两位补零。
+- 中英双版用 `.zh` / `.en` 后缀配对，同一章的 `slug` 与章节序号必须一致。
 - 每个文件 frontmatter 必填 `slug`、`title`、`summary`、`updatedAt`、`sources`；语言由后缀推断。
+- 主题分类来自 `Knowledge Site/taxonomy.json`，首页按分类分组。
 - 只有单一语言时正常显示，不出现切换按钮。
 
 发布流程（在 vault 根目录）：

@@ -31,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-font-size="md"
       data-toc="open"
       className={jakarta.variable}
+      suppressHydrationWarning
     >
       <body>
         <div className="atmosphere" aria-hidden="true">
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="atmosphere__glow" />
           <i className="atmosphere__blob atmosphere__blob--a" />
           <i className="atmosphere__blob atmosphere__blob--b" />
+          <div className="atmosphere__noise" />
         </div>
         <script dangerouslySetInnerHTML={{ __html: bootstrap }} />
         <a className="skip-link" href="#main">

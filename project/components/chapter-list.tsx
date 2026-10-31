@@ -27,7 +27,9 @@ export function ChapterList({ book }: { book: Book }) {
                   <span className="chapter-row__summary">{version.summary}</span>
                 )}
               </span>
-              <span className="chapter-row__meta">{formatDate(chapter.updatedAt)}</span>
+              <span className="chapter-row__meta">
+                {chapter.publishedAt ? formatDate(chapter.publishedAt) : ""}
+              </span>
             </Link>
           </li>
         );

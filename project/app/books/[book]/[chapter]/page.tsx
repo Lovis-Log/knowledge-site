@@ -9,6 +9,7 @@ import { SourceList } from "@/components/source-list";
 import { TableOfContents } from "@/components/table-of-contents";
 import { getAllBooks, getAdjacentChapters, getBook, getChapter } from "@/content";
 import type { Lang } from "@/content/types";
+import { contentTypeLabel } from "@/lib/content-labels";
 import { formatDate, paddedNumber } from "@/lib/format";
 import { availableLangs, pickVersion } from "@/lib/language";
 import { buildToc } from "@/lib/toc";
@@ -86,10 +87,24 @@ export default async function ChapterPage({
               </div>
             );
           })}
-          <div className="chapter-meta">
-            <span>更新于 {formatDate(chapter.updatedAt)}</span>
-            {bilingual && <span className="badge">中 / EN</span>}
-          </div>
+          {(chapter.publishedAt || bilingual) && (
+            <div className="chapter-meta">
+              {chapter.publishedAt && <span>首发于 {formatDate(chapter.publishedAt)}</span>}
+              {bilingual && <span className="badge">中 / EN</span>}
+            </div>
+          )}
+          {(chapter.contentType || chapter.tags?.length) && (
+            <div className="chapter-tags">
+              {chapter.contentType && (
+                <span className="tag tag--type">{contentTypeLabel(chapter.contentType)}</span>
+              )}
+              {chapter.tags?.map((tag) => (
+                <span key={tag} className="tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
           <ReadingToolbar langs={langs} />
         </header>
 
@@ -100,7 +115,11 @@ export default async function ChapterPage({
               <ul className="toc-inline__list">
                 {items.map((item) => (
                   <li key={item.id} className={`toc__item--h${item.depth}`}>
-                    <a href={`#${item.id}`}>{item.text}</a>
+                    <a
+                      href={`#${item.id}`}
+                      aria-label={item.text}
+                      dangerouslySetInnerHTML={{ __html: item.html }}
+                    />
                   </li>
                 ))}
               </ul>

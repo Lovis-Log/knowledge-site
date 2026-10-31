@@ -1,9 +1,7 @@
 import type { Book, Chapter } from "@/content/types";
-import { cmuAiAgents } from "@/content/books/cmu-ai-agents";
-import { mitLinearAlgebra } from "@/content/books/mit-linear-algebra";
-import { vibeCoding } from "@/content/books/vibe-coding";
+import { getTaxonomy, loadBooks } from "@/lib/notes";
 
-const books: Book[] = [cmuAiAgents, mitLinearAlgebra, vibeCoding];
+const books: Book[] = loadBooks();
 
 /**
  * 唯一数据接缝：页面只通过这些函数取数据。
@@ -49,5 +47,38 @@ export function getAllChapterRefs(): ChapterRef[] {
       chapter,
       title: chapter.versions.zh?.title ?? chapter.versions.en?.title ?? "",
     })),
+  );
+}
+
+export interface CategoryGroup {
+  slug: string;
+  name: string;
+  description?: string;
+  books: Book[];
+}
+
+export function getCategoryGroups(): CategoryGroup[] {
+  const categories = getTaxonomy();
+  const order = new Map(categories.map((category, index) => [category.slug, index]));
+  const groups = new Map<string, CategoryGroup>();
+
+  for (const book of getAllBooks()) {
+    const slug = book.category || "uncategorized";
+    if (!groups.has(slug)) {
+      const known = categories.find((category) => category.slug === slug);
+      groups.set(slug, {
+        slug,
+        name: known?.name ?? (slug === "uncategorized" ? "未分类" : slug),
+        description: known?.description,
+        books: [],
+      });
+    }
+    groups.get(slug)!.books.push(book);
+  }
+
+  return [...groups.values()].sort(
+    (a, b) =>
+      (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
   );
 }

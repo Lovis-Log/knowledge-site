@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
 import { getAllBooks, getBook } from "@/content";
-import { formatDate } from "@/lib/format";
+import { formatAuthors } from "@/lib/format";
 
 export const dynamicParams = false;
 
@@ -34,10 +34,21 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
         <div className="book-header__body">
           {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
           <h1 className="book-title">{book.title}</h1>
-          <p className="book-lede">{book.description}</p>
-          <p className="book-meta">
-            {book.chapters.length} 章 · 更新于 {formatDate(book.updatedAt)}
-          </p>
+          <p className="book-lede">{book.longDescription ?? book.description}</p>
+          {book.author && <p className="book-byline">{formatAuthors(book.author)}</p>}
+          {book.links && book.links.length > 0 && (
+            <ul className="book-links">
+              {book.links.slice(0, 2).map((link) => (
+                <li key={link.url}>
+                  <a href={link.url} target="_blank" rel="noreferrer noopener">
+                    {link.label} ↗
+                  </a>
+                </li>
+              ))}
+              {book.links.length > 2 && <li className="book-links__more">等</li>}
+            </ul>
+          )}
+          <p className="book-meta">{book.chapters.length} 章</p>
         </div>
       </header>
 
