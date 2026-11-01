@@ -219,16 +219,19 @@ function deriveAuthor(chapters: Chapter[]): string | undefined {
   );
 }
 
-/** 每个站点取第一个来源作为入口链接 */
+/** 按来源链接去重取入口链接；卡片展示两条，第三条起用「等」收尾 */
+const MAX_BOOK_LINKS = 3;
+
 function deriveLinks(chapters: Chapter[]): BookLink[] {
   const seen = new Set<string>();
   const links: BookLink[] = [];
   for (const chapter of chapters) {
     for (const source of chapter.sources) {
-      const origin = sourceOrigin(source.url);
-      if (seen.has(origin)) continue;
-      seen.add(origin);
+      const key = linkKey(source.url);
+      if (seen.has(key)) continue;
+      seen.add(key);
       links.push({ label: source.title, url: source.url, chapterNumber: chapter.number });
+      if (links.length >= MAX_BOOK_LINKS) return links;
     }
   }
   return links;

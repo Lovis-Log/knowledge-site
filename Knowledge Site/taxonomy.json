@@ -15,7 +15,7 @@
     {
       "slug": "curated",
       "name": "精选收录",
-      "description": "收录值得细读的英文外刊，留下阅读、表达与思考。"
+      "description": "收录值得细读的外刊、文章与观点。"
     }
   ],
   "categories": [
@@ -50,10 +50,16 @@
       "description": "智能体、工具使用、记忆、规划与评测的系统课程"
     },
     {
-      "slug": "english-news",
+      "slug": "article-collection",
       "section": "curated",
-      "name": "英语与外刊",
-      "description": "英文新闻精读、雅思表达与背景知识"
+      "name": "文章收录",
+      "description": "可能带来启发的文章与观点"
+    },
+    {
+      "slug": "general-collection",
+      "section": "curated",
+      "name": "综合收录",
+      "description": "金融、商业、表达与思维等主题的视频与访谈"
     }
   ]
 }
