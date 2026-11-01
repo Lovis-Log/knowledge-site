@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import type { Lang } from "@/content/types";
 import {
   FONT_SIZE_STORAGE_KEY,
@@ -27,10 +28,23 @@ function setTocOpen(open: boolean) {
   }
 }
 
-export function ReadingToolbar({ langs }: { langs: Lang[] }) {
+export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[]; hasTranslation?: boolean }) {
+  useEffect(() => {
+    if (!hasTranslation) return;
+    document.documentElement.dataset.readingView = "notes";
+    return () => { delete document.documentElement.dataset.readingView; };
+  }, [hasTranslation]);
   return (
     <div className="reading-toolbar">
-      <LanguageToggle langs={langs} />
+      {hasTranslation ? (
+        <div className="control-group" role="group" aria-label="阅读视图">
+          <span className="control-label">阅读</span>
+          <div className="segmented">
+            <button type="button" className="segmented__btn" data-view="notes" onClick={() => { document.documentElement.dataset.readingView = "notes"; }}>原文与精读</button>
+            <button type="button" className="segmented__btn" data-view="translation" onClick={() => { document.documentElement.dataset.readingView = "translation"; }}>原文翻译</button>
+          </div>
+        </div>
+      ) : <LanguageToggle langs={langs} />}
       <div className="control-group" role="group" aria-label="正文字号">
         <span className="control-label">字号</span>
         <div className="segmented">

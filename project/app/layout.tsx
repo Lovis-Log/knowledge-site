@@ -8,8 +8,6 @@ import { SiteHeader } from "@/components/site-header";
 import { buildBreadcrumbs } from "@/lib/crumbs";
 import { site } from "@/lib/site";
 
-const crumbs = buildBreadcrumbs();
-
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin", "latin-ext"],
   display: "swap",
@@ -24,6 +22,7 @@ export const metadata: Metadata = {
 const bootstrap = `(function(){try{var d=document.documentElement;var l=localStorage.getItem("shufang:lang");if(l==="zh"||l==="en"){d.dataset.lang=l;d.lang=l==="zh"?"zh-CN":"en";}var f=localStorage.getItem("shufang:font-size");if(f==="sm"||f==="md"||f==="lg"){d.dataset.fontSize=f;}var t=localStorage.getItem("shufang:toc");if(t==="0"){d.dataset.toc="closed";}}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const crumbs = buildBreadcrumbs();
   return (
     <html
       lang="zh-CN"

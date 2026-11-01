@@ -19,6 +19,7 @@ export interface Chapter {
   slug: string;
   number: number;
   versions: Partial<Record<Lang, ChapterVersion>>;
+  translation?: ChapterVersion;
   updatedAt: string;
   /** 原资源首发日期；缺省时取 sources 中最早的 publishedAt */
   publishedAt?: string;
@@ -30,6 +31,8 @@ export interface Chapter {
 export interface BookLink {
   label: string;
   url: string;
+  /** 该链接对应的章节号，目录页用来区分同一本书里的多个来源 */
+  chapterNumber?: number;
 }
 
 export interface Book {

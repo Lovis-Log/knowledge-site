@@ -10,22 +10,38 @@
 
 这些内容留在 vault 其他目录，`.gitignore` 白名单会阻止它们进入仓库。
 
-## 目录组织：一课一书
+## 目录组织：大类 → 子分类 → 书名
 
 ```
 Knowledge Site/
 ├─ taxonomy.json
-├─ CMU AI Agents/
-│  ├─ _book.md
-│  ├─ 01 - what-is-an-agent.zh.md
-│  ├─ 01 - what-is-an-agent.en.md
-│  └─ 02 - tool-use.zh.md
-└─ MIT 线性代数/
-   ├─ _book.md
-   └─ 01 - geometry-of-equations.en.md
+├─ AI Era/
+│  ├─ AI 原理与应用/
+│  │  ├─ AI Agent 工程与技能设计/
+│  │  ├─ 大模型原理与使用/
+│  │  └─ LLM Wiki Workflow/
+│  └─ AI 编程与创作/
+│     ├─ Vibe Coding Tutorials/
+│     └─ 产品与设计/
+├─ 专业课程/
+│  ├─ 数学/
+│  │  ├─ MIT Real Analysis/
+│  │  ├─ MIT Discrete Applied Mathematics/
+│  │  └─ MIT Linear Algebra/
+│  ├─ 计算机与编程/
+│  │  ├─ C++ Programming/
+│  │  ├─ Harvard Python Programming/
+│  │  └─ Python for AI/
+│  └─ 人工智能/
+│     └─ CMU AI Agents/
+└─ 精选收录/
+   └─ 英语与外刊/
+      └─ 外刊精读/
 ```
 
-- 一个文件夹 = 一本书，文件夹名用于展示。
+- 每个书名文件夹内保留 `_book.md` 和章节 Markdown；大类、子分类是容器目录。
+- 文件夹名称与已确认的书名一致，网站显示名称读取 `_book.md` 的 `title`。
+- 网站递归发现书籍，URL 取自书籍和章节的 `slug`；移动或重命名文件夹不改变已发布链接。
 - 章节文件用 `NN - 标题` 命名，序号两位补零，`NN` 必须与 frontmatter 的 `slug` 前缀一致。
 - 中英双版用 `.zh` / `.en` 后缀配对；同一章的序号与 `slug` 必须一致。
 - 只有一种语言也可以，站点不会显示语言切换。
@@ -43,11 +59,11 @@ Knowledge Site/
 ```yaml
 ---
 slug: cmu-ai-agents          # ASCII，稳定 URL
-title: CMU AI Agents 学习笔记
+title: CMU AI Agents
 subtitle: CS 11-768 · Fall 2026
 description: 卡片上的一句话简介。    # 尽量 40 字内，最多两行
 longDescription: 详情页的详细简介，两到三句。  # 可选，缺省回退到 description
-category: ai-agents          # 必须是 taxonomy.json 中的 slug
+category: ai-courses         # 必须是 taxonomy.json 中的 slug
 updatedAt: 2026-10-30
 author: Daniel Fried, Graham Neubig   # 可选：单一作者或机构
 content_type: video-course            # 可选：书本级类型，取值同章节
@@ -93,15 +109,19 @@ sources:
 
 ```json
 {
+  "sections": [
+    { "slug": "courses", "name": "专业课程", "description": "…" }
+  ],
   "categories": [
-    { "slug": "ai-agents", "name": "AI Agents", "description": "…" }
+    { "slug": "ai-courses", "section": "courses", "name": "人工智能", "description": "…" }
   ]
 }
 ```
 
 - 书的 `category` 必须来自该词表；未知分类会导致 `npm run verify` 失败。
-- 首页按 category 分组展示书本。
-- 新增分类先改这里，再给书使用。
+- 首页按大类展示最多 4 本书，大类页按子分类展示全部书籍。
+- 文件夹路径须与词表中的大类、子分类以及书籍 `title` 一致。
+- 新增或调整命名、分类、归属，须先按根目录 `AGENTS.md` 征求用户选择。
 
 ## Markdown 兼容性
 

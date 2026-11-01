@@ -1,24 +1,59 @@
 {
+  "sections": [
+    {
+      "slug": "ai-era",
+      "name": "AI Era",
+      "description": "探索 AI 的原理、智能体与日常创作实践。",
+      "featuredBooks": ["agent-engineering", "llm-principles", "vibe-coding", "llm-knowledge-base"]
+    },
+    {
+      "slug": "courses",
+      "name": "专业课程",
+      "description": "循着系统课程，积累数学、编程与人工智能的基础。",
+      "featuredBooks": ["mit-linear-algebra", "cmu-ai-agents", "cpp-programming-course", "cs50-python"]
+    },
+    {
+      "slug": "curated",
+      "name": "精选收录",
+      "description": "收录值得细读的英文外刊，留下阅读、表达与思考。"
+    }
+  ],
   "categories": [
     {
-      "slug": "ai-agents",
-      "name": "AI Agents",
-      "description": "智能体架构、工具使用、规划、记忆与评测"
+      "slug": "ai-principles-applications",
+      "section": "ai-era",
+      "name": "AI 原理与应用",
+      "description": "大模型原理、智能体工程与 AI 知识管理实践"
+    },
+    {
+      "slug": "ai-coding",
+      "section": "ai-era",
+      "name": "AI 编程与创作",
+      "description": "用 AI 交付软件、生成图像与整理创作工作流"
     },
     {
       "slug": "mathematics",
+      "section": "courses",
       "name": "数学",
       "description": "线性代数、微积分、概率与证明"
     },
     {
-      "slug": "ai-coding",
-      "name": "AI 编程",
-      "description": "用 AI 交付软件的工作流、工具与工程实践"
+      "slug": "software-engineering",
+      "section": "courses",
+      "name": "计算机与编程",
+      "description": "编程语言、计算机基础与工程方法"
     },
     {
-      "slug": "software-engineering",
-      "name": "软件工程",
-      "description": "架构、工程方法、可靠性"
+      "slug": "ai-courses",
+      "section": "courses",
+      "name": "人工智能",
+      "description": "智能体、工具使用、记忆、规划与评测的系统课程"
+    },
+    {
+      "slug": "english-news",
+      "section": "curated",
+      "name": "英语与外刊",
+      "description": "英文新闻精读、雅思表达与背景知识"
     }
   ]
 }

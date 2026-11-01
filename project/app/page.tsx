@@ -1,11 +1,12 @@
 import { BookCard } from "@/components/book-card";
+import Link from "next/link";
+import { LibraryNav } from "@/components/library-nav";
 import { ContinueReading, type ContinueItem } from "@/components/continue-reading";
-import { getAllBooks, getAllChapterRefs, getCategoryGroups } from "@/content";
+import { getAllChapterRefs, getLibrarySections } from "@/content";
 import { site } from "@/lib/site";
 
 export default function HomePage() {
-  const books = getAllBooks();
-  const groups = getCategoryGroups();
+  const sections = getLibrarySections();
   const continueItems: ContinueItem[] = getAllChapterRefs().map((ref) => ({
     book: ref.book.slug,
     chapter: ref.chapter.slug,
@@ -25,39 +26,41 @@ export default function HomePage() {
             <span className="hero__tagline-zh">{site.intro.zh}</span>
           </p>
           <div className="hero__rule" aria-hidden="true" />
+          <LibraryNav />
         </div>
       </section>
 
       <ContinueReading items={continueItems} />
 
-      <section className="library" aria-labelledby="library-heading">
-        <div className="section-head">
-          <h2 id="library-heading" className="section-heading">
-            书库
-          </h2>
-          <span className="section-count">{books.length} 本书</span>
-        </div>
-        {groups.map((group) => (
+      <div className="library">
+        {sections.map((section) => (
           <section
-            key={group.slug}
-            className="library-group"
-            aria-labelledby={`category-${group.slug}`}
+            key={section.slug}
+            className="library-preview"
+            aria-labelledby={`section-${section.slug}`}
           >
-            <div className="library-group__head">
-              <h3 id={`category-${group.slug}`} className="library-group__title">
-                {group.name}
-              </h3>
-              <span className="library-group__count">{group.books.length} 本</span>
+            <div className="section-head library-preview__head">
+              <div>
+                <h2 id={`section-${section.slug}`} className="section-heading">
+                  <Link href={`/categories/${section.slug}/`}>{section.name}</Link>
+                </h2>
+                <p className="library-preview__desc">{section.description}</p>
+              </div>
+              <div className="library-preview__actions">
+                <span className="section-count">共 {section.books.length} 本</span>
+                <Link className="view-all" href={`/categories/${section.slug}/`} aria-label={`查看全部${section.name}`}>
+                  查看全部 <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </div>
-            {group.description && <p className="library-group__desc">{group.description}</p>}
             <div className="library__grid">
-              {group.books.map((book, index) => (
+              {section.preview.map((book, index) => (
                 <BookCard key={book.slug} book={book} index={index} />
               ))}
             </div>
           </section>
         ))}
-      </section>
+      </div>
     </div>
   );
 }

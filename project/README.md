@@ -60,11 +60,11 @@ project/
 
 成稿笔记放在仓库根目录的 `Knowledge Site/`，约定详见 [Knowledge Site/README.md](../Knowledge%20Site/README.md)：
 
-- 一课一文件夹，文件夹名即书名；每本书有 `_book.md` 声明 slug、`category` 与简介。
+- 按“大类 / 子分类 / 书名”组织目录；每本书有 `_book.md` 声明稳定 URL 的 slug、显示书名、`category` 与简介，加载器递归发现书籍。
 - 章节文件用 `NN - 标题` 命名，序号两位补零。
 - 中英双版用 `.zh` / `.en` 后缀配对，同一章的 `slug` 与章节序号必须一致。
 - 每个文件 frontmatter 必填 `slug`、`title`、`summary`、`updatedAt`、`sources`；语言由后缀推断。
-- 主题分类来自 `Knowledge Site/taxonomy.json`，首页按分类分组。
+- 主题分类来自 `Knowledge Site/taxonomy.json`；首页按大类预览，大类页按子分类展示。
 - 只有单一语言时正常显示，不出现切换按钮。
 
 发布流程（在 vault 根目录）：

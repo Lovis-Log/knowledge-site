@@ -52,6 +52,8 @@ export default async function ChapterPage({
   if (!langs.length) notFound();
 
   const bilingual = langs.length > 1;
+  const hasTranslation = Boolean(chapter.translation) && !bilingual;
+  const translationToc = hasTranslation ? buildToc(chapter.translation!.body, "en") : [];
   const adjacent = getAdjacentChapters(bookSlug, chapterSlug);
   const tocs = langs.map((lang) => ({
     lang,
@@ -68,11 +70,12 @@ export default async function ChapterPage({
       <ReadingLayout
         aside={
           <>
-            {tocs.map(({ lang, items }) => (
+            <div data-reading-block="notes">{tocs.map(({ lang, items }) => (
               <div key={lang} {...langBlock(lang)}>
                 <TableOfContents items={items} />
               </div>
-            ))}
+            ))}</div>
+            {hasTranslation && <div data-reading-block="translation"><TableOfContents items={translationToc} /></div>}
           </>
         }
       >
@@ -105,12 +108,12 @@ export default async function ChapterPage({
               ))}
             </div>
           )}
-          <ReadingToolbar langs={langs} />
+          <ReadingToolbar langs={langs} hasTranslation={hasTranslation} />
         </header>
 
         <details className="toc-inline">
           <summary>篇内目录</summary>
-          {tocs.map(({ lang, items }) => (
+          <div data-reading-block="notes">{tocs.map(({ lang, items }) => (
             <div key={lang} {...langBlock(lang)}>
               <ul className="toc-inline__list">
                 {items.map((item) => (
@@ -124,14 +127,16 @@ export default async function ChapterPage({
                 ))}
               </ul>
             </div>
-          ))}
+          ))}</div>
+          {hasTranslation && <div data-reading-block="translation"><ul className="toc-inline__list">{translationToc.map((item) => <li key={item.id} className={`toc__item--h${item.depth}`}><a href={`#${item.id}`} aria-label={item.text} dangerouslySetInnerHTML={{ __html: item.html }} /></li>)}</ul></div>}
         </details>
 
-        {langs.map((lang) => (
+        <div data-reading-block="notes">{langs.map((lang) => (
           <div key={lang} className="prose lang-block" {...langBlock(lang)}>
             <Markdown markdown={chapter.versions[lang]!.body} lang={lang} />
           </div>
-        ))}
+        ))}</div>
+        {hasTranslation && <div data-reading-block="translation" className="prose lang-block"><Markdown markdown={chapter.translation!.body} lang="en" /></div>}
         <SourceList sources={chapter.sources} />
         <ChapterPager bookSlug={book.slug} prev={adjacent.prev} next={adjacent.next} />
       </ReadingLayout>

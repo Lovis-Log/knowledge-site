@@ -131,6 +131,14 @@ function CoverArt({ slug }: { slug: string }) {
   );
 }
 
+const COVER_ART: Record<string, string> = {
+  "english-news-reading": "/covers/editorial-news.webp",
+  "cmu-ai-agents": "/covers/editorial-agents.webp",
+  "mit-linear-algebra": "/covers/editorial-math.webp",
+  "vibe-coding": "/covers/editorial-coding.webp",
+  "llm-knowledge-base": "/covers/editorial-knowledge.webp",
+};
+
 export function BookCover({
   book,
   size = "md",
@@ -145,17 +153,16 @@ export function BookCover({
 
   return (
     <div className={`book-cover book-cover--${size}`} data-book={book.slug}>
-      {book.coverImage ? (
+      <div className="book-cover__type">
+        <Title className={`book-cover__title${book.title.length > 22 ? " book-cover__title--long" : ""}`}>{book.title}</Title>
+      </div>
+      {book.coverImage || COVER_ART[book.slug] ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="book-cover__img" src={book.coverImage} alt="" loading="lazy" />
+        <img className="book-cover__img" src={book.coverImage || COVER_ART[book.slug]} alt="" loading="lazy" />
       ) : (
         <CoverArt slug={book.slug} />
       )}
-      <div className="book-cover__type">
-        {book.subtitle && <span className="book-cover__kicker">{book.subtitle}</span>}
-        <Title className="book-cover__title">{book.title}</Title>
-        <span className="book-cover__imprint">LovisMind</span>
-      </div>
+      <span className="book-cover__imprint">LovisMind · 阅读与思考</span>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface ZoomImageProps {
   src?: string;
@@ -9,7 +10,10 @@ interface ZoomImageProps {
 }
 
 export function ZoomImage({ src, alt, title }: ZoomImageProps) {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
@@ -38,19 +42,22 @@ export function ZoomImage({ src, alt, title }: ZoomImageProps) {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt ?? ""} title={title} loading="lazy" />
       </button>
-      {open && (
-        <div
-          className="lightbox"
-          role="dialog"
-          aria-modal="true"
-          aria-label={alt ?? "图片预览"}
-          onClick={() => setOpen(false)}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={alt ?? ""} />
-          <span className="lightbox__hint">点击任意处或按 Esc 关闭</span>
-        </div>
-      )}
+      {mounted && open
+        ? createPortal(
+            <div
+              className="lightbox"
+              role="dialog"
+              aria-modal="true"
+              aria-label={alt ?? "图片预览"}
+              onClick={() => setOpen(false)}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt={alt ?? ""} />
+              <span className="lightbox__hint">点击任意处或按 Esc 关闭</span>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

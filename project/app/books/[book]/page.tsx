@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
 import { getAllBooks, getBook } from "@/content";
-import { formatAuthors } from "@/lib/format";
+import { formatAuthors, paddedNumber } from "@/lib/format";
 
 export const dynamicParams = false;
 
@@ -41,6 +41,9 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
               {book.links.slice(0, 2).map((link) => (
                 <li key={link.url}>
                   <a href={link.url} target="_blank" rel="noreferrer noopener">
+                    {link.chapterNumber !== undefined && (
+                      <span className="book-links__num">{paddedNumber(link.chapterNumber)}</span>
+                    )}{" "}
                     {link.label} ↗
                   </a>
                 </li>

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import { readFile, readdir, stat } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const projectDir = join(here, "..");
-const outDir = join(projectDir, "out");
+const outDir = process.argv[2] ? resolve(process.argv[2]) : join(projectDir, "out");
 const siteDir = join(projectDir, "..", "Knowledge Site");
 
 const failures = [];
@@ -24,6 +24,12 @@ async function readHtml(relativePath) {
 const taxonomy = JSON.parse(await readFile(join(siteDir, "taxonomy.json"), "utf8"));
 const categorySlugs = new Set((taxonomy.categories ?? []).map((item) => item.slug));
 const categoryNames = new Map((taxonomy.categories ?? []).map((item) => [item.slug, item.name]));
+const sections = taxonomy.sections ?? [];
+const sectionSlugs = new Set(sections.map((item) => item.slug));
+const bookCategories = new Map();
+for (const category of taxonomy.categories ?? []) {
+  if (!sectionSlugs.has(category.section)) failures.push(`分类 ${category.slug} 缺少有效的大类`);
+}
 const contentTypes = new Set([
   "video-course",
   "technical-tutorial",
@@ -38,24 +44,32 @@ const contentTypes = new Set([
 const books = new Map();
 const chapterLangs = new Map();
 
-for (const entry of await readdir(siteDir, { withFileTypes: true })) {
-  if (!entry.isDirectory() || entry.name.startsWith(".")) continue;
-  const bookDir = join(siteDir, entry.name);
+async function findBookDirs(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  if (entries.some((entry) => entry.isFile() && entry.name === "_book.md")) return [directory];
+  const nested = await Promise.all(entries.filter((entry) => entry.isDirectory() && !entry.name.startsWith(".")).map((entry) => findBookDirs(join(directory, entry.name))));
+  return nested.flat();
+}
+
+const bookDirs = await findBookDirs(siteDir);
+for (const bookDir of bookDirs) {
+  const bookPath = relative(siteDir, bookDir);
   let bookMeta;
   try {
     bookMeta = matter(await readFile(join(bookDir, "_book.md"), "utf8")).data;
   } catch {
-    failures.push(`缺少 _book.md：Knowledge Site/${entry.name}`);
+    failures.push(`缺少 _book.md：Knowledge Site/${bookPath}`);
     continue;
   }
   const slug = String(bookMeta.slug ?? "");
   if (!slug) {
-    failures.push(`_book.md 缺少 slug：Knowledge Site/${entry.name}`);
+    failures.push(`_book.md 缺少 slug：Knowledge Site/${bookPath}`);
     continue;
   }
   if (!bookMeta.category || !categorySlugs.has(String(bookMeta.category))) {
     failures.push(`书 ${slug} 的 category 未在 taxonomy.json 中声明：${bookMeta.category}`);
   }
+  bookCategories.set(slug, String(bookMeta.category));
 
   const chapters = new Set();
   for (const file of await readdir(bookDir)) {
@@ -63,11 +77,11 @@ for (const entry of await readdir(siteDir, { withFileTypes: true })) {
     if (!match) continue;
     const meta = matter(await readFile(join(bookDir, file), "utf8")).data;
     if (!meta.slug) {
-      failures.push(`章节缺少 slug：Knowledge Site/${entry.name}/${file}`);
+      failures.push(`章节缺少 slug：Knowledge Site/${bookPath}/${file}`);
       continue;
     }
     if (!meta.content_type || !contentTypes.has(String(meta.content_type))) {
-      failures.push(`章节 content_type 无效：Knowledge Site/${entry.name}/${file}`);
+      failures.push(`章节 content_type 无效：Knowledge Site/${bookPath}/${file}`);
     }
     chapters.add(String(meta.slug));
     const key = `${slug}/${meta.slug}`;
@@ -85,6 +99,7 @@ const expected = [
   "index.html",
   "404.html",
   "about/index.html",
+  ...sections.map((section) => `categories/${section.slug}/index.html`),
   ...[...books.entries()].flatMap(([book, chapters]) => [
     `books/${book}/index.html`,
     ...chapters.map((chapter) => `books/${book}/${chapter}/index.html`),
@@ -150,20 +165,27 @@ for (const [key, langs] of chapterLangs) {
 
 try {
   const home = await readHtml("index.html");
-  const usedCategories = new Set();
-  for (const entry of await readdir(siteDir, { withFileTypes: true })) {
-    if (!entry.isDirectory() || entry.name.startsWith(".")) continue;
-    try {
-      const meta = matter(await readFile(join(siteDir, entry.name, "_book.md"), "utf8")).data;
-      if (meta.category) usedCategories.add(String(meta.category));
-    } catch {
-      // 已在上方报告
+  const usedCategories = new Set(bookCategories.values());
+  for (const section of sections) {
+    if (!home.includes(`id="section-${section.slug}"`) || !home.includes(`href="/categories/${section.slug}/"`)) {
+      failures.push(`首页缺少大类及入口：${section.name}`);
     }
-  }
-  for (const category of usedCategories) {
-    const name = categoryNames.get(category) ?? "未分类";
-    if (!home.includes(`id="category-${category}"`) && !home.includes(name)) {
-      failures.push(`首页缺少分类分组：${name}`);
+    const categoryHtml = await readHtml(`categories/${section.slug}/index.html`);
+    const ownCategories = new Set(taxonomy.categories.filter((item) => item.section === section.slug).map((item) => item.slug));
+    for (const category of usedCategories) {
+      if (ownCategories.has(category) && !categoryHtml.includes(`id="category-${category}"`)) {
+        failures.push(`大类页缺少子分类：${categoryNames.get(category)}`);
+      }
+    }
+    for (const [book, category] of bookCategories) {
+      const present = categoryHtml.includes(`href="/books/${book}/"`);
+      if (present !== ownCategories.has(category)) failures.push(`大类页书籍归属错误：${section.slug}/${book}`);
+    }
+    const preview = home.split(`aria-labelledby="section-${section.slug}"`)[1]?.split("</section>")[0] ?? "";
+    const count = (preview.match(/class="book-card"/g) ?? []).length;
+    const total = [...bookCategories.values()].filter((category) => ownCategories.has(category)).length;
+    if (count !== Math.min(4, total)) {
+      failures.push(`首页大类预览数量错误：${section.name} (${count})`);
     }
   }
 } catch {

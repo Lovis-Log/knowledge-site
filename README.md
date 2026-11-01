@@ -51,10 +51,10 @@ npx serve out      # 用静态服务器验证真实产物
 
 ## 添加内容
 
-1. 在 `Knowledge Site/` 下新建一本书的文件夹，写 `_book.md` 声明 `slug`、`title`、`category` 与简介。
+1. 按已确认的分类，在 `Knowledge Site/大类/子分类/书名/` 下新建书籍目录，写 `_book.md` 声明 `slug`、`title`、`category` 与简介。
 2. 章节文件命名为 `NN - 标题.zh.md` / `NN - 标题.en.md`，`NN` 与 frontmatter 的 `slug` 前缀一致。
 3. 每章至少填写 `slug`、`title`、`summary`、`updatedAt`、`content_type` 与 `sources`；`sources` 里带上原资源的 `publishedAt`。
-4. 分类写进 `Knowledge Site/taxonomy.json`，首页会按分类分组。
+4. 分类写进 `Knowledge Site/taxonomy.json`，首页按大类预览，大类页按子分类展示。
 5. `cd project && npm run build && npm run verify` 确认页面生成正常。
 
 完整约定见 [Knowledge Site/README.md](Knowledge%20Site/README.md)。
