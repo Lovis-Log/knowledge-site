@@ -66,7 +66,7 @@ slug: cmu-ai-agents          # ASCII，稳定 URL
 title: CMU AI Agents
 subtitle: CS 11-768 · Fall 2026
 description: 卡片上的一句话简介。    # 尽量 40 字内，最多两行
-longDescription: 详情页的详细简介，两到三句。  # 可选，缺省回退到 description
+longDescription: 详情页的详细简介，两到三句。  # 必填：详情页只显示这一条，不要照抄 description
 category: ai-courses         # 必须是 taxonomy.json 中的 slug
 updatedAt: 2026-10-30
 author: Daniel Fried, Graham Neubig   # 可选：单一作者或机构

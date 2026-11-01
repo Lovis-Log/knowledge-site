@@ -69,6 +69,9 @@ for (const bookDir of bookDirs) {
   if (!bookMeta.category || !categorySlugs.has(String(bookMeta.category))) {
     failures.push(`书 ${slug} 的 category 未在 taxonomy.json 中声明：${bookMeta.category}`);
   }
+  if (!bookMeta.longDescription || !String(bookMeta.longDescription).trim()) {
+    failures.push(`书 ${slug} 缺少 longDescription：详情页会退回一句话简介`);
+  }
   bookCategories.set(slug, String(bookMeta.category));
 
   const chapters = new Set();
