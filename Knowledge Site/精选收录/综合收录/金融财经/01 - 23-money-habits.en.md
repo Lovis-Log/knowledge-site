@@ -144,7 +144,3 @@ The last item is the one young people skip. If anyone depends on you, or you hav
 
 6. **Who needs a backdoor Roth?**
    Answer: Anyone earning above the Roth IRA limits ($168,000 single, $252,000 married in 2026). The method is to contribute to a traditional IRA and convert it without investing, watching the pro rata rule.
-
-## Relation to the rest of this book
-
-This chapter covers the personal side — cash flow and account configuration. The Uniqlo chapter covers the corporate side — cost structure and business model. Both start the same way: understand the structure (net worth, or the unit economics of a store) before deciding where money goes.

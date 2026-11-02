@@ -3,15 +3,28 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { Crumb } from "@/lib/crumbs";
 
 export function HeaderBreadcrumb({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
   const pathname = usePathname() || "/";
+  const router = useRouter();
+  const refreshedPath = useRef<string | null>(null);
   const key = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
-  const items = crumbs[key];
+  const exactItems = crumbs[key];
+  const parentItems = crumbs[key.slice(0, key.lastIndexOf("/"))];
+  const items = exactItems ?? parentItems;
+
+  useEffect(() => {
+    // Shared layouts survive navigation. A moved/new chapter may not be in
+    // the index captured before the external Markdown edit.
+    if (key === "/" || exactItems?.length || !parentItems?.length) return;
+    if (refreshedPath.current === key) return;
+    refreshedPath.current = key;
+    router.refresh();
+  }, [key, exactItems, parentItems, router]);
 
   if (!items?.length) return null;
 

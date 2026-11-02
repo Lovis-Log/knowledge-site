@@ -9,7 +9,7 @@ tags:
   - productivity
   - prompting
 categories:
-  - general-collection
+  - ai-principles-applications
 sources:
   - kind: video
     title: "These AI Hacks Will Get You Ridiculously Ahead of Most People (Q&A)"
@@ -153,7 +153,3 @@ AI 写的邮件有明显的「AI 味」。修正方法是让它学你的语料�
 
 7. **代码报错时，第一步该做什么？**
    参考答案：先让错误可见——生成开发时可截图查看的错误窗口，或直接截图错误信息交给 AI；仍不奏效时，把截图交给另一个模型交叉验证。
-
-## 与这本书其他内容的关系
-
-第一章讲如何把想法提炼成别人听得懂的形状，这一章是把同样的思路用到与机器协作上：先给足上下文（相当于「参数」），再明确输出形态。黄仁勋那一章谈的是系统层面的判断，这一章则是把它落到日常：把重复劳动识别出来，交给可以重复执行的系统。

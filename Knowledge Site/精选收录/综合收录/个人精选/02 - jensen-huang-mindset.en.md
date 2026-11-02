@@ -169,7 +169,3 @@ On sequencing, they judged that the first application with a large enough market
 
 7. **How does he argue that AI eliminates tasks rather than jobs?**
    Answer: Programming has been automated yet software engineering jobs grow about 10%; radiology reading is automated yet radiology jobs grow about 20%; paralegal roles are growing too. A job's purpose contains many tasks, and freed capacity goes to demand that was already backlogged.
-
-## Relation to the rest of this book
-
-This chapter is about pushing an organisation and a technology forward under uncertainty; the previous chapter is about making an idea clear enough to say out loud. Both point the same way: structure the problem in your head before acting. The next chapter applies exactly that structuring to everyday AI workflows.

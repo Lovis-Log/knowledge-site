@@ -121,7 +121,3 @@ Giang's challenge: pick a topic you know well and run it through framework one e
 
 6. **What does "one thought" do for the speaker and for the listener?**
    Answer: For the speaker it narrows attention and prevents paralysis across many competing points; for the listener it signals deliberate selection, which reads as judgement.
-
-## Relation to the rest of this book
-
-The other two chapters cover an entrepreneurial mindset and a set of AI working practices. This chapter is the prerequisite for both: whether you are explaining a business judgement or walking someone through an AI workflow, the idea has to be distilled into a shape another person can follow.

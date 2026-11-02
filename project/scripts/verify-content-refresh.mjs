@@ -12,6 +12,9 @@ const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 const require = createRequire(path.join(projectDir, "package.json"));
 const modules = new Map();
 function loadModule(relativePath) {
+  if (!fs.existsSync(path.join(projectDir, `${relativePath}.ts`))) {
+    relativePath = `${relativePath}/index`;
+  }
   if (modules.has(relativePath)) return modules.get(relativePath).exports;
   const file = path.join(projectDir, `${relativePath}.ts`);
   const compiled = ts.transpileModule(fs.readFileSync(file, "utf8"), {
@@ -59,8 +62,23 @@ try {
   assert.equal(content.getBook("example").title, "New title", "Nested folder moves must preserve stable slugs");
   assert.equal(content.getLibrarySections()[0].books.length, 1);
   assert.equal(content.getChapter("example", "chapter").slug, "chapter");
+  const { buildBreadcrumbs } = loadModule("lib/crumbs");
+  const oldCrumbs = buildBreadcrumbs();
+  const movedBook = path.join(fixture, "destination");
+  fs.mkdirSync(movedBook);
+  fs.writeFileSync(path.join(movedBook, "_book.md"), "---\nslug: destination\ntitle: Destination\ncategory: new-category\n---\n");
+  fs.renameSync(
+    path.join(nestedParent, "New title", "01 - chapter.zh.md"),
+    path.join(movedBook, "01 - chapter.zh.md"),
+  );
+  assert.equal(oldCrumbs["/books/destination/chapter"], undefined, "An open layout retains the old index");
+  const refreshedCrumbs = buildBreadcrumbs();
+  assert.equal(refreshedCrumbs["/books/destination/chapter"].at(-2).label, "Destination");
+  assert.equal(refreshedCrumbs["/books/destination/chapter"].at(-1).label, "Chapter");
+  assert.equal(refreshedCrumbs["/books/example/chapter"], undefined);
   console.log("Content refresh passed: external title/category edits appear without reloading the module.");
   console.log("Nested folder migration passed: book and chapter links retain their slugs.");
+  console.log("Breadcrumb refresh passed: a moved chapter uses its destination book after refreshing the index.");
 } finally {
   if (previousDir === undefined) delete process.env.KNOWLEDGE_SITE_DIR;
   else process.env.KNOWLEDGE_SITE_DIR = previousDir;

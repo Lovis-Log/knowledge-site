@@ -1,14 +1,17 @@
 ---
 slug: "llm-knowledge-base"
-title: "LLM Wiki Workflow"
-subtitle: "以 Markdown wiki 为载体的个人知识编译"
-description: "用大语言模型辅助整理和维护个人知识库。"
-longDescription: "记录用大语言模型整理资料、构建 Markdown wiki 和维护个人知识库的方法，关注资料如何被理解、链接、检索与持续补充。每章末尾均附有原始链接。"
-author: "Andrej Karpathy"
+title: "AI/LLM Workflow"
+subtitle: "从个人知识库到日常 AI 工作流"
+description: "用 AI 与大语言模型整理知识、设计提示并连接日常工作流程。"
+longDescription: "记录用 AI 与大语言模型整理资料、构建 Markdown wiki，以及设计提示和日常自动化流程的方法。从个人知识管理到任务执行，关注上下文、信息组织与可复用的工作方式。每章末尾均附有原始链接。"
+author: "Andrej Karpathy、Dan Martell"
+collection: true
 content_type: "reference"
 links:
-  - label: "原文 (X)"
+  - label: "LLM Wiki"
     url: "https://x.com/karpathy/status/2039805659525644595"
+  - label: "These AI Hacks Will Get You Ridiculously Ahead of Most People (Q&A)"
+    url: "https://www.youtube.com/watch?v=1MMqPTiWfSc"
 category: "ai-principles-applications"
-updatedAt: "2026-10-31"
+updatedAt: "2026-11-02"
 ---

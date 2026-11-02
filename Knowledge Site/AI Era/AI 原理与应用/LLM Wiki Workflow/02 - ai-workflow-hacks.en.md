@@ -9,7 +9,7 @@ tags:
   - productivity
   - prompting
 categories:
-  - general-collection
+  - ai-principles-applications
 sources:
   - kind: video
     title: "These AI Hacks Will Get You Ridiculously Ahead of Most People (Q&A)"
@@ -153,7 +153,3 @@ Several tools recommended in the video — Apex, Precision and HelloFrank — ar
 
 7. **What is the first step when code throws an error?**
    Answer: Make the error visible — add a development-time error window you can screenshot, or capture the error message and hand it to the AI; if that fails, give the screenshot to a second model.
-
-## Relation to the rest of this book
-
-The first chapter is about distilling an idea into a shape others can follow; this chapter applies that to working with machines — supply context (the equivalent of parameters), then define the output shape. The Jensen Huang chapter is about judgement at the systems level; this one brings it down to daily practice: identify repetitive work and hand it to a system that can run it again.

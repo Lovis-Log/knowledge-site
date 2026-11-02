@@ -155,7 +155,3 @@ Bell's conclusion: Uniqlo holds high-quality science-backed clothing, affordable
 
 7. **What is the common thread across Toray, JW Anderson, Federer and Blanchett?**
    Answer: Mastery. Each is the best in their field, and Uniqlo borrows their credibility without passing the cost into its prices.
-
-## Relation to the rest of this book
-
-The first chapter covers how an individual allocates cash flow and accounts; this chapter covers how a company allocates cost structure and brand equity. Both start the same way: establish the principle (net worth, or LifeWear), then let every downstream decision follow from it.
