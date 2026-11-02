@@ -2,8 +2,8 @@
 slug: python-for-ai
 title: Python for AI
 coverImage: /covers/editorial-python-ai-v3.webp
-description: 从 Python 基础到环境、数据和项目工作流的课程笔记。
-longDescription: 面向 AI 项目的 Python 课程笔记：从语法基础讲到虚拟环境、数据处理与项目组织，最后落到能直接支撑模型实验的工作流。
+description: "面向 AI 应用的 Python 编程学习笔记。"
+longDescription: "整理面向 AI 应用的 Python 学习资料，关注语言基础、开发环境、数据处理与项目实践，记录编程中常用的方法和经验。每章末尾均附有原始链接。"
 category: software-engineering
 updatedAt: 2026-11-01
 ---

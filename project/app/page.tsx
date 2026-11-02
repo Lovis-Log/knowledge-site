@@ -1,3 +1,5 @@
+import { UiText, UiCount } from "@/components/ui-text";
+import { taxonomyEnglish, uiLabel } from "@/lib/ui-language";
 import { BookCard } from "@/components/book-card";
 import Link from "next/link";
 import { LibraryNav } from "@/components/library-nav";
@@ -17,9 +19,9 @@ export default function HomePage() {
   return (
     <div className="shell">
       <section className="hero">
-        <div className="hero__scene" role="img" aria-label="暖阳下的书与干花" />
+        <div className="hero__scene" role="img" {...uiLabel("暖阳下的书与干花")} />
         <div className="hero__body">
-          <p className="eyebrow">Personal Knowledge Vault</p>
+          <p className="eyebrow"><UiText zh="个人知识库" en="Personal Knowledge Vault" /></p>
           <h1 className="hero__title">{site.name}</h1>
           <p className="hero__tagline">
             <span className="hero__tagline-en">{site.intro.en}</span>
@@ -37,19 +39,20 @@ export default function HomePage() {
           <section
             key={section.slug}
             className="library-preview"
-            aria-labelledby={`section-${section.slug}`}
+            data-library-section={section.slug}
+            {...uiLabel(section.name, taxonomyEnglish[section.slug]?.name)}
           >
             <div className="section-head library-preview__head">
               <div>
-                <h2 id={`section-${section.slug}`} className="section-heading">
-                  <Link href={`/categories/${section.slug}/`}>{section.name}</Link>
+                <h2 id={`section-${section.slug}`} className="section-heading" {...uiLabel(section.name, taxonomyEnglish[section.slug]?.name)}>
+                  <Link href={`/categories/${section.slug}/`}><UiText zh={section.name} en={taxonomyEnglish[section.slug]?.name} /></Link>
                 </h2>
-                <p className="library-preview__desc">{section.description}</p>
+                <p className="library-preview__desc"><UiText zh={section.description} en={taxonomyEnglish[section.slug]?.description} /></p>
               </div>
               <div className="library-preview__actions">
-                <span className="section-count">共 {section.books.length} 本</span>
-                <Link className="view-all" href={`/categories/${section.slug}/`} aria-label={`查看全部${section.name}`}>
-                  查看全部 <span aria-hidden="true">→</span>
+                <span className="section-count"><UiCount count={section.books.length} total /></span>
+                <Link className="view-all" href={`/categories/${section.slug}/`} {...uiLabel(`查看全部${section.name}`, `View all ${taxonomyEnglish[section.slug]?.name ?? section.name}`)}>
+                  <UiText zh="查看全部" /> <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </div>

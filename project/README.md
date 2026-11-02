@@ -33,10 +33,17 @@ npm install
 npm run dev        # http://localhost:3000
 npm run build      # 静态产物输出到 project/out
 npm run verify     # 检查产物文件、标题、KaTeX/代码高亮与图片优化请求
+npm run verify:ui  # 检查系统语言偏好、分类和书籍英文简介的完整性（Node.js 24）
 npx serve out      # 以静态服务器验证真实产物
 ```
 
 静态导出不能可靠地通过 `file://` 双击打开，请使用本地静态服务器。
+
+## 系统语言与正文语言
+
+右上角“关于”和打赏之间的 `EN / 中` 按钮切换系统界面。首次访问跟随浏览器首选语言（中文或英文），主动选择后保存在 `shufang:ui-lang`。章节内的正文语言单独保存在 `shufang:lang`，两个开关互不影响，页面 URL 不变。
+
+系统文案、分类展示译名和书籍英文简介集中在 `lib/ui-language.ts`，页面通过 `components/ui-text.tsx` 输出双语界面。新增书籍或分类时，按已有 slug 补充英文展示文案；缺失译文时保留原文，`verify:ui` 会提示遗漏。正式书名、章节标题、摘要、正文和内容目录不随系统语言改变。关于页的英文正文随该页面维护，双语界面不增加独立英文 SEO 路由。
 
 ## 目录结构
 

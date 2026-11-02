@@ -1,5 +1,8 @@
 "use client";
 
+import { UiText } from "@/components/ui-text";
+
+import { uiLabel } from "@/lib/ui-language";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { readLastRead, type LastRead } from "@/lib/progress";
@@ -26,9 +29,9 @@ export function ContinueReading({ items }: { items: ContinueItem[] }) {
   if (!entry) return null;
 
   return (
-    <section className="continue" aria-labelledby="continue-heading">
-      <p className="continue__kicker" id="continue-heading">
-        继续阅读
+    <section className="continue" {...uiLabel("继续阅读")}>
+      <p className="continue__kicker" id="continue-heading" {...uiLabel("继续阅读")}>
+        <UiText zh="继续阅读" />
       </p>
       <Link href={`/books/${entry.item.book}/${entry.item.chapter}/`} className="continue__link">
         <span className="continue__book">{entry.item.bookTitle}</span>

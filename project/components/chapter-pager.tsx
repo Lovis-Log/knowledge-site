@@ -1,3 +1,5 @@
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
 import Link from "next/link";
 import type { Chapter } from "@/content/types";
 import { pickTitle } from "@/lib/language";
@@ -13,10 +15,10 @@ export function ChapterPager({ bookSlug, prev, next }: ChapterPagerProps) {
   if (!prev && !next) return null;
 
   return (
-    <nav className="pager" aria-label="章节导航">
+    <nav className="pager" {...uiLabel("章节导航")}>
       {prev ? (
         <Link href={`/books/${bookSlug}/${prev.slug}/`} className="pager__link pager__link--prev">
-          <span className="pager__label">← 上一篇</span>
+          <span className="pager__label"><UiText zh="← 上一篇" /></span>
           <span className="pager__title">
             {paddedNumber(prev.number)} · {pickTitle(prev)}
           </span>
@@ -26,7 +28,7 @@ export function ChapterPager({ bookSlug, prev, next }: ChapterPagerProps) {
       )}
       {next ? (
         <Link href={`/books/${bookSlug}/${next.slug}/`} className="pager__link pager__link--next">
-          <span className="pager__label">下一篇 →</span>
+          <span className="pager__label"><UiText zh="下一篇 →" /></span>
           <span className="pager__title">
             {paddedNumber(next.number)} · {pickTitle(next)}
           </span>

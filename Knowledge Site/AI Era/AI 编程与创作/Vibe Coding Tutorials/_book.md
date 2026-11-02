@@ -2,8 +2,8 @@
 slug: "vibe-coding"
 title: "Vibe Coding Tutorials"
 subtitle: "从零基础到上线一个能收钱的 SaaS"
-description: "把 AI 写代码从抽奖变成可复用的交付流程。"
-longDescription: "把「让 AI 写代码」从抽奖变成流程：先规划与拆解，再确定 UI 与数据，然后一个功能一个功能地实现、自检与修错。汇总多份教程里可复用的做法，形成一条从零到上线的交付路径。"
+description: "AI 辅助编程与项目开发的实践笔记。"
+longDescription: "收录 AI 辅助编程相关的教程与实践经验，关注需求规划、代码实现、调试和上线过程中的具体做法，供开发项目时参考。每章末尾均附有原始链接。"
 collection: true
 links:
   - label: "The Ultimate Vibe Coding Tutorial for Beginners"

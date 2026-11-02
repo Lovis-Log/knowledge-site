@@ -2,8 +2,8 @@
 slug: "finance-and-business"
 title: "金融财经"
 coverImage: /covers/editorial-finance-and-business-v1.webp
-description: "个人理财清单与商业品牌分析"
-longDescription: "两期英文财经视频的学习笔记：一份覆盖储蓄、退休账户与信用卡的个人理财清单，一份拆解优衣库如何把基本款做成技术公司的商业分析。"
+description: "金融、个人理财与商业观察的学习笔记。"
+longDescription: "收录金融、个人理财和商业相关的学习资料与笔记，记录对经济生活、企业经营和消费现象的观察与理解。每章末尾均附有原始链接。"
 author: "Humphrey Yang、Taylor Bell"
 content_type: "video-course"
 collection: true

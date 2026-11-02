@@ -1,5 +1,8 @@
 "use client";
 
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
+
 import { useEffect } from "react";
 import type { Lang } from "@/content/types";
 import {
@@ -37,16 +40,16 @@ export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[
   return (
     <div className="reading-toolbar">
       {hasTranslation ? (
-        <div className="control-group" role="group" aria-label="阅读视图">
-          <span className="control-label">阅读</span>
+        <div className="control-group" role="group" {...uiLabel("阅读视图")}>
+          <span className="control-label"><UiText zh="阅读" /></span>
           <div className="segmented">
-            <button type="button" className="segmented__btn" data-view="notes" onClick={() => { document.documentElement.dataset.readingView = "notes"; }}>原文与精读</button>
-            <button type="button" className="segmented__btn" data-view="translation" onClick={() => { document.documentElement.dataset.readingView = "translation"; }}>原文翻译</button>
+            <button type="button" className="segmented__btn" data-view="notes" onClick={() => { document.documentElement.dataset.readingView = "notes"; }}><UiText zh="原文与精读" /></button>
+            <button type="button" className="segmented__btn" data-view="translation" onClick={() => { document.documentElement.dataset.readingView = "translation"; }}><UiText zh="原文翻译" /></button>
           </div>
         </div>
       ) : <LanguageToggle langs={langs} />}
-      <div className="control-group" role="group" aria-label="正文字号">
-        <span className="control-label">字号</span>
+      <div className="control-group" role="group" {...uiLabel("正文字号")}>
+        <span className="control-label"><UiText zh="字号" /></span>
         <div className="segmented">
           {FONT_SIZES.map((item) => (
             <button
@@ -56,13 +59,13 @@ export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[
               data-size={item.value}
               onClick={() => setFontSize(item.value)}
             >
-              {item.label}
+              <UiText zh={item.label} />
             </button>
           ))}
         </div>
       </div>
-      <div className="control-group toc-toggle" role="group" aria-label="目录显示">
-        <span className="control-label">目录</span>
+      <div className="control-group toc-toggle" role="group" {...uiLabel("目录显示")}>
+        <span className="control-label"><UiText zh="目录" /></span>
         <div className="segmented">
           <button
             type="button"
@@ -70,7 +73,7 @@ export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[
             data-toc="open"
             onClick={() => setTocOpen(true)}
           >
-            显示
+            <UiText zh="显示" />
           </button>
           <button
             type="button"
@@ -78,7 +81,7 @@ export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[
             data-toc="closed"
             onClick={() => setTocOpen(false)}
           >
-            隐藏
+            <UiText zh="隐藏" />
           </button>
         </div>
       </div>

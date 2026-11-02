@@ -1,5 +1,7 @@
 "use client";
 
+import { UiText } from "./ui-text";
+import { uiLabel } from "@/lib/ui-language";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -37,7 +39,7 @@ export function ZoomImage({ src, alt, title }: ZoomImageProps) {
         type="button"
         className="zoomable"
         onClick={() => setOpen(true)}
-        aria-label={alt ? `放大图片：${alt}` : "放大图片"}
+        {...uiLabel(alt ? `放大图片：${alt}` : "放大图片", alt ? `Enlarge image: ${alt}` : "Enlarge image")}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt={alt ?? ""} title={title} loading="lazy" />
@@ -48,12 +50,12 @@ export function ZoomImage({ src, alt, title }: ZoomImageProps) {
               className="lightbox"
               role="dialog"
               aria-modal="true"
-              aria-label={alt ?? "图片预览"}
+              {...uiLabel(alt ?? "图片预览", alt ?? "Image preview")}
               onClick={() => setOpen(false)}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt={alt ?? ""} />
-              <span className="lightbox__hint">点击任意处或按 Esc 关闭</span>
+              <span className="lightbox__hint"><UiText zh="点击任意处或按 Esc 关闭" en="Click anywhere or press Esc to close" /></span>
             </div>,
             document.body,
           )

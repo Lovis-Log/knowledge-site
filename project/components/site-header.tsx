@@ -1,3 +1,6 @@
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
+import { UiLanguageToggle } from "./ui-language-toggle";
 import Link from "next/link";
 import type { Crumb } from "@/lib/crumbs";
 import { site } from "@/lib/site";
@@ -19,9 +22,9 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           <span className="brand__word">{site.name}</span>
         </Link>
         <HeaderBreadcrumb crumbs={crumbs} />
-        <nav className="site-nav" aria-label="主导航">
+        <nav className="site-nav" {...uiLabel("主导航")}>
           {site.nav.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} href={item.href} {...uiLabel(item.label)}>
               <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                 {item.href === "/" ? (
                   <>
@@ -35,9 +38,10 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
                   </>
                 )}
               </svg>
-              {item.label}
+              <UiText zh={item.label} />
             </Link>
           ))}
+          <UiLanguageToggle />
           <DonateButton />
         </nav>
       </div>

@@ -1,5 +1,8 @@
 "use client";
 
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
+
 import { Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,7 +16,7 @@ export function HeaderBreadcrumb({ crumbs }: { crumbs: Record<string, Crumb[]> }
   if (!items?.length) return null;
 
   return (
-    <nav className="breadcrumb" aria-label="面包屑">
+    <nav className="breadcrumb" {...uiLabel("面包屑")}>
       {items.map((item, index) => {
         const last = index === items.length - 1;
         return (
@@ -25,10 +28,10 @@ export function HeaderBreadcrumb({ crumbs }: { crumbs: Record<string, Crumb[]> }
             )}
             {last ? (
               <span className="breadcrumb__current" aria-current="page">
-                {item.label}
+                <UiText zh={item.label} en={item.labelEn ?? item.label} />
               </span>
             ) : (
-              <Link href={item.href}>{item.label}</Link>
+              <Link href={item.href}><UiText zh={item.label} en={item.labelEn ?? item.label} /></Link>
             )}
           </Fragment>
         );

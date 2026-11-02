@@ -1,3 +1,5 @@
+import { UiText } from "@/components/ui-text";
+import { taxonomyEnglish, uiLabel } from "@/lib/ui-language";
 import Link from "next/link";
 import { getSections } from "@/lib/notes";
 
@@ -11,10 +13,10 @@ export function LibraryNav({ active = "home" }: { active?: string }) {
   ];
 
   return (
-    <nav className="library-nav" aria-label="内容分类">
+    <nav className="library-nav" {...uiLabel("内容分类")}>
       {items.map((item) => (
         <Link key={item.slug} href={item.href} aria-current={active === item.slug ? "page" : undefined}>
-          {item.name}
+          <UiText zh={item.name} en={taxonomyEnglish[item.slug]?.name} />
         </Link>
       ))}
     </nav>

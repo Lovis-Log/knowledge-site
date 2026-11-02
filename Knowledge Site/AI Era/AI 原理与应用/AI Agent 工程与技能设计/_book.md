@@ -2,8 +2,8 @@
 slug: agent-engineering
 title: AI Agent 工程与技能设计
 coverImage: /covers/editorial-agent-engineering-v1.webp
-description: 智能体循环、工具编排和技能编写实践。
-longDescription: 两篇工程笔记：一篇讲怎样把 Skill 写成短、准、可验证的指令，一篇拆解 Codex 的智能体循环——prompt 如何组装、缓存怎样生效、上下文何时被压缩，以及这些环节如何决定工具调用的成败。
+description: "AI 智能体开发与技能编写的实践笔记。"
+longDescription: "整理 AI 智能体开发中的原理与工程实践，关注工具调用、上下文管理、任务编排和技能编写，记录开发过程中值得参考的方法与经验。每章末尾均附有原始链接。"
 category: ai-principles-applications
 updatedAt: 2026-11-01
 ---

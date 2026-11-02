@@ -2,8 +2,8 @@
 slug: cs50-python
 title: Harvard Python Programming
 coverImage: /covers/editorial-harvard-python-v3.webp
-description: CS50P 从程序基础到测试、文件、正则表达式与面向对象的课程笔记。
-longDescription: CS50P 全课程笔记：从函数、条件与循环起步，延伸到测试、文件读写、正则表达式与面向对象，强调写出能被测试、也能被读懂的代码。
+description: "Harvard CS50P Python 编程课程的学习笔记。"
+longDescription: "整理 Harvard CS50P 课程内容，学习 Python 语言与程序设计的基本方法，记录概念讲解、代码示例和练习中的思考。每章末尾均附有原始链接。"
 category: software-engineering
 updatedAt: 2026-11-01
 ---

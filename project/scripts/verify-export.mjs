@@ -184,7 +184,7 @@ try {
       const present = categoryHtml.includes(`href="/books/${book}/"`);
       if (present !== ownCategories.has(category)) failures.push(`大类页书籍归属错误：${section.slug}/${book}`);
     }
-    const preview = home.split(`aria-labelledby="section-${section.slug}"`)[1]?.split("</section>")[0] ?? "";
+    const preview = home.split(`data-library-section="${section.slug}"`)[1]?.split("</section>")[0] ?? "";
     const count = (preview.match(/class="book-card"/g) ?? []).length;
     const total = [...bookCategories.values()].filter((category) => ownCategories.has(category)).length;
     if (count !== Math.min(4, total)) {

@@ -1,3 +1,5 @@
+import { UiText, UiCount } from "@/components/ui-text";
+import { bookEnglish } from "@/lib/ui-language";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { BookCover } from "@/components/book-cover";
@@ -14,6 +16,7 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
       : "";
   const links = book.links ?? [];
   const byline = book.author ? formatAuthors(book.author) : "";
+  const bylineEn = book.author ? formatAuthors(book.author, 2, "en") : "";
 
   return (
     <article className="book-card" style={{ "--i": index } as CSSProperties}>
@@ -23,12 +26,12 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
       <div className="book-card__body">
         {(badge || byline) && (
           <div className="book-card__top">
-            {badge && <span className="book-card__badge">{badge}</span>}
-            {byline && <span className="book-card__author">{byline}</span>}
+            {badge && <span className="book-card__badge"><UiText zh={badge} /></span>}
+            {byline && <span className="book-card__author"><UiText zh={byline} en={bylineEn} /></span>}
           </div>
         )}
-        <p className="book-card__desc">{book.description}</p>
-        <p className="book-card__meta">{book.chapters.length} 章</p>
+        <p className="book-card__desc"><UiText zh={book.description} en={bookEnglish[book.slug]?.description} /></p>
+        <p className="book-card__meta"><UiCount count={book.chapters.length} kind="chapters" /></p>
         {links.length > 0 && (
           <ul className="book-card__links">
             {links.slice(0, 2).map((link) => (
@@ -38,7 +41,7 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
                 </a>
               </li>
             ))}
-            {links.length > 2 && <li className="book-card__links-more">等</li>}
+            {links.length > 2 && <li className="book-card__links-more"><UiText zh="等" /></li>}
           </ul>
         )}
       </div>

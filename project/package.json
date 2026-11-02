@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "verify": "node scripts/verify-export.mjs",
+    "verify:ui": "node scripts/verify-ui-language.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

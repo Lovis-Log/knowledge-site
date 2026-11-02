@@ -1,5 +1,8 @@
 "use client";
 
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -39,7 +42,7 @@ export function DonateButton() {
         ref={triggerRef}
         type="button"
         className="donate__trigger"
-        aria-label="Buy me a coffee"
+        {...uiLabel("支持本站")}
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
       >
@@ -61,7 +64,7 @@ export function DonateButton() {
         </svg>
       </button>
       <span className="donate__tip" aria-hidden="true">
-        Buy me a coffee
+        <UiText zh="支持本站" />
       </span>
 
       {mounted && open
@@ -76,13 +79,13 @@ export function DonateButton() {
                 className="donate-modal__panel"
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby="donate-title"
+                {...uiLabel("感谢你的支持")}
               >
                 <button
                   ref={closeRef}
                   type="button"
                   className="donate-modal__close"
-                  aria-label="关闭"
+                  {...uiLabel("关闭")}
                   onClick={close}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true" focusable="false">
@@ -90,15 +93,14 @@ export function DonateButton() {
                   </svg>
                 </button>
 
-                <p className="donate-modal__eyebrow">Support this Vault</p>
+                <p className="donate-modal__eyebrow"><UiText zh="支持本站" /></p>
 
-                <h2 id="donate-title" className="donate-modal__title">
-                  Buy Me a Coffee
+                <h2 id="donate-title" className="donate-modal__title" {...uiLabel("感谢你的支持")}>
+                  <UiText zh="感谢你的支持" />
                 </h2>
 
                 <p className="donate-modal__copy">
-                  This is my personal knowledge vault. I’ve organized courses and readings into a
-                  sequential book. If you find it useful, feel free to buy me a coffee.
+                  <UiText zh="本站笔记内容将会持续更新与完善。制作不易，如果这些内容对你有帮助，欢迎打赏支持。谢谢！" />
                 </p>
 
                 <button
@@ -108,19 +110,20 @@ export function DonateButton() {
                   aria-controls="donate-qr"
                   onClick={() => setShowQr((value) => !value)}
                 >
-                  WeChat Pay
+                  <UiText zh="支持一下" />
                 </button>
 
                 <div id="donate-qr" className="donate-modal__qr" hidden={!showQr}>
                   <img
                     src="/images/wechat-pay.png"
                     alt="微信支付收款码"
+                    data-ui-alt-zh="微信支付收款码"
+                    data-ui-alt-en="WeChat Pay QR code"
                     width={876}
                     height={985}
                   />
                   <p className="donate-modal__qr-note">
-                    <span data-lang-block="zh">打开微信扫一扫</span>
-                    <span data-lang-block="en">Scan with WeChat</span>
+                    <UiText zh="打开微信扫一扫" />
                   </p>
                 </div>
               </div>

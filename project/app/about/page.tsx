@@ -1,66 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { UiText, UiPair } from "@/components/ui-text";
 
 export const metadata: Metadata = {
   title: "关于",
-  description: `${site.name}的说明：内容约定、目录结构与技术实现。`,
+  description: `关于${site.name}：我的学习笔记、阅读收藏与联系方式。`,
 };
 
 export default function AboutPage() {
   return (
     <div className="shell about">
       <header className="page-header">
-        <p className="eyebrow">关于</p>
-        <h1 className="page-title">这个知识库是什么</h1>
+        <p className="eyebrow"><UiText zh="关于" /></p>
+        <h1 className="page-title"><UiText zh="关于这个网站" /></h1>
         <p className="page-lede">
-          {site.name}收录我整理过的学习笔记：一门课或一个主题编成一本书，一讲或一篇成一章。
-          既可以按顺序读下去，也可以直接翻到需要的部分。
+          <UiText zh={`${site.name}是我的个人知识库，用来记录学习过程中整理的笔记，也收藏一些想留着反复读的文章。放在这里，方便自己回顾，也分享给对这些内容感兴趣的人。`}
+            en={`${site.name} is my personal knowledge base: a place for study notes and articles I want to return to. I keep them here for my own reference and to share with anyone interested in these topics.`} />
         </p>
       </header>
 
       <div className="prose prose--page">
-        <h2>内容从哪里来</h2>
+        <h2><UiText zh="这里有什么" /></h2>
         <p>
-          每一章都对应一份原始材料，可能是讲座视频、课程主页，也可能只是一篇文章。
-          正文是我看完之后用自己的话重写的要点，原始链接附在每章末尾的「来源」里，随时可以回到原文核对。
+          <UiText zh="内容来自我平时看的课程、讲座、视频和文章，涉及数学、编程、人工智能，也包括其他感兴趣的话题。我把它们按课程或主题整理成书，方便查找。你可以从目录里挑感兴趣的一章，也可以跟着课程慢慢读。"
+            en="The material comes from courses, lectures, videos and articles I read and watch, covering mathematics, programming, AI and other topics that interest me. I organize it into books by course or subject for easy reference. Pick a chapter that interests you, or work through a course at your own pace." />
         </p>
 
-        <h2>为什么先编成书，再写笔记</h2>
+        <h2><UiText zh="关于这些笔记" /></h2>
         <p>
-          零散的笔记很难重读，按课程顺序编成书之后，内容会自然连成一条学习路径。
-          所以这里优先保证结构稳定：书与章的顺序固定，修订只发生在正文里，链接不会因为标题变化而失效。
+          <UiText zh="笔记记录的是我对原始材料的整理和理解，部分内容直接收录原文。每章末尾都附有原始链接，方便查阅完整内容。这里会随着我的学习继续更新，已有的笔记也会补充和修订。"
+            en="These notes reflect how I’ve organized and understood the source material; some entries reproduce the original text. Each chapter ends with links to the original sources so you can read them in full. I’ll keep adding to the site as I learn, and revisit existing notes to expand and revise them." />
         </p>
 
-        <h2>阅读方式</h2>
-        <ul>
-          <li>桌面端右侧有篇内目录，滚动时高亮当前小节。</li>
-          <li>正文字号可以调三档，选择会被记住。</li>
-          <li>阅读位置会被记住，回到首页可以接着上次的章节继续读。</li>
-          <li>同一章有中英两版时，可以在页内切换，网址不变。</li>
-        </ul>
-
-        <h2>写作约定</h2>
+        <h2><UiText zh="联系与致谢" /></h2>
         <p>
-          每个成稿文件以 <code>slug</code>、<code>title</code>、<code>summary</code>、
-          <code>updatedAt</code>、<code>sources</code> 作为元数据；中英双版用 <code>.zh</code> 与{" "}
-          <code>.en</code> 后缀配对。新增一本书只需新建文件夹，新增一章只需新建文件。
+          <UiText zh="如果发现笔记有误，或想交流，欢迎给我发邮件：" en="If you spot a mistake or would like to get in touch, email me at " />
+          <a href="mailto:aspiration653@gmail.com">aspiration653@gmail.com</a><UiText zh="。" en="." />
         </p>
-
-        <h2>技术说明</h2>
         <p>
-          站点使用 Next.js 静态导出：没有服务端、没有数据库、也没有账号。正文在构建时转换为 HTML，
-          页面只加载少量用于切换语言、字号和阅读进度的脚本。部署目标是 Cloudflare Pages。
-        </p>
-
-        <h2>边界</h2>
-        <p>
-          公开的只有整理好的成稿。字幕稿、网页摘录与私人草稿留在本地，不进入公开仓库。
+          <UiPair zh={<>本网站 UI 设计灵感来源是 <a href="https://book.oiloil.org/">oiloil 的书</a>。网站源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git">GitHub 仓库</a>。</>}
+            en={<>The UI design was inspired by <a href="https://book.oiloil.org/">oiloil’s book</a>. The source code is available in the <a href="https://github.com/Lovis-Log/knowledge-site.git">GitHub repository</a>.</>} />
         </p>
 
         <p className="about__back">
           <Link className="text-link" href="/">
-            ← 回到书库
+            <UiText zh="← 回到书库" />
           </Link>
         </p>
       </div>

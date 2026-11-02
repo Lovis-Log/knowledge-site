@@ -1,3 +1,5 @@
+import { UiText, UiCount } from "@/components/ui-text";
+import { bookEnglish, uiLabel } from "@/lib/ui-language";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
@@ -34,8 +36,8 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
         <div className="book-header__body">
           {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
           <h1 className="book-title">{book.title}</h1>
-          <p className="book-lede">{book.longDescription ?? book.description}</p>
-          {book.author && <p className="book-byline">{formatAuthors(book.author)}</p>}
+          <p className="book-lede"><UiText zh={book.longDescription ?? book.description} en={bookEnglish[book.slug] ? `${bookEnglish[book.slug].longDescription} Each chapter ends with links to the original sources.` : undefined} /></p>
+          {book.author && <p className="book-byline"><UiText zh={formatAuthors(book.author)} en={formatAuthors(book.author, 2, "en")} /></p>}
           {book.links && book.links.length > 0 && (
             <ul className="book-links">
               {book.links.slice(0, 2).map((link) => (
@@ -48,16 +50,16 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
                   </a>
                 </li>
               ))}
-              {book.links.length > 2 && <li className="book-links__more">等</li>}
+              {book.links.length > 2 && <li className="book-links__more"><UiText zh="等" /></li>}
             </ul>
           )}
-          <p className="book-meta">{book.chapters.length} 章</p>
+          <p className="book-meta"><UiCount count={book.chapters.length} kind="chapters" /></p>
         </div>
       </header>
 
-      <section className="book-chapters" aria-labelledby="chapters-heading">
-        <h2 id="chapters-heading" className="section-heading">
-          目录
+      <section className="book-chapters" {...uiLabel("目录")}>
+        <h2 id="chapters-heading" className="section-heading" {...uiLabel("目录")}>
+          <UiText zh="目录" />
         </h2>
         <ChapterList book={book} />
       </section>

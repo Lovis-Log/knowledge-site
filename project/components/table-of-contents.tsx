@@ -1,5 +1,8 @@
 "use client";
 
+import { UiText } from "@/components/ui-text";
+import { uiLabel } from "@/lib/ui-language";
+
 import { useEffect, useState } from "react";
 import type { TocItem } from "@/lib/toc";
 
@@ -49,8 +52,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
   if (!items.length) return null;
 
   return (
-    <nav className="toc" aria-label="篇内目录">
-      <p className="toc__title">本篇目录</p>
+    <nav className="toc" {...uiLabel("篇内目录")}>
+      <p className="toc__title"><UiText zh="本篇目录" /></p>
       <ul className="toc__list">
         {items.map((item) => (
           <li key={item.id} className={`toc__item toc__item--h${item.depth}`}>

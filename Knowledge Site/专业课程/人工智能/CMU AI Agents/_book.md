@@ -2,8 +2,8 @@
 slug: "cmu-ai-agents"
 title: "CMU AI Agents"
 subtitle: "CS 11-768 · Fall 2026"
-description: "十四讲，讲清智能体的工具、记忆、规划与评测。"
-longDescription: "十四讲讲透智能体：从模型、工具与循环组成的架构，到长上下文、记忆、规划、多智能体，再到编码、computer use、强化学习与安全。每章用自己的话重写讲座要点，并保留原始视频与论文链接。"
+description: "CMU AI Agents 课程的学习笔记。"
+longDescription: "整理 CMU AI Agents 课程内容，学习智能体的基本原理、设计方法与应用，关注模型如何借助工具、记忆和规划完成任务，以及如何评估其表现。每章末尾均附有原始链接。"
 author: "Daniel Fried, Graham Neubig"
 content_type: "video-course"
 links:

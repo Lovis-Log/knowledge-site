@@ -2,8 +2,8 @@
 slug: "society-and-reasoning"
 title: "社会与思辨"
 coverImage: /covers/editorial-society-and-reasoning-v1.webp
-description: "这里存放着可能具有启发意义的文章"
-longDescription: "收录几篇值得一读的网络长文：谈常见的论证陷阱、谈被规训的本科生活、谈命令行与图形界面的取舍。不写笔记，只保留原文，留待日后重读。"
+description: "收藏关于社会现象、个人处境与思考方式的文章。"
+longDescription: "收录关于社会现象、个人处境与思考方式的文章，保留值得反复阅读的观点和讨论，方便日后查阅与思考。每章末尾均附有原始链接。"
 category: "article-collection"
 collection: true
 updatedAt: "2026-11-01"

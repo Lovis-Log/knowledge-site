@@ -1,3 +1,4 @@
+import { UiText } from "@/components/ui-text";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChapterPager } from "@/components/chapter-pager";
@@ -61,7 +62,7 @@ export default async function ChapterPage({
   }));
 
   const langBlock = (lang: Lang): Record<string, string> =>
-    bilingual ? { "data-lang-block": lang } : {};
+    bilingual ? { "data-lang-block": lang, lang: lang === "zh" ? "zh-CN" : "en" } : { lang: lang === "zh" ? "zh-CN" : "en" };
 
   return (
     <div className="shell shell--reading">
@@ -80,7 +81,7 @@ export default async function ChapterPage({
         }
       >
         <header className="chapter-header">
-          <p className="eyebrow">第 {paddedNumber(chapter.number)} 章</p>
+          <p className="eyebrow"><UiText zh={`第 ${paddedNumber(chapter.number)} 章`} en={`Chapter ${paddedNumber(chapter.number)}`} /></p>
           {langs.map((lang) => {
             const version = chapter.versions[lang]!;
             return (
@@ -92,14 +93,14 @@ export default async function ChapterPage({
           })}
           {(chapter.publishedAt || bilingual) && (
             <div className="chapter-meta">
-              {chapter.publishedAt && <span>首发于 {formatDate(chapter.publishedAt)}</span>}
+              {chapter.publishedAt && <span><UiText zh={`首发于 ${formatDate(chapter.publishedAt)}`} en={`Published ${formatDate(chapter.publishedAt)}`} /></span>}
               {bilingual && <span className="badge">中 / EN</span>}
             </div>
           )}
           {(chapter.contentType || chapter.tags?.length) && (
             <div className="chapter-tags">
               {chapter.contentType && (
-                <span className="tag tag--type">{contentTypeLabel(chapter.contentType)}</span>
+                <span className="tag tag--type"><UiText zh={contentTypeLabel(chapter.contentType)} /></span>
               )}
               {chapter.tags?.map((tag) => (
                 <span key={tag} className="tag">
@@ -112,7 +113,7 @@ export default async function ChapterPage({
         </header>
 
         <details className="toc-inline">
-          <summary>篇内目录</summary>
+          <summary><UiText zh="篇内目录" /></summary>
           <div data-reading-block="notes">{tocs.map(({ lang, items }) => (
             <div key={lang} {...langBlock(lang)}>
               <ul className="toc-inline__list">
@@ -136,7 +137,7 @@ export default async function ChapterPage({
             <Markdown markdown={chapter.versions[lang]!.body} lang={lang} />
           </div>
         ))}</div>
-        {hasTranslation && <div data-reading-block="translation" className="prose lang-block"><Markdown markdown={chapter.translation!.body} lang="en" /></div>}
+        {hasTranslation && <div data-reading-block="translation" className="prose lang-block" lang="zh-CN"><Markdown markdown={chapter.translation!.body} lang="en" /></div>}
         <SourceList sources={chapter.sources} />
         <ChapterPager bookSlug={book.slug} prev={adjacent.prev} next={adjacent.next} />
       </ReadingLayout>

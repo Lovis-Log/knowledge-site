@@ -1504,6 +1504,50 @@ html[data-font-size="lg"] .segmented__btn[data-size="lg"] {
 
 /* ---------- language blocks ---------- */
 
+[data-ui-block] {
+  display: none !important;
+}
+
+html[data-ui-lang="zh"] [data-ui-block="zh"],
+html[data-ui-lang="en"] [data-ui-block="en"] {
+  display: inline !important;
+}
+
+.ui-language-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ui-language-toggle:hover {
+  color: var(--accent);
+}
+
+.ui-language-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+@media (max-width: 420px) {
+  .site-header__inner { gap: 8px; }
+  .brand { font-size: 1rem; gap: 6px; }
+  .brand__mark { width: 24px; height: 24px; }
+  .site-nav a { padding-inline: 6px; }
+  .site-nav__icon { display: none; }
+  .site-nav a:first-child .site-nav__icon { display: block; }
+  .site-nav a:first-child [data-ui-block] { display: none !important; }
+}
+
 [data-lang-block] {
   display: none;
 }
