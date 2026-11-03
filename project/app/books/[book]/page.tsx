@@ -1,10 +1,11 @@
 import { UiText, UiCount } from "@/components/ui-text";
-import { bookEnglish, uiLabel } from "@/lib/ui-language";
+import { bookEnglish, taxonomyEnglish, uiLabel } from "@/lib/ui-language";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
-import { getAllBooks, getBook } from "@/content";
+import { getAllBooks, getBook, getLibrarySections } from "@/content";
 import { formatAuthors, paddedNumber } from "@/lib/format";
 
 export const dynamicParams = false;
@@ -28,9 +29,16 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
   const { book: slug } = await params;
   const book = getBook(slug);
   if (!book) notFound();
+  const section = getLibrarySections().find((item) => item.books.some((itemBook) => itemBook.slug === book.slug));
 
   return (
     <div className="shell">
+      {section && (
+        <Link className="book-back" href={`/categories/${section.slug}/`}>
+          <span aria-hidden="true">←</span>
+          <UiText zh={`返回${section.name}`} en={`Back to ${taxonomyEnglish[section.slug]?.name ?? section.name}`} />
+        </Link>
+      )}
       <header className="book-header">
         <BookCover book={book} size="sm" />
         <div className="book-header__body">

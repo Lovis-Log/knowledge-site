@@ -187,7 +187,7 @@ try {
     const preview = home.split(`data-library-section="${section.slug}"`)[1]?.split("</section>")[0] ?? "";
     const count = (preview.match(/class="book-card"/g) ?? []).length;
     const total = [...bookCategories.values()].filter((category) => ownCategories.has(category)).length;
-    // Both mobile and desktop shelves export every book for horizontal browsing.
+    // Export every book for mobile scrolling; desktop CSS shows the original four.
     if (count !== total) {
       failures.push(`首页大类书架数量错误：${section.name} (${count}/${total})`);
     }
