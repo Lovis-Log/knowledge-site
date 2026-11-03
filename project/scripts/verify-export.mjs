@@ -187,8 +187,16 @@ try {
     const preview = home.split(`data-library-section="${section.slug}"`)[1]?.split("</section>")[0] ?? "";
     const count = (preview.match(/class="book-card"/g) ?? []).length;
     const total = [...bookCategories.values()].filter((category) => ownCategories.has(category)).length;
-    if (count !== Math.min(4, total)) {
-      failures.push(`首页大类预览数量错误：${section.name} (${count})`);
+    // Both mobile and desktop shelves export every book for horizontal browsing.
+    if (count !== total) {
+      failures.push(`首页大类书架数量错误：${section.name} (${count}/${total})`);
+    }
+    const shelfBooks = [...preview.matchAll(/data-book="([^"]+)"/g)].map((match) => match[1]);
+    if (shelfBooks.length !== total || new Set(shelfBooks).size !== total) {
+      failures.push(`首页大类书架有遗漏或重复：${section.name}`);
+    }
+    for (const book of shelfBooks) {
+      if (!ownCategories.has(bookCategories.get(book))) failures.push(`首页大类书籍归属错误：${section.slug}/${book}`);
     }
   }
 } catch {

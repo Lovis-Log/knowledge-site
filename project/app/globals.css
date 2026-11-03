@@ -881,6 +881,49 @@ button {
   gap: 38px 32px;
 }
 
+.book-shelf__hint {
+  display: none;
+}
+
+.library-preview > .book-shelf {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 96px) / 4);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 4px 6px 26px;
+  margin: -4px -6px 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.book-shelf__hint[data-overflow="true"] {
+  display: grid;
+  gap: 9px;
+  margin-top: -8px;
+}
+
+.book-shelf__hint p {
+  margin: 0;
+  color: var(--faint);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.book-shelf__track {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--rule);
+}
+
+.book-shelf__thumb {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
 .library-group + .library-group {
   margin-top: 52px;
 }
@@ -2204,23 +2247,17 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 
   /* Match the existing two-column cover width while scrolling one row. */
   .library-preview > .library__grid {
-    grid-template-columns: none;
-    grid-auto-flow: column;
     grid-auto-columns: calc((100% - 20px) / 2);
     gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
-    padding: 4px 6px 26px;
-    margin: -4px -6px 0;
-    scroll-padding-inline: 6px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--line-strong) transparent;
+    scrollbar-width: none;
+  }
+
+  .book-shelf::-webkit-scrollbar {
+    display: none;
   }
 
   .library-preview .book-card {
     min-width: 0;
-    scroll-snap-align: start;
   }
 
   .library-preview .book-card__body {

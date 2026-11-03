@@ -1,6 +1,7 @@
 import { UiText, UiCount } from "@/components/ui-text";
 import { taxonomyEnglish, uiLabel } from "@/lib/ui-language";
 import { BookCard } from "@/components/book-card";
+import { BookShelf } from "@/components/book-shelf";
 import Link from "next/link";
 import { LibraryNav } from "@/components/library-nav";
 import { ContinueReading, type ContinueItem } from "@/components/continue-reading";
@@ -56,11 +57,11 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="library__grid">
-              {section.preview.map((book, index) => (
+            <BookShelf headingId={`section-${section.slug}`}>
+              {[...section.preview, ...section.books.filter((book) => !section.preview.some((preview) => preview.slug === book.slug))].map((book, index) => (
                 <BookCard key={book.slug} book={book} index={index} />
               ))}
-            </div>
+            </BookShelf>
           </section>
         ))}
       </div>
