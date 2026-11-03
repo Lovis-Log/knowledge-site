@@ -5,6 +5,7 @@ summary: 命令行真正的价值不是快，而是操作可以被写下来，�
 updatedAt: 2026-11-01
 content_type: opinion
 tags:
+  - 原文
   - 命令行
   - 工具思维
   - 可复现

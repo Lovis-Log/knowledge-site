@@ -330,9 +330,3 @@ Reference answer: Environment drift between local and production, most often env
 **6. What do Stream's agent skills actually solve? What happens without them?**
 
 Reference answer: They package the current official SDK documentation as AI-readable skills inside the project, so the agent writes Stream code against the current API instead of outdated training data. Without them, the AI tends to use stale or invented interfaces — code that looks plausible but fails at runtime. With them you can ask "how do I generate a user token in Node.js" and get an answer for the current version, and the integration prompt can legitimately require following the latest official docs.
-
-## How it connects
-
-This is the hands-on version of shipping a full application with AI: planning, UI, backend, realtime, observability, and media stitched into one pipeline. What matters most is each step's **verification method** and the **form of the input you give the agent** — a plan file, a reference image, a to-do list, a screenshot.
-
-The other notes in this book provide contrast. One distils a general five-step workflow and three non-negotiables (version control, letting the AI self-test, and manual acceptance); another builds a monetisable SaaS from scratch, covering deployment, database, payments, and security scanning. Read together, they separate the workflow skeleton, the practical detail, and the tool choices, so you can swap one layer when the project changes.

@@ -413,7 +413,3 @@ Reference answer: Batch operations, destructive changes, complex validation rule
 **6. Why are unexplained constants unacceptable in Skill scripts?**
 
 Reference answer: The model needs to judge whether a value may be changed and under what conditions. `TIMEOUT = 47` gives no basis, so the model can neither reuse it nor adapt it when the environment changes. A comment such as "HTTP requests typically complete within 30 seconds; a longer timeout accounts for slow connections" states the reason and the boundary, which is exactly what the model needs to decide.
-
-## How this connects
-
-This note is about how instructions are read and executed. It and the Codex agent loop are two sides of one problem: a Skill decides **what context the model receives**, while the agent loop decides **how that context is repeatedly sent, cached, and compacted**. See the Codex agent loop chapter for the engineering side.

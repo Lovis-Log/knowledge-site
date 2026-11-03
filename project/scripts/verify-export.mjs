@@ -175,8 +175,11 @@ try {
     }
     const categoryHtml = await readHtml(`categories/${section.slug}/index.html`);
     const ownCategories = new Set(taxonomy.categories.filter((item) => item.section === section.slug).map((item) => item.slug));
+    if (section.groupByCategory === false && categoryHtml.includes('class="library-group"')) {
+      failures.push(`不分组的大类页仍展示子分类：${section.name}`);
+    }
     for (const category of usedCategories) {
-      if (ownCategories.has(category) && !categoryHtml.includes(`id="category-${category}"`)) {
+      if (section.groupByCategory !== false && ownCategories.has(category) && !categoryHtml.includes(`id="category-${category}"`)) {
         failures.push(`大类页缺少子分类：${categoryNames.get(category)}`);
       }
     }

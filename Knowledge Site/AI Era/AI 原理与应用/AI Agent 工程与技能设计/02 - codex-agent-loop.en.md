@@ -170,7 +170,3 @@ Reference answer: It solves unbounded prompt growth that would exceed the contex
 **6. If you add a feature that changes the working directory mid-conversation, why not just edit the environment context item in `input`?**
 
 Reference answer: Because that breaks the "old prompt is a prefix of the new prompt" property and invalidates the entire cache, which is expensive in a long conversation. The correct approach is to append a new `role=user` message in the same format to record the change, leaving the prefix intact.
-
-## How this connects
-
-This note covers how the harness organizes context. It complements Skill authoring: a Skill decides what enters the context (see the Skill authoring chapter in the same series), while the agent loop decides how that content is repeatedly sent, cached, and compacted. Together they explain why writing durable constraints into files is more reliable than repeating them in conversation.

@@ -4,7 +4,7 @@ title: "创伤叙事与平台经济：承认、表演和社会问题"
 summary: "分析 Alice Cappelle 对“过度分享”批评的反驳，区分个人痛苦、平台交换与制度责任。"
 updatedAt: "2026-11-02"
 content_type: "opinion"
-categories: ["article-collection"]
+categories: ["curated"]
 tags: ["media-literacy", "platform-economy", "trauma-narratives"]
 sources: [{"kind": "video", "title": "the \"trauma industrial complex\" is BS.", "url": "https://www.youtube.com/watch?v=BlwxvwWEWng", "author": "Alice Cappelle", "publishedAt": "2026-09-02"}]
 ---

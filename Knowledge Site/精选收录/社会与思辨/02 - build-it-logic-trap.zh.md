@@ -5,6 +5,7 @@ summary: 这句话把批评与建设混为一谈，把结构性的参与门槛�
 updatedAt: 2026-11-01
 content_type: opinion
 tags:
+  - 原文
   - 逻辑谬误
   - 社会观察
   - 批判性思维

@@ -103,7 +103,3 @@ Reference answer: It turns each exploration into a knowledge asset. If an answer
 **4. What unresolved question do the comments raise, and why does it matter?**
 
 Reference answer: The batching and staging of incremental compilation — processing one document at a time leaves too little context to decide directory structure, and the author does not say whether an optimal batch size or multi-stage process exists. It matters because directory structure and concept division determine whether the wiki is usable at all, and different batch sizes can produce inconsistent categorization that gets harder to correct as the wiki grows.
-
-## How this connects
-
-This post gives a framework in which the model maintains the knowledge base. It is the same kind of work as compiling clippings into a reading site — ingest, compile, question, write back — with one difference: here the product is a Markdown site for humans, while Karpathy's product is a wiki for the model to query. For the engineering side of how an agent organizes context and compacts history, see the Codex agent loop chapter in the AI Agent Engineering notes.

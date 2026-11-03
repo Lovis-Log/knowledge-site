@@ -4,7 +4,7 @@ title: "俄乌战争的经济账：增长、通胀与谁在买单"
 summary: "沿着人口、财政、通胀与产业四条线，理解战时增长为何可能伴随民生和长期生产能力受损。"
 updatedAt: "2026-11-02"
 content_type: "science-explainer"
-categories: ["general-collection"]
+categories: ["curated"]
 tags: ["war-economy", "public-finance", "inflation"]
 sources: [{"kind": "video", "title": "【硬核】俄乌打了四年多，到底谁在买单？", "url": "https://www.youtube.com/watch?v=R1-j8TFlqCo", "author": "小Lin说", "publishedAt": "2026-09-22"}]
 ---

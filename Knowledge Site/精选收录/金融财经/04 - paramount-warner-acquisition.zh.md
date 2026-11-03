@@ -4,7 +4,7 @@ title: "派拉蒙与华纳收购案：控制权、融资与成交确定性"
 summary: "从双层股权到融资担保，拆解视频所述并购博弈，并区分报价、企业价值与最终交割。"
 updatedAt: "2026-11-02"
 content_type: "science-explainer"
-categories: ["general-collection"]
+categories: ["curated"]
 tags: ["mergers-acquisitions", "corporate-control", "deal-financing"]
 sources: [{"kind": "video", "title": "史上最大现金收购案 富二代如何正确拼爹", "url": "https://www.youtube.com/watch?v=wu0zS1AuI_E", "author": "小Lin说", "publishedAt": "2026-10-09"}]
 ---

@@ -9,7 +9,7 @@ tags:
   - investing
   - retirement-accounts
 categories:
-  - general-collection
+  - curated
 sources:
   - kind: video
     title: "23 Things You Should Do With Your Money"

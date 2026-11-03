@@ -7,6 +7,6 @@ longDescription: "收录金融、个人理财和商业相关的学习资料与�
 author: "Humphrey Yang、Taylor Bell"
 content_type: "video-course"
 collection: true
-category: "general-collection"
+category: "curated"
 updatedAt: "2026-11-01"
 ---

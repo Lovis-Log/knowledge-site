@@ -262,7 +262,3 @@ Reference answer: The chart is placed on a dark gradient. If the plot area or gr
 **6. What non-visual check is mandatory before using a chart asset?**
 
 Reference answer: Verify the numbers. The model received exact values, but the output is raster, so labels, values, and proportions can be wrong. Each item must be checked against the source data; for precision-critical reporting, render charts with deterministic tools and use image generation only for illustrations.
-
-## How this connects
-
-This note moves from producing a single image to producing reusable assets, where the hard part shifts from prompting to validation and compositing. It relies on the prompting principles and parameter constraints in the image prompting chapter; conversely, any batch pipeline — campaign pages, decks, catalogs — should pass the alpha checks here before layout.

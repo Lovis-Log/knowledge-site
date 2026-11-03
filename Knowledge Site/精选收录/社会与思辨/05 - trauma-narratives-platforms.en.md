@@ -4,7 +4,7 @@ title: "Trauma narratives and platform economies: recognition, performance and s
 summary: "Examining Cappelle’s critique of oversharing discourse and the tension between recognition, monetization and protection."
 updatedAt: "2026-11-02"
 content_type: "opinion"
-categories: ["article-collection"]
+categories: ["curated"]
 tags: ["media-literacy", "platform-economy", "trauma-narratives"]
 sources: [{"kind": "video", "title": "the \"trauma industrial complex\" is BS.", "url": "https://www.youtube.com/watch?v=BlwxvwWEWng", "author": "Alice Cappelle", "publishedAt": "2026-09-02"}]
 ---

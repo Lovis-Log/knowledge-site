@@ -372,9 +372,3 @@ Reference answer: A webhook is an automatic message emitted when an event occurs
 **6. Why must environment variables be added to the hosting platform and followed by a redeploy?**
 
 Reference answer: `.env` only affects the local machine; production runs with a different environment. Without adding the variables there, the deployed code cannot read the database URL or secrets and the feature fails. And after changing environment variables, the running instance still holds the old values until a new deployment reads them again — which is why the author redeploys after adding keys.
-
-## How it connects
-
-This note is the complete beginner loop: concepts → environment → deployment → planning → UI → code review → backend → payments → security → legal → domain.
-
-The other two notes in this book are contrasts. One distils the workflow into five steps and three non-negotiables (version control, letting the AI self-test, manual acceptance), useful as a checklist. The other walks a real SaaS project through interview planning, reference-driven UI, Neon backend, Stream realtime and Sentry's automated fixes, with more emphasis on how each step is verified. Together they cover the skeleton, the principles, and the practical detail.

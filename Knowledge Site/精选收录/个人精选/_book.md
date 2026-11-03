@@ -7,6 +7,6 @@ longDescription: "收录我在学习和日常阅读中觉得值得留下的视�
 author: "Vinh Giang、Y Combinator"
 content_type: "video-course"
 collection: true
-category: "general-collection"
+category: "curated"
 updatedAt: "2026-11-02"
 ---

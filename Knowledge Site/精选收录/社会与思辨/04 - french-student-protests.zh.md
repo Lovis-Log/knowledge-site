@@ -4,7 +4,7 @@ title: "法国学生抗议：教育诉求、组织动员与媒体框架"
 summary: "沿着教育条件、运动扩散和媒体呈现，阅读 Alice Cappelle 对法国学生抗议的评论。"
 updatedAt: "2026-11-02"
 content_type: "opinion"
-categories: ["article-collection"]
+categories: ["curated"]
 tags: ["education", "social-movements", "media-literacy"]
 sources: [{"kind": "video", "title": "EMERGENCY VIDEO: The French Protests Explained", "url": "https://www.youtube.com/watch?v=hAWcxLuqfjg", "author": "Alice Cappelle", "publishedAt": "2026-10-16"}]
 ---

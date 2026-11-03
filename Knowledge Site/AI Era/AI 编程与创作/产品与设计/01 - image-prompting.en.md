@@ -254,7 +254,3 @@ Reference answer: To establish causality. With a single change, an improvement o
 **6. When migrating, when should you stay on Sunburst instead of switching to Flare?**
 
 Reference answer: When Flare cannot meet the requirements at an acceptable quality. The procedure is to confirm Sunburst meets quality, then test Flare with the same prompts, references, and dimensions; switch only if Flare's quality stays acceptable and latency actually drops. If Flare fails at every acceptable quality level, keep Sunburst — quality outranks latency.
-
-## How this connects
-
-This note covers producing and editing a single image. Applying it to batches moves the hard part to verification and reuse: confirming every asset has an alpha channel, checking chart data against the source, and reproducing the same prompts reliably. Those are covered in the transparent assets chapter.

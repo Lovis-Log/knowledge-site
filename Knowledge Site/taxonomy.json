@@ -3,19 +3,20 @@
     {
       "slug": "ai-era",
       "name": "AI Era",
-      "description": "探索 AI 的原理、智能体与日常创作实践。",
+      "description": "整理关于大模型原理、智能体工程与 AI 编程创作的学习材料，涵盖模型理解、工具使用、上下文管理、知识库整理和图像生成等主题。结合讲座、文章与实操教程，记录具体方法、应用场景和使用中的局限，附上原始来源，方便学习、查阅与实践。",
       "featuredBooks": ["agent-engineering", "llm-principles", "vibe-coding", "llm-knowledge-base"]
     },
     {
       "slug": "courses",
       "name": "专业课程",
-      "description": "循着系统课程，积累数学、编程与人工智能的基础。",
+      "description": "按课程整理数学、计算机与人工智能的学习笔记，涵盖线性代数、实分析、离散数学、程序设计和智能体等内容。沿着课程进度梳理概念、推导、证明与代码示例，配合理解检验和原始资料，方便从头学习、复习重点，也为后续研究与项目实践积累基础。",
       "featuredBooks": ["mit-linear-algebra", "cmu-ai-agents", "cpp-programming-course", "cs50-python"]
     },
     {
       "slug": "curated",
       "name": "精选收录",
-      "description": "收录值得细读的外刊、文章与观点。"
+      "description": "收录值得留下的文章、外刊、视频、访谈与演讲，涵盖社会观察、数学思考、金融商业、表达与个人成长等话题。这里既有保留原貌的原文，也有经过整理的学习笔记，均附来源链接，便于回看与延伸阅读。内容随兴趣与新的发现持续补充。",
+      "groupByCategory": false
     }
   ],
   "categories": [
@@ -50,16 +51,10 @@
       "description": "智能体、工具使用、记忆、规划与评测的系统课程"
     },
     {
-      "slug": "article-collection",
+      "slug": "curated",
       "section": "curated",
-      "name": "文章收录",
-      "description": "可能带来启发的文章与观点"
-    },
-    {
-      "slug": "general-collection",
-      "section": "curated",
-      "name": "综合收录",
-      "description": "金融、商业、表达与思维等主题的视频与访谈"
+      "name": "精选收录",
+      "description": "文章、外刊、视频、访谈与演讲的原文收录及学习笔记"
     }
   ]
 }

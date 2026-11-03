@@ -275,7 +275,3 @@ Reference answer: The model silently replaced a missing N/A value with 0.1 ($100
 **6. Why do Custom GPTs and custom instructions improve results, and what are they really?**
 
 Reference answer: They freeze a stable prompt — role, task description and several examples — so it need not be retyped each time and every run uses the same constraints. The improvement comes from two things: concrete examples (few-shot) constrain output format and judgement more tightly than description alone, and global instructions move long-term preferences to the front, reducing repetition and omission per turn. They do not add capability; they turn prompt engineering into a reusable, manageable configuration.
-
-## How this connects
-
-This lecture is the map of the usage layer: which capabilities exist, what each is good for, and where each fails. The deep-dive lecture explains how those capabilities were trained; the attention and KV-cache note explains why context management matters so much. Together they form a chain from mechanism to daily practice. The next step is engineering: combining these capabilities into agent workflows that deliver reliably.

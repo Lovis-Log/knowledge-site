@@ -254,7 +254,3 @@ Add only light polishing. Do not add a solid backdrop, checkerboard, scenery, or
 **6. 从旧模型迁移到新模型时，什么时候应该停在 Sunburst，不再切到 Flare？**
 
 参考答案：当 Flare 无法在可接受质量下满足需求时。流程是先确认 Sunburst 达到质量要求，再用同样的提示词、参考图和尺寸测 Flare；只有当 Flare 的质量仍可接受、且延迟确实下降时才切换。如果 Flare 在任何可接受的质量档位下都不达标，就保留 Sunburst——质量优先于延迟。
-
-## 与前后内容的关系
-
-这篇讲的是「生成与编辑单张图」的写法。把它用于批量素材时，真正的难点会转移到验证与复用：如何确认每张图都带 alpha 通道、如何在图表里核对数据、如何把同一套提示词稳定复现。这些内容在同系列的「透明素材」一篇里展开。

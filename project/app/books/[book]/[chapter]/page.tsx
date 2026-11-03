@@ -104,7 +104,7 @@ export default async function ChapterPage({
               )}
               {chapter.tags?.map((tag) => (
                 <span key={tag} className="tag">
-                  {tag}
+                  {tag === "原文" ? <UiText zh="原文" /> : tag}
                 </span>
               ))}
             </div>

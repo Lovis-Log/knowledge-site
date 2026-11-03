@@ -5,6 +5,7 @@ summary: 当科研、竞赛、实习都变成默认配置，认真上课反而�
 updatedAt: 2026-11-01
 content_type: opinion
 tags:
+  - 原文
   - 教育
   - 大学生活
   - 内卷

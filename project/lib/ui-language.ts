@@ -12,7 +12,7 @@ export const uiEnglish: Record<string, string> = {
   "视频": "Video", "博客": "Blog", "播客": "Podcast", "文章": "Article",
   "多来源": "Multiple sources", "系统课程": "Course", "技术教程": "Tutorial",
   "科普": "Explainer", "新闻": "News", "观点": "Opinion", "播客访谈": "Podcast / interview",
-  "资料": "Reference", "短帖": "Post", "等": "and more",
+  "资料": "Reference", "短帖": "Post", "等": "and more", "原文": "Original",
   "正文语言": "Content language", "语言": "Language", "阅读视图": "Reading view",
   "阅读": "Reading", "原文与精读": "Original & notes", "原文翻译": "Translation",
   "正文字号": "Text size", "字号": "Text size", "小": "Small", "中": "Medium", "大": "Large",
@@ -34,16 +34,14 @@ export const uiEnglish: Record<string, string> = {
 };
 
 export const taxonomyEnglish: Record<string, { name: string; description: string }> = {
-  "ai-era": { name: "AI Era", description: "Explore AI principles, agents and everyday creative practice." },
-  "courses": { name: "Courses", description: "Study mathematics, programming and AI through structured courses." },
-  "curated": { name: "Selected Reading", description: "A collection of news, articles and perspectives worth reading closely." },
+  "ai-era": { name: "AI Era", description: "Learning materials on language models, agent engineering and AI-assisted programming and creation, covering tool use, context management, knowledge bases and image generation. Notes from talks, articles and practical tutorials document methods, applications and limitations, with original sources for further study and hands-on work." },
+  "courses": { name: "Courses", description: "Course-based notes on mathematics, computing and AI, covering linear algebra, real analysis, discrete mathematics, programming and agents. Follow each course through concepts, derivations, proofs and code examples, with review questions and original sources for studying from the beginning, revisiting key ideas and preparing for research and projects." },
+  "curated": { name: "Selected Reading", description: "Articles, news, videos, interviews and speeches worth keeping, on society, mathematics, finance, communication and personal growth. The collection includes original texts and study notes, with source links for further reading, and grows with my interests and discoveries." },
   "ai-principles-applications": { name: "AI Principles & Applications", description: "Language models, agent engineering and AI-assisted knowledge management" },
   "ai-coding": { name: "AI Coding & Creation", description: "Software development, image generation and creative workflows with AI" },
   "mathematics": { name: "Mathematics", description: "Linear algebra, calculus, probability and proofs" },
   "software-engineering": { name: "Computing & Programming", description: "Programming languages, computing fundamentals and software engineering" },
   "ai-courses": { name: "Artificial Intelligence", description: "Courses on agents, tool use, memory, planning and evaluation" },
-  "article-collection": { name: "Articles", description: "Articles and perspectives that offer food for thought" },
-  "general-collection": { name: "General Collection", description: "Videos and interviews on finance, business, communication and thinking" },
 };
 
 export const bookEnglish: Record<string, { description: string; longDescription: string }> = {

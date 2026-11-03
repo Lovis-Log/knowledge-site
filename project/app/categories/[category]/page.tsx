@@ -37,7 +37,11 @@ export default async function CategoryPage({ params }: Props) {
         </div>
         <span className="section-count"><UiCount count={section.books.length} total /></span>
       </header>
-      {section.groups.map((group, index) => (
+      {section.groupByCategory === false ? (
+        <div className="library__grid">
+          {section.books.map((book, index) => <BookCard key={book.slug} book={book} index={index} />)}
+        </div>
+      ) : section.groups.map((group, index) => (
         <section key={group.slug} className="library-group" {...uiLabel(group.name, taxonomyEnglish[group.slug]?.name)}>
           <div className="library-group__head">
             <span className="library-group__number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>

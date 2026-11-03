@@ -27,6 +27,7 @@ export interface TaxonomySection {
   name: string;
   description: string;
   featuredBooks?: string[];
+  groupByCategory?: boolean;
 }
 
 function siteDir(): string {

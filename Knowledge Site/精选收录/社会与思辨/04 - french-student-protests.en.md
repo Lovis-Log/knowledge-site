@@ -4,7 +4,7 @@ title: "French student protests: education, mobilization and media framing"
 summary: "Reading Alice Cappelle’s argument about school conditions, collective action and the framing of student protests."
 updatedAt: "2026-11-02"
 content_type: "opinion"
-categories: ["article-collection"]
+categories: ["curated"]
 tags: ["education", "social-movements", "media-literacy"]
 sources: [{"kind": "video", "title": "EMERGENCY VIDEO: The French Protests Explained", "url": "https://www.youtube.com/watch?v=hAWcxLuqfjg", "author": "Alice Cappelle", "publishedAt": "2026-10-16"}]
 ---

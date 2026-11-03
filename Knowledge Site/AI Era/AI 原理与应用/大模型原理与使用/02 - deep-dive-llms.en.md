@@ -268,7 +268,3 @@ Reference answer: For math the reward is correctness, which is simple and cannot
 **6. Why does the model fail at "is 9.11 bigger than 9.9" while solving Olympiad problems, and what does that imply for use?**
 
 Reference answer: Per-token computation is limited, and internal features are shaped by patterns in the training data. Analyses found features associated with Bible chapter numbering activating on such inputs; in chapter numbering 9.11 follows 9.9, which pushes the model toward the wrong comparison. Olympiad problems work because the model has learned to spread reasoning over many tokens and has seen many similar problems; comparing two decimals is a one-step task with no room to unfold. The implication is that capability is jagged: solving hard problems does not guarantee correctness on easy ones. For critical numbers or comparisons, require explicit steps or code execution and verify the result.
-
-## How this connects
-
-This lecture maps the **training side**: data, tokenization, the network, post-training and reinforcement learning. It explains what a model can do, why it errs, and why it needs tools. Its companion note on attention and KV Cache covers the **inference side**: what the model can see in one request, how attention is diluted, and how caching determines speed and cost. Together they explain the practical rules of agent engineering — keep context lean, isolate subtasks, and keep the stable prefix stable.

@@ -4,7 +4,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runInNewContext } from "node:vm";
 import matter from "gray-matter";
-import { bookEnglish, taxonomyEnglish } from "../lib/ui-language.ts";
+import { bookEnglish, taxonomyEnglish, englishText } from "../lib/ui-language.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const content = join(root, "..", "Knowledge Site");
@@ -63,4 +63,12 @@ async function checkBooks(dir) {
   }
 }
 await checkBooks(content);
+assert.equal(englishText("原文"), "Original");
+for (const [book, chapter] of [
+  ["society-and-reasoning", "01-cli-vs-gui"],
+  ["personal-selection", "05-math-beyond-proof"],
+]) {
+  const html = await readFile(join(root, "out/books", book, chapter, "index.html"), "utf8");
+  assert.match(html, /<span class="tag"><span data-ui-block="zh" lang="zh-CN">原文<\/span><span data-ui-block="en" lang="en">Original<\/span><\/span>/, `Original tag must follow UI language: ${chapter}`);
+}
 console.log(`UI language verification passed: 8 preference scenarios, ${taxonomy.sections.length + taxonomy.categories.length} categories, ${bookCount} book translations.`);

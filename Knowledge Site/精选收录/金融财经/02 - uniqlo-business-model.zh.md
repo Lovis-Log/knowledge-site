@@ -9,7 +9,7 @@ tags:
   - retail-strategy
   - brand-strategy
 categories:
-  - general-collection
+  - curated
 sources:
   - kind: video
     title: "Inside Uniqlo: The Boring Basics Brand That's Actually a Tech Company"

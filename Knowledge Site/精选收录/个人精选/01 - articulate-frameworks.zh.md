@@ -9,7 +9,7 @@ tags:
   - articulation
   - frameworks
 categories:
-  - general-collection
+  - curated
 sources:
   - kind: video
     title: "How to Be Disgustingly Articulate And Well Spoken"

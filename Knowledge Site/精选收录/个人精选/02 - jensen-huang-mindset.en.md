@@ -9,7 +9,7 @@ tags:
   - systems-thinking
   - ai-agents
 categories:
-  - general-collection
+  - curated
 sources:
   - kind: video
     title: "Jensen Huang: The Mindset That Built NVIDIA"
