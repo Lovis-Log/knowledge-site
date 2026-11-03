@@ -266,10 +266,49 @@ function withChapterNumbers(links: BookLink[], chapters: Chapter[]): BookLink[] 
   });
 }
 
+/** Keep video timelines available after the reading text, including in the TOC. */
+export function moveTimelineToEnd(markdown: string): string {
+  const headings: { start: number; depth: number; timeline: boolean }[] = [];
+  let fence: { marker: string; length: number } | undefined;
+  let inMath = false;
+  for (const match of markdown.matchAll(/^.*(?:\r?\n|$)/gm)) {
+    const line = match[0].replace(/\r?\n$/, "");
+    const delimiter = /^ {0,3}(`{3,}|~{3,})(.*)$/.exec(line);
+    if (fence) {
+      if (delimiter && delimiter[1][0] === fence.marker && delimiter[1].length >= fence.length && !delimiter[2].trim()) fence = undefined;
+      continue;
+    }
+    if (delimiter && !inMath) {
+      fence = { marker: delimiter[1][0], length: delimiter[1].length };
+      continue;
+    }
+    if (/^\s*\$\$\s*$/.test(line)) inMath = !inMath;
+    if (inMath) continue;
+    const heading = /^ {0,3}(#{1,6})\s+(.+?)\s*#*\s*$/.exec(line);
+    if (heading) headings.push({ start: match.index, depth: heading[1].length, timeline: /^(时间轴|Timeline)$/i.test(heading[2]) });
+  }
+
+  const ranges = headings.flatMap((heading, index) => {
+    if (!heading.timeline) return [];
+    const end = headings.slice(index + 1).find((next) => next.depth <= heading.depth)?.start ?? markdown.length;
+    return [{ start: heading.start, end }];
+  }).filter((range, index, all) => !all.slice(0, index).some((previous) => range.start < previous.end));
+  if (!ranges.length) return markdown;
+
+  const body: string[] = [];
+  let cursor = 0;
+  for (const range of ranges) {
+    body.push(markdown.slice(cursor, range.start));
+    cursor = range.end;
+  }
+  body.push(markdown.slice(cursor));
+  return [body.join("").trimEnd(), ...ranges.map(({ start, end }) => markdown.slice(start, end).trimEnd())].filter(Boolean).join("\n\n");
+}
+
 function readChapterFile(file: string) {
   const parsed = matter(fs.readFileSync(file, "utf8"));
   const data = parsed.data as Record<string, unknown>;
-  return { data, body: parsed.content.trim() };
+  return { data, body: moveTimelineToEnd(parsed.content.trim()) };
 }
 
 function loadBook(bookDir: string, folder: string): Book | null {

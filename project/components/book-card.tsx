@@ -14,7 +14,6 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
     : book.contentType
       ? contentTypeLabel(book.contentType)
       : "";
-  const links = book.links ?? [];
   const byline = book.author ? formatAuthors(book.author) : "";
   const bylineEn = book.author ? formatAuthors(book.author, 2, "en") : "";
 
@@ -32,18 +31,6 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
         )}
         <p className="book-card__desc"><UiText zh={book.description} en={bookEnglish[book.slug]?.description} /></p>
         <p className="book-card__meta"><UiCount count={book.chapters.length} kind="chapters" /></p>
-        {links.length > 0 && (
-          <ul className="book-card__links">
-            {links.slice(0, 2).map((link) => (
-              <li key={link.url}>
-                <a href={link.url} target="_blank" rel="noreferrer noopener">
-                  {link.label} ↗
-                </a>
-              </li>
-            ))}
-            {links.length > 2 && <li className="book-card__links-more"><UiText zh="等" /></li>}
-          </ul>
-        )}
       </div>
     </article>
   );
