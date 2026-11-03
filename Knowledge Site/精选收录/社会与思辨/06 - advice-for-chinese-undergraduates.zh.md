@@ -10,12 +10,12 @@ sources:
   - kind: article
     title: "你对当下中国大学生的建议"
     url: https://www.douyin.com/article/7701633770474980849
-    author: "原剪藏标注 ChatGPT，转载者未详"
+    author: "抖音创作者"
     publishedAt: 2026-10-28
   - kind: article
     title: "致中国大学生：道理我们都懂，可事实摆在那，我们又能怎么办？"
     url: https://www.douyin.com/article/7702655357420225915
-    author: "原剪藏标注 ChatGPT，转载者未详"
+    author: "抖音创作者"
     publishedAt: 2026-10-31
 ---
 

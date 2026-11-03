@@ -11,6 +11,7 @@ import { TableOfContents } from "@/components/table-of-contents";
 import { getAllBooks, getAdjacentChapters, getBook, getChapter } from "@/content";
 import type { Lang } from "@/content/types";
 import { contentTypeLabel } from "@/lib/content-labels";
+import { tagLabel } from "@/lib/tag-labels";
 import { formatDate, paddedNumber } from "@/lib/format";
 import { availableLangs, pickVersion } from "@/lib/language";
 import { buildToc } from "@/lib/toc";
@@ -102,11 +103,14 @@ export default async function ChapterPage({
               {chapter.contentType && (
                 <span className="tag tag--type"><UiText zh={contentTypeLabel(chapter.contentType)} /></span>
               )}
-              {chapter.tags?.map((tag) => (
-                <span key={tag} className="tag">
-                  {tag === "原文" ? <UiText zh="原文" /> : tag}
-                </span>
-              ))}
+              {chapter.tags?.map((tag) => {
+                const label = tagLabel(tag);
+                return (
+                  <span key={tag} className="tag">
+                    <UiText zh={label.zh} en={label.en} />
+                  </span>
+                );
+              })}
             </div>
           )}
           <ReadingToolbar langs={langs} hasTranslation={hasTranslation} />
