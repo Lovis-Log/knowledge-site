@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
+import { MobilePageEntryScroll } from "@/components/mobile-page-entry-scroll";
 import { getAllBooks, getBook, getLibrarySections } from "@/content";
 import { formatAuthors, paddedNumber } from "@/lib/format";
 
@@ -33,6 +34,7 @@ export default async function BookPage({ params }: { params: Promise<{ book: str
 
   return (
     <div className="shell">
+      <MobilePageEntryScroll pageKey={`book:${book.slug}`} />
       {section && (
         <Link className="book-back" href={`/categories/${section.slug}/`}>
           <span aria-hidden="true">←</span>

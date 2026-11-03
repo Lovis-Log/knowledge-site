@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookCard } from "@/components/book-card";
 import { LibraryNav } from "@/components/library-nav";
-import { CategoryEntryScroll } from "@/components/category-entry-scroll";
+import { MobilePageEntryScroll } from "@/components/mobile-page-entry-scroll";
 import { getLibrarySections } from "@/content";
 
 export const dynamicParams = false;
@@ -28,7 +28,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <div className="shell category-page">
-      <CategoryEntryScroll category={section.slug} />
+      <MobilePageEntryScroll pageKey={`category:${section.slug}`} />
       <LibraryNav active={section.slug} />
       <header className="section-head category-page__head">
         <div>
