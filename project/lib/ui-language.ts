@@ -5,7 +5,7 @@ export const UI_LANG_STORAGE_KEY = "shufang:ui-lang";
 export const uiEnglish: Record<string, string> = {
   "书库": "Library", "首页": "Home", "关于": "About", "主导航": "Main navigation",
   "面包屑": "Breadcrumb", "内容分类": "Categories", "跳到正文": "Skip to content",
-  "查看全部": "View all", "继续阅读": "Continue reading", "目录": "Contents",
+  "查看全部": "View all", "继续阅读": "Continue reading", "目录": "Contents", "返回目录": "Back to contents",
   "篇内目录": "On this page", "本篇目录": "On this page", "章节导航": "Chapter navigation",
   "← 上一篇": "← Previous", "下一篇 →": "Next →", "来源": "Sources",
   "视频": "Video", "博客": "Blog", "播客": "Podcast", "文章": "Article",

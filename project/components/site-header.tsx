@@ -24,7 +24,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
         <HeaderBreadcrumb crumbs={crumbs} />
         <nav className="site-nav" {...uiLabel("主导航")}>
           {site.nav.map((item) => (
-            <Link key={item.href} href={item.href} {...uiLabel(item.label)}>
+            <Link key={item.href} href={item.href} className={item.href === "/about/" ? "site-nav__about" : undefined} {...uiLabel(item.label)}>
               <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                 {item.href === "/" ? (
                   <>

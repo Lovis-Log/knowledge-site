@@ -1951,6 +1951,11 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
   border-top: 1px solid var(--rule-soft);
 }
 
+.pager__contents,
+.pager--single {
+  display: none;
+}
+
 .pager__link {
   display: flex;
   flex-direction: column;
@@ -2112,6 +2117,14 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
     --header-h: 58px;
   }
 
+  .site-nav .site-nav__about .site-nav__icon {
+    display: block;
+  }
+
+  .site-nav .site-nav__about [data-ui-block] {
+    display: none !important;
+  }
+
   .site-header__inner {
     padding: 0 18px;
   }
@@ -2189,6 +2202,31 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
     gap: 28px 20px;
   }
 
+  /* Match the existing two-column cover width while scrolling one row. */
+  .library-preview > .library__grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 20px) / 2);
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    padding: 4px 6px 26px;
+    margin: -4px -6px 0;
+    scroll-padding-inline: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+
+  .library-preview .book-card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .library-preview .book-card__body {
+    display: none;
+  }
+
   .book-cover__title {
     font-size: 0.94rem;
   }
@@ -2205,6 +2243,10 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 
   .book-header .book-cover--sm {
     width: 96px;
+  }
+
+  .book-chapters .section-heading {
+    scroll-margin-top: calc(var(--header-h) + 20px);
   }
 
   .chapter-row {
@@ -2229,6 +2271,33 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 
   .pager {
     grid-template-columns: 1fr;
+  }
+
+  .pager--single {
+    display: grid;
+  }
+
+  .pager__contents {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: var(--page-sheet);
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  .pager__contents:hover {
+    background: var(--hover);
+  }
+
+  .pager__empty {
+    display: none;
   }
 
   .pager__link--next {
