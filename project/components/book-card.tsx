@@ -1,5 +1,5 @@
 import { UiText, UiCount } from "@/components/ui-text";
-import { bookEnglish } from "@/lib/ui-language";
+import {useContent} from "@/content/client";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { BookCover } from "@/components/book-cover";
@@ -8,6 +8,7 @@ import { contentTypeLabel } from "@/lib/content-labels";
 import { formatAuthors } from "@/lib/format";
 
 export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
+  const {bookEnglish}=useContent();
   const href = `/books/${book.slug}/`;
   const badge = book.collection
     ? "多来源"

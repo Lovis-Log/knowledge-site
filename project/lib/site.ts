@@ -8,7 +8,7 @@ export const site = {
     zh: "文字留痕，思绪成网。",
   },
   nav: [
-    { href: "/", label: "书库" },
+    { href: "/library/", label: "书库" },
     { href: "/about/", label: "关于" },
   ],
 } as const;

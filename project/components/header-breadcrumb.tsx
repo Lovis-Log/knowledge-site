@@ -3,18 +3,38 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { Crumb } from "@/lib/crumbs";
+import { buildBreadcrumbs, type Crumb } from "@/lib/crumbs";
+import type { Catalog } from "@/content/client";
 
-export function HeaderBreadcrumb({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
+export function HeaderBreadcrumb({
+  crumbs,
+}: {
+  crumbs: Record<string, Crumb[]>;
+}) {
+  const [privateCrumbs, setPrivateCrumbs] = useState<Record<string, Crumb[]>>(
+    {},
+  );
+  useEffect(() => {
+    const receive = (event: Event) => {
+      const data = (event as CustomEvent<Catalog>).detail;
+      setPrivateCrumbs(
+        buildBreadcrumbs(data.books, data.sections, data.taxonomyEnglish),
+      );
+    };
+    window.addEventListener("lovismind:catalog", receive);
+    return () => window.removeEventListener("lovismind:catalog", receive);
+  }, []);
   const pathname = usePathname() || "/";
   const router = useRouter();
   const refreshedPath = useRef<string | null>(null);
   const key = pathname === "/" ? "/" : pathname.replace(/\/+$/, "");
-  const exactItems = crumbs[key];
-  const parentItems = crumbs[key.slice(0, key.lastIndexOf("/"))];
+  const exactItems = privateCrumbs[key] ?? crumbs[key];
+  const parentItems =
+    privateCrumbs[key.slice(0, key.lastIndexOf("/"))] ??
+    crumbs[key.slice(0, key.lastIndexOf("/"))];
   const items = exactItems ?? parentItems;
 
   useEffect(() => {
@@ -44,7 +64,9 @@ export function HeaderBreadcrumb({ crumbs }: { crumbs: Record<string, Crumb[]> }
                 <UiText zh={item.label} en={item.labelEn ?? item.label} />
               </span>
             ) : (
-              <Link href={item.href}><UiText zh={item.label} en={item.labelEn ?? item.label} /></Link>
+              <Link href={item.href}>
+                <UiText zh={item.label} en={item.labelEn ?? item.label} />
+              </Link>
             )}
           </Fragment>
         );

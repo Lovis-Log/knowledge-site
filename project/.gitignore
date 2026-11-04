@@ -25,3 +25,8 @@ content/published/
 
 # local tooling
 .claude/
+.cache/
+.wrangler/
+.backend-build/
+.dev.vars*
+backend/env.d.ts

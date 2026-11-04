@@ -2,7 +2,7 @@
 
 > Where readings linger and thoughts intertwine. 文字留痕，思绪成网。
 
-把课程、讲座与文章整理成可以按顺序读下去的「书」：一课一书，一章一篇，正文之外保留原始来源。纯静态、零后端。
+把课程、讲座与文章整理成可以按顺序读下去的「书」：一课一书，一章一篇，正文之外保留原始来源。本分支加入 Cloudflare Workers/D1 账号审核和登录阅读；生产站尚未切换。
 
 ## 书库
 
@@ -19,7 +19,7 @@
 - **目录里的公式**：章内目录与正文一样用 KaTeX 渲染色数学公式，点击可跳转。
 - **原始出处**：每章标注原资源的首发日期与来源链接，章尾列出完整来源。
 - **阅读偏好本地记忆**：语言、字号、目录显隐和每章的阅读进度都保存在浏览器里。
-- **静态导出**：`next build` 直接产出 HTML，不需要服务器与数据库。
+- **审核后阅读**：公开入口与数据无关的界面框架静态导出，正文由 Workers/D1 在鉴权后返回；支持邀请码和人工审核。
 
 ## 仓库结构
 
@@ -40,14 +40,18 @@ git add README.md "Knowledge Site" project
 
 ```bash
 cd project
-npm install
-npm run dev        # http://localhost:3000
-npm run build      # 静态产物输出到 project/out
-npm run verify     # 检查产物页面、KaTeX、代码高亮与图片优化请求
-npx serve out      # 用静态服务器验证真实产物
+npm ci
+npm run types:backend
+npm run db:migrate
+npm run content:import
+npm run admin:init
+npm run build
+npm run verify
+npm run test:auth
+npm run dev:full   # http://localhost:8788
 ```
 
-`out/` 不能可靠地通过 `file://` 打开，请用本地静态服务器访问。
+完整流程需要本地 Workers/D1，不再使用纯静态服务器。云端部署与费用前置条件见 [后端说明](project/backend/README.md)。
 
 ## 添加内容
 
@@ -55,7 +59,7 @@ npx serve out      # 用静态服务器验证真实产物
 2. 章节文件命名为 `NN - 标题.zh.md` / `NN - 标题.en.md`，`NN` 与 frontmatter 的 `slug` 前缀一致。
 3. 每章至少填写 `slug`、`title`、`summary`、`updatedAt`、`content_type` 与 `sources`；`sources` 里带上原资源的 `publishedAt`。
 4. 分类写进 `Knowledge Site/taxonomy.json`，首页按大类预览，大类页按子分类展示。
-5. `cd project && npm run build && npm run verify` 确认页面生成正常。
+5. `cd project && npm run build && npm run verify` 确认产物安全；再向目标环境导入内容并发布，步骤见后端说明。
 
 完整约定见 [Knowledge Site/README.md](Knowledge%20Site/README.md)。
 

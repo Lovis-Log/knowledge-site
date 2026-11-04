@@ -6,6 +6,7 @@ import type { Crumb } from "@/lib/crumbs";
 import { site } from "@/lib/site";
 import { HeaderBreadcrumb } from "./header-breadcrumb";
 import { DonateButton } from "./donate-button";
+import { AccountMenu } from "./account-menu";
 
 export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
   return (
@@ -26,7 +27,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.map((item) => (
             <Link key={item.href} href={item.href} className={item.href === "/about/" ? "site-nav__about" : undefined} {...uiLabel(item.label)}>
               <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-                {item.href === "/" ? (
+                {item.href === "/library/" ? (
                   <>
                     <path d="M12 5.5C9 3.5 5.5 3.5 3 4.5v15c2.5-1 6-1 9 1 3-2 6.5-2 9-1v-15c-2.5-1-6-1-9 1Z" />
                     <path d="M12 5.5v15" />
@@ -41,6 +42,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
               <UiText zh={item.label} />
             </Link>
           ))}
+          <AccountMenu />
           <UiLanguageToggle />
           <DonateButton />
         </nav>

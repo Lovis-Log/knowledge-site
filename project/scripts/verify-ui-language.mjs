@@ -4,7 +4,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runInNewContext } from "node:vm";
 import matter from "gray-matter";
-import { bookEnglish, taxonomyEnglish, englishText } from "../lib/ui-language.ts";
+import { englishText } from "../lib/ui-language.ts";
+import { bookEnglish, taxonomyEnglish } from "../lib/content-translations.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const content = join(root, "..", "Knowledge Site");
@@ -53,22 +54,10 @@ async function checkBooks(dir) {
       const { data } = matter(await readFile(path, "utf8"));
       const english = bookEnglish[data.slug];
       assert(english?.description && english?.longDescription, `Missing book translation: ${data.slug}`);
-      const html = await readFile(join(root, "out/books", data.slug, "index.html"), "utf8");
-      assert(html.includes("data-ui-block=\"en\""), `Missing exported English UI: ${data.slug}`);
-      assert(html.includes("Each chapter ends with links to the original sources."), `Missing source note: ${data.slug}`);
-      // Translation is for display only: the formal title remains in the export.
-      assert(html.includes(data.title), `Book title changed: ${data.slug}`);
       bookCount++;
     }
   }
 }
 await checkBooks(content);
 assert.equal(englishText("原文"), "Original");
-for (const [book, chapter] of [
-  ["society-and-reasoning", "01-cli-vs-gui"],
-  ["personal-selection", "05-math-beyond-proof"],
-]) {
-  const html = await readFile(join(root, "out/books", book, chapter, "index.html"), "utf8");
-  assert.match(html, /<span class="tag"><span data-ui-block="zh" lang="zh-CN">原文<\/span><span data-ui-block="en" lang="en">Original<\/span><\/span>/, `Original tag must follow UI language: ${chapter}`);
-}
 console.log(`UI language verification passed: 8 preference scenarios, ${taxonomy.sections.length + taxonomy.categories.length} categories, ${bookCount} book translations.`);

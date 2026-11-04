@@ -63,7 +63,7 @@ try {
   assert.equal(content.getLibrarySections()[0].books.length, 1);
   assert.equal(content.getChapter("example", "chapter").slug, "chapter");
   const { buildBreadcrumbs } = loadModule("lib/crumbs");
-  const oldCrumbs = buildBreadcrumbs();
+  const oldCrumbs = buildBreadcrumbs(content.getAllBooks(), content.getLibrarySections(), {});
   const movedBook = path.join(fixture, "destination");
   fs.mkdirSync(movedBook);
   fs.writeFileSync(path.join(movedBook, "_book.md"), "---\nslug: destination\ntitle: Destination\ncategory: new-category\n---\n");
@@ -72,7 +72,7 @@ try {
     path.join(movedBook, "01 - chapter.zh.md"),
   );
   assert.equal(oldCrumbs["/books/destination/chapter"], undefined, "An open layout retains the old index");
-  const refreshedCrumbs = buildBreadcrumbs();
+  const refreshedCrumbs = buildBreadcrumbs(content.getAllBooks(), content.getLibrarySections(), {});
   assert.equal(refreshedCrumbs["/books/destination/chapter"].at(-2).label, "Destination");
   assert.equal(refreshedCrumbs["/books/destination/chapter"].at(-1).label, "Chapter");
   assert.equal(refreshedCrumbs["/books/example/chapter"], undefined);

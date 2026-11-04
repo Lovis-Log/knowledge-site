@@ -2,15 +2,29 @@
   "name": "knowledge-site",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "verify": "node scripts/verify-export.mjs",
+    "build": "next build && tsx scripts/build-backend.ts",
+    "start": "wrangler pages dev out --port 8788",
+    "verify": "tsx scripts/verify-protected-export.ts",
     "verify:ui": "node scripts/verify-ui-language.mjs",
-    "typecheck": "tsc --noEmit"
+    "verify:content": "node scripts/verify-content-refresh.mjs",
+    "typecheck": "tsc --noEmit",
+    "dev:full": "wrangler pages dev out --port 8788",
+    "deploy:preview": "wrangler pages deploy out --project-name lovismind-preview --branch codex/backend-auth --commit-dirty=true",
+    "db:migrate": "wrangler d1 migrations apply DB --local",
+    "content:export": "tsx scripts/export-content.ts",
+    "content:import": "tsx scripts/import-content.ts",
+    "admin:init": "tsx scripts/init-admin.ts",
+    "auth:migrate": "tsx scripts/migrate-password.ts",
+    "test:auth": "tsx --test backend/tests/*.test.ts",
+    "types:backend": "wrangler types backend/env.d.ts --env-interface Env",
+    "typecheck:backend": "wrangler types backend/env.d.ts --env-interface Env && tsc -p backend/tsconfig.json && tsc -p scripts/tsconfig.json",
+    "benchmark:auth": "tsx scripts/benchmark-password.ts"
   },
   "dependencies": {
+    "@noble/hashes": "^2.4.0",
     "github-slugger": "2.0.0",
     "gray-matter": "^4.0.3",
     "highlight.js": "11.12.0",
@@ -26,10 +40,14 @@
     "remark-math": "6.0.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261104.1",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "serve": "14.2.6",
-    "typescript": "5.9.3"
+    "esbuild": "^0.28.2",
+    "miniflare": "^5.20261103.0-beta",
+    "tsx": "^4.23.15",
+    "typescript": "5.9.3",
+    "wrangler": "^4.157.0"
   }
 }

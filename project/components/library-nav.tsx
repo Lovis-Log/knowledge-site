@@ -1,11 +1,12 @@
 import { UiText } from "@/components/ui-text";
-import { taxonomyEnglish, uiLabel } from "@/lib/ui-language";
+import { uiLabel } from "@/lib/ui-language";
 import Link from "next/link";
-import { getSections } from "@/lib/notes";
+import {useContent} from "@/content/client";
 
 export function LibraryNav({ active = "home" }: { active?: string }) {
+  const {getSections,taxonomyEnglish}=useContent();
   const items = [
-    { slug: "home", name: "首页", href: "/" },
+    { slug: "home", name: "书库", href: "/library/" },
     ...getSections().map((section) => ({
       ...section,
       href: `/categories/${section.slug}/`,
