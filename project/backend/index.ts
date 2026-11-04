@@ -656,7 +656,11 @@ export default {
         ].includes(path) ||
         (path.startsWith("/_next/static/") && !path.endsWith(".map")) ||
         path.startsWith("/brand/") ||
-        ["/images/hero-scene.webp", "/images/wechat-pay.png"].includes(path) ||
+        [
+          "/images/hero-scene.webp",
+          "/images/landing-hero.webp",
+          "/images/wechat-pay.png",
+        ].includes(path) ||
         path === "/index.txt" ||
         path.startsWith("/__next.") ||
         path.startsWith("/__next/") ||

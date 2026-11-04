@@ -2,7 +2,7 @@
 
 LovisMind — 从 Obsidian vault 发布的知识网站。Next.js 导出界面框架，Cloudflare Pages Worker 和 D1 提供账号审核与登录阅读。
 
-当前分支已实现注册、管理员审核、邀请码、服务端会话和审核后阅读；邮件暂不接入，公开首页预留给后续 Landing Page。书库入口为 `/library/`。本地验证与部署步骤见 [backend/README.md](backend/README.md)，尚未切换生产。
+当前分支已实现注册、管理员审核、邀请码、服务端会话和审核后阅读；邮件暂不接入。公开首页为 Landing Page，登录与注册弹窗接入真实账号系统；书库入口为 `/library/`。本地验证与部署步骤见 [backend/README.md](backend/README.md)，尚未切换生产。
 
 ## 仓库与内容边界
 

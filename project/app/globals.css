@@ -2661,6 +2661,22 @@ html[data-reading-view="translation"] .segmented__btn[data-view="translation"] {
 .secret-result input { font-family:monospace; }
 @media(max-width:600px){.admin-heading{align-items:flex-start;flex-direction:column}.admin-table th,.admin-table td{padding:12px 8px}.auth-links{align-items:flex-start;flex-direction:column}.admin-actions{gap:10px}.review-panel{padding:18px}}
 
+/* ---------- landing page chrome ---------- */
+
+/* The public landing page renders its own header and footer. */
+body:has(#lovismind-landing) {
+  padding-top: 0;
+}
+
+body:has(#lovismind-landing) > .site-header,
+body:has(#lovismind-landing) > .site-footer {
+  display: none;
+}
+
+html.lm-modal-open {
+  overflow: hidden;
+}
+
 /* ---------- password visibility ---------- */
 
 .password-input {
