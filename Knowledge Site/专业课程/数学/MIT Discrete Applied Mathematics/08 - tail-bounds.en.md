@@ -216,7 +216,7 @@ Cutting the error by a factor $k$ multiplies the sample size by $k^2$. Going fro
 
 ### Gambling and ruin
 
-In craps, the closest bet to even money has a house edge of about $0.0141$. Let each round win $\$1$ with probability $p$ and lose $\$1$ otherwise. Then
+In craps, the closest bet to even money has a house edge of about $0.0141$. Let each round win \$1 with probability $p$ and lose \$1 otherwise. Then
 
 $$
 (1-p)-p=0.0141

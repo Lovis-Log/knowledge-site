@@ -3,6 +3,7 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
+import { createRequire } from "node:module";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const projectDir = join(here, "..");
@@ -11,6 +12,13 @@ const siteDir = join(projectDir, "..", "Knowledge Site");
 
 const failures = [];
 const htmlCache = new Map();
+
+// A renderer/CSS mismatch silently breaks fractions, scripts and mobile wrapping.
+const require = createRequire(import.meta.url);
+const mathRequire = createRequire(require.resolve("rehype-katex"));
+if (require("katex").version !== mathRequire("katex").version) {
+  failures.push("KaTeX 正文渲染器与样式包版本不一致");
+}
 
 async function readHtml(relativePath) {
   if (!htmlCache.has(relativePath)) {
@@ -134,6 +142,9 @@ for (const file of htmlFiles) {
   }
   if (html.includes("/_next/image")) {
     failures.push(`出现默认图片优化请求：out/${file}`);
+  }
+  if (html.includes('class="katex-error"')) {
+    failures.push(`公式解析失败：out/${file}`);
   }
 }
 

@@ -2,7 +2,7 @@ import { UiText } from "@/components/ui-text";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChapterPager } from "@/components/chapter-pager";
-import { Markdown } from "@/components/markdown";
+import { InlineMarkdown, Markdown } from "@/components/markdown";
 import { ReadingLayout } from "@/components/reading-layout";
 import { ReadingProgress } from "@/components/reading-progress";
 import { ReadingToolbar } from "@/components/reading-toolbar";
@@ -88,7 +88,7 @@ export default async function ChapterPage({
             return (
               <div key={lang} {...langBlock(lang)}>
                 <h1 className="chapter-title">{version.title}</h1>
-                {version.summary && <p className="chapter-lede">{version.summary}</p>}
+                {version.summary && <div className="chapter-lede"><InlineMarkdown>{version.summary}</InlineMarkdown></div>}
               </div>
             );
           })}

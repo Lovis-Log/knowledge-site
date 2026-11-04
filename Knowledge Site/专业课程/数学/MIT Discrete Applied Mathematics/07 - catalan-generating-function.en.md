@@ -1,7 +1,7 @@
 ---
 slug: 07-catalan-generating-function
 title: "The generating function for Catalan numbers"
-summary: "The full-binary-tree recurrence C_n=ΣC_jC_{n−j−1} yields C(x)=1+xC(x)²; solving the quadratic and choosing the right root, then expanding by the binomial theorem, gives C_n=(1/(n+1))C(2n,n). A decomposition of Dyck paths at their first return produces the same equation by a different route."
+summary: 'The full-binary-tree recurrence $C_n=\sum_{j=0}^{n-1}C_jC_{n-j-1}$ yields $C(x)=1+xC(x)^2$; solving the quadratic and choosing the right root, then expanding by the binomial theorem, gives $C_n=\frac{1}{n+1}\binom{2n}{n}$. A decomposition of Dyck paths at their first return produces the same equation by a different route.'
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -281,26 +281,110 @@ The recurrence is also visible directly: any nonempty tiling ends either with a 
 
 ## Comprehension check
 
-**1. Explain $C_n=\sum_{j=0}^{n-1}C_jC_{n-j-1}$ using vertex counts.**
+**1. Explain the Catalan recurrence using vertex counts.**
+
+$$
+C_n=\sum_{j=0}^{n-1}C_jC_{n-j-1}.
+$$
 
 Reference answer: A full binary tree with $2n+1$ vertices consists of a root, a left subtree and a right subtree. If the left subtree has $2j+1$ vertices, the right has $(2n+1)-1-(2j+1)=2(n-j-1)+1$. There are $C_j$ shapes on the left and $C_{n-j-1}$ on the right, independently, so the count multiplies. Summing $j$ from $0$ to $n-1$ covers all left-subtree sizes.
 
 **2. Why is the minus sign chosen when solving for $C(x)$? Give a rigorous reason.**
 
-Reference answer: The two roots are $(1\pm\sqrt{1-4x})/(2x)$. A generating function must have constant term $C_0=1$, i.e. $\lim_{x\to0}C(x)=1$. The plus sign has numerator tending to $2$ and a vanishing denominator, so the quotient diverges. The minus sign gives, by L'Hôpital,
-$\lim_{x\to0}\frac{1-\sqrt{1-4x}}{2x}=\lim_{x\to0}\frac{2/\sqrt{1-4x}}{2}=1$.
+Reference answer: The two roots are
+
+$$
+\frac{1\pm\sqrt{1-4x}}{2x}.
+$$
+
+A generating function must have constant term $C_0=1$, i.e. $\lim_{x\to0}C(x)=1$. The plus sign has numerator tending to $2$ and a vanishing denominator, so the quotient diverges. The minus sign gives, by L'Hôpital,
+
+$$
+\begin{aligned}
+\lim_{x\to0}\frac{1-\sqrt{1-4x}}{2x}
+&=\lim_{x\to0}\frac{2/\sqrt{1-4x}}{2}\\
+&=1.
+\end{aligned}
+$$
+
 Only the minus sign yields a finite constant term; the plus sign produces a $1/x$ term and is not a formal power series.
 
-**3. Derive $C_n=\frac{1}{n+1}\binom{2n}{n}$ from $C(x)=\frac{1-\sqrt{1-4x}}{2x}$, showing the double-factorial step.**
+**3. Derive the closed formula from the generating function, showing the double-factorial step.**
 
-Reference answer: Using $(1+a)^{1/2}=\sum_k\binom{1/2}{k}a^k$ and $\binom{1/2}{k}=(-1)^{k-1}(2k-3)!!/(2^kk!)$, with $a=-4x$ we get $\binom{1/2}{k}(-4x)^k=-(2k-3)!!2^kx^k/k!$. Hence
-$1-\sqrt{1-4x}=\sum_{k\ge1}(2k-3)!!2^kx^k/k!$, and dividing by $2x$ gives
-$C_n=(2n-1)!!2^n/(n+1)!$.
-Then $(2n-1)!!=(2n)!/(2^nn!)$, so the $2^n$ cancels and $C_n=(2n)!/(n!(n+1)!)=\frac{1}{n+1}\binom{2n}{n}$.
+Starting from
 
-**4. Why is the generating function of raised Dyck paths $D(x)=xC(x)$?**
+$$
+C(x)=\frac{1-\sqrt{1-4x}}{2x},
+$$
 
-Reference answer: A raised path starts at $0$, its first step is up and its last is down, it stays at least $1$ in between, and it returns to $0$ only at the end. Removing the first and last steps and shifting down by one level leaves an arbitrary Dyck path. So raised paths correspond bijectively to "a Dyck path plus two extra steps". With the lecture's size convention (half the number of steps), the two extra steps contribute a factor $x$, hence $D(x)=xC(x)$.
+show that
+
+$$
+C_n=\frac{1}{n+1}\binom{2n}{n}.
+$$
+
+Reference answer, in four steps.
+
+**Step 1: Expand the square root.** The binomial theorem gives
+
+$$
+(1+a)^{1/2}=\sum_{k\ge0}\binom{1/2}{k}a^k.
+$$
+
+For $k\ge1$,
+
+$$
+\binom{1/2}{k}=\frac{(-1)^{k-1}(2k-3)!!}{2^k k!},
+$$
+
+with $(-1)!!=1$.
+
+**Step 2: Substitute $a=-4x$.** Each term becomes
+
+$$
+\binom{1/2}{k}(-4x)^k
+=-\frac{(2k-3)!!2^k}{k!}x^k.
+$$
+
+Hence
+
+$$
+1-\sqrt{1-4x}
+=\sum_{k\ge1}\frac{(2k-3)!!2^k}{k!}x^k.
+$$
+
+**Step 3: Divide by $2x$ and read off the coefficient.** Setting $k=n+1$ gives
+
+$$
+C_n=\frac{(2n-1)!!2^n}{(n+1)!}.
+$$
+
+**Step 4: Replace the double factorial.** Using
+
+$$
+(2n-1)!!=\frac{(2n)!}{2^n n!},
+$$
+
+cancel $2^n$ to obtain
+
+$$
+\begin{aligned}
+C_n&=\frac{(2n)!}{n!(n+1)!}\\[4pt]
+&=\frac{1}{n+1}\binom{2n}{n}.
+\end{aligned}
+$$
+
+**4. Why does the generating function of raised Dyck paths satisfy this relation?**
+
+$$
+D(x)=xC(x).
+$$
+
+Reference answer: A raised path starts at $0$, its first step is up and its last is down, it stays at least $1$ in between, and it returns to $0$ only at the end.
+
+Removing the first and last steps and shifting down by one level leaves an arbitrary Dyck path. So raised paths correspond bijectively to "a Dyck path plus two extra steps".
+
+With the lecture's size convention (half the number of steps), the two extra steps contribute a factor $x$, hence $D(x)=xC(x)$.
 
 **5. In the tiling problem, why is $a_{2k}=0$ but $a_{2k+1}=2$? Why is $b_2=0$?**
 

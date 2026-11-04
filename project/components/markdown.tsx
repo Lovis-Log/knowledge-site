@@ -60,6 +60,19 @@ const components: Options["components"] = {
   ),
 };
 
+/** Summaries share the body math renderer, without paragraph or code-block layout. */
+export function InlineMarkdown({ children }: { children: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={{ p: ({ children }) => <span>{children}</span> }}
+    >
+      {children}
+    </ReactMarkdown>
+  );
+}
+
 export function Markdown({ markdown, lang }: { markdown: string; lang: Lang }) {
   const rehypePlugins: Options["rehypePlugins"] = [
     rehypeSlug,

@@ -44,7 +44,7 @@ General games can give each player their own payoff matrix; only in the zero-sum
 
 ## Example 1: matching pennies
 
-Both players reveal heads (H) or tails (T). If the coins match, Alice wins $\$1$; otherwise she loses $\$1$. The payoff matrix (rows for Alice, columns for Bob) is
+Both players reveal heads (H) or tails (T). If the coins match, Alice wins \$1; otherwise she loses \$1. The payoff matrix (rows for Alice, columns for Bob) is
 
 $$
 C=\begin{bmatrix}
@@ -78,7 +78,7 @@ A strategy pair $(i,j)$ is a **pure Nash equilibrium** if neither player gains b
 
 The directions are opposite because Bob's payoff is $-C_{ij}$: Bob wants to lose less, which means Alice wins less, and multiplying by $-1$ flips the inequality.
 
-**Matching pennies has no pure equilibrium.** Check the four cells: at $(H,H)$ Bob switches to T and wins $\$1$; at $(H,T)$ Alice switches to T and wins $\$1$; at $(T,H)$ Alice switches to H and wins; at $(T,T)$ Bob switches to H and wins. Every cell gives someone a profitable deviation.
+**Matching pennies has no pure equilibrium.** Check the four cells: at $(H,H)$ Bob switches to T and wins \$1; at $(H,T)$ Alice switches to T and wins \$1; at $(T,H)$ Alice switches to H and wins; at $(T,T)$ Bob switches to H and wins. Every cell gives someone a profitable deviation.
 
 The deeper reason: a pure strategy is **announced and exploitable**. Once the opponent knows your deterministic choice, they can always respond to it.
 
@@ -231,7 +231,7 @@ so $(x^*)^TCy^*=\frac59\cdot\frac13+\frac49\cdot\frac13=\frac13$.
 
 Two conclusions:
 
-- **The row player is favoured.** The positive game value means that under rational play Alice averages $\$1/3$ per round. The live classroom game briefly favoured Bob, but that was before play converged to equilibrium.
+- **The row player is favoured.** The positive game value means that under rational play Alice averages $1/3$ dollars per round. The live classroom game briefly favoured Bob, but that was before play converged to equilibrium.
 - **Some strategies should never be played.** Alice's strategy 2 has probability $0$ and Bob's strategy 1 has probability $0$, even if both appeared in class; they are not part of optimal play.
 
 ### Reading it with complementary slackness

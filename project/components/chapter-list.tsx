@@ -3,7 +3,8 @@ import type { CSSProperties } from "react";
 import type { Book } from "@/content/types";
 import { pickVersion } from "@/lib/language";
 import { formatDate, paddedNumber } from "@/lib/format";
-import { UiText } from "@/components/ui-text";
+import { UiPair, UiText } from "@/components/ui-text";
+import { InlineMarkdown } from "@/components/markdown";
 
 export function ChapterList({ book }: { book: Book }) {
   return (
@@ -26,7 +27,7 @@ export function ChapterList({ book }: { book: Book }) {
                   {bilingual && <span className="badge">中 / EN</span>}
                 </span>
                 {(zh.summary || en.summary) && (
-                  <span className="chapter-row__summary"><UiText zh={zh.summary ?? ""} en={en.summary ?? ""} /></span>
+                  <span className="chapter-row__summary"><UiPair zh={<InlineMarkdown>{zh.summary ?? ""}</InlineMarkdown>} en={<InlineMarkdown>{en.summary ?? ""}</InlineMarkdown>} /></span>
                 )}
               </span>
               <span className="chapter-row__meta">

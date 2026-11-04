@@ -70,6 +70,8 @@ html[data-font-size="lg"] {
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -1854,11 +1856,28 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
   white-space: nowrap;
 }
 
-.prose .katex-display {
+/* Keep TeX's internal metrics independent of prose spacing and word wrapping. */
+.katex {
+  letter-spacing: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.prose .katex-display,
+.chapter-lede .katex-display {
   margin: 1.6em 0;
-  padding: 6px 0;
+  padding: 0.5em 0;
+  max-width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  overscroll-behavior-x: contain;
+}
+
+/* A wide centered equation must start inside the scroll area, never to its left. */
+.prose .katex-display > .katex,
+.chapter-lede .katex-display > .katex {
+  width: max-content;
+  min-width: 100%;
 }
 
 .zoomable {
@@ -2174,6 +2193,7 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 
   .shell--reading {
     width: 100%;
+    padding-inline: 10px;
   }
 
   .hero {
@@ -2329,8 +2349,30 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
   }
 
   .reading-main {
-    padding: 28px 20px 36px;
+    padding: 24px 16px 32px;
     border-radius: 12px;
+  }
+
+  .chapter-title {
+    font-size: clamp(1.5rem, 6.4vw, 1.85rem);
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+
+  .chapter-lede {
+    font-size: 0.94rem;
+  }
+
+  .prose .katex {
+    font-size: 1.08em;
+  }
+
+  .prose .katex-display {
+    margin-block: 1.1em;
+  }
+
+  .prose .katex-display > .katex {
+    font-size: 1.14em;
   }
 
   .pager {

@@ -61,7 +61,7 @@ The modelling recipe is fixed: choose variables, write the objective, write the 
 
 ## Example 2: the bake sale
 
-You sell cookies and meringues. A batch of cookies needs $1$ egg, $2$ cups of sugar and $1.5$ cups of flour; a batch of meringues needs $3$ eggs, $1$ cup of sugar and no flour. You have $9$ eggs, $8$ cups of sugar and $15$ cups of flour. Each batch sells for $\$20$.
+You sell cookies and meringues. A batch of cookies needs $1$ egg, $2$ cups of sugar and $1.5$ cups of flour; a batch of meringues needs $3$ eggs, $1$ cup of sugar and no flour. You have $9$ eggs, $8$ cups of sugar and $15$ cups of flour. Each batch sells for \$20.
 
 Let $x_1$ be batches of cookies and $x_2$ batches of meringues:
 
