@@ -2688,6 +2688,10 @@ html.lm-modal-open {
   padding-right: 46px;
 }
 
+.password-input > input::-ms-reveal {
+  display: none;
+}
+
 .password-input__toggle {
   position: absolute;
   top: 50%;
@@ -2738,6 +2742,19 @@ html.lm-modal-open {
   transition:
     background var(--dur-fast) var(--ease),
     color var(--dur-fast) var(--ease);
+}
+
+@media (max-width: 600px) {
+  .site-nav__account {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+  }
+
+  .site-nav__account-label {
+    display: none;
+  }
 }
 
 .site-nav__account:hover {

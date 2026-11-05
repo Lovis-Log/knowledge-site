@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { AccountIcon } from "@/components/account-icon";
 import { UiLanguageToggle } from "@/components/ui-language-toggle";
 import { UiPair, UiText } from "@/components/ui-text";
 import { api } from "@/lib/api";
@@ -184,16 +185,19 @@ export function LandingPage() {
           <nav className={styles.nav} {...uiLabel("主导航")}>
             <UiLanguageToggle />
             {signedIn ? (
-              <Link href="/library/" className={styles.navPrimary}>
-                <UiText zh="进入书库" en="Enter library" />
+              <Link href="/library/" className={styles.navPrimary} {...uiLabel("进入书库", "Enter library")}>
+                <AccountIcon />
+                <span className={styles.navPrimaryLabel}><UiText zh="进入书库" en="Enter library" /></span>
               </Link>
             ) : (
               <button
                 type="button"
                 className={styles.navPrimary}
                 onClick={() => setAuthView("login")}
+                {...uiLabel("登录", "Sign in")}
               >
-                <UiText zh="登录" en="Sign in" />
+                <AccountIcon />
+                <span className={styles.navPrimaryLabel}><UiText zh="登录" en="Sign in" /></span>
               </button>
             )}
           </nav>
@@ -261,41 +265,43 @@ export function LandingPage() {
               {site.intro.zh}
             </p>
           </div>
-          <div className={styles.actions}>
-            <button
-              type="button"
-              className={`${styles.button} ${styles.buttonSolid}`}
-              onClick={() => setAuthView("login")}
-            >
-              <UiText zh="进入知识库" en="Enter the Vault" />
-              <Arrow />
-            </button>
-            <button
-              type="button"
-              className={`${styles.button} ${styles.buttonOutline}`}
-              onClick={() => setAuthView("register")}
-            >
-              <UiText zh="创建账号" en="Create account" />
-              <Arrow />
-            </button>
-          </div>
-          <div className={styles.heroFoot}>
-            <button type="button" className={styles.scrollCue} onClick={scrollToPreview}>
-              <span className={styles.scrollTrack} aria-hidden="true" />
-              <UiText zh="向下探索" en="Scroll to explore" />
-              <svg
-                className={styles.scrollArrow}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+          <div className={styles.heroActions}>
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={`${styles.button} ${styles.buttonSolid}`}
+                onClick={() => setAuthView("login")}
               >
-                <path d="M12 5v14m-6-6 6 6 6-6" />
-              </svg>
-            </button>
+                <UiText zh="进入知识库" en="Enter the Vault" />
+                <Arrow />
+              </button>
+              <button
+                type="button"
+                className={`${styles.button} ${styles.buttonOutline}`}
+                onClick={() => setAuthView("register")}
+              >
+                <UiText zh="创建账号" en="Create account" />
+                <Arrow />
+              </button>
+            </div>
+            <div className={styles.heroFoot}>
+              <button type="button" className={styles.scrollCue} onClick={scrollToPreview}>
+                <span className={styles.scrollTrack} aria-hidden="true" />
+                <UiText zh="向下探索" en="Scroll to explore" />
+                <svg
+                  className={styles.scrollArrow}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 5v14m-6-6 6 6 6-6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>

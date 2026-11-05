@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { UiText } from "@/components/ui-text";
+import { AccountIcon } from "@/components/account-icon";
 import { api } from "@/lib/api";
 import { uiLabel } from "@/lib/ui-language";
 
@@ -92,8 +93,10 @@ export function AccountMenu() {
         aria-haspopup="true"
         aria-expanded={open}
         onClick={activate}
+        {...uiLabel("账号", "Account")}
       >
-        <UiText zh="账号" en="Account" />
+        <AccountIcon />
+        <span className="site-nav__account-label"><UiText zh="账号" en="Account" /></span>
       </button>
       {open && user && (
         <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>

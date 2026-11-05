@@ -324,6 +324,7 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/_next/static/app.js",
     "/images/hero-scene.webp",
     "/images/lovismind-cover.png",
+    "/images/preface-warm-light.png",
     "/images/vault-preview/agent.png",
     "/images/vault-preview/ai-shelf.png",
     "/images/vault-preview/linear-algebra.png",

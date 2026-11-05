@@ -660,6 +660,7 @@ export default {
           "/images/hero-scene.webp",
           "/images/landing-hero.webp",
           "/images/lovismind-cover.png",
+          "/images/preface-warm-light.png",
           "/images/vault-preview/agent.png",
           "/images/vault-preview/ai-shelf.png",
           "/images/vault-preview/linear-algebra.png",

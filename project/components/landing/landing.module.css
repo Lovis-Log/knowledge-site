@@ -84,7 +84,11 @@
 }
 
 .header.compactHeader {
-  height: 68px;
+  --header-height: 68px;
+  height: var(--header-height);
+  margin-bottom: calc(-1 * var(--header-height));
+  background: transparent;
+  border-bottom: 0;
 }
 
 .brand {
@@ -117,6 +121,7 @@
 
 .navPrimary {
   display: inline-flex;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   padding: 11px 21px;
@@ -191,6 +196,28 @@
   filter: brightness(1.08) contrast(0.95);
 }
 
+.hero.heroWithCover {
+  align-items: flex-start;
+  min-height: 0;
+}
+
+.heroWithCover .heroInner {
+  padding-top: clamp(94px, 9vw, 130px);
+  padding-bottom: clamp(28px, 4vw, 52px);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: clamp(24px, 7vw, 100px);
+  row-gap: 18px;
+}
+
+.heroWithCover .heroFoot {
+  position: static;
+}
+
 .heroWithCover .heroInner > .motto {
   max-width: 58%;
   font-size: clamp(19px, 2.05vw, 28px);
@@ -229,11 +256,7 @@
 
 @media (max-width: 600px) {
   .header.compactHeader {
-    height: 60px;
-  }
-
-  .hero.heroWithCover {
-    min-height: max(790px, calc(100svh - 60px));
+    --header-height: 60px;
   }
 
   .heroWithCover .heroInner > .motto,
@@ -247,6 +270,24 @@
     right: 5%;
     width: min(54%, 225px);
     translate: none;
+  }
+
+  .heroWithCover .heroFoot {
+    margin-top: clamp(150px, 50vw, 200px);
+  }
+
+  .heroActions {
+    display: block;
+  }
+
+  .header .navPrimary {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  .navPrimaryLabel {
+    display: none;
   }
 
   .heroWithCover .heroMedia > img {
@@ -754,8 +795,9 @@
   z-index: -1;
   inset: -5% 0;
   background:
-    radial-gradient(ellipse at 66% 60%, rgb(235 191 114 / 12%), transparent 55%),
-    url("/images/landing-hero.webp") right center / 78% auto no-repeat;
+    url("/images/preface-warm-light.png") right center / 78% auto no-repeat;
+  filter: brightness(1.12) saturate(0.84);
+  opacity: 0.78;
   mask-image: linear-gradient(90deg, transparent 31%, rgb(0 0 0 / 18%) 43%, black 60%, black 94%, transparent),
     linear-gradient(180deg, transparent, black 18%, black 86%, transparent);
   mask-composite: intersect;
@@ -798,7 +840,7 @@
 
   .prefaceLayout::before {
     opacity: 0.34;
-    background-size: auto, 120% auto;
+    background-size: 120% auto;
   }
 
   .prefaceBreak {
@@ -1676,8 +1718,8 @@
   }
 
   .concept {
-    min-height: 280px;
-    margin-top: 45px;
+    min-height: 0;
+    margin-top: 30px;
   }
 
   .conceptCaption {
@@ -1687,7 +1729,8 @@
   }
 
   .diagram {
-    height: 280px;
+    height: auto;
+    margin-top: 32px;
   }
 
   .diagramCaption {
@@ -1774,7 +1817,7 @@
 /* ---------- vault preview ---------- */
 
 .vaultPreview {
-  padding-block: clamp(48px, 6vw, 88px) clamp(32px, 5vw, 72px);
+  padding-block: clamp(28px, 3vw, 48px) clamp(32px, 5vw, 72px);
   background: #faf7f1;
   scroll-margin-top: 80px;
 }
