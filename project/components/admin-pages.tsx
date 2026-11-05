@@ -372,7 +372,9 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
           {selected && (
             <section className="review-panel">
               <h2>
-                {selected.username} · {selected.nickname}
+                {selected.nickname && selected.nickname !== selected.username
+                  ? `${selected.username} · ${selected.nickname}`
+                  : selected.username}
               </h2>
               <h3>
                 <UiText zh="申请理由" en="Application reason" />

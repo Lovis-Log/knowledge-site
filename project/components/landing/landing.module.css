@@ -779,7 +779,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 620px;
+  min-height: 420px;
   padding: 42px 34px;
   border-right: 1px solid #dfd1bb;
   background: linear-gradient(170deg, #f4e9d6, #f9f4ec 55%, #e8d8bd);
@@ -849,23 +849,23 @@
 }
 
 .authPane {
-  padding: 64px clamp(27px, 5vw, 66px) 48px;
+  padding: 30px clamp(24px, 4.5vw, 52px) 22px;
 }
 
 .authTitle {
-  margin: 16px 0 12px;
+  margin: 8px 0 4px;
   font-family: var(--lm-serif);
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
-  line-height: 1.14;
+  line-height: 1.12;
   letter-spacing: -0.05em;
 }
 
 .authSub {
-  margin: 0 0 27px;
+  margin: 0 0 12px;
   color: #79736a;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .authClose {
@@ -888,22 +888,25 @@
 }
 
 .field {
-  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
 .field label {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 9px;
+  margin: 0;
   color: #4d4c49;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.35;
 }
 
-.field input,
-.field textarea {
+.field input {
   width: 100%;
-  padding: 0 14px;
+  height: 44px;
+  padding: 0 12px;
   border: 1px solid #ddd5cb;
   border-radius: 8px;
   background: #fff;
@@ -914,49 +917,31 @@
     box-shadow 0.2s;
 }
 
-.field input {
-  height: 48px;
-}
-
 .field :global(.password-input) > input {
-  padding-right: 46px;
+  padding-right: 44px;
 }
 
 .fieldHint {
-  margin: -10px 0 18px;
+  margin: -2px 0 8px 106px;
   color: #857b70;
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
-.field textarea {
-  min-height: 92px;
-  padding: 12px 14px;
-  resize: vertical;
-  line-height: 1.6;
-}
-
-.field input:focus,
-.field textarea:focus {
+.field input:focus {
   border-color: #b6915c;
   box-shadow: 0 0 0 3px rgba(221, 182, 121, 0.21);
 }
 
-.field input::placeholder,
-.field textarea::placeholder {
+.field input::placeholder {
   color: #aaa39a;
 }
 
-.optional {
-  color: #9f9487;
-  font-weight: 400;
-}
-
 .micro {
-  margin: -6px 0 21px;
+  margin: 0 0 8px 106px;
   color: #857b70;
   font-size: 12px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .fullButton {
@@ -965,7 +950,7 @@
   justify-content: space-between;
   width: 100%;
   margin-top: 6px;
-  padding: 15px 18px;
+  padding: 11px 16px;
   border: 0;
   border-radius: 8px;
   background: var(--lm-navy);
@@ -982,7 +967,7 @@
 }
 
 .switch {
-  margin-top: 21px;
+  margin-top: 10px;
   color: #80786e;
   font-size: 13px;
   text-align: center;
@@ -1412,8 +1397,8 @@
   }
 
   .authArt {
-    min-height: 580px;
-    padding: 35px 25px;
+    min-height: 420px;
+    padding: 28px 22px;
   }
 
   .authArtTitle {
@@ -1421,7 +1406,7 @@
   }
 
   .authPane {
-    padding: 60px 35px 40px;
+    padding: 26px 28px 20px;
   }
 
   .knowledgeArc {
@@ -1592,35 +1577,34 @@
   }
 
   .authArt {
-    min-height: 105px;
-    padding: 20px 25px;
-  }
-
-  .authArtTitle {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  .authArt p,
-  .authArt small {
     display: none;
   }
 
-  .authArt::after {
-    right: -45%;
-    bottom: -290px;
-  }
-
   .authPane {
-    padding: 40px 25px 30px;
+    padding: 46px 20px 22px;
   }
 
   .authTitle {
-    font-size: 36px;
+    font-size: 30px;
+  }
+
+  .authSub {
+    margin-bottom: 12px;
+  }
+
+  .field {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .fieldHint,
+  .micro {
+    margin-left: 96px;
   }
 
   .authClose {
-    top: 6px;
+    top: 8px;
     right: 8px;
   }
 

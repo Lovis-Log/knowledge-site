@@ -98,11 +98,10 @@ export function AccountMenu() {
       {open && user && (
         <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>
           <p className="account-pop__name">
-            {user.nickname || user.username} · {user.username}
+            {user.nickname && user.nickname !== user.username
+              ? `${user.nickname} · ${user.username}`
+              : user.username}
           </p>
-          <Link href="/library/" onClick={() => setOpen(false)}>
-            <UiText zh="进入书库" en="Open library" />
-          </Link>
           {user.role === "admin" && (
             <Link href="/admin/users/" onClick={() => setOpen(false)}>
               <UiText zh="管理用户" en="Manage users" />

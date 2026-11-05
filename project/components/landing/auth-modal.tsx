@@ -369,12 +369,10 @@ export function AuthModal({
                     </div>
                     <div className={styles.field}>
                       <label htmlFor="lm-invite">
-                        <span>
-                          <UiText zh="邀请码" en="Invitation code" />
-                        </span>
-                        <span className={styles.optional}>
-                          <UiText zh="选填" en="Optional" />
-                        </span>
+                        <UiText
+                          zh="邀请码（选填）"
+                          en="Invitation code (optional)"
+                        />
                       </label>
                       <input
                         id="lm-invite"

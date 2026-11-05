@@ -293,7 +293,9 @@ export function AccountPage() {
         {user && (
           <>
             <p>
-              {user.nickname} · {user.username}
+              {user.nickname && user.nickname !== user.username
+                ? `${user.nickname} · ${user.username}`
+                : user.username}
             </p>
             <div className="auth-links">
               <Link href="/library/">
