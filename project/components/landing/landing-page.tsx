@@ -28,6 +28,13 @@ const nodeMessages: Record<NodeKey, [string, string]> = {
   return: ["重访 —— 温故而知新，让理解逐渐深入。", "Return — Understanding grows when we revisit what matters."],
 };
 
+const previewImages = [
+  { file: "linear-algebra.png", width: 1380, height: 1026, zh: "线性代数课程的书封与章节目录", en: "Book cover and chapter list for a linear algebra course" },
+  { file: "agent.png", width: 1020, height: 988, zh: "AI Agent 课程章节阅读界面", en: "Reading view for an AI agent course chapter" },
+  { file: "ai-shelf.png", width: 1340, height: 1096, zh: "AI 时代书架", en: "AI Era bookshelf" },
+  { file: "mobile.jpg", width: 1440, height: 3020, zh: "手机端书库与精选收录", en: "Mobile library and curated collection" },
+];
+
 function Arrow() {
   return (
     <svg
@@ -136,9 +143,9 @@ export function LandingPage() {
     });
   }
 
-  function scrollToAbout() {
+  function scrollToPreview() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    document.getElementById("about")?.scrollIntoView({
+    document.getElementById("vault-preview")?.scrollIntoView({
       behavior: reduced ? "auto" : "smooth",
       block: "start",
     });
@@ -158,7 +165,7 @@ export function LandingPage() {
       className={styles.landing}
       data-motion={motionPaused ? "paused" : "on"}
     >
-      <header className={styles.header}>
+      <header className={`${styles.header} ${styles.compactHeader}`}>
         <div className={`${styles.shell} ${styles.headerInner}`}>
           <a
             href="#top"
@@ -195,22 +202,17 @@ export function LandingPage() {
 
       <section
         id="top"
-        className={`${styles.hero} ${styles.gridBg}`}
+        className={`${styles.hero} ${styles.gridBg} ${styles.heroWithCover}`}
         aria-label="LovisMind"
       >
         <div className={styles.heroMedia} ref={mediaRef} aria-hidden="true">
           <img
-            src="/images/landing-hero.webp"
+            src="/images/lovismind-cover.png"
             alt=""
-            width={1072}
-            height={724}
+            width={1254}
+            height={1254}
             fetchPriority="high"
           />
-          <div className={styles.photoPageMotion}>
-            <img src="/images/landing-hero.webp" alt="" />
-          </div>
-          <div className={styles.photoPageLight} />
-          <div className={styles.spineGlow} />
         </div>
         <svg className={styles.knowledgeArc} viewBox="0 0 500 240" aria-hidden="true">
           <path className={styles.arcLine} d="M10 180 Q145 5 265 87 T486 56" />
@@ -230,33 +232,35 @@ export function LandingPage() {
         </div>
 
         <div className={`${styles.shell} ${styles.heroInner}`}>
-          <div className={styles.kicker}>
-            <UiText zh="个人知识书库" en="Personal Knowledge Vault" />
-          </div>
+          <div className={styles.kicker} lang="en">Personal Knowledge Vault</div>
           <h1 className={styles.title}>{site.name}</h1>
           <p className={styles.motto}>
-            <span>{site.intro.en}</span>{" "}
-            <span className={styles.mottoZh}>{site.intro.zh}</span>
+            {site.intro.en}
           </p>
           <div className={styles.mottoRule} aria-hidden="true" />
-          <p className={styles.heroDesc}>
-            <UiPair
-              zh={
-                <>
-                  为阅读、学习与值得保存的思考留一方空间。
-                  <br />
-                  可凭邀请码加入，也可以申请访问。
-                </>
-              }
-              en={
-                <>
-                  A personal space for reading, learning and the ideas worth keeping.
-                  <br />
-                  Access is available by invitation or application.
-                </>
-              }
-            />
-          </p>
+          <div className={styles.heroDetails}>
+            <p className={styles.heroDesc}>
+              <UiPair
+                zh={
+                  <>
+                    为阅读、学习与值得保存的思考留一方空间。
+                    <br />
+                    可凭邀请码加入，也可以申请访问。
+                  </>
+                }
+                en={
+                  <>
+                    A personal space for reading, learning and the ideas worth keeping.
+                    <br />
+                    Access is available by invitation or application.
+                  </>
+                }
+              />
+            </p>
+            <p className={`${styles.motto} ${styles.heroChineseMotto}`} lang="zh-CN">
+              {site.intro.zh}
+            </p>
+          </div>
           <div className={styles.actions}>
             <button
               type="button"
@@ -276,7 +280,7 @@ export function LandingPage() {
             </button>
           </div>
           <div className={styles.heroFoot}>
-            <button type="button" className={styles.scrollCue} onClick={scrollToAbout}>
+            <button type="button" className={styles.scrollCue} onClick={scrollToPreview}>
               <span className={styles.scrollTrack} aria-hidden="true" />
               <UiText zh="向下探索" en="Scroll to explore" />
               <svg
@@ -298,11 +302,33 @@ export function LandingPage() {
 
       <div className={styles.separator} aria-hidden="true" />
 
+      <section id="vault-preview" className={styles.vaultPreview} {...uiLabel("书库预览", "Inside the Vault")}>
+        <div className={styles.shell}>
+          <span className={styles.sectionKicker} lang="en">01 / Inside the Vault</span>
+          <div className={styles.previewCollage}>
+            {previewImages.map(({ file, width, height, zh, en }) => (
+              <figure key={file} className={styles.previewTile}>
+                <img
+                  className={styles.reveal}
+                  src={`/images/vault-preview/${file}`}
+                  width={width}
+                  height={height}
+                  decoding="async"
+                  loading="lazy"
+                  alt=""
+                  {...uiLabel(zh, en)}
+                />
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="about" className={styles.about}>
         <div className={styles.shell}>
           <div className={`${styles.aboutHead} ${styles.reveal}`}>
             <div>
-              <span className={styles.sectionKicker}>01 / THE IDEA</span>
+              <span className={styles.sectionKicker} lang="en">02 / The Idea</span>
               <h2 className={styles.sectionTitle}>
                 <UiPair
                   zh="让思想有迹可循。"
@@ -404,10 +430,27 @@ export function LandingPage() {
         </div>
       </section>
 
+      <section id="interlude" className={styles.preface} aria-labelledby="preface-title">
+        <div className={`${styles.shell} ${styles.prefaceLayout} ${styles.reveal}`}>
+          <div className={styles.prefaceCopy}>
+            <span className={styles.sectionKicker} lang="en">03 / A Short Preface</span>
+            <h2 id="preface-title">
+              <UiText zh="书页翻过，思绪未完。" en="The page turns. The thought goes on." />
+            </h2>
+            <p>
+              <UiPair
+                zh={<>这里收着我想重读的文章、想弄懂的问题，<br className={styles.prefaceBreak} />以及读完之后留下的几行笔记。</>}
+                en={<>This is where I keep articles I want to reread, questions I’m still working through,<br className={styles.prefaceBreak} /> and the few lines I write down after reading.</>}
+              />
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className={styles.closing}>
         <div className={`${styles.shell} ${styles.closingInner} ${styles.reveal}`}>
           <div>
-            <span className={styles.sectionKicker}>02 / THE ENTRANCE</span>
+            <span className={styles.sectionKicker} lang="en">04 / The Entrance</span>
             <h2>
               <UiText
                 zh="从这里，开启新的思考。"
