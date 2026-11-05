@@ -323,6 +323,11 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/register/__next.register/__PAGE__.txt",
     "/_next/static/app.js",
     "/images/hero-scene.webp",
+    "/images/lovismind-cover.png",
+    "/images/vault-preview/agent.png",
+    "/images/vault-preview/ai-shelf.png",
+    "/images/vault-preview/linear-algebra.png",
+    "/images/vault-preview/mobile.jpg",
   ])
     assert.equal((await c.call(path)).status, 200, path);
   for (const path of [
@@ -331,6 +336,7 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/books/book/chapter/index.txt",
     "/covers/book.webp",
     "/images/projection-error.svg",
+    "/images/vault-preview/unlisted.png",
     "/about/",
     "/account/",
     "/admin/users/",

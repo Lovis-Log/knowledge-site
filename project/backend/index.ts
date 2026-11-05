@@ -659,6 +659,11 @@ export default {
         [
           "/images/hero-scene.webp",
           "/images/landing-hero.webp",
+          "/images/lovismind-cover.png",
+          "/images/vault-preview/agent.png",
+          "/images/vault-preview/ai-shelf.png",
+          "/images/vault-preview/linear-algebra.png",
+          "/images/vault-preview/mobile.jpg",
           "/images/wechat-pay.png",
         ].includes(path) ||
         path === "/index.txt" ||
