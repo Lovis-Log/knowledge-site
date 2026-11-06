@@ -1,7 +1,7 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 import { UiLanguageToggle } from "./ui-language-toggle";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { Crumb } from "@/lib/crumbs";
 import { site } from "@/lib/site";
 import { HeaderBreadcrumb } from "./header-breadcrumb";

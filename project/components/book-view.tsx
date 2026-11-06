@@ -1,11 +1,12 @@
 "use client";
 import { UiText, UiCount } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
 import { MobilePageEntryScroll } from "@/components/mobile-page-entry-scroll";
+import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
 
@@ -31,7 +32,7 @@ export default function BookView({ slug }: { slug: string }) {
         </Link>
       )}
       <header className="book-header">
-        <BookCover book={book} size="sm" />
+        <BookCover book={book} size="sm" priority />
         <div className="book-header__body">
           {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
           <h1 className="book-title">{book.title}</h1>
@@ -77,6 +78,7 @@ export default function BookView({ slug }: { slug: string }) {
           <p className="book-meta">
             <UiCount count={book.chapters.length} kind="chapters" />
           </p>
+          <FavoriteButton book={book.slug} />
         </div>
       </header>
 

@@ -4,7 +4,7 @@ import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { usePathname, useRouter } from "next/navigation";
 import { buildBreadcrumbs, type Crumb } from "@/lib/crumbs";
 import type { Catalog } from "@/content/client";

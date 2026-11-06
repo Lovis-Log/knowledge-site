@@ -8,6 +8,7 @@ import { ReadingProgress } from "@/components/reading-progress";
 import { ReadingToolbar } from "@/components/reading-toolbar";
 import { SourceList } from "@/components/source-list";
 import { TableOfContents } from "@/components/table-of-contents";
+import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
 import type { Lang } from "@/content/types";
 import { contentTypeLabel } from "@/lib/content-labels";
@@ -120,6 +121,7 @@ export default function ChapterView({
             </div>
           )}
           <ReadingToolbar langs={langs} hasTranslation={hasTranslation} />
+          <FavoriteButton book={book.slug} chapter={chapter.slug} />
         </header>
 
         <details className="toc-inline">

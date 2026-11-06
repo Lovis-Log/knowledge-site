@@ -17,11 +17,15 @@ async function files(directory: string): Promise<string[]> {
 }
 const books = getAllBooks();
 const paths = await files("out");
+// Reading HTML and route payloads are served only after Worker authorization.
+const privatePage = /^(?:books|categories|library)\/.*\.(?:html|txt)$/;
 const texts = await Promise.all(
   paths
     .filter(
       (path) =>
-        /\.(html|txt|js|json|map)$/.test(path) && !path.endsWith("_worker.js"),
+        /\.(html|txt|js|json|map)$/.test(path) &&
+        !path.endsWith("_worker.js") &&
+        !privatePage.test(path.replaceAll("\\", "/").slice("out/".length)),
     )
     .map(async (path) => ({ path, text: await readFile(path, "utf8") })),
 );
@@ -48,12 +52,12 @@ for (const book of books) {
           !text.includes(JSON.stringify(needle).slice(1, -1)),
         `Protected content leaked into ${path}: ${book.slug}`,
       );
-  assert.ok((await stat(`out/books/${book.slug}/index.html`)).isFile());
+  const bookHtml = await readFile(`out/books/${book.slug}/index.html`, "utf8");
+  assert.match(bookHtml, /class="book-title"/);
   for (const chapter of book.chapters)
-    assert.ok(
-      (
-        await stat(`out/books/${book.slug}/${chapter.slug}/index.html`)
-      ).isFile(),
+    assert.match(
+      await readFile(`out/books/${book.slug}/${chapter.slug}/index.html`, "utf8"),
+      /class="chapter-title"/,
     );
 }
 for (const route of [
@@ -62,7 +66,8 @@ for (const route of [
   "login/index.html",
   "register/index.html",
   "reset-password/index.html",
-  "account/index.html",
+  "guestbook/index.html",
+  "favorites/index.html",
   "admin/users/index.html",
   "admin/invites/index.html",
 ])
@@ -78,5 +83,5 @@ assert.ok(
   ),
 );
 console.log(
-  `Protected export verified: ${texts.length} text assets scanned; ${books.length} books, ${books.reduce((sum, b) => sum + b.chapters.length, 0)} chapter shells; no sampled editorial content found.`,
+  `Protected export verified: ${texts.length} text assets scanned; ${books.length} books, ${books.reduce((sum, b) => sum + b.chapters.length, 0)} pre-rendered chapters; no sampled editorial content found outside the protected routes.`,
 );

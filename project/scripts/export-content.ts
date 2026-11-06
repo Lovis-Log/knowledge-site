@@ -1,48 +1,12 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { getAllBooks, getLibrarySections } from "../content/index";
-import { bookEnglish, taxonomyEnglish } from "../lib/content-translations";
-import type { Book, Chapter } from "../content/types";
-function metadata(chapter: Chapter): Chapter {
-  return {
-    ...chapter,
-    versions: Object.fromEntries(
-      Object.entries(chapter.versions).map(([lang, v]) => [
-        lang,
-        { ...v, body: "" },
-      ]),
-    ),
-    translation: chapter.translation
-      ? { ...chapter.translation, body: "" }
-      : undefined,
-  };
-}
+import { getPageCatalog } from "../content/catalog";
+import { getAllBooks } from "../content/index";
+
 export async function exportContent() {
   const books = getAllBooks();
-  const bookMetadata = books.map((book) => ({
-    ...book,
-    chapters: book.chapters.map(metadata),
-  }));
-  const bySlug = new Map(bookMetadata.map((book) => [book.slug, book]));
-  const sections = getLibrarySections().map((section) => ({
-    ...section,
-    books: section.books.map((b) => bySlug.get(b.slug)!),
-    preview: section.preview.map((b) => bySlug.get(b.slug)!),
-    groups: section.groups.map((g) => ({
-      ...g,
-      books: g.books.map((b) => bySlug.get(b.slug)!),
-    })),
-  }));
   const entries: [string, string][] = [
-    [
-      "catalog",
-      JSON.stringify({
-        books: bookMetadata,
-        sections,
-        bookEnglish,
-        taxonomyEnglish,
-      }),
-    ],
+    ["catalog", JSON.stringify(getPageCatalog())],
   ];
   for (const book of books)
     for (const chapter of book.chapters)

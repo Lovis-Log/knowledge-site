@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useRef, useState } from "react";
 import { UiText } from "@/components/ui-text";
 import { AccountIcon } from "@/components/account-icon";
@@ -19,8 +19,11 @@ export function AccountMenu() {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<Account | null>(null);
   const [ready, setReady] = useState(false);
+  const [lookupError, setLookupError] = useState("");
+  const [attempt, setAttempt] = useState(0);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const signingOut = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -33,12 +36,12 @@ export function AccountMenu() {
         setReady(true);
       })
       .catch(() => {
-        if (live) setReady(true);
+        if (live) setLookupError("无法读取登录状态 / Unable to check sign-in");
       });
     return () => {
       live = false;
     };
-  }, []);
+  }, [attempt]);
 
   useEffect(() => {
     if (!open) return;
@@ -58,19 +61,9 @@ export function AccountMenu() {
     };
   }, [open]);
 
-  function activate() {
-    if (!ready) return;
-    if (!user) {
-      const next = encodeURIComponent(
-        window.location.pathname + window.location.search,
-      );
-      window.location.assign(`/login/?next=${next}`);
-      return;
-    }
-    setOpen((current) => !current);
-  }
-
   async function logout() {
+    if (signingOut.current) return;
+    signingOut.current = true;
     setBusy(true);
     setError("");
     try {
@@ -80,49 +73,78 @@ export function AccountMenu() {
       setError(
         caught instanceof Error ? caught.message : "退出失败 / Unable to sign out",
       );
+      signingOut.current = false;
       setBusy(false);
     }
   }
 
   return (
-    <div className="account-menu" ref={rootRef}>
-      <button
-        type="button"
-        ref={triggerRef}
-        className="site-nav__account"
-        aria-haspopup="true"
-        aria-expanded={open}
-        onClick={activate}
-        {...uiLabel("账号", "Account")}
-      >
-        <AccountIcon />
-        <span className="site-nav__account-label"><UiText zh="账号" en="Account" /></span>
-      </button>
-      {open && user && (
-        <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>
-          <p className="account-pop__name">
-            {user.nickname && user.nickname !== user.username
-              ? `${user.nickname} · ${user.username}`
-              : user.username}
-          </p>
-          {user.role === "admin" && (
-            <Link href="/admin/users/" onClick={() => setOpen(false)}>
-              <UiText zh="管理用户" en="Manage users" />
-            </Link>
-          )}
-          {error && (
-            <p className="account-pop__error" role="alert">
-              {error}
-            </p>
-          )}
-          <button type="button" onClick={logout} disabled={busy}>
-            <UiText
-              zh={busy ? "退出中…" : "退出登录"}
-              en={busy ? "Signing out…" : "Sign out"}
-            />
-          </button>
-        </div>
+    <>
+      {user && (
+        <Link href="/guestbook/" prefetch={false} className="site-nav__guestbook" {...uiLabel("留言板", "Guestbook")}>
+          <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" aria-hidden="true">
+            <path d="M4 4h16v12H9l-5 4zM8 8h8m-8 4h8" />
+          </svg>
+          <UiText zh="留言板" en="Guestbook" />
+        </Link>
       )}
-    </div>
+      <div className="account-menu" ref={rootRef}>
+        <button
+          type="button"
+          ref={triggerRef}
+          className="site-nav__account"
+          aria-haspopup="true"
+          aria-expanded={open}
+          onClick={() => setOpen((current) => !current)}
+          {...uiLabel("账号", "Account")}
+        >
+          <AccountIcon />
+          <span className="site-nav__account-label"><UiText zh="账号" en="Account" /></span>
+        </button>
+        {open && !ready && (
+          <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>
+            {lookupError ? <>
+              <p className="account-pop__error" role="alert">{lookupError}</p>
+              <button type="button" onClick={() => { setLookupError(""); setAttempt((value) => value + 1); }}>
+                <UiText zh="重试" en="Retry" />
+              </button>
+            </> : <p role="status"><UiText zh="正在读取账号…" en="Checking account…" /></p>}
+          </div>
+        )}
+        {open && ready && !user && (
+          <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>
+            <Link href={"/login/?next=" + encodeURIComponent(window.location.pathname + window.location.search)} onClick={() => setOpen(false)}><UiText zh="登录" en="Sign in" /></Link>
+          </div>
+        )}
+        {open && user && (
+          <div className="account-pop" role="dialog" {...uiLabel("账号菜单", "Account menu")}>
+            <p className="account-pop__name">
+              {user.nickname && user.nickname !== user.username
+                ? `${user.nickname} · ${user.username}`
+                : user.username}
+            </p>
+            <Link href="/favorites/" prefetch={false} onClick={() => setOpen(false)}>
+              <UiText zh="我的收藏" en="My favorites" />
+            </Link>
+            {user.role === "admin" && (
+              <Link href="/admin/users/" onClick={() => setOpen(false)}>
+                <UiText zh="管理用户" en="Manage users" />
+              </Link>
+            )}
+            {error && (
+              <p className="account-pop__error" role="alert">
+                {error}
+              </p>
+            )}
+            <button type="button" onClick={logout} disabled={busy}>
+              <UiText
+                zh={busy ? "退出中…" : "退出登录"}
+                en={busy ? "Signing out…" : "Sign out"}
+              />
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

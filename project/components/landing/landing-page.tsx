@@ -30,10 +30,10 @@ const nodeMessages: Record<NodeKey, [string, string]> = {
 };
 
 const previewImages = [
-  { file: "linear-algebra.png", width: 1380, height: 1026, zh: "线性代数课程的书封与章节目录", en: "Book cover and chapter list for a linear algebra course" },
-  { file: "agent.png", width: 1020, height: 988, zh: "AI Agent 课程章节阅读界面", en: "Reading view for an AI agent course chapter" },
-  { file: "ai-shelf.png", width: 1340, height: 1096, zh: "AI 时代书架", en: "AI Era bookshelf" },
-  { file: "mobile.jpg", width: 1440, height: 3020, zh: "手机端书库与精选收录", en: "Mobile library and curated collection" },
+  { file: "linear-algebra.webp", width: 1380, height: 1026, zh: "线性代数课程的书封与章节目录", en: "Book cover and chapter list for a linear algebra course" },
+  { file: "agent.webp", width: 1020, height: 988, zh: "AI Agent 课程章节阅读界面", en: "Reading view for an AI agent course chapter" },
+  { file: "ai-shelf.webp", width: 1340, height: 1096, zh: "AI 时代书架", en: "AI Era bookshelf" },
+  { file: "mobile.webp", width: 1440, height: 3020, zh: "手机端书库与精选收录", en: "Mobile library and curated collection" },
 ];
 
 function Arrow() {
@@ -211,7 +211,7 @@ export function LandingPage() {
       >
         <div className={styles.heroMedia} ref={mediaRef} aria-hidden="true">
           <img
-            src="/images/lovismind-cover.png"
+            src="/images/lovismind-cover.webp"
             alt=""
             width={1254}
             height={1254}

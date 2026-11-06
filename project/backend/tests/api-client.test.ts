@@ -88,3 +88,27 @@ test("malformed CSRF responses stop mutations before submission", async () => {
     globalThis.fetch = original;
   }
 });
+
+test("mutations reuse CSRF and retry only a rejected token", async () => {
+  const original = globalThis.fetch;
+  const tokens = ["a".repeat(64), "b".repeat(64)];
+  let reads = 0;
+  let writes = 0;
+  try {
+    globalThis.fetch = async (input, init) => {
+      if (input === "/api/auth/csrf") return Response.json({ token: tokens[reads++] });
+      const token = new Headers(init?.headers).get("X-CSRF-Token");
+      writes++;
+      return writes === 3
+        ? Response.json({ code: "CSRF_FAILED" }, { status: 403 })
+        : Response.json({ token });
+    };
+    assert.deepEqual(await api("/api/favorites", "POST", {}), { token: tokens[0] });
+    assert.deepEqual(await api("/api/favorites", "POST", {}), { token: tokens[0] });
+    assert.deepEqual(await api("/api/favorites", "POST", {}), { token: tokens[1] });
+    assert.equal(reads, 2);
+    assert.equal(writes, 4);
+  } finally {
+    globalThis.fetch = original;
+  }
+});

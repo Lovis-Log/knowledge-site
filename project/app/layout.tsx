@@ -1,3 +1,4 @@
+import { NavigationFeedback } from "@/components/navigation-feedback";
 import { UiText } from "@/components/ui-text";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <UiText zh="跳到正文" />
         </a>
         <SiteHeader crumbs={crumbs} />
+        <NavigationFeedback />
         <main id="main" className="site-main">
           {children}
         </main>

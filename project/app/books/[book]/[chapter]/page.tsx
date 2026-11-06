@@ -1,3 +1,4 @@
+import { getPageCatalog } from "@/content/catalog";
 import { getAllBooks } from "@/content";
 import { ProtectedContent } from "@/content/client";
 import ChapterView from "@/components/chapter-view";
@@ -14,7 +15,7 @@ export default async function Page({
 }) {
   const { book, chapter } = await params;
   return (
-    <ProtectedContent book={book} chapter={chapter}>
+    <ProtectedContent catalog={getPageCatalog({ book, chapter })}>
       <ChapterView bookSlug={book} chapterSlug={chapter} />
     </ProtectedContent>
   );

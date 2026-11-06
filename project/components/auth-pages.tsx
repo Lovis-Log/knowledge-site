@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { api, ApiError, safeNext } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { PasswordInput } from "./password-input";
@@ -8,13 +8,6 @@ import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
 } from "@/lib/password-policy";
-export type Account = {
-  id: string;
-  username: string;
-  nickname: string;
-  role: "user" | "admin";
-  status: string;
-};
 const statuses: Record<string, [string, string]> = {
   pending: [
     "申请正在等待审核，请稍后再来登录。",
@@ -258,60 +251,6 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
             </Link>
           )}
         </div>
-      </section>
-    </div>
-  );
-}
-export function AccountPage() {
-  const [user, setUser] = useState<Account | null>(null),
-    [error, setError] = useState("");
-  useEffect(() => {
-    void api<{ user: Account | null }>("/api/auth/me")
-      .then(({ user }) => {
-        if (!user) window.location.replace("/login/");
-        else setUser(user);
-      })
-      .catch((e) => setError(e.message));
-  }, []);
-  async function logout() {
-    try {
-      await api("/api/auth/logout", "POST", {});
-      window.location.replace("/");
-    } catch (e) {
-      setError(
-        e instanceof Error ? e.message : "退出失败 / Unable to sign out",
-      );
-    }
-  }
-  return (
-    <div className="shell auth-shell">
-      <section className="auth-card">
-        <h1>
-          <UiText zh="我的账号" en="My account" />
-        </h1>
-        {error && <p role="alert">{error}</p>}
-        {user && (
-          <>
-            <p>
-              {user.nickname && user.nickname !== user.username
-                ? `${user.nickname} · ${user.username}`
-                : user.username}
-            </p>
-            <div className="auth-links">
-              <Link href="/library/">
-                <UiText zh="进入书库" en="Open library" />
-              </Link>
-              {user.role === "admin" && (
-                <Link href="/admin/users/">
-                  <UiText zh="管理用户" en="Manage users" />
-                </Link>
-              )}
-            </div>
-            <button className="auth-button" onClick={logout}>
-              <UiText zh="退出登录" en="Sign out" />
-            </button>
-          </>
-        )}
       </section>
     </div>
   );

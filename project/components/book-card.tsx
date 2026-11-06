@@ -1,13 +1,13 @@
 import { UiText, UiCount } from "@/components/ui-text";
 import {useContent} from "@/content/client";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { CSSProperties } from "react";
 import { BookCover } from "@/components/book-cover";
 import type { Book } from "@/content/types";
 import { contentTypeLabel } from "@/lib/content-labels";
 import { formatAuthors } from "@/lib/format";
 
-export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
+export function BookCard({ book, index = 0, priority = false }: { book: Book; index?: number; priority?: boolean }) {
   const {bookEnglish}=useContent();
   const href = `/books/${book.slug}/`;
   const badge = book.collection
@@ -20,8 +20,8 @@ export function BookCard({ book, index = 0 }: { book: Book; index?: number }) {
 
   return (
     <article className="book-card" style={{ "--i": index } as CSSProperties}>
-      <Link href={href} className="book-card__cover">
-        <BookCover book={book} heading />
+      <Link prefetch={false} href={href} className="book-card__cover">
+        <BookCover book={book} heading priority={priority} />
       </Link>
       <div className="book-card__body">
         {(badge || byline) && (

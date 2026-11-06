@@ -190,6 +190,114 @@ async function content(db: DB, key: string) {
     },
   });
 }
+type FavoriteTitle = { zh: string; en: string };
+declare const FAVORITE_TITLES: Record<string, FavoriteTitle>;
+
+function favoritePath(book: string, chapter: string) {
+  return `/books/${book}/${chapter ? chapter + "/" : ""}`;
+}
+
+function favoriteTarget(book: unknown, chapter: unknown) {
+  const slug = /^[a-z0-9][a-z0-9-]{0,159}$/;
+  if (
+    typeof book !== "string" || !slug.test(book) ||
+    typeof chapter !== "string" || (chapter !== "" && !slug.test(chapter))
+  ) fail(400, "INVALID_TARGET", "收藏目标无效 / Invalid favorite target");
+  return { book, chapter };
+}
+
+async function favoritesApi(request: Request, db: DB, path: string) {
+  const user = await requireUser(request, db);
+  const method = request.method;
+  const query = new URL(request.url).searchParams;
+  if (method === "GET" && path === "/api/favorites") {
+    const { results } = await db.prepare(
+      "SELECT book,chapter FROM favorites WHERE user_id=? ORDER BY created_at DESC,rowid DESC",
+    ).bind(user.id).all<{ book: string; chapter: string }>();
+    return json({ items: results.map((item) => {
+      const href = favoritePath(item.book, item.chapter);
+      const title = FAVORITE_TITLES[href] ?? null;
+      return { ...item, href: title ? href : null, title };
+    }) });
+  }
+  if (method === "GET" && path === "/api/favorites/status") {
+    const { book, chapter } = favoriteTarget(query.get("book"), query.get("chapter") ?? "");
+    const found = await db.prepare(
+      "SELECT 1 FROM favorites WHERE user_id=? AND book=? AND chapter=?",
+    ).bind(user.id, book, chapter).first();
+    return json({ saved: Boolean(found) });
+  }
+  if (method === "POST" && path === "/api/favorites") {
+    const data = await body(request);
+    const { book, chapter } = favoriteTarget(data.book, data.chapter ?? "");
+    if (typeof data.saved !== "boolean")
+      fail(400, "INVALID_STATE", "收藏状态无效 / Invalid favorite state");
+    if (data.saved) {
+      if (!FAVORITE_TITLES[favoritePath(book, chapter)])
+        fail(404, "NOT_FOUND", "内容已下架 / Content unavailable");
+      await db.prepare(
+        "INSERT INTO favorites(user_id,book,chapter) VALUES(?,?,?) ON CONFLICT DO NOTHING",
+      ).bind(user.id, book, chapter).run();
+    } else {
+      await db.prepare("DELETE FROM favorites WHERE user_id=? AND book=? AND chapter=?")
+        .bind(user.id, book, chapter).run();
+    }
+    return json({ saved: data.saved });
+  }
+  return fail(404, "NOT_FOUND", "接口不存在 / Endpoint not found");
+}
+
+async function guestbookApi(request: Request, db: DB, path: string) {
+  const moderation = path === "/api/admin/guestbook";
+  const user = await requireUser(request, db, moderation);
+  const method = request.method;
+  if (method === "GET") {
+    const before = Number(new URL(request.url).searchParams.get("before") ?? Number.MAX_SAFE_INTEGER);
+    if (!Number.isSafeInteger(before) || before < 1)
+      fail(400, "INVALID_CURSOR", "分页参数无效 / Invalid page cursor");
+    const { results } = await db.prepare(
+      "SELECT g.id,g.user_id,g.message,g.created_at,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=? AND g.id<? ORDER BY g.id DESC LIMIT 21",
+    ).bind(moderation ? 1 : 0, before).all<{
+      id: number; user_id: string; message: string; created_at: number; nickname: string;
+    }>();
+    const items = results.slice(0, 20).map(({ user_id, ...item }) => ({
+      ...item, own: user_id === user.id,
+    }));
+    return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === "admin" });
+  }
+  if (method === "POST") {
+    const data = await body(request);
+    if (path === "/api/guestbook" && data.action === "publish") {
+      const message = text(data, "message", 1, 1000);
+      await limit(db, `guestbook:${user.id}`, 5, 600);
+      const createdAt = now();
+      const entry = await db.prepare(
+        "INSERT INTO guestbook_entries(user_id,message,created_at) VALUES(?,?,?) RETURNING id",
+      ).bind(user.id, message, createdAt).first<{ id: number }>();
+      if (!entry) fail(500, "SAVE_FAILED", "留言保存失败 / Could not save message");
+      return json({
+        item: { id: entry.id, message, created_at: createdAt, nickname: user.nickname, own: true },
+      }, 201);
+    }
+    const id = data.id;
+    if (typeof id !== "number" || !Number.isSafeInteger(id) || id < 1)
+      fail(400, "INVALID_ID", "留言编号无效 / Invalid message ID");
+    if (moderation && (data.action === "hide" || data.action === "restore")) {
+      const result = await db.prepare("UPDATE guestbook_entries SET hidden=? WHERE id=?")
+        .bind(data.action === "hide" ? 1 : 0, id).run();
+      if (!result.meta.changes) fail(404, "NOT_FOUND", "留言不存在 / Message not found");
+      return json({ ok: true });
+    }
+    if (!moderation && data.action === "delete") {
+      const result = await db.prepare("DELETE FROM guestbook_entries WHERE id=? AND user_id=?")
+        .bind(id, user.id).run();
+      if (!result.meta.changes) fail(404, "NOT_FOUND", "留言不存在 / Message not found");
+      return json({ ok: true });
+    }
+  }
+  return fail(404, "NOT_FOUND", "接口不存在 / Endpoint not found");
+}
+
 async function api(request: Request, db: DB, path: string) {
   const method = request.method;
   if (method === "GET" && path === "/api/auth/csrf") {
@@ -197,6 +305,10 @@ async function api(request: Request, db: DB, path: string) {
     return json({ token }, 200, { "Set-Cookie": setCookie(CSRF, token, 3600) });
   }
   if (!["GET", "HEAD"].includes(method)) csrf(request);
+  if (path === "/api/guestbook" || path === "/api/admin/guestbook")
+    return guestbookApi(request, db, path);
+  if (path === "/api/favorites" || path === "/api/favorites/status")
+    return favoritesApi(request, db, path);
   const ip = request.headers.get("CF-Connecting-IP") ?? "local";
   if (method === "POST" && path === "/api/auth/register") {
     await limit(db, `register:${ip}`, 5, 3600);
@@ -422,7 +534,7 @@ async function api(request: Request, db: DB, path: string) {
         !["pending", "approved", "rejected", "disabled"].includes(status)
       )
         fail(400, "INVALID_STATUS", "Invalid status");
-      const [users, pending, total] = await Promise.all([
+      const [users, counts] = await Promise.all([
         db
           .prepare(
             "SELECT id,username,nickname,reason,role,status,created_at,version FROM users WHERE (?='' OR status=?) ORDER BY created_at DESC,id LIMIT 30 OFFSET ?",
@@ -430,19 +542,18 @@ async function api(request: Request, db: DB, path: string) {
           .bind(status, status, (Math.floor(page) - 1) * 30)
           .all(),
         db
-          .prepare("SELECT count(*) AS count FROM users WHERE status='pending'")
-          .first<{ count: number }>(),
-        db
-          .prepare(
-            "SELECT count(*) AS count FROM users WHERE (?='' OR status=?)",
-          )
-          .bind(status, status)
-          .first<{ count: number }>(),
+          .prepare("SELECT status,count(*) AS count FROM users GROUP BY status")
+          .all<{ status: User["status"]; count: number }>(),
       ]);
+      const statusCounts = { pending: 0, approved: 0, rejected: 0, disabled: 0 };
+      for (const row of counts.results) statusCounts[row.status] = row.count;
+      const accountCount = Object.values(statusCounts).reduce((sum, count) => sum + count, 0);
       return json({
         users: users.results,
-        pendingCount: pending?.count ?? 0,
-        total: total?.count ?? 0,
+        pendingCount: statusCounts.pending,
+        total: status ? statusCounts[status as User["status"]] : accountCount,
+        accountCount,
+        statusCounts,
         page: Math.floor(page),
       });
     }
@@ -660,11 +771,17 @@ export default {
           "/images/hero-scene.webp",
           "/images/landing-hero.webp",
           "/images/lovismind-cover.png",
+          "/images/lovismind-cover.webp",
           "/images/preface-warm-light.png",
+          "/images/preface-warm-light.webp",
           "/images/vault-preview/agent.png",
+          "/images/vault-preview/agent.webp",
           "/images/vault-preview/ai-shelf.png",
+          "/images/vault-preview/ai-shelf.webp",
           "/images/vault-preview/linear-algebra.png",
+          "/images/vault-preview/linear-algebra.webp",
           "/images/vault-preview/mobile.jpg",
+          "/images/vault-preview/mobile.webp",
           "/images/wechat-pay.png",
         ].includes(path) ||
         path === "/index.txt" ||
@@ -682,6 +799,9 @@ export default {
           },
           503,
         );
+      }
+      if ((path === "/account" || path === "/account/index.html") && ["GET", "HEAD"].includes(request.method)) {
+        return new Response(null, { status: 308, headers: { Location: "/library/", "Cache-Control": "no-store" } });
       }
       const db = env.DB.withSession("first-primary");
       if (path.startsWith("/api/")) return await api(request, db, path);
@@ -704,7 +824,8 @@ export default {
         return json({ code: "FORBIDDEN" }, 403);
       const response = await env.ASSETS.fetch(request);
       const headers = new Headers(response.headers);
-      headers.set("Cache-Control", "private, no-store");
+      const coverThumbnail = /^\/covers\/[^/]+-(?:240|480)\.webp$/.test(path);
+      headers.set("Cache-Control", coverThumbnail ? "private, no-cache" : "private, no-store");
       headers.set("X-Content-Type-Options", "nosniff");
       return new Response(response.body, { status: response.status, headers });
     } catch (error) {

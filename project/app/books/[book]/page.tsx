@@ -1,3 +1,4 @@
+import { getPageCatalog } from "@/content/catalog";
 import { getAllBooks } from "@/content";
 import { ProtectedContent } from "@/content/client";
 import BookView from "@/components/book-view";
@@ -12,7 +13,7 @@ export default async function Page({
 }) {
   const { book } = await params;
   return (
-    <ProtectedContent>
+    <ProtectedContent catalog={getPageCatalog({ book })}>
       <BookView slug={book} />
     </ProtectedContent>
   );

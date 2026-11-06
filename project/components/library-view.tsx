@@ -3,7 +3,7 @@ import { UiText, UiCount } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 import { BookCard } from "@/components/book-card";
 import { BookShelf } from "@/components/book-shelf";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { LibraryNav } from "@/components/library-nav";
 import {
   ContinueReading,
@@ -48,7 +48,7 @@ export default function LibraryView() {
       <ContinueReading items={continueItems} />
 
       <div className="library">
-        {sections.map((section) => (
+        {sections.map((section, sectionIndex) => (
           <section
             key={section.slug}
             className="library-preview"
@@ -105,7 +105,7 @@ export default function LibraryView() {
                     ),
                 ),
               ].map((book, index) => (
-                <BookCard key={book.slug} book={book} index={index} />
+                <BookCard key={book.slug} book={book} index={index} priority={sectionIndex === 0 && index < 2} />
               ))}
             </BookShelf>
           </section>

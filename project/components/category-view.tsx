@@ -38,7 +38,7 @@ export default function CategoryView({ category }: { category: string }) {
       {section.groupByCategory === false ? (
         <div className="library__grid">
           {section.books.map((book, index) => (
-            <BookCard key={book.slug} book={book} index={index} />
+            <BookCard key={book.slug} book={book} index={index} priority={index < 2} />
           ))}
         </div>
       ) : (
@@ -76,7 +76,7 @@ export default function CategoryView({ category }: { category: string }) {
             )}
             <div className="library__grid">
               {group.books.map((book, bookIndex) => (
-                <BookCard key={book.slug} book={book} index={bookIndex} />
+                <BookCard key={book.slug} book={book} index={bookIndex} priority={index === 0 && bookIndex < 2} />
               ))}
             </div>
           </section>

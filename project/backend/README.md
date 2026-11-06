@@ -18,7 +18,7 @@ npm run build
 npm run dev:full
 ```
 
-访问 `http://localhost:8788/`。必须用 Pages/Workers 开发服务器才能验证鉴权；`next dev` 只适合界面调试，不提供后端。不得用纯静态服务器发布 `out/`，其附件访问保护由 `_worker.js` 执行。
+访问 `http://localhost:8788/`。必须用 Pages/Workers 开发服务器才能验证鉴权；`next dev` 只适合界面调试，不提供后端。不得用纯静态服务器发布 `out/`，其中包含阅读页的预生成正文、导航数据和附件，访问保护由 `_worker.js` 执行。
 
 `admin:init` 通过终端交互读取用户名及隐藏密码，默认只写本地 D1。只有没有任何管理员时才插入首个管理员；不会提升已有普通用户或覆盖已有管理员密码。临时 SQL 和本地数据库均已忽略。生产管理员须使用自己的独立密码，本地验收账号不会上传云端。
 
@@ -31,7 +31,7 @@ npm run test:auth
 npm run benchmark:auth
 ```
 
-`test:auth` 使用 Miniflare / workerd 和独立临时 D1；请先执行 `npm run build`。`verify` 扫描静态 HTML、RSC 数据和浏览器代码中的抽样正文及书目介绍；它不能证明公开 GitHub 仓库保密。数学和代码样式在真实阅读页面验证。
+`test:auth` 使用 Miniflare / workerd 和独立临时 D1；请先执行 `npm run build`。`verify` 检查阅读页已经预生成，并扫描受保护页面以外的 HTML、RSC 数据和浏览器代码中的抽样正文及书目介绍；它不能证明公开 GitHub 仓库保密。数学和代码样式在真实阅读页面验证。
 
 ## 数据和权限
 
@@ -54,10 +54,10 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 | 路由 | 访问条件 |
 | --- | --- |
 | `/`、`/login/`、`/register/`、`/reset-password/` | 公开；重置必须另持有效凭据 |
-| `/library/`、`/categories/*`、`/books/*`、`/about/`、`/account/` | 已通过账号 |
+| `/library/`、`/categories/*`、`/books/*`、`/about/`、`/guestbook/`、`/favorites/` | 已通过账号 |
 | `/admin/users/`、`/admin/invites/` | 已通过管理员 |
 
-原有书籍和章节 URL 保留；静态页面只有框架和 slug，阅读数据由后端返回。受保护页面、内容接口及附件响应不允许共享缓存。公开目录仅含通用框架代码、品牌、字体、首页装饰和收款码。
+旧 `/account/` 跳转到 `/library/`。原有书籍和章节 URL 保留；书库、分类、书页和章节在构建时预生成。Worker 校验会话和审核状态后直接返回 HTML 或导航数据。受保护页面、内容接口及附件响应不允许共享缓存。公开目录仅含通用框架代码、品牌、字体、首页装饰和收款码。
 
 | API | 作用 |
 | --- | --- |
@@ -96,7 +96,7 @@ npm run deploy:preview
 ```
 
 5. 检查预览的注册、密码哈希真实 CPU/内存、审核、邀请码并发、退出/禁用/重置撤销、直链附件及 RSC 访问。确认前不合并、不发布到 main。
-6. 生产部署时独立执行 production 迁移、内容导入和首管初始化，再切换生产。代码与数据库版本配套发布；当前导出页数由内容构建决定，新增章节后需同时发布新的页面框架与内容版本。
+6. 生产部署时独立执行 production 迁移、内容导入和首管初始化，再切换生产。代码与数据库版本配套发布；当前导出页数由内容构建决定，新增章节后需同时发布新的静态页面与 API 内容版本。
 7. 列出旧 Pages 部署、别名及 CDN 缓存；获得确认后清理或限制旧公开入口。保留公开源码的既定选择不受影响。仅回滚到另一个带鉴权的版本，不能回滚到原公开静态站并仍声称需要登录。
 
 未来若有外部服务密钥，使用 Cloudflare Secrets，不能写入 Wrangler 文件或 Git；当前认证不需要额外会话签名密钥。
@@ -105,7 +105,7 @@ npm run deploy:preview
 
 ## 内容发布与维护
 
-源文件继续由原加载器解析，不修改书名、分类、归属或编号。系统通用文案在 `lib/ui-language.ts`；目录和书目译名在 `lib/content-translations.ts`，只经鉴权内容接口下发。知识库内容变更后先构建、检查，再向目标环境导入内容并发布。
+源文件继续由原加载器解析，不修改书名、分类、归属或编号。系统通用文案在 `lib/ui-language.ts`；目录和书目译名在 `lib/content-translations.ts`，随鉴权后的页面或内容接口下发。知识库内容变更后先构建、检查，再向目标环境导入内容并发布。
 
 旧内容版本不自动删除，以支持回滚。可查询 `content_versions`，把 `content_current.version_id` 指回一个已验证版本；代码导出的 slug 页面也须与之兼容。定期评估旧版本存储量后再明确选择保留策略。
 

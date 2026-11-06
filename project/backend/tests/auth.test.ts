@@ -103,7 +103,7 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
     for (const statement of sql.split(/;(?=\s*(?:CREATE|PRAGMA|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
@@ -323,23 +323,28 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/register/__next.register/__PAGE__.txt",
     "/_next/static/app.js",
     "/images/hero-scene.webp",
-    "/images/lovismind-cover.png",
-    "/images/preface-warm-light.png",
-    "/images/vault-preview/agent.png",
-    "/images/vault-preview/ai-shelf.png",
-    "/images/vault-preview/linear-algebra.png",
-    "/images/vault-preview/mobile.jpg",
+    "/images/lovismind-cover.webp",
+    "/images/preface-warm-light.webp",
+    "/images/vault-preview/agent.webp",
+    "/images/vault-preview/ai-shelf.webp",
+    "/images/vault-preview/linear-algebra.webp",
+    "/images/vault-preview/mobile.webp",
   ])
     assert.equal((await c.call(path)).status, 200, path);
   for (const path of [
     "/library/",
+    "/library/index.html",
+    "/library/__next._full.txt",
     "/books/book/chapter/",
+    "/books/book/chapter/index.html",
     "/books/book/chapter/index.txt",
+    "/books/book/chapter/__next._full.txt",
     "/covers/book.webp",
     "/images/projection-error.svg",
     "/images/vault-preview/unlisted.png",
     "/about/",
-    "/account/",
+    "/guestbook/",
+    "/favorites/",
     "/admin/users/",
   ])
     assert.equal((await c.call(path)).status, 401, path);
@@ -350,6 +355,26 @@ test("anonymous website, payloads, attachments and content API enforce the publi
   });
   assert.equal(response.status, 303);
   assert.match(response.headers.get("Location")!, /^\/login\/\?next=/);
+  const legacyAccount = await c.call("/account/");
+  assert.equal(legacyAccount.status, 308);
+  assert.equal(legacyAccount.headers.get("Location"), "/library/");
+});
+
+test("admin account totals include every status independently of the filter", async () => {
+  const response = await admin.call("/api/admin/users?status=pending");
+  assert.equal(response.status, 200);
+  const data = await response.json() as {
+    accountCount: number;
+    total: number;
+    pendingCount: number;
+    statusCounts: Record<string, number>;
+  };
+  assert.deepEqual(Object.keys(data.statusCounts).sort(), ["approved", "disabled", "pending", "rejected"]);
+  assert.equal(data.total, data.statusCounts.pending);
+  assert.equal(data.pendingCount, data.statusCounts.pending);
+  assert.equal(data.accountCount, Object.values(data.statusCounts).reduce((sum, count) => sum + count, 0));
+  assert.ok(data.accountCount > data.total);
+  assert.equal((await client().call("/api/admin/users")).status, 401);
 });
 test("CSRF rejects missing credentials and foreign origins", async () => {
   const c = client();
@@ -397,6 +422,8 @@ test("manual applications are pending, privileged fields ignored, status disclos
   );
   assert.equal(c.sessionCookie, "");
   assert.equal((await c.call("/api/content/catalog")).status, 401);
+  assert.equal((await c.call("/api/guestbook")).status, 401);
+  assert.equal((await c.call("/api/favorites")).status, 401);
 });
 test("approval grants reading, ordinary users cannot administer, logout revokes session and cookies are secure", async () => {
   assert.equal((await review("manual_reader", "approve")).status, 200);
@@ -829,4 +856,69 @@ test("registration rate limits are persistent and input validation runs on the b
     confirmPassword: "different password",
   });
   assert.equal(mismatch.status, 400);
+});
+
+test("guestbook enforces authorship, moderation, visibility and per-user posting limits", async () => {
+  const anonymous = client();
+  assert.equal((await anonymous.call("/api/guestbook")).status, 401);
+  assert.equal((await anonymous.call("/api/favorites")).status, 401);
+  const reader = client();
+  const access = await invite();
+  assert.equal((await reader.call("/api/auth/register", "POST", registration("guestbook_reader", access.code))).status, 201);
+  assert.equal((await reader.call("/api/auth/login", "POST", { username: "guestbook_reader", password })).status, 200);
+  const publish = (message: string) => reader.call("/api/guestbook", "POST", { action: "publish", message });
+  assert.equal((await publish(" ".repeat(12))).status, 400);
+  assert.equal((await publish("x".repeat(1001))).status, 400);
+  assert.equal((await publish("<script>plain text</script>")).status, 201);
+  const list = async (c: ReturnType<typeof client>, path = "/api/guestbook") =>
+    ((await (await c.call(path)).json()) as { items: { id: number; own: boolean; message: string }[] }).items;
+  const [posted] = await list(admin);
+  assert.equal(posted.message, "<script>plain text</script>");
+  assert.equal(posted.own, false);
+  assert.equal((await list(reader))[0].own, true);
+  assert.equal((await reader.call("/api/admin/guestbook")).status, 403);
+  assert.equal((await reader.call("/api/admin/guestbook", "POST", { action: "hide", id: posted.id })).status, 403);
+  assert.equal((await admin.call("/api/guestbook", "POST", { action: "delete", id: posted.id })).status, 404);
+  assert.equal((await admin.call("/api/admin/guestbook", "POST", { action: "hide", id: posted.id })).status, 200);
+  assert.equal((await list(reader)).length, 0);
+  assert.equal((await list(admin, "/api/admin/guestbook"))[0].id, posted.id);
+  assert.equal((await admin.call("/api/admin/guestbook", "POST", { action: "restore", id: posted.id })).status, 200);
+  assert.equal((await list(reader))[0].id, posted.id);
+  assert.equal((await reader.call("/api/guestbook", "POST", { action: "delete", id: posted.id })).status, 200);
+  for (let i = 0; i < 4; i++) assert.equal((await publish("Post " + i)).status, 201);
+  assert.equal((await publish("Rate limited")).status, 429);
+  const readerId = (await user("guestbook_reader"))!.id;
+  for (let i = 0; i < 20; i++)
+    await db.prepare("INSERT INTO guestbook_entries(user_id,message) VALUES(?,?)").bind(readerId, "Pagination " + i).run();
+  const first = await (await reader.call("/api/guestbook")).json() as { items: { id: number }[]; next: number };
+  assert.equal(first.items.length, 20);
+  const second = await list(reader, "/api/guestbook?before=" + first.next);
+  assert.equal(second.length, 4);
+  assert.ok(second.every((item) => item.id < first.next));
+});
+
+test("favorites are account scoped, idempotent and removable after content is unavailable", async () => {
+  const access = await invite();
+  const deviceA = client(), deviceB = client();
+  assert.equal((await deviceA.call("/api/auth/register", "POST", registration("favorite_reader", access.code))).status, 201);
+  for (const device of [deviceA, deviceB])
+    assert.equal((await device.call("/api/auth/login", "POST", { username: "favorite_reader", password })).status, 200);
+  const book = "llm-knowledge-base", chapter = "01-karpathy-llm-wiki";
+  const save = (target: { book: string; chapter?: string; saved: boolean }) =>
+    deviceA.call("/api/favorites", "POST", target);
+  const results = await Promise.all([save({ book, saved: true }), save({ book, saved: true })]);
+  assert.ok(results.every((result) => result.status === 200));
+  assert.equal((await save({ book, chapter, saved: true })).status, 200);
+  assert.deepEqual(await (await deviceB.call("/api/favorites/status?book=" + book)).json(), { saved: true });
+  assert.deepEqual(await (await admin.call("/api/favorites")).json(), { items: [] });
+  assert.equal((await save({ book: "removed-book", saved: true })).status, 404);
+  await db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,?,'')")
+    .bind((await user("favorite_reader"))!.id, "removed-book").run();
+  const data = await (await deviceB.call("/api/favorites")).json() as { items: { book: string; chapter: string; href: string | null }[] };
+  assert.equal(data.items.length, 3);
+  assert.equal(data.items.find((item) => item.chapter === chapter)?.href, `/books/${book}/${chapter}/`);
+  assert.equal(data.items.find((item) => item.book === "removed-book")?.href, null);
+  assert.equal((await save({ book: "removed-book", saved: false })).status, 200);
+  assert.equal((await save({ book, saved: false })).status, 200);
+  assert.deepEqual(await (await deviceB.call("/api/favorites/status?book=" + book)).json(), { saved: false });
 });

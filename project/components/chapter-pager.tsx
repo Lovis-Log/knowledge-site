@@ -1,6 +1,6 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { Chapter } from "@/content/types";
 import { pickTitle } from "@/lib/language";
 import { paddedNumber } from "@/lib/format";

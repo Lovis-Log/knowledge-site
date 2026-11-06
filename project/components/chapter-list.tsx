@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { CSSProperties } from "react";
 import type { Book } from "@/content/types";
 import { pickVersion } from "@/lib/language";
@@ -19,7 +19,7 @@ export function ChapterList({ book }: { book: Book }) {
             className="chapter-list__item"
             style={{ "--i": index } as CSSProperties}
           >
-            <Link href={`/books/${book.slug}/${chapter.slug}/`} className="chapter-row">
+            <Link prefetch={false} href={`/books/${book.slug}/${chapter.slug}/`} className="chapter-row">
               <span className="chapter-row__num">{paddedNumber(chapter.number)}</span>
               <span className="chapter-row__body">
                 <span className="chapter-row__title">

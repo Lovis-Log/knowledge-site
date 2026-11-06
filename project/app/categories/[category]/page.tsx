@@ -1,3 +1,4 @@
+import { getPageCatalog } from "@/content/catalog";
 import { getLibrarySections } from "@/content";
 import { ProtectedContent } from "@/content/client";
 import CategoryView from "@/components/category-view";
@@ -12,7 +13,7 @@ export default async function Page({
 }) {
   const { category } = await params;
   return (
-    <ProtectedContent>
+    <ProtectedContent catalog={getPageCatalog({ category })}>
       <CategoryView category={category} />
     </ProtectedContent>
   );

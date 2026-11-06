@@ -2818,3 +2818,145 @@ html.lm-modal-open {
   font-size: 0.78rem;
   line-height: 1.5;
 }
+
+.reader-interactions { max-width: 760px; }
+.reader-interactions > section { margin-block: 2rem; }
+.reader-action {
+  padding: .45rem .8rem;
+  border: 1px solid currentColor;
+  border-radius: .45rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.reader-action:disabled { opacity: .55; cursor: default; }
+.favorite-control { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; margin-block: .75rem; }
+.guestbook-form { display: grid; gap: .65rem; margin-block: 1.5rem; }
+.guestbook-form button { justify-self: start; }
+.guestbook-form textarea { width: 100%; padding: .75rem; resize: vertical; font: inherit; }
+.reader-items { padding: 0; list-style: none; }
+.reader-item { padding-block: 1rem; border-bottom: 1px solid #80735d40; overflow-wrap: anywhere; }
+.reader-item--favorite, .guestbook-byline, .guestbook-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+.reader-item--favorite, .guestbook-byline { justify-content: space-between; }
+.guestbook-byline time { font-size: .85em; }
+.guestbook-message { white-space: pre-wrap; }
+@media (max-width: 700px) {
+  .site-nav .site-nav__guestbook .site-nav__icon { display: block; }
+  .site-nav .site-nav__guestbook [data-ui-block] { display: none !important; }
+}
+
+
+@media (max-width: 767px) {
+  .atmosphere__blob {
+    animation: none;
+    filter: none;
+    will-change: auto;
+  }
+
+  .site-header {
+    background: var(--paper);
+    backdrop-filter: none;
+  }
+}
+
+
+/* Reader navigation feedback and interaction affordances. */
+.reader-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.navigation-feedback {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .8rem;
+  color: var(--ink);
+  background: var(--paper);
+}
+.navigation-feedback__line {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: #9c6a28;
+  transform-origin: left;
+  animation: reader-navigation-pulse 1.1s ease-in-out infinite alternate;
+}
+@keyframes reader-navigation-pulse {
+  from { transform: scaleX(.22); }
+  to { transform: scaleX(.86); }
+}
+.navigation-feedback > span:not(.reader-sr-only), .navigation-feedback > a {
+  padding-block: .65rem;
+}
+.navigation-feedback > a, a.favorite-title-link {
+  text-decoration: underline;
+  text-underline-offset: .22em;
+}
+.book-card { position: relative; }
+.book-card__cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+.book-card__cover:active .book-cover,
+.chapter-row:active,
+.site-nav a:active,
+.favorite-title-link:active,
+.reader-action:active:not(:disabled) {
+  opacity: .66;
+}
+.favorite-title-link {
+  flex: 1 1 12rem;
+  padding: .45rem .25rem;
+}
+.favorite-title-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: .2rem;
+}
+.guestbook-form {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+.guestbook-form textarea {
+  box-sizing: border-box;
+  field-sizing: content;
+  min-height: 44px;
+  max-height: 12rem;
+  resize: none;
+}
+.guestbook-form button {
+  min-height: 44px;
+  white-space: nowrap;
+}
+.admin-account-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-block: 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .navigation-feedback__line { animation: none; }
+  .navigation-feedback > .reader-sr-only {
+    position: static;
+    width: auto;
+    height: auto;
+    padding-block: .65rem;
+    clip-path: none;
+  }
+}

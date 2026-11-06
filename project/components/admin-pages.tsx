@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
@@ -46,7 +46,8 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
     [pending, setPending] = useState(0),
     [total, setTotal] = useState(0),
     [page, setPage] = useState(1),
-    [status, setStatus] = useState("pending");
+    [status, setStatus] = useState("");
+  const [summary, setSummary] = useState<{ accountCount: number; statusCounts: Record<string, number> } | null>(null);
   const [selected, setSelected] = useState<User | null>(null),
     [logs, setLogs] = useState<Review[]>([]),
     [note, setNote] = useState(""),
@@ -72,10 +73,13 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
       const result = await api<{
         users: User[];
         pendingCount: number;
+        accountCount: number;
+        statusCounts: Record<string, number>;
         total: number;
       }>(`/api/admin/users?status=${status}&page=${page}`);
       if (sequence !== loadSequence.current) return;
       setUsers(result.users);
+      setSummary({ accountCount: result.accountCount, statusCounts: result.statusCounts });
       setPending(result.pendingCount);
       setTotal(result.total);
     } else {
@@ -207,9 +211,9 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
             />
           </h1>
         </div>
-        <span className="badge">
+        {mode === "invites" && <span className="badge">
           <UiText zh={`待审核 ${pending}`} en={`${pending} pending`} />
-        </span>
+        </span>}
       </header>
       <nav className="admin-nav">
         <Link href="/admin/users/">
@@ -218,10 +222,18 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
         <Link href="/admin/invites/">
           <UiText zh="邀请码" en="Invites" />
         </Link>
-        <Link href="/account/">
-          <UiText zh="我的账号" en="My account" />
+        <Link href="/library/">
+          <UiText zh="返回书库" en="Back to library" />
         </Link>
       </nav>
+      {mode === "users" && summary && (
+        <div className="admin-account-counts" aria-live="polite">
+          <span className="badge"><UiText zh={`账号总数 ${summary.accountCount}`} en={`Total accounts ${summary.accountCount}`} /></span>
+          {Object.entries(labels).map(([state, [zh, en]]) => (
+            <span className="badge" key={state}><UiText zh={`${zh} ${summary.statusCounts[state]}`} en={`${en} ${summary.statusCounts[state]}`} /></span>
+          ))}
+        </div>
+      )}
       {error && (
         <p className="form-error" role="alert">
           {error}

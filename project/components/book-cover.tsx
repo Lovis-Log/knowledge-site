@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import type { Book } from "@/content/types";
 
 function CoverArt({ slug }: { slug: string }) {
@@ -139,26 +142,67 @@ const COVER_ART: Record<string, string> = {
   "llm-knowledge-base": "/covers/editorial-knowledge.webp",
 };
 
+const thumbSources = new Set([
+  "/covers/editorial-agent-engineering-v1.webp",
+  "/covers/editorial-agents.webp",
+  "/covers/editorial-coding.webp",
+  "/covers/editorial-cpp-programming-v2.webp",
+  "/covers/editorial-finance-and-business-v1.webp",
+  "/covers/editorial-harvard-python-v3.webp",
+  "/covers/editorial-knowledge.webp",
+  "/covers/editorial-llm-principles-v1.webp",
+  "/covers/editorial-math.webp",
+  "/covers/editorial-mit-discrete-mathematics-v2.webp",
+  "/covers/editorial-mit-real-analysis-v1.webp",
+  "/covers/editorial-news.webp",
+  "/covers/editorial-personal-selection-v1.webp",
+  "/covers/editorial-product-design-v1.webp",
+  "/covers/editorial-python-ai-v3.webp",
+  "/covers/editorial-society-and-reasoning-v1.webp"
+]);
+
 export function BookCover({
   book,
   size = "md",
   heading = false,
+  priority = false,
 }: {
   book: Book;
   size?: "sm" | "md";
   /** 首页卡片里用 h2 承载书名，书本页已有 h1 时保持 span */
   heading?: boolean;
+  priority?: boolean;
 }) {
   const Title = heading ? "h2" : "span";
+  const src = book.coverImage || COVER_ART[book.slug];
+  const [failed, setFailed] = useState<string | null>(null);
+  const image = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    // A failed request may finish before the client attaches the error handler.
+    if (src && image.current?.complete && image.current.naturalWidth === 0)
+      setFailed(src);
+  }, [src]);
+  const thumbs = src && thumbSources.has(src);
+  const thumbnail = (width: number) => src.replace(/\.webp$/, `-${width}.webp`);
 
   return (
     <div className={`book-cover book-cover--${size}`} data-book={book.slug}>
       <div className="book-cover__type">
         <Title className={`book-cover__title${book.title.length > 22 ? " book-cover__title--long" : ""}`}>{book.title}</Title>
       </div>
-      {book.coverImage || COVER_ART[book.slug] ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="book-cover__img" src={book.coverImage || COVER_ART[book.slug]} alt="" loading="lazy" />
+      {src && failed !== src ? (
+        <img
+          ref={image}
+          className="book-cover__img"
+          src={thumbs ? thumbnail(240) : src}
+          srcSet={thumbs ? `${thumbnail(240)} 240w, ${thumbnail(480)} 480w` : undefined}
+          sizes={thumbs ? (size === "sm" ? "120px" : "(max-width: 767px) 160px, 220px") : undefined}
+          alt=""
+          decoding="async"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
+          onError={() => setFailed(src)}
+        />
       ) : (
         <CoverArt slug={book.slug} />
       )}

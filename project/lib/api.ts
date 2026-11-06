@@ -22,30 +22,43 @@ async function responseJson(response: Response) {
     );
   }
 }
-export async function api<T>(
+async function requestCsrf() {
+  const response = await fetch("/api/auth/csrf", {
+    cache: "no-store",
+    credentials: "same-origin",
+  });
+  if (!response.ok)
+    throw new ApiError(
+      response.status,
+      "SERVICE_UNAVAILABLE",
+      "服务暂时不可用，请稍后重试 / Service temporarily unavailable; please try again later",
+    );
+  const { token } = await responseJson(response);
+  if (typeof token !== "string" || !/^[a-f0-9]{64}$/.test(token))
+    throw new ApiError(
+      502,
+      "SERVICE_UNAVAILABLE",
+      "服务暂时不可用，请刷新页面重试 / Service unavailable; refresh and try again",
+    );
+  return token;
+}
+
+let csrfToken: Promise<string> | undefined;
+function getCsrf() {
+  return csrfToken ??= requestCsrf().catch((error) => {
+    csrfToken = undefined;
+    throw error;
+  });
+}
+
+async function send<T>(
   path: string,
-  method = "GET",
-  data?: unknown,
+  method: string,
+  data: unknown,
+  token?: string,
 ): Promise<T> {
   const headers: Record<string, string> = {};
-  if (method !== "GET") {
-    const csrf = await fetch("/api/auth/csrf", {
-      cache: "no-store",
-      credentials: "same-origin",
-    });
-    if (!csrf.ok)
-      throw new ApiError(
-        csrf.status,
-        "SERVICE_UNAVAILABLE",
-        "服务暂时不可用，请稍后重试 / Service temporarily unavailable; please try again later",
-      );
-    const { token } = await responseJson(csrf);
-    if (typeof token !== "string" || !/^[a-f0-9]{64}$/.test(token))
-      throw new ApiError(
-        502,
-        "SERVICE_UNAVAILABLE",
-        "服务暂时不可用，请刷新页面重试 / Service unavailable; refresh and try again",
-      );
+  if (token) {
     headers["X-CSRF-Token"] = token;
     headers["Content-Type"] = "application/json";
   }
@@ -73,6 +86,22 @@ export async function api<T>(
       typeof result.status === "string" ? result.status : undefined,
     );
   return result as T;
+}
+export async function api<T>(
+  path: string,
+  method = "GET",
+  data?: unknown,
+): Promise<T> {
+  if (method === "GET") return send<T>(path, method, data);
+  const token = getCsrf();
+  try {
+    return await send<T>(path, method, data, await token);
+  } catch (error) {
+    // Only retry a request rejected before the server ran the mutation.
+    if (!(error instanceof ApiError) || error.code !== "CSRF_FAILED") throw error;
+    if (csrfToken === token) csrfToken = undefined;
+    return send<T>(path, method, data, await getCsrf());
+  }
 }
 export function safeNext(value: string | null) {
   if (
