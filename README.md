@@ -2,7 +2,7 @@
 
 > Where readings linger and thoughts intertwine. 文字留痕，思绪成网。
 
-把课程、讲座与文章整理成可以按顺序读下去的「书」：一课一书，一章一篇，正文之外保留原始来源。本分支加入 Cloudflare Workers/D1 账号审核和登录阅读；生产站尚未切换。
+把课程、讲座与文章整理成可以按顺序读下去的「书」：一课一书，一章一篇，正文之外保留原始来源。网站使用 Cloudflare Workers/D1 提供账号审核和登录阅读。
 
 ## 书库
 

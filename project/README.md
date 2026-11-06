@@ -2,7 +2,7 @@
 
 LovisMind — 从 Obsidian vault 发布的知识网站。Next.js 预生成页面，Cloudflare Pages Worker 和 D1 提供账号审核与登录阅读。
 
-当前分支已实现注册、管理员审核、邀请码、服务端会话和审核后阅读；邮件暂不接入。公开首页为 Landing Page，登录与注册弹窗接入真实账号系统；书库入口为 `/library/`。本地验证与部署步骤见 [backend/README.md](backend/README.md)，尚未切换生产。
+网站提供注册、管理员审核、邀请码、服务端会话和审核后阅读；邮件暂不接入。公开首页为 Landing Page，登录与注册弹窗接入真实账号系统；书库入口为 `/library/`。本地验证与部署步骤见 [backend/README.md](backend/README.md)。
 
 ## 仓库与内容边界
 
@@ -88,7 +88,11 @@ git push
 
 ## 部署
 
-当前云端仍为原 Pages 站点。本分支尚未发布。上线前需确认运行计划、预览与生产 D1、构建根目录及 Pages fail-open 设置，详见 [后端部署说明](backend/README.md#云端部署步骤尚未执行)。不得直接将新版本作为无鉴权静态文件部署。
+- `main` 是正式发布分支。推送会触发 `lovismind` 的 Pages 构建和产物检查。
+- `codex/backend-auth` 是独立预览项目的发布分支，通过 `npm run deploy:preview` 上传到 `lovismind-preview`。
+- `archive/*` 标签保留已完成的分支和旧版本的提交位置。
+
+预览与生产使用独立 D1，Pages Functions 均须设为 fail closed。涉及迁移或内容变更时，先按 [后端部署说明](backend/README.md#云端部署) 准备目标数据库，再发布对应构建。
 
 ## 文档
 

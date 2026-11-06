@@ -8,7 +8,6 @@ export const taxonomyEnglish: Record<string, { name: string; description: string
   "software-engineering": { name: "Computing & Programming", description: "Programming languages, computing fundamentals and software engineering" },
   "ai-courses": { name: "Artificial Intelligence", description: "Courses on agents, tool use, memory, planning and evaluation" },
 };
-
 export const bookEnglish: Record<string, { description: string; longDescription: string }> = {
   "agent-engineering": { description: "Practical notes on AI agent development and skill writing.", longDescription: "Notes on the principles and practice of building AI agents, covering tool use, context management, task orchestration and skill writing, with methods and lessons from development." },
   "llm-knowledge-base": { description: "Organizing and maintaining a personal knowledge base with language models.", longDescription: "Methods for using language models to organize source material, build a Markdown wiki and maintain a personal knowledge base, with attention to understanding, linking, retrieval and ongoing updates." },

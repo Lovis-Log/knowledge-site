@@ -2,7 +2,7 @@
 
 当前分支实现账号注册、审核、邀请码、会话和阅读鉴权；邮件暂不接入。公开首页为 Landing Page，登录与注册弹窗接入真实账号系统，书库入口为 `/library/`。这是网站访问限制：用户已选择保留公开源码，GitHub 原文及历史公开部署不受新版登录保护。
 
-最新状态：独立预览已部署，正式站未变。密码规则已恢复为 6–128 个字符，实际哈希参数已降低，预览登录 CPU 样本降到 4–8ms。新旧哈希迁移与实测结果见 [哈希计算降档记录](hash-cost-update.md)；正式部署仍须另行验收。
+密码规则为 6–128 个字符。降低哈希参数后，预览登录 CPU 样本为 4–8ms。新旧哈希迁移与实测结果见 [哈希计算降档记录](hash-cost-update.md)。
 
 ## 本地运行
 
@@ -79,13 +79,13 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 
 CSRF 调用示例：先 GET 获取 `{token}` 和 Cookie，再在同源修改请求中带 Cookie、`X-CSRF-Token: token`、`Content-Type: application/json`。前端封装位于 `lib/api.ts`。错误采用 `{code,message}`；正确密码对应非 approved 账号时另返回 `{status}`。
 
-## 云端部署（独立预览已执行，生产待确认）
+## 云端部署
 
-现有 Pages 项目为 `lovismind`、生产分支 `main`，此前没有数据库或 Functions。配置中的 UUID 是本地占位值，不能直接用于云端。
+正式 Pages 项目为 `lovismind`，生产分支为 `main`。Wrangler 顶层 `DB` 是本地占位，云端操作须指定 `preview` 或 `production`。
 
 1. **先确认运行费用。** 旧实现预览曾出现 1102；新实现登录 CPU 样本为 4–8ms，但仍需持续验证，详情见哈希降档记录。Workers Free HTTP CPU 限制为 10ms，当前实现不得假定免费可持续使用。Workers Paid 基础订阅为每月 5 美元，超额另计。不得自动开通付费；正式上线前须解决当前资源限制并验证真实 CPU、内存与并发。
-2. 预览 D1 已创建、迁移并导入内容，其真实 UUID 已填入 `wrangler.jsonc` 的 preview 环境。生产 D1 尚未创建，生产占位 UUID 必须在正式部署前替换；不要共用数据库或会话数据。
-3. 当前预览通过 Direct Upload 发布到独立 `lovismind-preview` 项目，预览绑定专用 D1，其 fail-open 已关闭。原 `lovismind` 项目配置保持不变。若未来正式接入 Git 构建，再确认构建根目录 `project`、命令 `npm ci && npm run build`、输出 `out` 及生产 DB 绑定。正式接入认证时也须关闭 fail-open。
+2. 预览 D1 为 `lovismind-auth-preview`，生产 D1 为 `lovismind-auth-production`，绑定见 `wrangler.jsonc`。两套环境各自维护账号、会话和内容版本。
+3. 预览通过 Direct Upload 发布到独立 `lovismind-preview` 项目。正式项目通过 Git 构建，根目录为 `project`，命令为 `npm ci && npm run build && npm run verify`，输出为 `out`。正式项目的 Git 预览构建已关闭。Pages 环境均设为 fail closed。
 4. 后续更新预览的命令如下。预览管理员已按用户选择从本地迁移，不需要重复初始化：
 
 ```sh
