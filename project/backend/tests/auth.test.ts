@@ -974,6 +974,22 @@ test("guestbook enforces authorship, moderation, visibility and per-user posting
   assert.ok(second.every((item) => item.id < first.next));
 });
 
+test("username casing is preserved while login and uniqueness remain case insensitive", async () => {
+  const access = await invite(2);
+  const reader = client();
+  const original = "CasePreserved";
+  assert.equal((await reader.call("/api/auth/register", "POST", {
+    ...registration(original, access.code), nickname: "",
+  })).status, 201);
+  for (const username of [original.toLowerCase(), original.toUpperCase()]) {
+    assert.equal((await reader.call("/api/auth/login", "POST", { username, password })).status, 200);
+    const { user: account } = await (await reader.call("/api/auth/me")).json() as { user: { username: string; nickname: string } };
+    assert.equal(account.username, original);
+    assert.equal(account.nickname, original);
+  }
+  assert.equal((await client().call("/api/auth/register", "POST", registration(original.toUpperCase(), access.code))).status, 409);
+});
+
 test("favorites are account scoped, idempotent and removable after content is unavailable", async () => {
   const access = await invite();
   const deviceA = client(), deviceB = client();

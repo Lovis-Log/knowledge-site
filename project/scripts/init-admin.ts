@@ -23,10 +23,9 @@ const username = (
     "Administrator username (3–32 letters/digits/underscores): ",
   )
 )
-  .trim()
-  .toLowerCase();
+  .trim();
 input.close();
-if (!/^[a-z0-9_]{3,32}$/.test(username)) throw new Error("Invalid username");
+if (!/^[a-z0-9_]{3,32}$/i.test(username)) throw new Error("Invalid username");
 let password = "";
 try {
   while (true) {

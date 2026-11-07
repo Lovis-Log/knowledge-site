@@ -336,8 +336,8 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
   if (method === "POST" && path === "/api/auth/register") {
     await limit(db, `register:${ip}`, 5, 3600);
     const data = await body(request);
-    const username = text(data, "username", 3, 32).toLowerCase();
-    if (!/^[a-z0-9_]+$/.test(username))
+    const username = text(data, "username", 3, 32);
+    if (!/^[a-z0-9_]+$/i.test(username))
       fail(
         400,
         "INVALID_USERNAME",
