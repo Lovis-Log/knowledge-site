@@ -2,24 +2,26 @@
 
 > Where readings linger and thoughts intertwine. 文字留痕，思绪成网。
 
-把课程、讲座与文章整理成可以按顺序读下去的「书」：一课一书，一章一篇，正文之外保留原始来源。网站使用 Cloudflare Workers/D1 提供账号审核和登录阅读。
+围绕课程、主题与阅读兴趣整理学习笔记和原文收录，以书籍和章节组织内容，保留原始来源。网站使用 Next.js 预生成页面，由 Cloudflare Pages Worker 和 D1 提供账号审核、登录阅读、收藏与留言。
 
 ## 书库
 
-| 书 | 作者 / 来源 | 章数 | 类型 |
-|---|---|---|---|
-| [CMU AI Agents 2026](Knowledge%20Site/CMU%20AI%20Agents/) | Daniel Fried, Graham Neubig · [YouTube](https://www.youtube.com/watch?v=UwfjzyLnvMg) | 14 | 系统课程 |
-| [MIT Linear Algebra(Gilbert Strang)](Knowledge%20Site/MIT%20%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/) | Gilbert Strang · [YouTube](https://www.youtube.com/playlist?list=PLE7DDD91010BC51F8) | 36 | 系统课程 |
-| [LLM Wiki Workflow(Karpathy)](Knowledge%20Site/LLM%20%E7%9F%A5%E8%AF%86%E5%BA%93/) | Andrej Karpathy · [X](https://x.com/karpathy/status/2039805659525644595) | 1 | 资料 |
-| [Vibe Coding Tutorials](Knowledge%20Site/Vibe%20Coding/) | 多来源 · [YouTube](https://www.youtube.com/watch?v=XLhdE-qV87E) | 2 | 多来源 |
+| 大类 | 内容 |
+|---|---|
+| [AI Era](Knowledge%20Site/AI%20Era/) | 大模型原理、智能体工程、AI 编程与工具实践 |
+| [专业课程](Knowledge%20Site/%E4%B8%93%E4%B8%9A%E8%AF%BE%E7%A8%8B/) | 数学、计算机与人工智能课程笔记 |
+| [精选收录](Knowledge%20Site/%E7%B2%BE%E9%80%89%E6%94%B6%E5%BD%95/) | 文章、外刊、视频与访谈的原文收录和学习笔记 |
 
 ## 站点特性
 
-- **双语章节**：英文原始资料同时产出中文与英文两版，可随时切换，切换不影响阅读位置。
-- **目录里的公式**：章内目录与正文一样用 KaTeX 渲染色数学公式，点击可跳转。
-- **原始出处**：每章标注原资源的首发日期与来源链接，章尾列出完整来源。
-- **阅读偏好本地记忆**：语言、字号、目录显隐和每章的阅读进度都保存在浏览器里。
-- **审核后阅读**：公开入口与数据无关的界面框架静态导出，正文由 Workers/D1 在鉴权后返回；支持邀请码和人工审核。
+- **分类与阅读**：按大类、书籍和章节浏览，篇内目录支持公式和锚点导航；有对应版本的章节可切换阅读语言。
+- **收藏与继续阅读**：书籍和文章可收藏到账号；首页可继续最近的阅读，进度、语言、字号和目录偏好保存在当前浏览器。
+- **留言交流**：紧凑输入框随内容增高，显示字数；支持本人删除和管理员隐藏。每账号每分钟最多发布 20 条，触发限制后显示倒计时并保留草稿。
+- **账号与邀请**：支持注册、人工审核、服务端会话和邀请码。新邀请码为 6 位不分组字母数字，管理员可长期查看、复制；旧邀请码继续有效。
+- **页面反馈**：导航进度条、页面淡入和首页文字依次浮现，兼顾移动端、历史返回、阅读进度恢复及系统减少动态效果设置。
+- **来源与说明**：章节保留来源链接，仅收录原文时标注「原文」；关于页介绍功能、账号隐私和 AI 辅助内容的局限。
+
+账号系统限制网站访问；本仓库及 `Knowledge Site/` 成稿内容仍公开可见。账号申请信息不向其他读者公开，留言昵称与正文向站内读者展示。部分内容使用 AI 辅助生成或整理，阅读和引用时请结合原始资料核验。
 
 ## 仓库结构
 
@@ -41,17 +43,21 @@ git add README.md "Knowledge Site" project
 ```bash
 cd project
 npm ci
+# 首次使用邀请码功能前，按后端说明在已忽略的 .dev.vars 中配置独立加密密钥
 npm run types:backend
 npm run db:migrate
 npm run content:import
 npm run admin:init
 npm run build
 npm run verify
+npm run verify:ui
 npm run test:auth
 npm run dev:full   # http://localhost:8788
 ```
 
 完整流程需要本地 Workers/D1，不再使用纯静态服务器。云端部署与费用前置条件见 [后端说明](project/backend/README.md)。
+
+本轮变更包含 `0004_recoverable_invites.sql`。发布前必须先在目标 D1 执行迁移，并为对应 Pages 环境配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布代码；详见[邀请码加密与迁移说明](project/backend/README.md#邀请码加密密钥与增量迁移)。本地密钥、数据库和测试账号不提交到仓库。
 
 ## 添加内容
 

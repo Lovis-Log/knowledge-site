@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { UiText } from "@/components/ui-text";
 import { PasswordInput } from "@/components/password-input";
 import { api, ApiError, safeNext } from "@/lib/api";
+import { startNavigation } from "../navigation-feedback";
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password-policy";
 import { uiLabel } from "@/lib/ui-language";
 import styles from "./landing.module.css";
@@ -34,8 +35,17 @@ export function AuthModal({
   const [accountStatus, setAccountStatus] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [entering, setEntering] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const resume = (event: PageTransitionEvent) => {
+      if (event.persisted) { setBusy(false); setEntering(false); }
+    };
+    window.addEventListener("pageshow", resume);
+    return () => window.removeEventListener("pageshow", resume);
+  }, []);
 
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -114,15 +124,18 @@ export function AuthModal({
     setBusy(true);
     setError("");
     setAccountStatus("");
+    let leaving = false;
     try {
       if (mode === "login") {
         await api("/api/auth/login", "POST", {
           username: values.username,
           password: values.password,
         });
-        window.location.assign(
-          safeNext(new URLSearchParams(window.location.search).get("next")),
-        );
+        const target = safeNext(new URLSearchParams(window.location.search).get("next"));
+        setEntering(true);
+        startNavigation(target, { fullDocument: true });
+        window.location.assign(target);
+        leaving = true;
         return;
       }
       const result = await api<{ status: string }>("/api/auth/register", "POST", {
@@ -134,6 +147,7 @@ export function AuthModal({
       });
       setDone(result.status === "approved" ? "approved" : "pending");
     } catch (caught) {
+      setEntering(false);
       if (caught instanceof ApiError && caught.accountStatus) {
         setAccountStatus(caught.accountStatus);
       } else {
@@ -142,7 +156,7 @@ export function AuthModal({
         );
       }
     } finally {
-      setBusy(false);
+      if (!leaving) setBusy(false);
     }
   }
 
@@ -394,14 +408,14 @@ export function AuthModal({
                 <button className={styles.fullButton} type="submit" disabled={busy}>
                   <UiText
                     zh={
-                      busy
+                      entering ? "正在进入书库…" : busy
                         ? "处理中…"
                         : mode === "login"
                           ? "登录"
                           : "创建账号"
                     }
                     en={
-                      busy
+                      entering ? "Opening your library…" : busy
                         ? "Please wait…"
                         : mode === "login"
                           ? "Sign in"

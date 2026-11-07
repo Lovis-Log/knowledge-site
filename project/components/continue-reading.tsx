@@ -3,7 +3,7 @@
 import { UiText } from "@/components/ui-text";
 
 import { uiLabel } from "@/lib/ui-language";
-import Link from "next/link";
+import { ReaderLink as Link } from "./navigation-feedback";
 import { useEffect, useState } from "react";
 import { readLastRead, type LastRead } from "@/lib/progress";
 

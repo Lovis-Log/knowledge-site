@@ -15,6 +15,9 @@ export function UiLanguageToggle() {
       document.querySelectorAll<HTMLImageElement>("[data-ui-alt-en]").forEach((node) => {
         node.alt = (lang === "en" ? node.dataset.uiAltEn : node.dataset.uiAltZh) ?? "";
       });
+      document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("[data-ui-placeholder-en]").forEach((node) => {
+        node.placeholder = (lang === "en" ? node.dataset.uiPlaceholderEn : node.dataset.uiPlaceholderZh) ?? "";
+      });
     };
     const rootObserver = new MutationObserver(syncLabels);
     rootObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-ui-lang"] });

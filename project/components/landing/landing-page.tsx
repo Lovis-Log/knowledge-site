@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { ReaderLink as Link } from "../navigation-feedback";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AccountIcon } from "@/components/account-icon";
 import { UiLanguageToggle } from "@/components/ui-language-toggle";

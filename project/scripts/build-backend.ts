@@ -1,9 +1,29 @@
 import { build } from "esbuild";
-import { writeFile } from "node:fs/promises";
+import { readdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { getAllBooks } from "../content/index";
 import { pickVersion } from "../lib/language";
 
 const titles: Record<string, { zh: string; en: string }> = {};
+// Next's segment-prefetch URLs flatten segment paths with dots, while the
+// static exporter writes those segments into nested __next.* directories.
+const rscPaths: Record<string, string> = {};
+async function collectRscPaths(directory: string, relative = "") {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const file = relative ? `${relative}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      await collectRscPaths(join(directory, entry.name), file);
+    } else if (file.endsWith(".txt")) {
+      const parts = file.split("/");
+      const start = parts.findIndex((part) => part.startsWith("__next."));
+      if (start >= 0 && start < parts.length - 1) {
+        const alias = [...parts.slice(0, start), parts.slice(start).join(".")].join("/");
+        rscPaths[`/${alias}`] = `/${file}`;
+      }
+    }
+  }
+}
+await collectRscPaths("out");
 for (const book of getAllBooks()) {
   const href = `/books/${book.slug}/`;
   titles[href] = { zh: book.title, en: book.title };
@@ -13,7 +33,7 @@ for (const book of getAllBooks()) {
   }
 }
 await build({
-  define: { FAVORITE_TITLES: JSON.stringify(titles) },
+  define: { FAVORITE_TITLES: JSON.stringify(titles), RSC_PATHS: JSON.stringify(rscPaths) },
   entryPoints: ["backend/index.ts"],
   outfile: "out/_worker.js",
   bundle: true,

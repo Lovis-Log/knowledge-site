@@ -5,10 +5,13 @@ import { Miniflare, convertV4MiniflareOptions } from "miniflare";
 import { digest, hashPassword } from "../password";
 import { scrypt } from "@noble/hashes/scrypt.js";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
+import { randomBytes } from "node:crypto";
+import { decryptInvite, importInviteKey, storeInvite } from "../invites";
 
 const origin = "https://lovismind.test";
 const password = "Test password with sufficient length!";
 const legacyAdminPassword = "Test password with sufficient length!";
+const inviteEncryptionKey = randomBytes(32).toString("base64");
 let legacyEncoded = "";
 const mf = new Miniflare(
   convertV4MiniflareOptions({
@@ -17,7 +20,8 @@ const mf = new Miniflare(
     compatibilityDate: "2026-11-04",
     compatibilityFlags: ["nodejs_compat"],
     d1Databases: { DB: "auth-tests" },
-    serviceBindings: { ASSETS: () => new Response("STATIC SHELL") },
+    bindings: { INVITE_CODE_ENCRYPTION_KEY: inviteEncryptionKey },
+    serviceBindings: { ASSETS: (request: Request) => new Response("STATIC SHELL", { headers: { "X-Asset-Path": new URL(request.url).pathname } }) },
   }),
 );
 let db: Awaited<ReturnType<typeof mf.getD1Database>>;
@@ -103,7 +107,7 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
     for (const statement of sql.split(/;(?=\s*(?:CREATE|PRAGMA|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
@@ -376,6 +380,20 @@ test("admin account totals include every status independently of the filter", as
   assert.ok(data.accountCount > data.total);
   assert.equal((await client().call("/api/admin/users")).status, 401);
 });
+
+test("static segment prefetch aliases resolve only after the original route is authorized", async () => {
+  const anonymous = client();
+  for (const route of ["about", "guestbook", "library"]) {
+    const alias = `/${route}/__next.${route}.__PAGE__.txt`;
+    assert.equal((await anonymous.call(alias)).status, 401);
+    const response = await admin.call(alias + "?_rsc=qa");
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("X-Asset-Path"), `/${route}/__next.${route}/__PAGE__.txt`);
+    assert.equal(response.headers.get("Cache-Control"), "private, no-store");
+  }
+  const unknown = "/about/__next.unknown.__PAGE__.txt";
+  assert.equal((await admin.call(unknown)).headers.get("X-Asset-Path"), unknown);
+});
 test("CSRF rejects missing credentials and foreign origins", async () => {
   const c = client();
   assert.equal(
@@ -450,6 +468,7 @@ test("approval grants reading, ordinary users cannot administer, logout revokes 
     200,
   );
   assert.equal((await c.call("/api/admin/users")).status, 403);
+  assert.equal((await c.call("/admin/users/__next.admin.users.__PAGE__.txt")).status, 403);
   assert.equal(
     (
       await c.call("/api/admin/invites", "POST", {
@@ -591,8 +610,56 @@ test("duplicate usernames and failed inserts do not consume an invite", async ()
   assert.notEqual(hashes?.code_hash, code.code);
   const listing = await admin.call("/api/admin/invites");
   const publicList = JSON.stringify(await listing.json());
-  assert.ok(!publicList.includes(code.code));
+  assert.ok(publicList.includes(code.code));
   assert.ok(!publicList.includes(hashes!.code_hash));
+  assert.ok(!publicList.includes("code_ciphertext"));
+});
+
+test("six-character invites persist encrypted and accept lowercase without changing legacy tokens", async () => {
+  const created = await invite(3);
+  assert.match(created.code, /^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/);
+  const stored = await db.prepare("SELECT code_hash,code_ciphertext FROM invites WHERE id=?")
+    .bind(created.id).first<{ code_hash: string; code_ciphertext: string }>();
+  assert.equal(stored!.code_hash, await digest(created.code));
+  assert.ok(!stored!.code_ciphertext.includes(created.code));
+  const key = await importInviteKey(inviteEncryptionKey);
+  assert.equal(await decryptInvite(stored!.code_ciphertext, created.id, key), created.code);
+  await assert.rejects(decryptInvite(stored!.code_ciphertext, "different-row", key));
+  await assert.rejects(decryptInvite(stored!.code_ciphertext, created.id, await importInviteKey(randomBytes(32).toString("base64"))));
+  assert.equal((await client().call("/api/auth/register", "POST", registration("lowercase_invite", created.code.toLowerCase()))).status, 201);
+  for (let i = 0; i < 2; i++) {
+    const list = await admin.call("/api/admin/invites");
+    assert.equal(list.headers.get("Cache-Control"), "private, no-store");
+    const data = await list.json() as { invites: { id: string; code: string | null }[] };
+    assert.equal(data.invites.find((row) => row.id === created.id)?.code, created.code);
+  }
+  const legacyCode = randomBytes(32).toString("hex");
+  await db.prepare("INSERT INTO invites(id,code_hash,expires_at,max_uses,created_by,created_at) VALUES(?,?,unixepoch()+3600,2,'admin-id',unixepoch())")
+    .bind("legacy-invite", await digest(legacyCode)).run();
+  assert.equal((await client().call("/api/auth/register", "POST", registration("legacy_invite_user", legacyCode))).status, 201);
+  const legacyList = await (await admin.call("/api/admin/invites")).json() as { invites: { id: string; code: string | null }[] };
+  assert.equal(legacyList.invites.find((row) => row.id === "legacy-invite")?.code, null);
+  const unauthorized = client();
+  assert.equal((await unauthorized.call("/api/admin/invites")).status, 401);
+  await unauthorized.call("/api/auth/login", "POST", { username: "lowercase_invite", password });
+  assert.equal((await unauthorized.call("/api/admin/invites")).status, 403);
+  await admin.call(`/api/admin/invites/${created.id}`, "PATCH", { action: "revoke" });
+  const afterRevoke = await (await admin.call("/api/admin/invites")).json() as { invites: { id: string; code: string | null }[] };
+  assert.equal(afterRevoke.invites.find((row) => row.id === created.id)?.code, created.code);
+});
+
+test("invite collisions retry at most five times and do not overwrite existing codes", async () => {
+  const key = await importInviteKey(inviteEncryptionKey);
+  const params = { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "admin-id" };
+  await storeInvite(db, params, key, () => "KKKKK2");
+  let calls = 0;
+  const fresh = await storeInvite(db, params, key, () => ++calls < 3 ? "KKKKK2" : "KKKKK3");
+  assert.equal(calls, 3);
+  assert.equal(fresh.code, "KKKKK3");
+  calls = 0;
+  await assert.rejects(storeInvite(db, params, key, () => { calls++; return "KKKKK2"; }), /INVITE_GENERATION_BUSY/);
+  assert.equal(calls, 5);
+  assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await digest("KKKKK2")).first<{ count: number }>())?.count, 1);
 });
 
 test("concurrent case-insensitive username collisions consume only the successful invite use", async () => {
@@ -885,15 +952,25 @@ test("guestbook enforces authorship, moderation, visibility and per-user posting
   assert.equal((await admin.call("/api/admin/guestbook", "POST", { action: "restore", id: posted.id })).status, 200);
   assert.equal((await list(reader))[0].id, posted.id);
   assert.equal((await reader.call("/api/guestbook", "POST", { action: "delete", id: posted.id })).status, 200);
-  for (let i = 0; i < 4; i++) assert.equal((await publish("Post " + i)).status, 201);
-  assert.equal((await publish("Rate limited")).status, 429);
+  // The deleted first post still counts; twenty posts per minute permits a
+  // conversation while bounding bursts. Rejected posts never reach the table.
+  for (let i = 0; i < 19; i++) assert.equal((await publish("Post " + i)).status, 201);
+  const limited = await publish("Rate limited");
+  assert.equal(limited.status, 429);
+  assert.equal((await limited.json() as { code: string }).code, "GUESTBOOK_RATE_LIMITED");
+  assert.ok(Number(limited.headers.get("Retry-After")) >= 1);
+  assert.ok(Number(limited.headers.get("Retry-After")) <= 60);
+  assert.ok(!(await list(reader)).some((entry) => entry.message === "Rate limited"));
   const readerId = (await user("guestbook_reader"))!.id;
+  await db.prepare("UPDATE rate_limits SET expires_at=unixepoch()-1 WHERE key=?")
+    .bind(await digest(`guestbook:v2:${readerId}`)).run();
+  assert.equal((await publish("After the window expires")).status, 201);
   for (let i = 0; i < 20; i++)
     await db.prepare("INSERT INTO guestbook_entries(user_id,message) VALUES(?,?)").bind(readerId, "Pagination " + i).run();
   const first = await (await reader.call("/api/guestbook")).json() as { items: { id: number }[]; next: number };
   assert.equal(first.items.length, 20);
   const second = await list(reader, "/api/guestbook?before=" + first.next);
-  assert.equal(second.length, 4);
+  assert.equal(second.length, 20);
   assert.ok(second.every((item) => item.id < first.next));
 });
 

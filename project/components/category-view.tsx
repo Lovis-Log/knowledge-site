@@ -4,7 +4,6 @@ import { uiLabel } from "@/lib/ui-language";
 import { notFound } from "next/navigation";
 import { BookCard } from "@/components/book-card";
 import { LibraryNav } from "@/components/library-nav";
-import { MobilePageEntryScroll } from "@/components/mobile-page-entry-scroll";
 import { useContent } from "@/content/client";
 
 export default function CategoryView({ category }: { category: string }) {
@@ -14,7 +13,6 @@ export default function CategoryView({ category }: { category: string }) {
 
   return (
     <div className="shell category-page">
-      <MobilePageEntryScroll pageKey={`category:${section.slug}`} />
       <LibraryNav active={section.slug} />
       <header className="section-head category-page__head">
         <div>
