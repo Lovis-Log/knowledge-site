@@ -37,10 +37,11 @@ npm run benchmark:auth
 
 - `users`：规范化唯一用户名、版本化 scrypt 密码哈希、昵称、理由、角色、状态和审核版本。
 - `sessions`：256 位随机令牌的 SHA-256 哈希，七天过期。`__Host-` Cookie 使用 Secure、HttpOnly、SameSite=Lax；不会存入 localStorage。
-- `invites`：256 位随机邀请码的哈希、次数及有效期；明文只在创建时展示。插入用户的同一个数据库事务通过触发器验证邀请码并扣次数，失败回滚。
+- `invites`：新邀请码为 6 位大写字母与数字（不分组，排除 0、1、I、O），接受小写输入。保存 SHA-256 哈希及 AES-256-GCM 加密副本；加密使用每条记录独立的 96 位随机 IV，并绑定管理编号作为附加认证数据。管理员可长期查看和复制，撤销或过期后仍可查看。旧 64 位邀请码仍有效，只有哈希的旧记录无法回显。插入用户的同一个数据库事务通过触发器验证邀请码并扣次数，失败回滚。
 - `review_logs`：审核动作、操作者、内部备注。审核接口使用账号版本防止覆盖其他管理员的操作。
 - `reset_tokens`：一次性、十五分钟有效的重置凭据哈希；签发及兑换均撤销旧会话。核实身份和安全转交由管理员完成；不发送邮件、不改变审核状态。
 - `rate_limits`：D1 原子固定窗口计数；注册、登录、邀请码及重置均有限额。
+- 留言发布单独采用每账号每分钟 20 条的窗口（`guestbook:v2:*`），替代旧的十分钟 5 条；其他接口的限额不变。达到限额返回 `GUESTBOOK_RATE_LIMITED` 与 `Retry-After` 秒数，前端保留草稿并显示倒计时，到期恢复发布。
 - `content_versions`、`content_entries`、`content_current`：按原 slug 导入完整内容和剥离正文的目录数据，导入完成后才激活版本。重跑生成独立版本，不覆写当前版本。
 
 后端每次从 D1 主库读取会话及当前账号状态，避免读取副本延迟让已禁用会话继续使用。普通注册忽略任何客户端角色与状态字段；管理员页面和 API 均检查权限。管理员账号不允许通过普通用户管理接口禁用或重置，首管恢复需受控数据库维护。
@@ -59,6 +60,8 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 
 旧 `/account/` 跳转到 `/library/`。原有书籍和章节 URL 保留；书库、分类、书页和章节在构建时预生成。Worker 校验会话和审核状态后直接返回 HTML 或导航数据。受保护页面、内容接口及附件响应不允许共享缓存。公开目录仅含通用框架代码、品牌、字体、首页装饰和收款码。
 
+构建会记录 Next.js 分段预取地址与实际静态文件的精确映射，例如 `/about/__next.about.__PAGE__.txt` 对应 `/about/__next.about/__PAGE__.txt`。Worker 先对原始路由执行原有鉴权，再解析已记录的映射；未知路径不做猜测或放宽权限。这避免分段预取 404 影响页面切换。
+
 | API | 作用 |
 | --- | --- |
 | `GET /api/auth/csrf` | 返回令牌并设置配套 HttpOnly Cookie |
@@ -71,9 +74,14 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 | `PATCH /api/admin/users/:id` | action、note、version；approve/reject/disable/enable |
 | `GET /api/admin/users/:id/reviews` | 最近 100 条审核记录 |
 | `POST /api/admin/users/:id/reset-credential` | 必填身份核实备注，返回一次性凭据 |
-| `GET /api/admin/invites?page=1` | 每页 30 个邀请码元数据；不返回任何哈希 |
+| `GET /api/admin/invites?page=1` | 每页 30 条，管理员可查看 `code:string\|null`；旧码为 null，不返回哈希或密文，禁止缓存 |
 | `POST /api/admin/invites` | maxUses（1–1000）、expiresAt（Unix 秒，至多一年） |
 | `PATCH /api/admin/invites/:id` | action:revoke |
+| `GET /api/favorites`、`GET /api/favorites/status?book=...&chapter=...` | 当前账号的收藏列表及收藏状态 |
+| `POST /api/favorites` | book、可选 chapter、saved；添加或取消本人收藏 |
+| `GET /api/guestbook?before=...` | 分页读取可见留言，需已通过账号 |
+| `POST /api/guestbook` | action:publish + message（1–1000 字符），或 action:delete + 本人留言 id |
+| `GET /api/admin/guestbook?before=...`、`POST /api/admin/guestbook` | 管理员查看隐藏留言、执行 hide / restore |
 | `GET /api/content/catalog` | 已鉴权的目录、简介和展示译名，无正文 |
 | `GET /api/content/chapters/:book/:chapter` | 已鉴权的章节正文及译文 |
 
@@ -99,7 +107,15 @@ npm run deploy:preview
 6. 生产部署时独立执行 production 迁移、内容导入和首管初始化，再切换生产。代码与数据库版本配套发布；当前导出页数由内容构建决定，新增章节后需同时发布新的静态页面与 API 内容版本。
 7. 列出旧 Pages 部署、别名及 CDN 缓存；获得确认后清理或限制旧公开入口。保留公开源码的既定选择不受影响。仅回滚到另一个带鉴权的版本，不能回滚到原公开静态站并仍声称需要登录。
 
-未来若有外部服务密钥，使用 Cloudflare Secrets，不能写入 Wrangler 文件或 Git；当前认证不需要额外会话签名密钥。
+### 邀请码加密密钥与增量迁移
+
+发布本次更新前，先在目标数据库执行 `0004_recoverable_invites.sql` 迁移，并为目标 Pages 项目配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布应用。预览和生产使用各自独立密钥；不自动发布或修改云端密钥。该值为随机 32 字节的标准 Base64 编码，通过受控本地工具生成并安全输入，不放进命令参数、Wrangler 配置或 Git。
+
+本地将独立密钥写入已忽略的 `.dev.vars`：`INVITE_CODE_ENCRYPTION_KEY=<32 字节随机值的 Base64 编码>`，再运行 `npm run db:migrate`。数据库不存储明文，加密密钥必须备份并长期保留；随意替换或丢失会导致已有加密邀请码无法回显。密钥轮换需另做数据重加密，本次不实现轮换。缺少或无效密钥时，生成新码和读取加密记录明确返回 503，不影响已有邀请码注册或只有旧记录的列表读取。
+
+管理列表仍通过原有管理员鉴权，前端仅在已鉴权页面读取明文，不存入浏览器持久存储。密码重置凭据继续仅本次展示，登录会话、CSRF 和重置令牌保持 256 位随机长度。短码生成使用唯一约束处理碰撞，最多尝试 5 次；原有注册和邀请码限流、次数、过期和撤销检查继续生效。
+
+Cloudflare Secret 设置及本地文件规则见 [Pages bindings / Secrets](https://developers.cloudflare.com/pages/functions/bindings/#secrets)，加密 API 见 [Workers Web Crypto](https://developers.cloudflare.com/workers/runtime-apis/web-crypto/)。
 
 官方参考：[Pages advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/)、[D1 batch](https://developers.cloudflare.com/d1/worker-api/d1-database/)、[Workers 限制](https://developers.cloudflare.com/workers/platform/limits/)、[Workers 费用](https://developers.cloudflare.com/workers/platform/pricing/)。
 

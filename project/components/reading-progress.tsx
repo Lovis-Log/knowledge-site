@@ -22,40 +22,45 @@ export function ReadingProgress({ bookSlug, chapterSlug }: ReadingProgressProps)
   const [percent, setPercent] = useState(0);
   const key = `${bookSlug}/${chapterSlug}`;
   const lastSaved = useRef(0);
+  const lastPercent = useRef(0);
   // 恢复滚动位置之前不写进度，避免初始的 scrollY=0 覆盖已保存的位置
   const ready = useRef(false);
 
   useEffect(() => {
     ready.current = false;
+    lastPercent.current = 0;
     writeLastRead({ book: bookSlug, chapter: chapterSlug, updatedAt: new Date().toISOString() });
 
     const saved = readProgress()[key];
-    const shouldRestore = typeof saved === "number" && saved > 2 && saved < 98;
+    const shouldRestore = !window.location.hash && typeof saved === "number" && saved > 2 && saved < 98;
 
     if (!shouldRestore) {
       ready.current = true;
       return;
     }
 
+    let restoreFrame = 0;
+    let readyFrame = 0;
     const first = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+      restoreFrame = requestAnimationFrame(() => {
         const max = scrollMax();
         if (max <= 0) {
           ready.current = true;
           return;
         }
-        const root = document.documentElement;
-        const previous = root.style.scrollBehavior;
-        root.style.scrollBehavior = "auto";
-        window.scrollTo(0, (saved / 100) * max);
-        requestAnimationFrame(() => {
-          root.style.scrollBehavior = previous;
+        window.scrollTo({ top: (saved / 100) * max, behavior: "instant" });
+        lastPercent.current = saved;
+        readyFrame = requestAnimationFrame(() => {
           ready.current = true;
         });
       });
     });
 
-    return () => cancelAnimationFrame(first);
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(restoreFrame);
+      cancelAnimationFrame(readyFrame);
+    };
   }, [bookSlug, chapterSlug, key]);
 
   useEffect(() => {
@@ -67,6 +72,7 @@ export function ReadingProgress({ bookSlug, chapterSlug }: ReadingProgressProps)
       setPercent(next);
 
       if (!ready.current) return;
+      lastPercent.current = next;
       const now = Date.now();
       if (now - lastSaved.current > 400) {
         lastSaved.current = now;
@@ -91,7 +97,8 @@ export function ReadingProgress({ bookSlug, chapterSlug }: ReadingProgressProps)
   useEffect(() => {
     return () => {
       if (!ready.current) return;
-      writeProgress(key, currentPercent());
+      // The destination may already have reset the document scroll position.
+      writeProgress(key, lastPercent.current);
     };
   }, [key]);
 

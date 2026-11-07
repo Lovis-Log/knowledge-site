@@ -4,6 +4,7 @@ export class ApiError extends Error {
     public code: string,
     message: string,
     public accountStatus?: string,
+    public retryAfter?: number,
   ) {
     super(message);
   }
@@ -84,6 +85,8 @@ async function send<T>(
         ? result.message
         : "请求失败 / Request failed",
       typeof result.status === "string" ? result.status : undefined,
+      response.headers.has("Retry-After") && Number.isFinite(Number(response.headers.get("Retry-After"))) && Number(response.headers.get("Retry-After")) > 0
+        ? Math.ceil(Number(response.headers.get("Retry-After"))) : undefined,
     );
   return result as T;
 }

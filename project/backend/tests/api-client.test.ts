@@ -112,3 +112,20 @@ test("mutations reuse CSRF and retry only a rejected token", async () => {
     globalThis.fetch = original;
   }
 });
+
+test("posting limits retain Retry-After without automatically retrying a write", async () => {
+  const original = globalThis.fetch;
+  let writes = 0;
+  try {
+    globalThis.fetch = async (input) => {
+      if (input === "/api/auth/csrf") return Response.json({ token: "c".repeat(64) });
+      writes++;
+      return Response.json({ code: "GUESTBOOK_RATE_LIMITED", message: "Please wait" }, {
+        status: 429, headers: { "Retry-After": "3" },
+      });
+    };
+    await assert.rejects(api("/api/guestbook", "POST", { action: "publish", message: "Keep my draft" }),
+      (error) => error instanceof ApiError && error.code === "GUESTBOOK_RATE_LIMITED" && error.retryAfter === 3);
+    assert.equal(writes, 1);
+  } finally { globalThis.fetch = original; }
+});

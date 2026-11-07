@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
+import { uiPlaceholder } from "@/lib/ui-language";
+import { PageEntry } from "./page-entry";
 
 type Entry = { id: number; nickname: string; message: string; created_at: number; own: boolean };
 type Board = { items: Entry[]; next: number | null; canModerate: boolean };
@@ -15,6 +17,17 @@ export function GuestbookView() {
   const [revision, refresh] = useState(0);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
+  const cooldownUntil = useRef(0);
+  const cooling = cooldown > 0;
+  useEffect(() => {
+    if (!cooling) return;
+    const tick = () => setCooldown(Math.max(0, Math.ceil((cooldownUntil.current - Date.now()) / 1000)));
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", tick);
+    return () => { window.clearInterval(timer); document.removeEventListener("visibilitychange", tick); };
+  }, [cooling]);
   const writing = useRef(false);
   const composing = useRef<HTMLTextAreaElement>(null);
   useLayoutEffect(() => {
@@ -50,7 +63,7 @@ export function GuestbookView() {
   }
 
   async function act(action: "publish" | "delete" | "hide" | "restore", id?: number) {
-    if (writing.current || loading) return;
+    if (writing.current || loading || (action === "publish" && cooling)) return;
     writing.current = true;
     setBusy(action);
     setError("");
@@ -72,7 +85,11 @@ export function GuestbookView() {
         reload();
       }
     } catch (caught) {
-      setError((caught as Error).message);
+      if (action === "publish" && caught instanceof ApiError && caught.code === "GUESTBOOK_RATE_LIMITED") {
+        const seconds = caught.retryAfter ?? 60;
+        cooldownUntil.current = Date.now() + seconds * 1000;
+        setCooldown(seconds);
+      } else setError((caught as Error).message);
     } finally {
       writing.current = false;
       setBusy(null);
@@ -86,21 +103,34 @@ export function GuestbookView() {
 
   const blocked = Boolean(busy) || loading;
   return (
-    <div className="shell reader-interactions">
+    <PageEntry className="shell reader-interactions guestbook-page">
       <h1><UiText zh="留言板" en="Guestbook" /></h1>
+      <p id="guestbook-description" className="guestbook-description"><UiText
+        zh="这里可以畅所欲言：反馈网站 Bug 和内容问题，分享阅读心得，或聊聊你的想法。遇到问题时，附上相关书名、文章或操作步骤，会更方便排查。"
+        en="Feel free to report website bugs or content issues, share your reading experiences, or simply leave a thought. If something goes wrong, include the relevant book, article, or steps so we can look into it."
+      /></p>
       {canModerate && <button className="reader-action" type="button" disabled={blocked}
         aria-pressed={hidden} onClick={() => { setHidden(!hidden); setPages([]); reload(true); }}>
         {hidden ? <UiText zh="返回公开留言" en="Show visible messages" /> :
           <UiText zh="查看已隐藏留言" en="Show hidden messages" />}
       </button>}
       {!hidden && <form onSubmit={publish} className="guestbook-form">
-        <label className="reader-sr-only" htmlFor="guestbook-message"><UiText zh="写留言" en="Write a message" /></label>
-        <textarea ref={composing} id="guestbook-message" rows={1} required maxLength={1000}
+        <label className="guestbook-form__label" htmlFor="guestbook-message"><UiText zh="写下你的想法" en="Leave a thought" /></label>
+        <textarea ref={composing} id="guestbook-message" aria-describedby="guestbook-description guestbook-limit" rows={2} required maxLength={1000}
+          {...uiPlaceholder("阅读心得、内容建议，或使用时遇到的问题，都可以写在这里……", "Share a reading experience, suggest an improvement, or tell us what went wrong…")}
           value={message} readOnly={busy === "publish"} onChange={(event) => setMessage(event.target.value)} />
-        <button className="reader-action" type="submit" disabled={blocked || !message.trim()}>
-          {busy === "publish" ? <UiText zh="发布中…" en="Posting…" /> : <UiText zh="发布留言" en="Post message" />}
-        </button>
+        <div className="guestbook-form__footer">
+          <span id="guestbook-limit" className="guestbook-form__count"><span>{message.length}</span> / 1000 <UiText zh="字" en="characters" /></span>
+          <button className="reader-action guestbook-form__submit" type="submit" disabled={blocked || cooling || !message.trim()}>
+            {busy === "publish" ? <UiText zh="发布中…" en="Posting…" /> : <UiText zh="发布留言" en="Post message" />}
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 14 0m-5-5 5 5-5 5" /></svg>
+          </button>
+        </div>
       </form>}
+      {cooling && <p className="guestbook-cooldown" role="status"><UiText
+        zh={`留言发送较频繁，请在 ${cooldown} 秒后重试。草稿已保留。`}
+        en={`Please wait ${cooldown} seconds before posting again. Your draft has been kept.`}
+      /></p>}
       {busy && <span className="reader-sr-only" role="status"><UiText zh="正在提交…" en="Submitting…" /></span>}
       {error && <p role="alert">{error}{" "}
         <button type="button" className="reader-action" disabled={blocked} onClick={() => reload()}><UiText zh="刷新留言" en="Refresh messages" /></button>
@@ -138,6 +168,6 @@ export function GuestbookView() {
               onClick={() => { setPages([...pages, board.next!]); reload(true); }}><UiText zh="下一页" en="Next page" /></button>}
           </div>
         </>}
-    </div>
+    </PageEntry>
   );
 }

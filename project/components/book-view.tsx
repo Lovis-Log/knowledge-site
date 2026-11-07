@@ -5,7 +5,6 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
-import { MobilePageEntryScroll } from "@/components/mobile-page-entry-scroll";
 import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
@@ -21,7 +20,6 @@ export default function BookView({ slug }: { slug: string }) {
 
   return (
     <div className="shell">
-      <MobilePageEntryScroll pageKey={`book:${book.slug}`} />
       {section && (
         <Link className="book-back" href={`/categories/${section.slug}/`}>
           <span aria-hidden="true">←</span>

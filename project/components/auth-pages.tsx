@@ -1,6 +1,6 @@
 "use client";
-import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { ReaderLink as Link, startNavigation } from "./navigation-feedback";
+import { useEffect, useState, type FormEvent } from "react";
 import { api, ApiError, safeNext } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { PasswordInput } from "./password-input";
@@ -21,21 +21,33 @@ const statuses: Record<string, [string, string]> = {
 };
 export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
   const [busy, setBusy] = useState(false),
+    [entering, setEntering] = useState(false),
     [error, setError] = useState(""),
     [status, setStatus] = useState(""),
     [done, setDone] = useState("");
+  useEffect(() => {
+    const resume = (event: PageTransitionEvent) => {
+      if (event.persisted) { setBusy(false); setEntering(false); }
+    };
+    window.addEventListener("pageshow", resume);
+    return () => window.removeEventListener("pageshow", resume);
+  }, []);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy) return;
     setBusy(true);
     setError("");
     setStatus("");
     const values = Object.fromEntries(new FormData(event.currentTarget));
+    let leaving = false;
     try {
       if (mode === "login") {
         await api("/api/auth/login", "POST", values);
-        window.location.assign(
-          safeNext(new URLSearchParams(window.location.search).get("next")),
-        );
+        const target = safeNext(new URLSearchParams(window.location.search).get("next"));
+        setEntering(true);
+        startNavigation(target, { fullDocument: true });
+        window.location.assign(target);
+        leaving = true;
       } else if (mode === "register") {
         const result = await api<{ status: string }>(
           "/api/auth/register",
@@ -48,6 +60,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
         setDone("reset");
       }
     } catch (error) {
+      setEntering(false);
       if (error instanceof ApiError && error.accountStatus)
         setStatus(error.accountStatus);
       else
@@ -55,7 +68,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
           error instanceof Error ? error.message : "请求失败 / Request failed",
         );
     } finally {
-      setBusy(false);
+      if (!leaving) setBusy(false);
     }
   }
   const title =
@@ -213,7 +226,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
             <button className="auth-button" disabled={busy}>
               <UiText
                 zh={
-                  busy
+                  entering ? "正在进入书库…" : busy
                     ? "处理中…"
                     : mode === "login"
                       ? "登录"
@@ -222,7 +235,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
                         : "设置新密码"
                 }
                 en={
-                  busy
+                  entering ? "Opening your library…" : busy
                     ? "Please wait…"
                     : mode === "login"
                       ? "Sign in"

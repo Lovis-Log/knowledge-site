@@ -11,6 +11,7 @@ import {
 } from "@/components/continue-reading";
 import { useContent } from "@/content/client";
 import { site } from "@/lib/site";
+import { PageEntry } from "@/components/page-entry";
 
 export default function LibraryView() {
   const { getLibrarySections, getAllChapterRefs, taxonomyEnglish } =
@@ -24,25 +25,25 @@ export default function LibraryView() {
   }));
 
   return (
-    <div className="shell">
+    <div className="shell library-page">
       <section className="hero">
         <div
           className="hero__scene"
           role="img"
           {...uiLabel("暖阳下的书与干花")}
         />
-        <div className="hero__body">
-          <p className="eyebrow">
+        <PageEntry className="hero__body" stagger>
+          <p className="eyebrow" data-entry-item>
             <UiText zh="个人知识库" en="Personal Knowledge Vault" />
           </p>
-          <h1 className="hero__title">{site.name}</h1>
-          <p className="hero__tagline">
+          <h1 className="hero__title" data-entry-item>{site.name}</h1>
+          <p className="hero__tagline" data-entry-item>
             <span className="hero__tagline-en">{site.intro.en}</span>
             <span className="hero__tagline-zh">{site.intro.zh}</span>
           </p>
           <div className="hero__rule" aria-hidden="true" />
           <LibraryNav />
-        </div>
+        </PageEntry>
       </section>
 
       <ContinueReading items={continueItems} />
@@ -55,7 +56,7 @@ export default function LibraryView() {
             data-library-section={section.slug}
             {...uiLabel(section.name, taxonomyEnglish[section.slug]?.name)}
           >
-            <div className="section-head library-preview__head">
+            <PageEntry className="section-head library-preview__head">
               <div>
                 <h2
                   id={`section-${section.slug}`}
@@ -94,7 +95,7 @@ export default function LibraryView() {
                   <UiText zh="查看全部" /> <span aria-hidden="true">→</span>
                 </Link>
               </div>
-            </div>
+            </PageEntry>
             <BookShelf headingId={`section-${section.slug}`}>
               {[
                 ...section.preview,

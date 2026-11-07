@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-lang="zh"
       data-ui-lang="zh"
       data-font-size="md"
+      data-scroll-behavior="smooth"
       data-toc="open"
       className={jakarta.variable}
       suppressHydrationWarning

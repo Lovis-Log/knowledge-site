@@ -7,6 +7,20 @@ import {
   needsPasswordUpgrade,
 } from "./password";
 import { isValidPassword } from "../lib/password-policy";
+import { decryptInvite, importInviteKey, InviteStorageError, normalizeInviteCode, storeInvite } from "./invites";
+
+// Secrets are provisioned separately from Wrangler's generated resource bindings.
+type AppEnv = Env & { INVITE_CODE_ENCRYPTION_KEY?: string };
+declare const RSC_PATHS: Record<string, string>;
+
+function fetchAsset(request: Request, env: { ASSETS: Fetcher }, path: string) {
+  // Resolve only build-recorded aliases, after the caller's normal access check.
+  const asset = Object.hasOwn(RSC_PATHS, path) ? RSC_PATHS[path] : undefined;
+  if (!asset) return env.ASSETS.fetch(request);
+  const url = new URL(request.url);
+  url.pathname = asset;
+  return env.ASSETS.fetch(new Request(url, request));
+}
 
 type DB = D1DatabaseSession;
 type User = {
@@ -29,6 +43,7 @@ class HttpError extends Error {
     public status: number,
     public code: string,
     message: string,
+    public headers: Record<string, string> = {},
   ) {
     super(message);
   }
@@ -137,16 +152,21 @@ function csrf(request: Request) {
   )
     fail(403, "CSRF_FAILED", "页面已过期，请刷新 / Refresh the page");
 }
-async function limit(db: DB, key: string, max: number, seconds: number) {
+async function limit(db: DB, key: string, max: number, seconds: number,
+  error: { code: string; message: string } = { code: "RATE_LIMITED", message: "尝试过多，请稍后再试 / Too many attempts" },
+) {
   const time = now();
   const row = await db
     .prepare(
-      `INSERT INTO rate_limits(key,count,expires_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires_at<=? THEN 1 ELSE count+1 END, expires_at=CASE WHEN expires_at<=? THEN excluded.expires_at ELSE expires_at END RETURNING count`,
+      `INSERT INTO rate_limits(key,count,expires_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires_at<=? THEN 1 ELSE count+1 END, expires_at=CASE WHEN expires_at<=? THEN excluded.expires_at ELSE expires_at END RETURNING count,expires_at`,
     )
     .bind(await digest(key), time + seconds, time, time)
-    .first<{ count: number }>();
-  if (!row || row.count > max)
-    fail(429, "RATE_LIMITED", "尝试过多，请稍后再试 / Too many attempts");
+    .first<{ count: number; expires_at: number }>();
+  if (!row || row.count > max) {
+    throw new HttpError(429, error.code, error.message, {
+      "Retry-After": String(Math.max(1, (row?.expires_at ?? time + seconds) - time)),
+    });
+  }
 }
 async function session(request: Request, db: DB) {
   const token = cookie(request, SESSION);
@@ -269,7 +289,10 @@ async function guestbookApi(request: Request, db: DB, path: string) {
     const data = await body(request);
     if (path === "/api/guestbook" && data.action === "publish") {
       const message = text(data, "message", 1, 1000);
-      await limit(db, `guestbook:${user.id}`, 5, 600);
+      await limit(db, `guestbook:v2:${user.id}`, 20, 60, {
+        code: "GUESTBOOK_RATE_LIMITED",
+        message: "留言发送较频繁，请稍后再试 / Posting too frequently; please try again shortly",
+      });
       const createdAt = now();
       const entry = await db.prepare(
         "INSERT INTO guestbook_entries(user_id,message,created_at) VALUES(?,?,?) RETURNING id",
@@ -298,7 +321,7 @@ async function guestbookApi(request: Request, db: DB, path: string) {
   return fail(404, "NOT_FOUND", "接口不存在 / Endpoint not found");
 }
 
-async function api(request: Request, db: DB, path: string) {
+async function api(request: Request, db: DB, path: string, env: AppEnv) {
   const method = request.method;
   if (method === "GET" && path === "/api/auth/csrf") {
     const token = randomToken();
@@ -343,7 +366,7 @@ async function api(request: Request, db: DB, path: string) {
         .prepare(
           "SELECT id FROM invites WHERE code_hash=? AND revoked=0 AND expires_at>? AND uses<max_uses",
         )
-        .bind(await digest(code), now())
+        .bind(await digest(normalizeInviteCode(code)), now())
         .first<{ id: string }>();
       if (!invite)
         fail(
@@ -676,14 +699,20 @@ async function api(request: Request, db: DB, path: string) {
       );
       const rows = await db
         .prepare(
-          "SELECT id,expires_at,max_uses,uses,revoked,created_at FROM invites ORDER BY created_at DESC,id LIMIT 30 OFFSET ?",
+          "SELECT id,code_ciphertext,expires_at,max_uses,uses,revoked,created_at FROM invites ORDER BY created_at DESC,id LIMIT 30 OFFSET ?",
         )
         .bind((page - 1) * 30)
-        .all();
+        .all<{ id: string; code_ciphertext: string | null; expires_at: number; max_uses: number; uses: number; revoked: number; created_at: number }>();
+      const key = rows.results.some((row) => row.code_ciphertext)
+        ? await importInviteKey(env.INVITE_CODE_ENCRYPTION_KEY) : null;
+      const invites = await Promise.all(rows.results.map(async ({ code_ciphertext, ...row }) => ({
+        ...row,
+        code: code_ciphertext && key ? await decryptInvite(code_ciphertext, row.id, key) : null,
+      })));
       const total = await db
         .prepare("SELECT count(*) AS count FROM invites")
         .first<{ count: number }>();
-      return json({ invites: rows.results, total: total?.count ?? 0, page });
+      return json({ invites, total: total?.count ?? 0, page });
     }
     if (method === "POST" && path === "/api/admin/invites") {
       const data = await body(request),
@@ -704,15 +733,8 @@ async function api(request: Request, db: DB, path: string) {
           "INVALID_INPUT",
           "次数须为 1–1000，有效期不超过一年 / Invalid invite limits",
         );
-      const code = randomToken(),
-        id = crypto.randomUUID();
-      await db
-        .prepare(
-          "INSERT INTO invites(id,code_hash,expires_at,max_uses,created_by,created_at) VALUES(?,?,?,?,?,?)",
-        )
-        .bind(id, await digest(code), expiresAt, maxUses, admin.id, now())
-        .run();
-      return json({ id, code }, 201);
+      const key = await importInviteKey(env.INVITE_CODE_ENCRYPTION_KEY);
+      return json(await storeInvite(db, { maxUses, expiresAt, adminId: admin.id, createdAt: now() }, key), 201);
     }
     const invite = path.match(/^\/api\/admin\/invites\/([^/]+)$/);
     if (method === "PATCH" && invite) {
@@ -733,7 +755,7 @@ async function api(request: Request, db: DB, path: string) {
 export default {
   async fetch(
     request: Request,
-    env: Env & { ASSETS: Fetcher },
+    env: AppEnv & { ASSETS: Fetcher },
   ): Promise<Response> {
     try {
       const url = new URL(request.url);
@@ -791,7 +813,7 @@ export default {
           path,
         );
       if (!env.DB) {
-        if (publicPath) return env.ASSETS.fetch(request);
+        if (publicPath) return fetchAsset(request, env, path);
         return json(
           {
             code: "BACKEND_UNAVAILABLE",
@@ -804,10 +826,10 @@ export default {
         return new Response(null, { status: 308, headers: { Location: "/library/", "Cache-Control": "no-store" } });
       }
       const db = env.DB.withSession("first-primary");
-      if (path.startsWith("/api/")) return await api(request, db, path);
+      if (path.startsWith("/api/")) return await api(request, db, path, env);
       if (!["GET", "HEAD"].includes(request.method))
         return json({ code: "METHOD_NOT_ALLOWED" }, 405);
-      if (publicPath) return env.ASSETS.fetch(request);
+      if (publicPath) return fetchAsset(request, env, path);
       const user = await session(request, db);
       if (!user) {
         if (request.headers.get("Accept")?.includes("text/html"))
@@ -822,15 +844,23 @@ export default {
       }
       if (path.startsWith("/admin") && user.role !== "admin")
         return json({ code: "FORBIDDEN" }, 403);
-      const response = await env.ASSETS.fetch(request);
+      const response = await fetchAsset(request, env, path);
       const headers = new Headers(response.headers);
       const coverThumbnail = /^\/covers\/[^/]+-(?:240|480)\.webp$/.test(path);
       headers.set("Cache-Control", coverThumbnail ? "private, no-cache" : "private, no-store");
       headers.set("X-Content-Type-Options", "nosniff");
       return new Response(response.body, { status: response.status, headers });
     } catch (error) {
+      if (error instanceof InviteStorageError) {
+        return json({
+          code: error.message,
+          message: error.message === "INVITE_GENERATION_BUSY"
+            ? "邀请码生成繁忙，请重试 / Invite generation busy; please retry"
+            : "邀请码加密配置不可用，请联系管理员检查密钥 / Invite encryption unavailable; check the configured key",
+        }, 503);
+      }
       if (error instanceof HttpError)
-        return json({ code: error.code, message: error.message }, error.status);
+        return json({ code: error.code, message: error.message }, error.status, error.headers);
       // Do not log request bodies, hashes, credentials or database error text.
       console.error(
         JSON.stringify({

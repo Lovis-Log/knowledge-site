@@ -3,6 +3,7 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
+import { CopyButton } from "./copy-button";
 type User = {
   id: string;
   username: string;
@@ -15,6 +16,7 @@ type User = {
 };
 type Invite = {
   id: string;
+  code: string | null;
   expires_at: number;
   max_uses: number;
   uses: number;
@@ -98,6 +100,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
   }
   useEffect(() => {
     let active = true;
+    setSecret("");
     setLoaded(false);
     setSelected(null);
     setError("");
@@ -245,12 +248,12 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
             <UiText
               zh={
                 secretKind === "invite"
-                  ? "邀请码仅本次展示"
+                  ? "邀请码已生成"
                   : "一次性重置凭据 · 15 分钟有效"
               }
               en={
                 secretKind === "invite"
-                  ? "Copy this invite now"
+                  ? "Invite code created"
                   : "One-use reset credential · expires in 15 minutes"
               }
             />
@@ -259,36 +262,26 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
             <UiText
               zh={
                 secretKind === "invite"
-                  ? "关闭后无法找回，请妥善转交。"
+                  ? "可随时在下方列表中查看和复制。"
                   : "请在核实身份后安全转交用户，在 /reset-password/ 使用。签发已撤销旧会话。"
               }
               en={
                 secretKind === "invite"
-                  ? "It cannot be recovered after dismissal. Share it securely."
+                  ? "You can view and copy this code from the list at any time."
                   : "Verify identity before sharing. Redeem at /reset-password/. Existing sessions have been revoked."
               }
             />
           </p>
           <input
-            aria-label="一次性凭据 / One-time credential"
+            aria-label={secretKind === "invite" ? "邀请码 / Invite code" : "一次性凭据 / One-time credential"}
             readOnly
             value={secret}
             onFocus={(e) => e.currentTarget.select()}
           />
           <div className="admin-actions">
-            <button
-              onClick={() => {
-                void navigator.clipboard
-                  .writeText(secret)
-                  .catch(() =>
-                    setError("请手动选中复制 / Select and copy manually"),
-                  );
-              }}
-            >
-              <UiText zh="复制" en="Copy" />
-            </button>
+            <CopyButton value={secret} />
             <button onClick={() => setSecret("")}>
-              <UiText zh="已保存，关闭" en="Saved, dismiss" />
+              {secretKind === "invite" ? <UiText zh="关闭" en="Dismiss" /> : <UiText zh="已保存，关闭" en="Saved, dismiss" />}
             </button>
           </div>
         </section>
@@ -488,7 +481,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>ID</th>
+                  <th><UiText zh="邀请码" en="Invite code" /></th>
                   <th>
                     <UiText zh="已用 / 上限" en="Used / limit" />
                   </th>
@@ -503,15 +496,23 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
               <tbody>
                 {invites.map((invite) => (
                   <tr key={invite.id}>
-                    <td>{invite.id.slice(0, 8)}</td>
+                    <td>
+                      <div className="invite-code">
+                        {invite.code ? <><code>{invite.code}</code><CopyButton value={invite.code} /></> :
+                          <span className="invite-code__legacy"><UiText zh="旧邀请码无法回显" en="Legacy code cannot be recovered" /></span>}
+                      </div>
+                      <small className="invite-code__id"><UiText zh="管理编号" en="Management ID" />：<span title={invite.id}>{invite.id.slice(0, 8)}</span></small>
+                    </td>
                     <td>
                       {invite.uses} / {invite.max_uses}
                     </td>
                     <td>{date(invite.expires_at)}</td>
                     <td>
-                      {invite.revoked ? (
-                        <UiText zh="已撤销" en="Revoked" />
-                      ) : (
+                      <div className="invite-state">
+                        <small>{invite.revoked ? <UiText zh="已撤销" en="Revoked" /> :
+                          invite.expires_at <= Date.now() / 1000 ? <UiText zh="已过期" en="Expired" /> :
+                          invite.uses >= invite.max_uses ? <UiText zh="已用尽" en="Exhausted" /> : <UiText zh="有效" en="Active" />}</small>
+                      {!invite.revoked && (
                         <button
                           disabled={busy}
                           onClick={() => void revoke(invite.id)}
@@ -519,6 +520,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
                           <UiText zh="撤销" en="Revoke" />
                         </button>
                       )}
+                      </div>
                     </td>
                   </tr>
                 ))}
