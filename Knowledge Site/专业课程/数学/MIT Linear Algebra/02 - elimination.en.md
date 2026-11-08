@@ -116,6 +116,10 @@ The pivots are $1,\ 2,\ 5$: all on the diagonal, none zero.
 
 > **One-sentence summary:** Elimination repeatedly uses the current pivot to clear the entries beneath it, until the matrix is upper triangular.
 
+![Three augmented matrices in elimination: the original, the matrix after eliminating x from row 2, and the upper-triangular U after eliminating y from row 3; pivots 1, 2, 5 are highlighted](/images/elimination-steps-en.svg)
+
+*Figure: two row operations turn the augmented matrix into upper-triangular form; the pivots are 1, 2, 5, and back substitution runs from the bottom up.*
+
 ### Back substitution
 
 Write $U\mathbf{x}=\mathbf{c}$ back as equations:

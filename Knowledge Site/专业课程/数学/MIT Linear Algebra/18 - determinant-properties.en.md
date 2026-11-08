@@ -157,6 +157,10 @@ Property 2 says one exchange flips the sign. For the definition to be consistent
 
 Strang closes by noting that every permutation is either odd or even. That fact is what makes the determinant uniquely determined by properties 1–3.
 
+![For A=[[2,1],[1,2]]: the unit square becomes a parallelogram with vertices (0,0),(2,1),(3,3),(1,2) and area 3 = det A; the right side maps area operations to determinant properties](/images/determinant-area-en.svg)
+
+*Figure: the determinant is the area scaling factor of a linear map; the sign records orientation, while the absolute value is the area multiplier.*
+
 ## Core review
 
 - Three properties define the determinant: $\det I=1$, exchange flips the sign, linear in each row.

@@ -83,6 +83,10 @@ The chat template renders the whole conversation into one string and records whe
 
 This is teacher-forced imitation learning: at training time the model sees the real history, not a history it sampled itself.
 
+![Token stream and loss mask for an agent trajectory: system, user, and observation tokens are 0; assistant thoughts, tool calls, final answer, and stop token are 1](/images/sft-loss-mask-en.svg)
+
+*Figure: a one-bit mask over one token stream—only assistant-generated tokens contribute to cross-entropy; tool observations are always context only.*
+
 ### Masking details that trip people up
 
 1. **The stop token must be inside the mask**, or the model never learns to stop.

@@ -137,6 +137,10 @@ int data = 45;
 
 规则：**输入与输出必须属于同一个多态继承体系，且一次只能沿着继承关系转。**
 
+![Animal、Feline、Dog 的继承树：Animal* 实际指向 Feline，dynamic_cast<Feline*> 成功，dynamic_cast<Dog*> 返回 nullptr；右侧对比指针版与引用版](/images/dynamic-cast-zh.svg)
+
+*图：向上转型总是安全；向下转型看动态类型，指针版用 nullptr 表示失败，引用版用 bad_cast 异常。*
+
 ## typeid：查看动态类型
 
 ```cpp

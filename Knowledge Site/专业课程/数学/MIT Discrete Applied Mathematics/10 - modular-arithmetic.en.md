@@ -108,6 +108,10 @@ Place $0,1,\dots,n-1$ evenly around a clock face. An integer $k$ corresponds to 
 
 Modulo $7$, for example, $5$ lands on position $5$; $12$ goes once around and then five more steps, landing on $5$ as well, so $12\equiv5\pmod7$. Modular arithmetic **does not distinguish** how many laps were made, only where you stop.
 
+![The clock modulo 7: 0 to 6 are spread evenly around the circle; 10 lands on 3, 12 on 5, and 3×5=15 on 1; the right side shows division with remainder and the reductions](/images/mod-clock-en.svg)
+
+*Figure: a congruence class cares only about the landing spot; a full lap of 7 is 0 modulo 7, so you can compute with ordinary integers and reduce afterward.*
+
 ## Arithmetic modulo $n$
 
 ### Addition and multiplication

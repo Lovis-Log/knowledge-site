@@ -80,6 +80,10 @@ $$
 
 A **feasible solution** satisfies all constraints (not necessarily optimally); an **optimal solution** optimises the objective among feasible points. For instance $(2,2)$ is feasible with value $80$, and $(3,2)$ is feasible with value $100$. We will see that $100$ is optimal.
 
+![Feasible region for the bake-sale problem: the two constraints and the axes form a quadrilateral; vertex (3,2) maximises 20x₁+20x₂ at 100](/images/lp-feasible-region-en.svg)
+
+*Figure: the feasible region is a polygon and the objective's contours are parallel lines; sliding in the direction of increase, the last point to leave the region is the optimum (3,2).*
+
 ## Two standard forms
 
 **Standard form:**

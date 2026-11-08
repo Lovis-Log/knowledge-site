@@ -287,6 +287,10 @@ other.cpp ─预处理──> 翻译单元 ──编译──> other.o ─┼─
 
 gcc 的链接错误末尾常见 `ld returned 1 exit status`，`ld` 就是链接器。
 
+![C++ 编译链接流程：main.cpp 与 compare.cpp 分别预处理、编译成目标文件，再由链接器合成可执行文件 rooster；右侧是编译期与链接期的错误归属](/images/compile-link-pipeline-zh.svg)
+
+*图：每个源文件独立走完预处理与编译，链接器最后解析跨文件符号；错误出现在哪个阶段，取决于它属于单个翻译单元还是符号解析。*
+
 ## 拆到多个文件：头文件与实现文件
 
 组织方式：

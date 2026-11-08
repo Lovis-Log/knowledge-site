@@ -163,6 +163,10 @@ $$
 =\frac{-7+20-13}{36}=0.
 $$
 
+![The three data points (1,1),(2,2),(3,2) and the fitted line b=2/3+(1/2)t; the vertical dashed segments are residuals, and the right side gives the normal equations and residual table](/images/least-squares-en.svg)
+
+*Figure: least squares does not force the line through the data points; it minimizes the sum of squared vertical residuals (=1/6).*
+
 ### Two pictures of one calculation
 
 - **Data picture:** three points, a line, and three vertical errors. Minimize $e_1^2+e_2^2+e_3^2$.

@@ -83,6 +83,10 @@ sources:
 
 这就是「教师强制」式的模仿学习：模型在训练时看到的是真实历史，而不是自己采样出来的历史。
 
+![一条 agent 轨迹的 token 序列与损失掩码：system、user、observation 为 0，assistant 的思考、工具调用、最终回答与停止 token 为 1](/images/sft-loss-mask-zh.svg)
+
+*图：同一串 token 上的一位掩码——只有 assistant 生成的部分计算交叉熵，工具观察永远只作上下文。*
+
 ### 掩码里容易出错的细节
 
 1. **停止 token 必须在掩码内**，否则模型学不会停下来。

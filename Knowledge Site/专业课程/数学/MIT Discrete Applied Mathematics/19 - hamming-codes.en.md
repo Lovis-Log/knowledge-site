@@ -88,6 +88,10 @@ The error must lie in both failing circles and outside the passing one. Circles 
 
 This is parity checking in geometric form: every position has a distinct pattern of circle membership, so the three parity results identify the error position uniquely.
 
+![Venn diagram for the Hamming (7,4) code: message bits a,b,c,d and parity bits e,f,g occupy seven regions; the right side gives the checks, an encoding and a correction example](/images/hamming-venn-en.svg)
+
+*Figure: three pairwise-intersecting circles place the 7 bit positions in 7 regions; each error position has a unique membership pattern, so the three parity checks locate it.*
+
 ## Linear codes
 
 Abstract the construction. Let $F$ be a field (here mostly $\mathbb F_2=\{0,1\}$). A **linear code** $C\subseteq F^n$ satisfies:

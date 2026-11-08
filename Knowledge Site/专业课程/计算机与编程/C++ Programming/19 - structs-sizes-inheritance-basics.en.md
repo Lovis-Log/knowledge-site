@@ -115,6 +115,10 @@ struct Mixed {
 
 This is also why reordering members can shrink an object: put the most strictly aligned members first and the padding shrinks.
 
+![Memory layout of Wrapper, about 40 bytes: m_a and m_b take 4 bytes each, std::string takes 32; in Mixed, char is followed by 3 padding bytes so int can align, giving 8 bytes total](/images/struct-alignment-en.svg)
+
+*Figure: object size is not the sum of members but the sum plus alignment gaps; functions and the data a pointer refers to do not count.*
+
 ## Inheritance: building a class on top of a class
 
 Consider a hierarchy of people: Person holds what all people share; Engineer is "a Person who engineers"; CivilEngineer is "an Engineer who specialises in civil works". Each level specialises the one above — exactly what inheritance expresses.

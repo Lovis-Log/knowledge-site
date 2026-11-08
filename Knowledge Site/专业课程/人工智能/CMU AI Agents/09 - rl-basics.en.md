@@ -150,6 +150,10 @@ $$
 
 The lecture's observation is striking: this looks almost exactly like the SFT gradient, with a reward multiplied in front. One action may span several tokens; their log-probabilities are summed.
 
+![The RL loop: the policy samples a trajectory, the environment returns a reward, and the reward scales the log-probability gradient before the policy update; the right side compares SFT and REINFORCE gradients and lists the REST baseline](/images/rl-loop-en.svg)
+
+*Figure: REINFORCE computes almost the same gradient as SFT, except every token log-probability in the trajectory is multiplied by one scalar reward; the environment term is unknown, but interacting with it samples it.*
+
 ## Why plain REINFORCE is not enough
 
 Consider a successful trajectory and a failed one.

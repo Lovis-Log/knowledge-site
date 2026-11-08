@@ -287,6 +287,10 @@ This model explains which stage owns which error:
 
 gcc link failures usually end with `ld returned 1 exit status`; `ld` is the linker.
 
+![C++ compile/link pipeline: main.cpp and compare.cpp are preprocessed and compiled into object files, then linked into the executable rooster; the right side maps errors to compile or link time](/images/compile-link-pipeline-en.svg)
+
+*Figure: each source file goes through preprocessing and compilation independently; the linker resolves cross-file symbols at the end. Which stage owns an error depends on whether it belongs to one translation unit or to symbol resolution.*
+
 ## Splitting across files: headers and implementation
 
 ```

@@ -166,6 +166,10 @@ Each component can be optimized independently once the bottleneck is known. Late
 
 Plan-and-Act addresses where planning data comes from: collect successful trajectories, have a teacher model segment and label them in natural language, then "unzip" into two datasets — task to steps (planner) and step to actions (executor). This closely resembles the workflow induction of the previous lecture, except the output is a model rather than memory entries.
 
+![Left: the spectrum from a fixed workflow to a fully autonomous agent; right: the planner (strong model) and executor (small model) loop](/images/planning-spectrum-en.svg)
+
+*Figure: workflow and autonomous agent form a spectrum; modularity lets a strong model plan and a small model execute, each optimized separately.*
+
 ### The cost of decomposition
 
 - Abstraction loses detail, and modules may not pass each other the right information.

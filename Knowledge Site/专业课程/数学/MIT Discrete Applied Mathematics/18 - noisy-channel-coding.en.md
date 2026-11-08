@@ -117,6 +117,10 @@ Boundary cases:
 
 Note $H(p)=H(1-p)$, so capacity is symmetric about $p=1/2$.
 
+![The binary symmetric channel BSC(p) with its flip diagram, and the capacity C=1−H(p) as p varies; at p=1/3, C≈0.082, and at p=1/2, C=0](/images/bsc-capacity-en.svg)
+
+*Figure: capacity is the rate limit for reliable communication; at p=1/2 the output is independent of the input, so C=0.*
+
 ## Proof strategy: random codebooks
 
 Repetition fails because the codebook is small and rigid. Shannon's proof does the opposite: **choose the codebook at random**.

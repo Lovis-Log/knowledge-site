@@ -62,6 +62,10 @@ $$
 
 So the system is $A\mathbf{x}=\mathbf{b}$.
 
+![The same system as a row picture and a column picture: the lines meet at (1,2), and one copy of c₁=(2,−1) plus two copies of c₂=(−1,2) gives b=(0,3)](/images/geometry-of-equations-en.svg)
+
+*Figure: two readings of the same numbers (x,y)=(1,2)—rows look for an intersection, columns look for two coefficients; the matrix form is just bookkeeping for the same question.*
+
 ## Row picture: two lines meeting
 
 The first equation $2x-y=0$ passes through the origin: $x=0$ gives $y=0$, and $x=1$ gives $y=2$. Two points determine the line.

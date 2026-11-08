@@ -117,6 +117,10 @@ struct Mixed {
 
 这条规则解释了为什么调整成员顺序有时能减小对象：把大对齐的成员放前面，空隙更少。
 
+![Wrapper 约 40 字节的内存布局：m_a 与 m_b 各 4 字节，std::string 占 32 字节；Mixed 的 char 后补 3 字节对齐，int 占 4 字节，总大小 8](/images/struct-alignment-zh.svg)
+
+*图：对象大小不是成员之和，而是成员之和加上对齐空隙；函数与指针所指内容都不计入。*
+
 ## 继承：把类建在类之上
 
 设想一个人员体系：Person 是所有「人」的公共部分；Engineer 是「懂工程的 Person」；CivilEngineer 是「专攻土木的 Engineer」。三者是层层特化的关系，正是继承要表达的东西。

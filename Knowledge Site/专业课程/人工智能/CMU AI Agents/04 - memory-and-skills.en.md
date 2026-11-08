@@ -80,6 +80,10 @@ Knowledge about *how* to perform a reusable subtask, abstracted away from the sp
 
 A skill is worth keeping only if the same subtask will recur.
 
+![Three carriers of memory: context window, external artifacts, and model weights; on the right, the three kinds of retained experience: episodes, facts, and skills](/images/memory-hierarchy-en.svg)
+
+*Figure: the context is shortest and most direct, external artifacts are portable, and model weights are the most persistent and expensive; episodes, facts, and skills are three different grains of experience.*
+
 ## Human-authored skills: the Agent Skills standard
 
 The current de facto standard is a folder:

@@ -137,6 +137,10 @@ int data = 45;
 
 Rule: **source and target must belong to the same polymorphic inheritance hierarchy, and the cast moves along that hierarchy.**
 
+![The Animal, Feline, and Dog hierarchy: an Animal* actually points to a Feline, so dynamic_cast<Feline*> succeeds and dynamic_cast<Dog*> returns nullptr; the right side compares the pointer and reference forms](/images/dynamic-cast-en.svg)
+
+*Figure: upcasts are always safe; downcasts depend on the dynamic type—the pointer form reports failure with nullptr, the reference form throws bad_cast.*
+
 ## typeid: inspecting the dynamic type
 
 ```cpp

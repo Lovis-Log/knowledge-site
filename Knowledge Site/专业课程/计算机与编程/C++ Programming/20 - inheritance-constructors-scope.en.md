@@ -262,6 +262,10 @@ Person destructor
 
 Construction bottom-up, destruction top-down: the last thing constructed is destroyed first. The reason matches chapter 18 — a derived layer may depend on base data, so dependants must be torn down first.
 
+![Construction and destruction order for the three-level Person → Engineer → CivilEngineer object: construction runs bottom-up, destruction top-down](/images/inheritance-order-en.svg)
+
+*Figure: the object is built like a stack—base first, then derived; destruction is exactly the reverse.*
+
 ## Same-named members: hiding and explicit calls
 
 A derived class may declare a member with the same name as one in the base:

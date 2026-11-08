@@ -92,6 +92,10 @@ sources:
 
 ## 工具调用的机械过程
 
+![工具调用的六步链路：模型输出、解析、注册表查找、参数校验、执行、结果写回；右侧是校验失败、执行失败与调用 ID 规则](/images/tool-call-pipeline-zh.svg)
+
+*图：一次工具调用从模型输出到观察写回的完整路径，以及两条失败路径。*
+
 ### 从特殊 token 到函数调用
 
 模型看到的不是「函数」，而是一段带特殊 token 的文本。不同厂商的格式并不相同：Qwen 有自己的 tool call 标记，Mistral 有另一套，DeepSeek 用 DSML 风格的 function call。

@@ -122,6 +122,10 @@ Three facts used later:
 - if some $p_i=1$, then $H=0$ — the source carries no uncertainty;
 - $H$ depends only on the probabilities, not on the symbol names.
 
+![Probabilities and two codes for the four messages; the right side compares the naive code at 2.0 bits, the improved code at 1.359 bits, and the entropy bound at 1.088 bits](/images/entropy-length-en.svg)
+
+*Figure: the improved variable-length code pushes the expected length down to 1.359 bits, but Shannon's theorem guarantees it cannot go below 2H(p)=1.088 bits.*
+
 ## Shannon's noiseless coding theorem
 
 Let the source have entropy $H$. The theorem has two directions.

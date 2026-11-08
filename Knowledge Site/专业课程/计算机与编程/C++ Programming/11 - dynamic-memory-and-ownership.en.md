@@ -132,6 +132,10 @@ if (!master) {
 
 The rule underneath is **single ownership**: one allocation, one owner.
 
+![Three sources of dangling pointers: uninitialized, use after delete, and shared pointers; the right side gives the three remedies: initialize, null after delete, and one owner](/images/dangling-pointers-en.svg)
+
+*Figure: the address in a pointer may be invalid; initialize it, null it after delete, and keep exactly one owner for each block of memory.*
+
 ## When `new` fails
 
 The heap is finite. Asking for an enormous block, or calling `new` in a loop without releasing, eventually fails. By default `new` throws `std::bad_alloc`, and an uncaught exception terminates the program.

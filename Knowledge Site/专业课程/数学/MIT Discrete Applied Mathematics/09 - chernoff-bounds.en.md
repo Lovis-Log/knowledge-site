@@ -76,6 +76,10 @@ $$
 
 The combined form trades the precise dependence on $\delta$ for a memorable, easily quoted expression. All three say the same thing: **the failure probability decays exponentially in $\mu$, hence in $n$**.
 
+![Upper bounds on a log scale: the Chebyshev bound 4/n falls slowly, while the Chernoff bound 2e^(−n/24) falls exponentially; they cross near 92 and Chernoff reaches 10⁻¹⁰ near 570](/images/chernoff-decay-en.svg)
+
+*Figure: bounds for the same p=0.5, δ=0.5—Chebyshev is polynomial decay, Chernoff is exponential decay; the y-axis is logarithmic.*
+
 Note that $\mu$ must be positive. If $\mu=0$ all $p_i$ vanish and the statement is trivial; if the variables can be negative one must shift and scale, which changes the constants in the exponent.
 
 ## The architecture of the proof

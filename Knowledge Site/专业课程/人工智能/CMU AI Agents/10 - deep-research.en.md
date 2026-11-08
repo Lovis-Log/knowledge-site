@@ -157,6 +157,10 @@ The lecture stresses two stabilizers used in practice: clipping to limit the siz
 - Wrap APIs robustly.
 - Use a local index to simulate external search and reduce dependence on live APIs.
 
+![The deep-research loop: research question → search → read and filter → synthesize → cited answer, returning to search when a gap appears; the right side shows mid-training, SFT, and RL](/images/deep-research-loop-en.svg)
+
+*Figure: deep research is not one retrieval but a loop with a gap check; training starts with mid-training on agent trajectories, then SFT and RL.*
+
 ## Open-ended tasks: evolving rubrics
 
 Exact match works for short answers, not for long reports. The speaker's group turns rubric evaluation into a training reward and lets the rubrics **evolve with the policy**:

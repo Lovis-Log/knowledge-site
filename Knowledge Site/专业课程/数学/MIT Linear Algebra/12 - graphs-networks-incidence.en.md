@@ -68,6 +68,10 @@ $$
 
 This is a sparse $5\times4$ matrix: every row has exactly two nonzero entries, so the total is $2m$ for $m$ edges. A large graph gives a large but extremely regular matrix.
 
+![A 4-node, 5-edge graph and its 5×4 incidence matrix: the two shaded triangles are independent cycles; each row is an edge and each column is a node](/images/graphs-incidence-en.svg)
+
+*Figure: the graph and its incidence matrix mirror each other—the two independent cycles visible in the graph are the two basis vectors of the left null space, while constant potential is the null space.*
+
 ## Null space: constant potential
 
 Multiply $A$ by $\mathbf{x}=(x_1,x_2,x_3,x_4)^\top$:

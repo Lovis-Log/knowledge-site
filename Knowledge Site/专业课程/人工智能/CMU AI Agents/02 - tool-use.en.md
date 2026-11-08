@@ -90,6 +90,10 @@ Once code execution is allowed, a sandbox stops being optional and becomes a pre
 
 ## The mechanics of a tool call
 
+![The six-step tool-call chain: model output, parsing, registry lookup, validation, execution, and writing the result back; the right side shows validation failure, execution failure, and the call-ID rule](/images/tool-call-pipeline-en.svg)
+
+*Figure: the full path of a tool call from model output to observation, plus the two failure paths.*
+
 ### Special tokens, not function objects
 
 The model does not see functions. It sees text with special tokens, and the format differs by vendor: Qwen has its own tool-call markers, Mistral another, DeepSeek uses a DSML-style function call.
