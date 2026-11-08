@@ -36,7 +36,7 @@
       "slug": "mathematics",
       "section": "courses",
       "name": "数学",
-      "description": "线性代数、微积分、概率与证明"
+      "description": "线性代数、微积分、概率与证明，以及博弈论与策略互动"
     },
     {
       "slug": "software-engineering",
