@@ -30,7 +30,7 @@ This lecture looks at the same fact from a different angle: **promote invertibil
 | 9:21 | Finite groups: $\mathbb Z_n$ under addition |
 | 10:28 | $\mathbb Z_n\setminus\{0\}$ is a group under multiplication iff $n$ is prime |
 | 15:08 | The hidden group $\mathbb Z_n^*$: elements coprime to $n$ |
-| 17:09 | Order of a group; $|\mathbb Z_p\setminus\{0\}|=p-1$, $|\mathbb Z_{pq}^*|=(p-1)(q-1)$ |
+| 17:09 | Order of a group; $\vert \mathbb Z_p\setminus\{0\}\vert =p-1$, $\vert \mathbb Z_{pq}^*\vert =(p-1)(q-1)$ |
 | 22:15 | Definition of a subgroup |
 | 25:34 | Statement of Lagrange's theorem and an example |
 | 30:41 | Proof via left cosets |

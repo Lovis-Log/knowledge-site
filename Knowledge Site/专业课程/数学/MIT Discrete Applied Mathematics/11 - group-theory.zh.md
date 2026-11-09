@@ -30,7 +30,7 @@ sources:
 | 9:21 | 有限群：$\mathbb Z_n$ 加法 |
 | 10:28 | $\mathbb Z_n\setminus\{0\}$ 在乘法下是群当且仅当 $n$ 是素数 |
 | 15:08 | 隐藏的群 $\mathbb Z_n^*$：与 $n$ 互素的元素 |
-| 17:09 | 群的阶；$|\mathbb Z_p\setminus\{0\}|=p-1$、$|\mathbb Z_{pq}^*|=(p-1)(q-1)$ |
+| 17:09 | 群的阶；$\vert \mathbb Z_p\setminus\{0\}\vert =p-1$、$\vert \mathbb Z_{pq}^*\vert =(p-1)(q-1)$ |
 | 22:15 | 子群的定义 |
 | 25:34 | Lagrange 定理的陈述与例子 |
 | 30:41 | 用左陪集证明 Lagrange 定理 |

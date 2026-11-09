@@ -46,7 +46,7 @@ This is a **two-sided** limit: $f$ must be defined in a neighbourhood of $x_0$, 
 | 7:02 | Sum rule (proof) |
 | 10:52 | Statement of the Leibniz rule |
 | 13:12 | Differentiable implies continuous (proof) |
-| 21:01 | Three examples: $|x|$, $x\sin(1/x)$, $x^2\sin(1/x)$ |
+| 21:01 | Three examples: $\vert x\vert $, $x\sin(1/x)$, $x^2\sin(1/x)$ |
 | 36:54 | Leibniz rule (proof) |
 | 42:58 | Quotient rule (proof) |
 | 53:50 | Using the rules on polynomials and rational functions |

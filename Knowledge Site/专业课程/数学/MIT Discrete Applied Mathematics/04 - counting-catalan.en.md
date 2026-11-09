@@ -78,11 +78,11 @@ No factorials were expanded; the proof only **classifies the same objects two wa
 Arranging $\binom nk$ by rows gives Pascal's triangle:
 
 $$
-\begin{array}{ccccccc}
-& & 1 & & & &\\
-& 1 & & 1 & & &\\
-1 & & 2 & & 1 & &\\
-1 & & 3 & & 3 & & 1\\
+\begin{array}{ccccccccc}
+& & & & 1 & & & &\\
+& & & 1 & & 1 & & &\\
+& & 1 & & 2 & & 1 & &\\
+& 1 & & 3 & & 3 & & 1 &\\
 1 & & 4 & & 6 & & 4 & & 1
 \end{array}
 $$
