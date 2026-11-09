@@ -1,6 +1,7 @@
 ---
 slug: "3b1b-differential-equations"
 title: "3B1B Differential Equations"
+coverImage: /covers/editorial-3b1b-differential-equations-v1.webp
 subtitle: "3Blue1Brown · 2019–2025"
 description: "3Blue1Brown 微分方程系列的学习笔记。"
 longDescription: "整理 3Blue1Brown 微分方程系列的八讲内容：从相空间与向量场出发，经热方程与傅里叶级数，走到拉普拉斯变换与矩阵指数。每章附时间轴与理解检验，保留原片中的几何直觉。"

@@ -8,6 +8,27 @@ import { HeaderBreadcrumb } from "./header-breadcrumb";
 import { DonateButton } from "./donate-button";
 import { AccountMenu } from "./account-menu";
 
+function NavLink({ item }: { item: (typeof site.nav)[number] }) {
+  return (
+    <Link href={item.href} className={item.href === "/about/" ? "site-nav__about" : undefined} {...uiLabel(item.label)}>
+      <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+        {item.href === "/library/" ? (
+          <>
+            <path d="M12 5.5C9 3.5 5.5 3.5 3 4.5v15c2.5-1 6-1 9 1 3-2 6.5-2 9-1v-15c-2.5-1-6-1-9 1Z" />
+            <path d="M12 5.5v15" />
+          </>
+        ) : (
+          <>
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 11v5m0-9v.5" />
+          </>
+        )}
+      </svg>
+      <UiText zh={item.label} />
+    </Link>
+  );
+}
+
 export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
   return (
     <header className="site-header">
@@ -24,25 +45,13 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
         </Link>
         <HeaderBreadcrumb crumbs={crumbs} />
         <nav className="site-nav" {...uiLabel("主导航")}>
-          {site.nav.map((item) => (
-            <Link key={item.href} href={item.href} className={item.href === "/about/" ? "site-nav__about" : undefined} {...uiLabel(item.label)}>
-              <svg className="site-nav__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-                {item.href === "/library/" ? (
-                  <>
-                    <path d="M12 5.5C9 3.5 5.5 3.5 3 4.5v15c2.5-1 6-1 9 1 3-2 6.5-2 9-1v-15c-2.5-1-6-1-9 1Z" />
-                    <path d="M12 5.5v15" />
-                  </>
-                ) : (
-                  <>
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M12 11v5m0-9v.5" />
-                  </>
-                )}
-              </svg>
-              <UiText zh={item.label} />
-            </Link>
+          {site.nav.filter((item) => item.href !== "/about/").map((item) => (
+            <NavLink key={item.href} item={item} />
           ))}
           <AccountMenu />
+          {site.nav.filter((item) => item.href === "/about/").map((item) => (
+            <NavLink key={item.href} item={item} />
+          ))}
           <UiLanguageToggle />
           <DonateButton />
         </nav>

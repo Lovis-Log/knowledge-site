@@ -143,6 +143,9 @@ const COVER_ART: Record<string, string> = {
 };
 
 const thumbSources = new Set([
+  "/covers/editorial-3b1b-calculus-v1.webp",
+  "/covers/editorial-3b1b-differential-equations-v1.webp",
+  "/covers/editorial-3b1b-linear-algebra-v1.webp",
   "/covers/editorial-agent-engineering-v1.webp",
   "/covers/editorial-agents.webp",
   "/covers/editorial-coding.webp",
@@ -153,6 +156,7 @@ const thumbSources = new Set([
   "/covers/editorial-llm-principles-v1.webp",
   "/covers/editorial-math.webp",
   "/covers/editorial-mit-discrete-mathematics-v2.webp",
+  "/covers/editorial-mit-game-theory-v1.webp",
   "/covers/editorial-mit-real-analysis-v1.webp",
   "/covers/editorial-news.webp",
   "/covers/editorial-personal-selection-v1.webp",

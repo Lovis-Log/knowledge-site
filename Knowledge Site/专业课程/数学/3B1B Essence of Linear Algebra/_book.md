@@ -1,6 +1,7 @@
 ---
 slug: "3b1b-essence-of-linear-algebra"
 title: "3B1B Essence of Linear Algebra"
+coverImage: /covers/editorial-3b1b-linear-algebra-v1.webp
 subtitle: "3Blue1Brown · 2016–2021"
 description: "3Blue1Brown 线性代数系列的学习笔记：从箭头到抽象空间。"
 longDescription: "整理 3Blue1Brown《Essence of Linear Algebra》十六讲：从向量的两种视角出发，经线性组合与张成、线性变换与矩阵、矩阵乘法、行列式、逆矩阵与零空间、非方阵、点积与对偶、叉积、克拉默法则、基变换、特征向量，直到抽象向量空间。每章附时间轴、几何解释与理解检验。"

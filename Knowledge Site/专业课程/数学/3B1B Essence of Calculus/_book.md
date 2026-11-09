@@ -1,6 +1,7 @@
 ---
 slug: "3b1b-essence-of-calculus"
 title: "3B1B Essence of Calculus"
+coverImage: /covers/editorial-3b1b-calculus-v1.webp
 subtitle: "3Blue1Brown · 2017–2018"
 description: "3Blue1Brown 微积分系列的学习笔记：从圆的面积一路走到泰勒级数。"
 longDescription: "整理 3Blue1Brown《Essence of Calculus》十二讲：从把圆切成同心环推出 πr² 开始，依次建立导数、几何求导公式、链式与乘积法则、e 的定义、隐函数求导、极限与 ε-δ、积分与基本定理、面积与斜率、高阶导数、泰勒级数，最后换一个视角重看导数。每章附时间轴、推导过程与理解检验。"
