@@ -319,6 +319,10 @@ test("six-character passwords work for registration and reset, including leading
 
 test("anonymous website, payloads, attachments and content API enforce the public boundary", async () => {
   const c = client();
+  const landingCss = await readFile("components/landing/landing.module.css", "utf8");
+  for (const [, asset] of landingCss.matchAll(/url\(["']?(\/images\/[^"')]+)["']?\)/g)) {
+    assert.equal((await c.call(asset)).status, 200, `Anonymous landing asset: ${asset}`);
+  }
   for (const path of [
     "/",
     "/login/",
@@ -329,6 +333,7 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/images/hero-scene.webp",
     "/images/lovismind-cover.webp",
     "/images/preface-warm-light.webp",
+    "/images/preface-book-cutout-v1.webp",
     "/images/vault-preview/agent.webp",
     "/images/vault-preview/ai-shelf.webp",
     "/images/vault-preview/linear-algebra.webp",

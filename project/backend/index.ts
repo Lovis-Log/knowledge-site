@@ -796,6 +796,7 @@ export default {
           "/images/lovismind-cover.webp",
           "/images/preface-warm-light.png",
           "/images/preface-warm-light.webp",
+          "/images/preface-book-cutout-v1.webp",
           "/images/vault-preview/agent.png",
           "/images/vault-preview/agent.webp",
           "/images/vault-preview/ai-shelf.png",

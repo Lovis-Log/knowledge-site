@@ -97,15 +97,7 @@ export default function LibraryView() {
               </div>
             </PageEntry>
             <BookShelf headingId={`section-${section.slug}`}>
-              {[
-                ...section.preview,
-                ...section.books.filter(
-                  (book) =>
-                    !section.preview.some(
-                      (preview) => preview.slug === book.slug,
-                    ),
-                ),
-              ].map((book, index) => (
+              {section.preview.slice(0, 4).map((book, index) => (
                 <BookCard key={book.slug} book={book} index={index} priority={sectionIndex === 0 && index < 2} />
               ))}
             </BookShelf>
