@@ -27,7 +27,7 @@ npm run release
 
 1. 核对 origin，获取并合并 main。生产不允许用 `KNOWLEDGE_SITE_DIR` 指向仓库外的笔记。
 2. 生成类型、构建页面与 Worker，运行前后端类型检查、导出边界、界面语言、内容刷新、认证和发布测试。
-3. 将同一份内容暂存到生产 D1，并核对条目数和 JSON 完整性；此时不切换 `content_current`。
+3. 核对生产 D1 中相同版本的条目数和 JSON 完整性；内容完整时跳过导入，否则暂存该内容版本并复核。此时不切换 `content_current`。
 4. 推送 `HEAD:main`，由已有 Cloudflare Pages Git 集成构建。项目 `lovismind`，根目录 `project`，命令 `npm ci && npm run build && npm run verify`，输出 `out`，生产和预览均须 fail closed。
 5. 查询生产构建状态，并轮询 `/api/release`，确认完整提交号、内容版本与就绪状态，最多等待 20 分钟。
 6. 更新兼容旧部署的 `content_current` 指针，检查公开页面可用、匿名书库访问跳转到登录页，写入成功记录。

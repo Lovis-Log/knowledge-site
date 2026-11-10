@@ -160,6 +160,14 @@ test("release identifies the build and content stays pinned despite a different 
   const responseCatalog = await admin.call("/api/content/catalog");
   assert.deepEqual(await responseCatalog.json(), { secret: "CATALOG_ONLY_FOR_APPROVED" });
 });
+
+test("anonymous browser smoke requests redirect while API-style requests return 401", async () => {
+  const browser = await mf.dispatchFetch(origin + "/library/", { redirect: "manual", headers: { Accept: "text/html" } });
+  assert.equal(browser.status, 303);
+  assert.equal(browser.headers.get("location"), "/login/?next=%2Flibrary%2F");
+  const apiStyle = await mf.dispatchFetch(origin + "/library/", { redirect: "manual" });
+  assert.equal(apiStyle.status, 401);
+});
 after(async () => {
   await mf.dispose();
 });

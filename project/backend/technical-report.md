@@ -1,5 +1,7 @@
 # LovisMind 后端简明技术报告
 
+> 历史技术报告，以下状态与步骤反映记录日期。现行功能见 [README](README.md)，发布与恢复统一见 [RELEASING.md](../RELEASING.md)。
+
 日期：2026-11-04。分支：`codex/backend-auth`。最新状态：独立预览已部署，正式站未变；未新开通付费服务。旧参数预览曾复现 1102；最新降档后登录 CPU 样本为 4–8ms，仍不等于完整生产性能验收。详见 [哈希降档记录](hash-cost-update.md)。详见 [预览部署记录](preview-deployment.md)。
 
 ## 1. 功能与架构

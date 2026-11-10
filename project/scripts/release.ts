@@ -60,11 +60,17 @@ try {
     // Check Pages read access before importing or pushing anything.
     run(process.execPath, [wrangler, "pages", "deployment", "list", "--project-name", "lovismind", "--environment", "production", "--json"], true);
     // No migrations, account initialization, or secret changes are hidden in a routine release.
-    d1("execute", "DB", "--file", ".backend-build/content.sql");
-    const output = run(process.execPath, [wrangler, "d1", "execute", "DB", "--remote", "--env", "production", "--json", "--command",
-      `SELECT count(*) AS total,sum(json_valid(json)) AS valid FROM content_entries WHERE version_id='${manifest.version}'`], true);
-    const rows = JSON.parse(output) as { results: { total: number; valid: number }[] }[];
-    const counts = rows.flatMap((row) => row.results)[0];
+    function contentCounts() {
+      const output = run(process.execPath, [wrangler, "d1", "execute", "DB", "--remote", "--env", "production", "--json", "--command",
+        `SELECT count(*) AS total,sum(json_valid(json)) AS valid FROM content_entries WHERE version_id='${manifest.version}'`], true);
+      const rows = JSON.parse(output) as { results: { total: number; valid: number }[] }[];
+      return rows.flatMap((row) => row.results)[0];
+    }
+    let counts = contentCounts();
+    if (counts?.total !== manifest.entries || counts.valid !== manifest.entries) {
+      d1("execute", "DB", "--file", ".backend-build/content.sql");
+      counts = contentCounts();
+    } else console.log("Matching content is already complete; skipping database import.");
     if (counts?.total !== manifest.entries || counts.valid !== manifest.entries)
       throw new Error("Staged content is incomplete; no push performed.");
     if (git("status", "--porcelain") || git("rev-parse", "HEAD") !== commit)
@@ -104,7 +110,7 @@ try {
       const response = await fetch(base + path, { signal: AbortSignal.timeout(15_000) });
       if (!response.ok) throw new Error(`Production smoke check failed: ${path}`);
     }
-    const protectedPage = await fetch(base + "/library/", { redirect: "manual", signal: AbortSignal.timeout(15_000) });
+    const protectedPage = await fetch(base + "/library/", { headers: { Accept: "text/html" }, redirect: "manual", signal: AbortSignal.timeout(15_000) });
     if (protectedPage.status !== 303 || !protectedPage.headers.get("location")?.startsWith("/login/"))
       throw new Error("Anonymous library access did not redirect to login.");
     await save("success");

@@ -1,5 +1,7 @@
 # 独立预览部署记录
 
+> 历史部署记录，以下状态反映记录日期。当前发布命令与内容导入步骤统一见 [RELEASING.md](../RELEASING.md)。
+
 日期：2026-11-04。此次为预览发布，未发布正式站，未新开通付费服务。
 
 - 预览入口：https://codex-backend-auth.lovismind-preview.pages.dev/
