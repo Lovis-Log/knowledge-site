@@ -1,5 +1,7 @@
 # 「我的书房」— 个人知识网站规划摘要与实施计划
 
+> 历史实施计划，仅供追溯；现行发布流程见 [RELEASING.md](RELEASING.md)，功能以当前代码与 README 为准。
+
 > 状态：第一版已实现（2026-10-31），构建、产物校验与浏览器验收通过。
 > Git 仓库根：`Obsidian Vault/`（白名单，只跟踪两处）
 > 代码与技术文档：`Obsidian Vault/project/`

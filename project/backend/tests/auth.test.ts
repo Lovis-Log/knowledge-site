@@ -143,6 +143,22 @@ before(async () => {
       .bind(JSON.stringify({ body: "PRIVATE_CHAPTER_SENTINEL" })),
     db.prepare("INSERT INTO content_current VALUES(1,'test')"),
   ]);
+  const { version } = JSON.parse(await readFile(".backend-build/content-manifest.json", "utf8"));
+  await db.batch([
+    db.prepare("INSERT INTO content_versions VALUES(?,unixepoch())").bind(version),
+    db.prepare("INSERT INTO content_entries SELECT ?,key,json FROM content_entries WHERE version_id='test'").bind(version),
+    db.prepare("UPDATE content_entries SET json='{}' WHERE version_id='test'"),
+  ]);
+});
+
+test("release identifies the build and content stays pinned despite a different current version", async () => {
+  const response = await mf.dispatchFetch(origin + "/api/release");
+  assert.equal(response.status, 200);
+  const release = await response.json() as { commit: string; contentVersion: string; ready: boolean };
+  assert.match(release.commit, /^[a-f0-9]{40}$/);
+  assert.equal(release.ready, true);
+  const responseCatalog = await admin.call("/api/content/catalog");
+  assert.deepEqual(await responseCatalog.json(), { secret: "CATALOG_ONLY_FOR_APPROVED" });
 });
 after(async () => {
   await mf.dispose();

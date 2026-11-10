@@ -3,6 +3,11 @@ import { readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getAllBooks } from "../content/index";
 import { pickVersion } from "../lib/language";
+import { execFileSync } from "node:child_process";
+import { exportContent } from "./export-content";
+
+const { version } = await exportContent();
+const commit = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
 
 const titles: Record<string, { zh: string; en: string }> = {};
 // Next's segment-prefetch URLs flatten segment paths with dots, while the
@@ -33,7 +38,7 @@ for (const book of getAllBooks()) {
   }
 }
 await build({
-  define: { FAVORITE_TITLES: JSON.stringify(titles), RSC_PATHS: JSON.stringify(rscPaths) },
+  define: { FAVORITE_TITLES: JSON.stringify(titles), RSC_PATHS: JSON.stringify(rscPaths), CONTENT_VERSION: JSON.stringify(version), RELEASE_COMMIT: JSON.stringify(commit) },
   entryPoints: ["backend/index.ts"],
   outfile: "out/_worker.js",
   bundle: true,

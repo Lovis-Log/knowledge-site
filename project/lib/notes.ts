@@ -332,7 +332,7 @@ function loadBook(bookDir: string, folder: string): Book | null {
 
   const bySlug = new Map<string, Acc>();
 
-  for (const entry of fs.readdirSync(bookDir, { withFileTypes: true })) {
+  for (const entry of fs.readdirSync(bookDir, { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0)) {
     if (!entry.isFile() || entry.name === "_book.md" || entry.name === "README.md") continue;
     const match = CHAPTER_FILE.exec(entry.name) ?? TRANSLATION_FILE.exec(entry.name);
     if (!match) continue;
@@ -430,7 +430,7 @@ export function loadBooks(): Book[] {
   if (!fs.existsSync(root)) return [];
   const books: Book[] = [];
   function visit(directory: string) {
-    const entries = fs.readdirSync(directory, { withFileTypes: true });
+    const entries = fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     const isBook = entries.some((entry) => entry.isFile() &&
       (entry.name === "_book.md" || CHAPTER_FILE.test(entry.name)));
     if (directory !== root && isBook) {

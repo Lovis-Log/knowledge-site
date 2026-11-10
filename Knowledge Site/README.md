@@ -143,24 +143,6 @@ sources:
 
 ## 生成与发布
 
-使用 `deeplearn-notes` skill 从剪藏生成笔记，写入本目录并维护去重状态。
+成稿内容使用以上格式与来源规则。发布统一遵循 [发布与恢复指南](../project/RELEASING.md)。仅暂存本任务文件并提交后，在 `project/` 执行 `npm run release`，由同一个命令检查、导入对应 D1 内容、推送 main 并确认生产部署。
 
-发布：
-
-```bash
-git add "Knowledge Site"
-git commit -m "notes: add <书名> chapter <N>"
-git push
-```
-
-不要使用 `git add -A` 或 `git add .`。
-
-## 校验
-
-```bash
-cd project
-npm run build
-npm run verify
-```
-
-`verify` 会扫描本目录，检查每个文件是否可解析、分类是否合法、页面是否生成，以及 KaTeX、代码高亮、双语块是否正常。
+仅检查执行 `npm run release:check`。只执行 `git push` 不包含数据库内容更新，不能视为完整发布。

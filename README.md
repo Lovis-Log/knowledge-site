@@ -57,7 +57,7 @@ npm run dev:full   # http://localhost:8788
 
 完整流程需要本地 Workers/D1，不再使用纯静态服务器。云端部署与费用前置条件见 [后端说明](project/backend/README.md)。
 
-本轮变更包含 `0004_recoverable_invites.sql`。发布前必须先在目标 D1 执行迁移，并为对应 Pages 环境配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布代码；详见[邀请码加密与迁移说明](project/backend/README.md#邀请码加密密钥与增量迁移)。本地密钥、数据库和测试账号不提交到仓库。
+日常发布与恢复统一见 [发布指南](project/RELEASING.md)：仅提交本任务文件后，在 `project/` 执行 `npm run release`。首次环境配置见后端说明；普通发布不重复初始化账号或配置密钥。
 
 ## 添加内容
 
@@ -65,7 +65,7 @@ npm run dev:full   # http://localhost:8788
 2. 章节文件命名为 `NN - 标题.zh.md` / `NN - 标题.en.md`，`NN` 与 frontmatter 的 `slug` 前缀一致。
 3. 每章至少填写 `slug`、`title`、`summary`、`updatedAt`、`content_type` 与 `sources`；`sources` 里带上原资源的 `publishedAt`。
 4. 分类写进 `Knowledge Site/taxonomy.json`，首页按大类预览，大类页按子分类展示。
-5. `cd project && npm run build && npm run verify` 确认产物安全；再向目标环境导入内容并发布，步骤见后端说明。
+5. 仅提交本任务文件后，`cd project && npm run release` 完成检查、内容导入、推送及生产确认；仅检查用 `npm run release:check`。
 
 完整约定见 [Knowledge Site/README.md](Knowledge%20Site/README.md)。
 
@@ -78,5 +78,6 @@ npm run dev:full   # http://localhost:8788
 
 ## 文档
 
+- [project/RELEASING.md](project/RELEASING.md) — 唯一现行发布与恢复流程
 - [project/README.md](project/README.md) — 站点结构、开发与部署
 - [Knowledge Site/README.md](Knowledge%20Site/README.md) — 笔记目录、命名与 frontmatter 约定

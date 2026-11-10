@@ -12,6 +12,8 @@ import { decryptInvite, importInviteKey, InviteStorageError, normalizeInviteCode
 // Secrets are provisioned separately from Wrangler's generated resource bindings.
 type AppEnv = Env & { INVITE_CODE_ENCRYPTION_KEY?: string };
 declare const RSC_PATHS: Record<string, string>;
+declare const CONTENT_VERSION: string;
+declare const RELEASE_COMMIT: string;
 
 function fetchAsset(request: Request, env: { ASSETS: Fetcher }, path: string) {
   // Resolve only build-recorded aliases, after the caller's normal access check.
@@ -197,9 +199,9 @@ async function requireUser(request: Request, db: DB, admin = false) {
 async function content(db: DB, key: string) {
   const entry = await db
     .prepare(
-      "SELECT json FROM content_entries WHERE version_id=(SELECT version_id FROM content_current WHERE id=1) AND key=?",
+      "SELECT json FROM content_entries WHERE version_id=? AND key=?",
     )
-    .bind(key)
+    .bind(CONTENT_VERSION, key)
     .first<{ json: string }>();
   if (!entry)
     fail(404, "NOT_FOUND", "内容不存在或尚未导入 / Content not found");
@@ -827,6 +829,11 @@ export default {
         return new Response(null, { status: 308, headers: { Location: "/library/", "Cache-Control": "no-store" } });
       }
       const db = env.DB.withSession("first-primary");
+      if (path === "/api/release" && ["GET", "HEAD"].includes(request.method)) {
+        const entry = await db.prepare("SELECT json_valid(json) AS ready FROM content_entries WHERE version_id=? AND key='catalog'")
+          .bind(CONTENT_VERSION).first<{ ready: number }>();
+        return json({ commit: RELEASE_COMMIT, contentVersion: CONTENT_VERSION, ready: entry?.ready === 1 }, entry?.ready === 1 ? 200 : 503);
+      }
       if (path.startsWith("/api/")) return await api(request, db, path, env);
       if (!["GET", "HEAD"].includes(request.method))
         return json({ code: "METHOD_NOT_ALLOWED" }, 405);

@@ -9,7 +9,7 @@ if (remote && !["preview", "production"].includes(environment ?? ""))
 await exportContent();
 for (const file of [
   ".backend-build/content.sql",
-  ".backend-build/activate.sql",
+  ...(process.argv.includes("--stage") ? [] : [".backend-build/activate.sql"]),
 ]) {
   const args = [
     "node_modules/wrangler/bin/wrangler.js",

@@ -42,7 +42,7 @@ npm run benchmark:auth
 - `reset_tokens`：一次性、十五分钟有效的重置凭据哈希；签发及兑换均撤销旧会话。核实身份和安全转交由管理员完成；不发送邮件、不改变审核状态。
 - `rate_limits`：D1 原子固定窗口计数；注册、登录、邀请码及重置均有限额。
 - 留言发布单独采用每账号每分钟 20 条的窗口（`guestbook:v2:*`），替代旧的十分钟 5 条；其他接口的限额不变。达到限额返回 `GUESTBOOK_RATE_LIMITED` 与 `Retry-After` 秒数，前端保留草稿并显示倒计时，到期恢复发布。
-- `content_versions`、`content_entries`、`content_current`：按原 slug 导入完整内容和剥离正文的目录数据，导入完成后才激活版本。重跑生成独立版本，不覆写当前版本。
+- `content_versions`、`content_entries`、`content_current`：按原 slug 导入完整内容和剥离正文的目录数据，导入完成后才激活版本。版本由标准化内容摘要确定；重复导入不会覆写已完成的版本。新 Worker 读取自身绑定版本，全局指针供历史部署兼容。
 
 后端每次从 D1 主库读取会话及当前账号状态，避免读取副本延迟让已禁用会话继续使用。普通注册忽略任何客户端角色与状态字段；管理员页面和 API 均检查权限。管理员账号不允许通过普通用户管理接口禁用或重置，首管恢复需受控数据库维护。
 
@@ -64,6 +64,7 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 
 | API | 作用 |
 | --- | --- |
+| `GET /api/release` | 公开返回构建提交、内容版本与就绪状态，无正文或账号数据 |
 | `GET /api/auth/csrf` | 返回令牌并设置配套 HttpOnly Cookie |
 | `POST /api/auth/register` | 用户名、密码、确认密码、申请理由及可选邀请码；昵称可选，默认使用用户名 |
 | `POST /api/auth/login` | 验证密码后才披露 pending/rejected/disabled 状态 |
@@ -89,27 +90,13 @@ CSRF 调用示例：先 GET 获取 `{token}` 和 Cookie，再在同源修改请�
 
 ## 云端部署
 
-正式 Pages 项目为 `lovismind`，生产分支为 `main`。Wrangler 顶层 `DB` 是本地占位，云端操作须指定 `preview` 或 `production`。
+正式项目 `lovismind`、生产分支 `main`，预览项目 `lovismind-preview`。两套环境分别绑定生产和预览 D1；Wrangler 顶层 DB 是本地占位，远端必须明确指定环境。
 
-1. **先确认运行费用。** 旧实现预览曾出现 1102；新实现登录 CPU 样本为 4–8ms，但仍需持续验证，详情见哈希降档记录。Workers Free HTTP CPU 限制为 10ms，当前实现不得假定免费可持续使用。Workers Paid 基础订阅为每月 5 美元，超额另计。不得自动开通付费；正式上线前须解决当前资源限制并验证真实 CPU、内存与并发。
-2. 预览 D1 为 `lovismind-auth-preview`，生产 D1 为 `lovismind-auth-production`，绑定见 `wrangler.jsonc`。两套环境各自维护账号、会话和内容版本。
-3. 预览通过 Direct Upload 发布到独立 `lovismind-preview` 项目。正式项目通过 Git 构建，根目录为 `project`，命令为 `npm ci && npm run build && npm run verify`，输出为 `out`。正式项目的 Git 预览构建已关闭。Pages 环境均设为 fail closed。
-4. 后续更新预览的命令如下。预览管理员已按用户选择从本地迁移，不需要重复初始化：
-
-```sh
-npx wrangler d1 migrations apply DB --remote --env preview
-npm run content:import -- --remote --env=preview
-npm run admin:init -- --remote --env=preview
-npm run deploy:preview
-```
-
-5. 检查预览的注册、密码哈希真实 CPU/内存、审核、邀请码并发、退出/禁用/重置撤销、直链附件及 RSC 访问。确认前不合并、不发布到 main。
-6. 生产部署时独立执行 production 迁移、内容导入和首管初始化，再切换生产。代码与数据库版本配套发布；当前导出页数由内容构建决定，新增章节后需同时发布新的静态页面与 API 内容版本。
-7. 列出旧 Pages 部署、别名及 CDN 缓存；获得确认后清理或限制旧公开入口。保留公开源码的既定选择不受影响。仅回滚到另一个带鉴权的版本，不能回滚到原公开静态站并仍声称需要登录。
+日常发布、预览、检查、版本配套和恢复全部以 [发布与恢复指南](../RELEASING.md) 为准。首次配置才需要迁移、密钥和首管初始化；普通内容或代码发布执行 `npm run release`。沿用现有账户套餐，不自动开通付费；历史 CPU 测量见 [哈希降档记录](hash-cost-update.md)，不作为当前容量保证。
 
 ### 邀请码加密密钥与增量迁移
 
-发布本次更新前，先在目标数据库执行 `0004_recoverable_invites.sql` 迁移，并为目标 Pages 项目配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布应用。预览和生产使用各自独立密钥；不自动发布或修改云端密钥。该值为随机 32 字节的标准 Base64 编码，通过受控本地工具生成并安全输入，不放进命令参数、Wrangler 配置或 Git。
+新环境启用可回显邀请码前，先在目标数据库执行 `0004_recoverable_invites.sql` 迁移，并为目标 Pages 项目配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布应用。预览和生产使用各自独立密钥；不自动发布或修改云端密钥。该值为随机 32 字节的标准 Base64 编码，通过受控本地工具生成并安全输入，不放进命令参数、Wrangler 配置或 Git。
 
 本地将独立密钥写入已忽略的 `.dev.vars`：`INVITE_CODE_ENCRYPTION_KEY=<32 字节随机值的 Base64 编码>`，再运行 `npm run db:migrate`。数据库不存储明文，加密密钥必须备份并长期保留；随意替换或丢失会导致已有加密邀请码无法回显。密钥轮换需另做数据重加密，本次不实现轮换。缺少或无效密钥时，生成新码和读取加密记录明确返回 503，不影响已有邀请码注册或只有旧记录的列表读取。
 
@@ -123,7 +110,7 @@ Cloudflare Secret 设置及本地文件规则见 [Pages bindings / Secrets](http
 
 源文件继续由原加载器解析，不修改书名、分类、归属或编号。系统通用文案在 `lib/ui-language.ts`；目录和书目译名在 `lib/content-translations.ts`，随鉴权后的页面或内容接口下发。知识库内容变更后先构建、检查，再向目标环境导入内容并发布。
 
-旧内容版本不自动删除，以支持回滚。可查询 `content_versions`，把 `content_current.version_id` 指回一个已验证版本；代码导出的 slug 页面也须与之兼容。定期评估旧版本存储量后再明确选择保留策略。
+旧内容版本不自动删除，以支持回滚。新版 Worker 绑定自身内容版本，仅修改 `content_current` 不会改变新版读取内容。部署与数据库恢复步骤见 [发布指南](../RELEASING.md#版本记录与恢复)。
 
 `scripts/maintenance.sql` 清理过期会话、已使用/过期重置凭据和过期限流计数，不删除审核记录。手动执行时明确选择环境，例如：
 

@@ -60,7 +60,7 @@ $env:KNOWLEDGE_SITE_DIR = (Resolve-Path -LiteralPath '../Knowledge Site').Path
 npm run build
 ```
 
-验收使用本地 Workers/D1 和独立测试数据；执行 `npm run build` 后再运行认证测试。当前变更已通过构建、前后端类型检查、39 项后端及 API 客户端测试，以及导出和界面语言检查；桌面与手机宽度下验证了导航、阅读进度、留言草稿与倒计时、邀请码复制及关于页链接。
+统一验收命令为 `npm run release:check`，使用构建产物和独立测试数据库；具体检查与上线验收见 [发布指南](RELEASING.md)。
 
 ## 系统语言与正文语言
 
@@ -97,26 +97,15 @@ project/
 - 主题分类来自 `Knowledge Site/taxonomy.json`；首页按大类预览，大类页按子分类展示。
 - 只有单一语言时正常显示，不出现切换按钮。
 
-发布流程（在 vault 根目录）：
-
-```bash
-git add "Knowledge Site"
-git commit -m "notes: add <书名> chapter <N>"
-git push
-```
+发布统一遵循 [发布与恢复指南](RELEASING.md)。仅提交本任务文件后，在 `project/` 执行 `npm run release`；仅检查执行 `npm run release:check`。不要将本地密钥、数据库、测试账号或构建产物提交。
 
 ## 部署
 
-- `main` 是正式发布分支。推送会触发 `lovismind` 的 Pages 构建和产物检查。
-- `codex/backend-auth` 是独立预览项目的发布分支，通过 `npm run deploy:preview` 上传到 `lovismind-preview`。
-- `archive/*` 标签保留已完成的分支和旧版本的提交位置。
-
-预览与生产使用独立 D1，Pages Functions 均须设为 fail closed。涉及迁移或内容变更时，先按 [后端部署说明](backend/README.md#云端部署) 准备目标数据库，再发布对应构建。
-
-本轮需先执行 `0004_recoverable_invites.sql` 并配置各环境独立的 `INVITE_CODE_ENCRYPTION_KEY` Secret，具体见[邀请码加密与迁移](backend/README.md#邀请码加密密钥与增量迁移)。不要将本地 `.dev.vars`、测试数据库、测试账号或构建产物提交或上传到生产。
+生产沿用 main 推送触发 `lovismind` 的 Pages Git 构建。统一命令先检查并暂存内容，再等待对应提交和内容版本上线。预览使用独立 Pages 项目与 D1。命令、首次配置、失败恢复和回滚以 [发布指南](RELEASING.md) 为准。
 
 ## 文档
 
-- [backend/README.md](backend/README.md) — 当前账号系统、接口、验证与部署
+- [RELEASING.md](RELEASING.md) — 唯一现行发布、验证与恢复流程
+- [backend/README.md](backend/README.md) — 账号系统、接口与数据库配置
 - [plan.md](./plan.md) — 历史静态站实施计划
 - [Knowledge Site/README.md](../Knowledge%20Site/README.md) — 笔记目录、命名与 frontmatter 约定

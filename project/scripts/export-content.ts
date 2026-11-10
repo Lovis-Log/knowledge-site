@@ -2,25 +2,24 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { getPageCatalog } from "../content/catalog";
 import { getAllBooks } from "../content/index";
+import { contentJson } from "./content-json";
 
 export async function exportContent() {
   const books = getAllBooks();
   const entries: [string, string][] = [
-    ["catalog", JSON.stringify(getPageCatalog())],
+    ["catalog", contentJson(getPageCatalog())],
   ];
   for (const book of books)
     for (const chapter of book.chapters)
       entries.push([
         `chapters/${book.slug}/${chapter.slug}`,
-        JSON.stringify(chapter),
+        contentJson(chapter),
       ]);
   const version =
     createHash("sha256")
       .update(JSON.stringify(entries))
       .digest("hex")
-      .slice(0, 16) +
-    "-" +
-    crypto.randomUUID().slice(0, 8);
+      .slice(0, 32);
   const quote = (s: string) => "'" + s.replaceAll("'", "''") + "'";
   const sql = [
     `INSERT OR IGNORE INTO content_versions(id,created_at) VALUES(${quote(version)},unixepoch());`,
@@ -28,15 +27,12 @@ export async function exportContent() {
   // Large JSON values are assembled in bounded statements, staying below D1's SQL length limit.
   for (const [key, value] of entries) {
     sql.push(
-      `DELETE FROM content_entries WHERE version_id=${quote(version)} AND key=${quote(key)};`,
-    );
-    sql.push(
-      `INSERT INTO content_entries(version_id,key,json) VALUES(${quote(version)},${quote(key)},'');`,
+      `INSERT OR IGNORE INTO content_entries(version_id,key,json) VALUES(${quote(version)},${quote(key)},'');`,
     );
     const characters = Array.from(value);
     for (let i = 0; i < characters.length; i += 6000)
       sql.push(
-        `UPDATE content_entries SET json=json||${quote(characters.slice(i, i + 6000).join(""))} WHERE version_id=${quote(version)} AND key=${quote(key)};`,
+        `UPDATE content_entries SET json=json||${quote(characters.slice(i, i + 6000).join(""))} WHERE version_id=${quote(version)} AND key=${quote(key)} AND length(json)=${i};`,
       );
   }
   // The active version is switched by a separate command, only after the entire import succeeds.

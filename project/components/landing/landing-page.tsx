@@ -267,14 +267,19 @@ export function LandingPage() {
           </div>
           <div className={styles.heroActions}>
             <div className={styles.actions}>
-              <button
+              {signedIn ? (
+                <Link href="/library/" className={`${styles.button} ${styles.buttonSolid}`}>
+                  <UiText zh="进入知识库" en="Enter the Vault" />
+                  <Arrow />
+                </Link>
+              ) : <button
                 type="button"
                 className={`${styles.button} ${styles.buttonSolid}`}
                 onClick={() => setAuthView("login")}
               >
                 <UiText zh="进入知识库" en="Enter the Vault" />
                 <Arrow />
-              </button>
+              </button>}
               <button
                 type="button"
                 className={`${styles.button} ${styles.buttonOutline}`}
