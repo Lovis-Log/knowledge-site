@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2026-11-10",
+    "features": [
+      {
+        "zh": "新增元数据搜索、标签筛选、更新日志与私密投稿。",
+        "en": "Added metadata search, tag filters, updates and private submissions."
+      },
+      {
+        "zh": "账号设置已提供入口；修改密码与永久注销等待免费额度 CPU 验证，暂未开放。",
+        "en": "Account settings are available; password changes and permanent deletion await CPU validation and remain disabled."
+      },
+      {
+        "zh": "登录入口与统一发布流程已修正。",
+        "en": "Fixed the sign-in entry and integrated verified releases."
+      }
+    ],
+    "content": []
+  }
+]

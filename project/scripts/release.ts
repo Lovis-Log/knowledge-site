@@ -47,7 +47,7 @@ try {
     }
   }
   // Build only after merging: HTML, Worker and D1 payload must share the same source.
-  for (const script of ["types:backend", "build", "typecheck", "typecheck:backend", "verify", "verify:content", "test:auth", "test:release"])
+  for (const script of ["updates:prepare", "types:backend", "build", "typecheck", "typecheck:backend", "verify", "verify:content", "test:auth", "test:release"])
     npm(script);
   if (checkOnly) {
     console.log("Release checks passed; no Git push or remote database write performed.");

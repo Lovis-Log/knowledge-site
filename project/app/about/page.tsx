@@ -1,3 +1,5 @@
+import { AboutTabs } from "@/components/changelog-view";
+import updates from "@/content/updates.json";
 import type { Metadata } from "next";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { PageEntry } from "@/components/page-entry";
@@ -21,7 +23,7 @@ export default function AboutPage() {
         </p>
       </header>
 
-      <div className="prose prose--page">
+      <div className="prose prose--page"><AboutTabs entries={updates}>
         <h2><UiText zh="这里有什么" /></h2>
         <p>
           <UiText zh="书库分为 AI Era、专业课程和精选收录，包含大模型原理、智能体工程、AI 编程实践、数学与计算机课程，以及文章、视频和访谈等材料。内容按课程或主题整理成书；你可以沿着目录学习，也可以从感兴趣的一篇开始。"
@@ -56,6 +58,7 @@ export default function AboutPage() {
         <p><UiText zh="本站会随学习和使用反馈持续更新。若发现问题，欢迎附上对应书名、文章链接或复现步骤留言，帮助补充和修正内容。"
           en="The site will continue to evolve as I learn and receive feedback. If you find a problem, include the book, article link, or steps to reproduce it so the material can be improved." /></p>
 
+        <h2><UiText zh="投稿与账号数据" en="Submissions and account data" /></h2><p><UiText zh="投稿仅本人和管理员可见，采用后仍需独立整理与复核。永久注销功能暂未开放；开放后将删除个人账号、收藏、留言和原始投稿，已独立发布的笔记保留。" en="Submissions are private to you and administrators and require editorial review. Account deletion is not yet enabled; once available, it will remove account data, favorites, messages and original submissions. Independently published notes remain." /></p>
         <h2><UiText zh="联系与致谢" /></h2>
         <p>
           <UiText zh="发现网站 Bug、内容问题，或想分享学习心得，欢迎到" en="To report a website bug or content issue, or share something you learned, visit the " />
@@ -73,7 +76,7 @@ export default function AboutPage() {
             <UiText zh="← 回到书库" />
           </Link>
         </p>
-      </div>
+      </AboutTabs></div>
     </PageEntry>
   );
 }

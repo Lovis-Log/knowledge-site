@@ -126,6 +126,7 @@ export function AccountMenu() {
             <Link href="/favorites/" prefetch={false} onClick={() => setOpen(false)}>
               <UiText zh="我的收藏" en="My favorites" />
             </Link>
+            <Link href="/settings/" prefetch={false} onClick={() => setOpen(false)}><UiText zh="账号设置" en="Account settings" /></Link>
             {user.role === "admin" && (
               <Link href="/admin/users/" onClick={() => setOpen(false)}>
                 <UiText zh="管理用户" en="Manage users" />

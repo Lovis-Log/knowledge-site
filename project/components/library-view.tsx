@@ -46,6 +46,7 @@ export default function LibraryView() {
         </PageEntry>
       </section>
 
+      <p><Link href="/search/" prefetch={false}><UiText zh="搜索笔记 →" en="Search notes →" /></Link></p>
       <ContinueReading items={continueItems} />
 
       <div className="library">

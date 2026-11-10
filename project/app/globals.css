@@ -3062,3 +3062,5 @@ html.lm-modal-open {
     clip-path: none;
   }
 }
+
+.feature-page{padding-block:40px;max-width:900px}.feature-page label{display:block;margin:16px 0}.feature-page input,.feature-page textarea,.feature-page select{display:block;width:100%;max-width:700px;padding:10px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);font:inherit}.feature-page textarea{min-height:100px}.feature-page button,.feature-tabs a{cursor:pointer;padding:8px 14px;margin:4px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);font:inherit;border-radius:6px}.feature-tabs{display:flex;gap:12px;margin:20px 0}.feature-tabs [aria-current=page]{border-color:var(--accent);font-weight:700}.submission-text{white-space:pre-wrap;overflow-wrap:anywhere}.feature-page button:disabled{opacity:.5;cursor:default}

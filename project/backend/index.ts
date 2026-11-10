@@ -10,7 +10,7 @@ import { isValidPassword } from "../lib/password-policy";
 import { decryptInvite, importInviteKey, InviteStorageError, normalizeInviteCode, storeInvite } from "./invites";
 
 // Secrets are provisioned separately from Wrangler's generated resource bindings.
-type AppEnv = Env & { INVITE_CODE_ENCRYPTION_KEY?: string };
+type AppEnv = Env & { INVITE_CODE_ENCRYPTION_KEY?: string; ACCOUNT_CHANGE_PASSWORD_ENABLED?: string; ACCOUNT_DELETE_ENABLED?: string };
 declare const RSC_PATHS: Record<string, string>;
 declare const CONTENT_VERSION: string;
 declare const RELEASE_COMMIT: string;
@@ -323,6 +323,106 @@ async function guestbookApi(request: Request, db: DB, path: string) {
   return fail(404, "NOT_FOUND", "接口不存在 / Endpoint not found");
 }
 
+
+async function submissionsApi(request: Request, db: DB, path: string) {
+    const admin = path === '/api/admin/submissions', user = await requireUser(request, db, admin);
+    if (request.method === 'GET') {
+        const params = new URL(request.url).searchParams, before = Number(params.get('before') ?? Number.MAX_SAFE_INTEGER), status = params.get('status') ?? '';
+        if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status))
+            fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
+        const where = admin ? "id<? AND (?='' OR status=?)" : "user_id=? AND id<?";
+        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
+        const { results } = await (admin ? query.bind(before, status, status) : query.bind(user.id, before)).all();
+        const items = results.slice(0, 20);
+        return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === 'admin' });
+    }
+    if (request.method !== 'POST')
+        fail(405, 'METHOD_NOT_ALLOWED', '不支持此操作 / Method not allowed');
+    const data: Record<string, unknown> = { summary: '', message: '', url: '', note: '', ...await body(request) };
+    if (admin) {
+        if (!Number.isSafeInteger(data.id) || !['pending', 'adopted', 'declined'].includes(String(data.status)))
+            fail(400, 'INVALID_STATUS', '状态无效 / Invalid status');
+        const result = await db.prepare('UPDATE submissions SET status=?,note=? WHERE id=?').bind(data.status, text(data, 'note', 0, 300), data.id).run();
+        if (!result.meta.changes)
+            fail(404, 'NOT_FOUND', '投稿不存在 / Submission not found');
+        return json({ ok: true });
+    }
+    if (data.action === 'withdraw') {
+        if (!Number.isSafeInteger(data.id))
+            fail(400, 'INVALID_ID', '编号无效 / Invalid ID');
+        const result = await db.prepare("DELETE FROM submissions WHERE id=? AND user_id=? AND status!='adopted'").bind(data.id, user.id).run();
+        if (!result.meta.changes)
+            fail(404, 'NOT_FOUND', '投稿不存在或不能撤回 / Cannot withdraw');
+        return json({ ok: true });
+    }
+    const requestId = text(data, 'requestId', 36, 36);
+    if (!/^[a-f0-9-]{36}$/i.test(requestId))
+        fail(400, 'INVALID_ID', '请求编号无效 / Invalid request ID');
+    const old = await db.prepare('SELECT id FROM submissions WHERE user_id=? AND request_id=?').bind(user.id, requestId).first();
+    if (old)
+        return json({ ok: true, id: old.id });
+    const title = text(data, 'title', 1, 100), summary = text(data, 'summary', 0, 300), message = text(data, 'message', 0, 2000), url = text(data, 'url', 0, 2048);
+    if (!message && !url)
+        fail(400, 'EMPTY_SUBMISSION', '请填写正文或链接 / Add text or a link');
+    if (url) {
+        try {
+            if (!['http:', 'https:'].includes(new URL(url).protocol))
+                throw new Error();
+        }
+        catch {
+            fail(400, 'INVALID_URL', '仅支持 HTTP/HTTPS 链接 / HTTP(S) links only');
+        }
+    }
+    await limit(db, `submission-user:${user.id}`, 3, 86400);
+    await limit(db, `submission-ip:${request.headers.get('CF-Connecting-IP') ?? 'local'}`, 20, 86400);
+    const row = await db.prepare("INSERT OR IGNORE INTO submissions(user_id,request_id,title,summary,message,url) SELECT ?,?,?,?,?,? WHERE (SELECT count(*) FROM submissions WHERE user_id=? AND status='pending')<5 RETURNING id").bind(user.id, requestId, title, summary, message, url, user.id).first();
+    if (!row) {
+        const prior = await db.prepare('SELECT id FROM submissions WHERE user_id=? AND request_id=?').bind(user.id, requestId).first();
+        if (prior)
+            return json({ ok: true, id: prior.id });
+        fail(429, 'PENDING_LIMIT', '最多保留五条待处理投稿 / Five pending submissions maximum');
+    }
+    return json({ ok: true, id: row.id }, 201);
+}
+async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
+    const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED === '1', deleteAccount: env.ACCOUNT_DELETE_ENABLED === '1' };
+    const user = await requireUser(request, db);
+    if (request.method === 'GET' && path === '/api/account/settings')
+        return json({ features, username: user.username, role: user.role });
+    const deleting = path === '/api/account/delete';
+    if (request.method !== 'POST' || !['/api/account/delete', '/api/account/password'].includes(path))
+        fail(404, 'NOT_FOUND', '接口不存在 / Not found');
+    if (!(deleting ? features.deleteAccount : features.changePassword))
+        fail(503, 'FEATURE_UNAVAILABLE', '此功能尚未通过免费额度验证，请联系管理员 / Feature awaiting CPU validation; contact the administrator');
+    if (deleting && user.role === 'admin')
+        fail(403, 'ADMIN_DELETE_FORBIDDEN', '管理员不能自助注销 / Administrators cannot delete themselves');
+    await limit(db, `account:${user.id}`, 5, 3600);
+    await limit(db, `account-ip:${request.headers.get('CF-Connecting-IP') ?? 'local'}`, 20, 3600);
+    const data = await body(request), current = await db.prepare('SELECT password_hash FROM users WHERE id=?').bind(user.id).first<{
+        password_hash: string;
+    }>();
+    if (!current || needsPasswordUpgrade(current.password_hash))
+        fail(409, 'MIGRATION_REQUIRED', '请先联系管理员迁移密码 / Password migration required');
+    if (!await verifyPassword(text(data, 'currentPassword', 1, 128, false), current.password_hash))
+        fail(400, 'INVALID_PASSWORD', '当前密码不正确 / Incorrect current password');
+    if (deleting) {
+        if (data.username !== user.username)
+            fail(400, 'CONFIRMATION_REQUIRED', '请准确输入用户名 / Enter your username exactly');
+        const guard = "EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user')";
+        const statements = ['reset_tokens', 'review_logs', 'submissions', 'favorites', 'guestbook_entries', 'sessions'].map(table => db.prepare(`DELETE FROM ${table} WHERE ${table === 'review_logs' ? '(user_id=? OR admin_id=?)' : 'user_id=?'} AND ${guard}`).bind(...(table === 'review_logs' ? [user.id, user.id] : [user.id]), user.id, current.password_hash));
+        const results = await db.batch([...statements, db.prepare("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'").bind(user.id, current.password_hash)]);
+        if (!results.at(-1)?.meta.changes)
+            fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
+    }
+    else {
+        const hash = await hashPassword(newPassword(data));
+        const results = await db.batch([db.prepare("UPDATE users SET password_hash=?,version=version+1 WHERE id=? AND password_hash=? AND status='approved'").bind(hash, user.id, current.password_hash), db.prepare('DELETE FROM reset_tokens WHERE user_id=? AND EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=?)').bind(user.id, user.id, hash)]);
+        if (!results[0].meta.changes)
+            fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
+    }
+    return json({ ok: true }, 200, { 'Set-Cookie': setCookie(SESSION, '', 0) });
+}
+
 async function api(request: Request, db: DB, path: string, env: AppEnv) {
   const method = request.method;
   if (method === "GET" && path === "/api/auth/csrf") {
@@ -330,6 +430,8 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     return json({ token }, 200, { "Set-Cookie": setCookie(CSRF, token, 3600) });
   }
   if (!["GET", "HEAD"].includes(method)) csrf(request);
+  if (path === "/api/submissions" || path === "/api/admin/submissions") return submissionsApi(request,db,path);
+  if (path.startsWith("/api/account/")) return accountApi(request,db,path,env);
   if (path === "/api/guestbook" || path === "/api/admin/guestbook")
     return guestbookApi(request, db, path);
   if (path === "/api/favorites" || path === "/api/favorites/status")

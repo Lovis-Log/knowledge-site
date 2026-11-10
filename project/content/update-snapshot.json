@@ -1,0 +1,978 @@
+{
+  "image-generation-workflows/01-image-prompting": {
+    "title": "图像提示与编辑：把需求写成可验收的规格",
+    "hash": "9658e568119a0803cb7900e2140dbf513ea75ecd0b9ec2ebeaeaa0109cf4d9ef"
+  },
+  "image-generation-workflows/02-transparent-assets": {
+    "title": "透明素材：生成真 alpha 通道，再验证与复用",
+    "hash": "851b71fada860551aad5b537380d976019007e0784aa97c686ff90ce174f1f10"
+  },
+  "image-generation-workflows/03-new-full-stack-designer": {
+    "title": "全栈设计师：原型比文档更快说服人",
+    "hash": "36aeb87b44daf8147694cad3c80f41c43f7566028ae354129d87b8ed606677df"
+  },
+  "3b1b-essence-of-calculus/01-essence-of-calculus": {
+    "title": "微积分的本质：从一个圆出发",
+    "hash": "9bc47ada82a639ea9050241353e3375c15d0e7d8104355e8ba09fccb7f7afca6"
+  },
+  "3b1b-essence-of-calculus/02-paradox-of-the-derivative": {
+    "title": "导数的悖论：瞬时速度并不存在",
+    "hash": "7bc48c24f339d70bfae4012e2d45f92d5ae16e4f0736cc0db2914cec44b1e414"
+  },
+  "3b1b-essence-of-calculus/03-derivative-formulas-through-geometry": {
+    "title": "用几何看懂求导公式",
+    "hash": "d64af31c1198eb4a36d1c88ce2955f933c76f39b600029bd4d524d6e945f6415"
+  },
+  "3b1b-essence-of-calculus/04-chain-rule-and-product-rule": {
+    "title": "链式法则与乘积法则：三条数轴和一个可调的矩形",
+    "hash": "08fca1be8ba04b0d6055fd9c52ab623cb06b3ca4a0c2d1847d1ba8b4653d568d"
+  },
+  "3b1b-essence-of-calculus/05-eulers-number-e": {
+    "title": "e 为什么特殊：让导数等于自己",
+    "hash": "9fa64b5de4bc1a24644585494a81a1760e885f3a9a37e07da4fdccc378e1b61f"
+  },
+  "3b1b-essence-of-calculus/06-implicit-differentiation": {
+    "title": "隐函数求导：为什么可以对两边同时求导",
+    "hash": "768003bfc62198f883b740395539a228b3eee4ef759706a3ef6b0fec01873e2d"
+  },
+  "3b1b-essence-of-calculus/07-limits-and-lhopital": {
+    "title": "极限、洛必达与 ε-δ：把「趋近」说清楚",
+    "hash": "97ba3b56b3db72c4b70a897207cd57f7a7cbc157d8ab26db5a35436cd01dff5b"
+  },
+  "3b1b-essence-of-calculus/08-integration-and-ftc": {
+    "title": "积分与基本定理：只看仪表盘怎么算路程",
+    "hash": "c6062c6b490fe40a5c530c24058de059b32e1ce1d6923f29aa8ec360a942a7e8"
+  },
+  "3b1b-essence-of-calculus/09-average-value-and-slope": {
+    "title": "平均值与斜率：为什么面积除以宽度",
+    "hash": "4ffa4271d3a88606ef5a0ad915ef4eafd6ee972991bde006aebccbd5275aff1a"
+  },
+  "3b1b-essence-of-calculus/10-higher-order-derivatives": {
+    "title": "高阶导数：斜率本身也在变",
+    "hash": "e95396152cd1a0c956fd8746ac370871dc63a80ac986a18a1d2d7aafca6b8a0b"
+  },
+  "3b1b-essence-of-calculus/11-taylor-series": {
+    "title": "泰勒级数：用多项式模仿一条曲线",
+    "hash": "6f4470476775ac7b689a7cd0685849e38394465b9296e9bdba6db9434d898e23"
+  },
+  "3b1b-essence-of-calculus/12-transformational-view-of-derivatives": {
+    "title": "另一种看导数的方式：局部的伸缩率",
+    "hash": "17d9e13f1c2c47da07d08d313541b4b2e48256a5bf380c7621158d66dd7a8102"
+  },
+  "3b1b-essence-of-linear-algebra/01-vectors": {
+    "title": "向量：箭头与数字列表是同一件事",
+    "hash": "1bc9ac3fb54928f437cfc5d784b76aab595ec0a1ab480ff7a12241092f4a5c67"
+  },
+  "3b1b-essence-of-linear-algebra/02-span-and-basis": {
+    "title": "线性组合、张成与基：坐标到底在缩放什么",
+    "hash": "e0de49e66d4d03100f0d3872d0b2eac1ce1dbe29f8eb761b2a87ef184ebb9696"
+  },
+  "3b1b-essence-of-linear-algebra/03-linear-transformations": {
+    "title": "线性变换与矩阵：只要盯住两个基向量",
+    "hash": "eb59fe9a205fc59167ade0b48a18566bf13ef011a7278f2cd4c030998f19b4c1"
+  },
+  "3b1b-essence-of-linear-algebra/04-matrix-multiplication": {
+    "title": "矩阵乘法就是变换的复合",
+    "hash": "5cff98560db7d1e97c6e7dfb7106abaaab9741ce63a14751edc1770f5601efef"
+  },
+  "3b1b-essence-of-linear-algebra/05-3d-transformations": {
+    "title": "三维线性变换：九个数字就够了",
+    "hash": "fa44edb1f24ea50eedda5f4daebafbd377f3afbaf162fc8f8b48e2802aead1c1"
+  },
+  "3b1b-essence-of-linear-algebra/06-determinant": {
+    "title": "行列式：空间被拉伸了多少倍",
+    "hash": "cc7c0d103292f6a733735d088384d40872adfb42e19922270fe65e32e795af70"
+  },
+  "3b1b-essence-of-linear-algebra/07-inverse-column-null-space": {
+    "title": "逆矩阵、列空间与零空间：把方程组看成几何问题",
+    "hash": "e98549979e482e080a72376c040c78d75b99ad3d4491ef542b7c4d8cf6333b71"
+  },
+  "3b1b-essence-of-linear-algebra/08-nonsquare-matrices": {
+    "title": "非方阵：不同维度之间的变换",
+    "hash": "bf1da65b89ef9d2ec6dc9ea3118aa691e8b0b736513c760f5686223a40a22c62"
+  },
+  "3b1b-essence-of-linear-algebra/09-dot-products-and-duality": {
+    "title": "点积与对偶：一个向量其实就是一次投影",
+    "hash": "688155ce6b03a4940c336e5b013aa317331b2d92b77bdffb1d59b5b839513517"
+  },
+  "3b1b-essence-of-linear-algebra/10-cross-products": {
+    "title": "叉积：有向面积与右手定则",
+    "hash": "504ca2e2ec3434bfd983b9782826d327a3e46cd8a4a5eaea8d08395b5a58800b"
+  },
+  "3b1b-essence-of-linear-algebra/11-cross-products-duality": {
+    "title": "叉积的对偶解释：那个奇怪算法为什么成立",
+    "hash": "0ec763e0a8e742fdc02ef2ae5d92213ba3436de344d592b33769b64c0fad44ca"
+  },
+  "3b1b-essence-of-linear-algebra/12-cramers-rule": {
+    "title": "克拉默法则：把坐标看成面积",
+    "hash": "52c6f6f4f0e9269eabe56fc62856ea39e8f72148669d1f85ee4c5a6879db4ce3"
+  },
+  "3b1b-essence-of-linear-algebra/13-change-of-basis": {
+    "title": "基变换：同一件事，换一种说法",
+    "hash": "5bfa355bab5fb2cadb33c4ad9fc420ab2f5fdda8afaff578c7874aed37da1507"
+  },
+  "3b1b-essence-of-linear-algebra/14-eigenvectors-and-eigenvalues": {
+    "title": "特征向量与特征值：变换中不转向的方向",
+    "hash": "e2d89dad56a8a40589af45dd79d633cd739bbd670fab6e4df58cf1cdac745808"
+  },
+  "3b1b-essence-of-linear-algebra/15-eigenvalue-trick": {
+    "title": "二阶特征值的速算：均值与乘积",
+    "hash": "e645207d3a34ba200772676457c957f538a5e5631644203822c59b8b1886366d"
+  },
+  "3b1b-essence-of-linear-algebra/16-abstract-vector-spaces": {
+    "title": "抽象向量空间：向量到底是什么",
+    "hash": "a48267e301baf2b02b35f0c8c052e4b66ce74c5c6b6ac9b679bfbd3e06c3ef22"
+  },
+  "finance-and-business/01-23-money-habits": {
+    "title": "理财清单：23 件该做的事",
+    "hash": "03e2511d82fea4ce6ab3cc1400b7c2bffeca06b996ccbe1a7afd5472855af494"
+  },
+  "finance-and-business/02-uniqlo-business-model": {
+    "title": "优衣库：把基本款做成技术公司",
+    "hash": "96e6853c2f6b129581b3752e906aa7b2e36701b9150f0f7b35f74ee57b01cb98"
+  },
+  "finance-and-business/03-war-economy-costs": {
+    "title": "俄乌战争的经济账：增长、通胀与谁在买单",
+    "hash": "7f9b24ba9f6b8a7ac21b97ed591dc3525d53b4f061e0496b8610be9e56f99433"
+  },
+  "finance-and-business/04-paramount-warner-acquisition": {
+    "title": "派拉蒙与华纳收购案：控制权、融资与成交确定性",
+    "hash": "b2542d184e171ade26330233a78d1d86ed1495d530e92dba146311a3798182f3"
+  },
+  "finance-and-business/05-federal-reserve-explained": {
+    "title": "一口气了解美联储",
+    "hash": "7045078cb73a4e086202415974b65c00a50d0495691243bd4937b08b72d23918"
+  },
+  "finance-and-business/06-stock-market-for-beginners": {
+    "title": "股市入门：从复利算术到第一笔下单",
+    "hash": "e6653bebb474fdf0d8be448233a21d7f421e7016493fbd98016809f9c0edc8f4"
+  },
+  "3b1b-differential-equations/01-differential-equations-tour": {
+    "title": "微分方程：描述变化的语言",
+    "hash": "dcb4173e01aa4afe9043a749792c952e624d8e423d680f92b3d9c2ccedab1952"
+  },
+  "3b1b-differential-equations/02-heat-equation": {
+    "title": "热方程：一个偏微分方程是怎么长出来的",
+    "hash": "c0110676e3088c602faac857bb38b6aa1534ed43c781c56590c5d9a8741cca9f"
+  },
+  "3b1b-differential-equations/03-solving-heat-equation": {
+    "title": "解热方程：正弦波为什么这么听话",
+    "hash": "1979de20b40022384e03c6eec6fef8922a57520ab9bad80e8260e8a2432b008d"
+  },
+  "3b1b-differential-equations/04-fourier-series": {
+    "title": "傅里叶级数：从热流到用圆圈画画",
+    "hash": "3e06e90e4722b4c77e8a7eec18364bd3fe37376b1beb524127dc66fb521bc4c1"
+  },
+  "3b1b-differential-equations/05-euler-formula-physics": {
+    "title": "欧拉公式的物理意义：e^{st} 与 s 平面",
+    "hash": "f27bace85872781d92b9d22677ad48bb39f2086dcb92ed72b853003bc3e3a62e"
+  },
+  "3b1b-differential-equations/06-laplace-transform": {
+    "title": "拉普拉斯变换到底在做什么",
+    "hash": "0c1f4cc0e9c46a5ff589a47f095991cfdee6cc52d378cf7bd4b6b399c47e2df7"
+  },
+  "3b1b-differential-equations/07-why-laplace-useful": {
+    "title": "拉普拉斯变换为什么好用：把微分方程变成代数",
+    "hash": "9e8671cdf63ba30a08b87d382d8826e9b7072d1579b9d29e68de0f30223f1944"
+  },
+  "3b1b-differential-equations/08-matrix-exponential": {
+    "title": "矩阵指数：把 e 抬到一个矩阵上",
+    "hash": "9c214679e07ada47435abc79caf22b98ec3cf2609266ab9850bcd93f8a5c43c8"
+  },
+  "mit-game-theory/01-individual-decision-making": {
+    "title": "个体决策：从偏好到期望效用",
+    "hash": "5e48f1dfba4dfee4e196ad55f05db976d7deace8cd0e3ffe01f182fdd92f6b4f"
+  },
+  "mit-game-theory/02-representation-of-games": {
+    "title": "博弈的两种表示：扩展式与策略式",
+    "hash": "c39a6b6ac58747bc705bcf37cde6d93ada568ed95bf8d4a2ce9d99dfb8a6e5de"
+  },
+  "mit-game-theory/03-dominance": {
+    "title": "占优：不用猜对手也能排除的策略",
+    "hash": "8e0bae4f8932656da8c42e66b82c4a7b86602e33c332493e8bf79f9e78fab617"
+  },
+  "mit-game-theory/04-rationalizability": {
+    "title": "可理性化：把「我知道你知道」一层层剥开",
+    "hash": "1ceb8e0d932690258f9941ebefb55d8aeb665d38ddaa66dee09d4f7b7c5075ac"
+  },
+  "mit-game-theory/05-nash-equilibrium": {
+    "title": "纳什均衡：把「说得通」升级成「猜得对」",
+    "hash": "a035aae46d08313bdc7519acb7f37636b128238967351d104131cee84b777825"
+  },
+  "mit-game-theory/06-imperfect-competition": {
+    "title": "不完全竞争：垄断加价、古诺定量与伯特兰定价",
+    "hash": "68f4c3ff10edaeb4e8b5bf206be20a82ba64c04fc2de6ad73d761490fe40112a"
+  },
+  "mit-game-theory/07-zero-sum-games": {
+    "title": "零和博弈：最坏情形保证与极小极大定理",
+    "hash": "3159043aea3182e2d313ad31773d45cea9a0dd7493bdfd848df5408386fc87fe"
+  },
+  "mit-game-theory/08-backward-induction": {
+    "title": "逆向归纳：为什么纳什均衡允许「未到达处的错误」",
+    "hash": "8021389b0f3c11575d03e1302aaed604e33a85c98edabc5ed036262e991031dc"
+  },
+  "mit-game-theory/09-negotiation": {
+    "title": "谈判：交替报价、和解门槛与先出价的价值",
+    "hash": "7790a6578592f2d6ed080144c3d10dd88ac3fb7066acdda554059c4ee299b679"
+  },
+  "mit-game-theory/10-subgame-perfect-equilibrium": {
+    "title": "子博弈完美均衡：把不可信的威胁逐出预测",
+    "hash": "0eda20b8cb7e06b922018abe6ba4e458748f02d2de18163f1772899864d95719"
+  },
+  "mit-game-theory/11-one-shot-deviation": {
+    "title": "一次性偏离原则：把无限种偏离压缩成一种",
+    "hash": "a58638a0aaf1ebecc53f07eccf0cfe8dc9e2465afc939edd110268bce03dd388"
+  },
+  "mit-game-theory/12-finitely-repeated-games": {
+    "title": "有限重复博弈：最后一期如何吃掉所有合作",
+    "hash": "53f3508ec142223c4fd9e9cde04a44153c8e6c3e7b6ea5f7501744b4a9eb7f52"
+  },
+  "mit-game-theory/13-infinitely-repeated-games": {
+    "title": "无限重复博弈：贴现率决定合作能不能站住",
+    "hash": "85527eb04c1217fb1d27c0da97ac717ab5d7c44022b9ac381ede101b95f1a863"
+  },
+  "mit-game-theory/14-folk-theorem": {
+    "title": "无名氏定理：只要足够有耐心，可行且个人理性的支付都能撑住",
+    "hash": "e7403a5737c2e7696eff86e6b097a21090bf49927a5c0773bf3e7de5c862d094"
+  },
+  "mit-game-theory/15-implicit-cartels": {
+    "title": "隐性卡特尔：让「少生产」自我执行的重复博弈",
+    "hash": "577e071555c3cc21aa3ffe3a51306d5d43bd4e17d3d62d99dd006bbe5cf9f913"
+  },
+  "mit-game-theory/16-bayesian-games": {
+    "title": "贝叶斯博弈：把「我不知道你是谁」写成自然的一次出牌",
+    "hash": "f7789d97468f8a323c4da0d409866181bdff4d33f30a993fa25a0e15c7da6ca6"
+  },
+  "mit-game-theory/17-bayesian-nash-applications": {
+    "title": "贝叶斯纳什均衡的应用：未知需求下的古诺与密封投标拍卖",
+    "hash": "da6309511b51597abfe1e975bff1f3589197753a4943341dcc4e069c6cca82f6"
+  },
+  "mit-game-theory/18-auctions": {
+    "title": "拍卖（上）：第二价格为什么说真话，第一价格该压多少",
+    "hash": "c11b738c1cc791e211fab004c551709952a11c2946bbf0531366392e4167385f"
+  },
+  "mit-game-theory/19-revenue-equivalence": {
+    "title": "收入等价：为什么换一种拍卖规则，拍卖人还是赚同样多",
+    "hash": "e43bc6d3a1b02cd1ba33cd4219afd81718eabd68b65676557d6908bd0710c9d6"
+  },
+  "mit-game-theory/20-ad-auctions": {
+    "title": "广告位拍卖：为什么 GSP 让人压价，VCG 让人说真话",
+    "hash": "db6fde8e0b7b3e254044f35c699102ffd75da0a68b3933efc57671c432fef85a"
+  },
+  "mit-game-theory/21-perfect-bayesian-equilibrium": {
+    "title": "完美贝叶斯均衡：把信念写进均衡的定义",
+    "hash": "885f7afe1988159667c567fb28f62575838a8b1aa0b12d03e22c3af0e0bba053"
+  },
+  "mit-game-theory/22-signaling": {
+    "title": "信号：把教育当成一张昂贵的证书",
+    "hash": "40ff9d58a3ff500bb3477b8ea5c0df4d5850631c8910ffa34334d7d5a440f967"
+  },
+  "mit-game-theory/23-bargaining-incomplete-info": {
+    "title": "不完全信息下的讨价还价：为什么交易会拖、会崩",
+    "hash": "8fafd214be4f15c5955a1740bf3d0584d5408a61dc6c6921e928aeed5ecf522f"
+  },
+  "mit-game-theory/24-cheap-talk": {
+    "title": "廉价谈话：有利益冲突时，话还能信几分",
+    "hash": "79d5ae0767367c3ee2a783ea7c477090327a764f5ecb55ddfae1d3cf7cb717f5"
+  },
+  "mit-game-theory/25-common-knowledge": {
+    "title": "共同知识：为什么一句人人都知道的话仍然能改变结局",
+    "hash": "cbf15783bbf2bf3dc5e94df158e38b951d3795bcade639e3ab170152d9ace3a4"
+  },
+  "personal-selection/01-articulate-frameworks": {
+    "title": "把话说清楚：三个表达框架",
+    "hash": "727c5f9e8a10ce611441c552430b55a475b340f55fea9504d82c998e23eefaa2"
+  },
+  "personal-selection/02-jensen-huang-mindset": {
+    "title": "黄仁勋：英伟达从错误中长出来的方法",
+    "hash": "b91dabc2125039974000a13f1b4879cfecccb9e9b6573095c9e9f79436bf7d91"
+  },
+  "personal-selection/03-jensen-huang-cmu-commencement": {
+    "title": "黄仁勋 CMU 毕业演讲：在 AI 时代找到值得投入的工作",
+    "hash": "1839491c2a0e7bdb7e12a73b5e6f5e6d3eff285a33ea22e8f3f011701e490610"
+  },
+  "personal-selection/04-taylor-swift-nyu-commencement": {
+    "title": "Taylor Swift 纽约大学毕业演讲：带着热情与不确定性做选择",
+    "hash": "22f067d42e1d252ad2faf5eafdb246a791178336f6709fce4cb861fec3bb0a04"
+  },
+  "personal-selection/05-math-beyond-proof": {
+    "title": "If math is more than proof, we need to better celebrate the rest of it",
+    "hash": "d1c6d6295c59fe940b1d2e776a8585fa7cb0dbf0b159110cbcf415cf873bfb69"
+  },
+  "personal-selection/06-ai-and-the-future-of-math": {
+    "title": "Is AI the End of Math As We Know It?",
+    "hash": "528b33fcac19b999f8afac29e07951dd9497d5c3eedfba1127e7d48f3aeb7cb5"
+  },
+  "personal-selection/07-how-to-talk-like-a-native-speaker": {
+    "title": "如何说得像母语者：口音、口语与文化习惯",
+    "hash": "5ba5c8b1faa83a92ba09eec70d731a4bdfbab25160a7830baa3f5fe626006ded"
+  },
+  "personal-selection/08-ai-era-mathematics": {
+    "title": "AI 时代的数学：解题变便宜之后，什么更值钱",
+    "hash": "ea93bbd540afbc7cca4b2e0126b8de1c30582aa5c00d5473350c9f7532df67a6"
+  },
+  "personal-selection/09-better-time-to-go-into-math": {
+    "title": "现在是学数学最好的时候",
+    "hash": "3b2713250075558fd65cdfdad005af56882523ed7103d00a808cdc27c790e859"
+  },
+  "society-and-reasoning/01-cli-vs-gui": {
+    "title": "为什么总有人极力推荐命令行而非图形界面",
+    "hash": "072c58116d09d00a2ba60083e1fd4747c8755a52882fc64947ac1f509b7e8575"
+  },
+  "society-and-reasoning/02-build-it-logic-trap": {
+    "title": "「觉得不好就去建设它」的逻辑陷阱",
+    "hash": "78039d4e4d607c5208c3f25f713ce92ac1d06bfe1ec9f92ef1e8bc5b2c638eee"
+  },
+  "society-and-reasoning/03-undergrads-be-undergrads": {
+    "title": "让本科生做回本科生",
+    "hash": "3eed1391264e844bff0e04f7f7aa5d1c31c2cc9216ab5a1cc1396b3d0ea4fe2c"
+  },
+  "society-and-reasoning/04-french-student-protests": {
+    "title": "法国学生抗议：教育诉求、组织动员与媒体框架",
+    "hash": "38e81b69ca86c971cb828858d6615bfb90f58e4db34f695e93a4a024c5d8a14c"
+  },
+  "society-and-reasoning/05-trauma-narratives-platforms": {
+    "title": "创伤叙事与平台经济：承认、表演和社会问题",
+    "hash": "226c8e41dce56ad24b6a0750792ae699ab1528dcbb3c25e41900a14bffcada13"
+  },
+  "society-and-reasoning/06-advice-for-chinese-undergraduates": {
+    "title": "Chat GPT给中国年轻人的信",
+    "hash": "2510e735f3c10f3a7dc8cc672d04b8a394ed7d047a56c79178853c7b3a032b41"
+  },
+  "society-and-reasoning/07-human-nature": {
+    "title": "人性没你想的那么好，也没那么坏",
+    "hash": "9ea611d030f25a038047f58838777010c2d52e80a6ebcb75b1fcd5d141d4d243"
+  },
+  "society-and-reasoning/08-dopamine-and-curiosity": {
+    "title": "为什么什么都不觉得有趣了",
+    "hash": "1baa830cbc5e54afd9985a399ccdfdb98e3f0ca225e9cc79c7b4bb93c676e9e3"
+  },
+  "llm-knowledge-base/01-karpathy-llm-wiki": {
+    "title": "Karpathy 的 LLM 知识库：让模型维护一份 Markdown wiki",
+    "hash": "40451b7f8a5e3d104022aa581e29add65a284c6f2c9d3380b171709fc3e686b3"
+  },
+  "llm-knowledge-base/03-ai-workflow-hacks": {
+    "title": "把 AI 用成工作流：十一个常见问题",
+    "hash": "3a5f34aab0fcf728473084764092c2a89fd2861a4908d8210112377eb100b006"
+  },
+  "agent-engineering/01-skill-authoring": {
+    "title": "Skill 写作：让指令短、准、可验证",
+    "hash": "9a378e488017d5dc036f7f73d2684682cee3c8048d3a5591dbbcf999ed3d1fd2"
+  },
+  "agent-engineering/02-codex-agent-loop": {
+    "title": "拆解 Codex 的 Agent 循环：prompt、缓存与压缩",
+    "hash": "b2fe11e9926715e7c4a013493bba573f653d09a52c89a6838a967c62060b715d"
+  },
+  "agent-engineering/03-super-agent-system-design": {
+    "title": "Super-agent 系统设计：连续交互、并发任务与持久运行",
+    "hash": "ca050c6df21deedee1e5ca23b6774a5a10a6ca8d4f168c3add11156a0d08e8c1"
+  },
+  "llm-principles/01-attention-kv-cache": {
+    "title": "注意力与 KV Cache：从逐词生成到上下文管理",
+    "hash": "9698cdf521390a68b72ad416dead526b01e561fdd3868fa2c66c5b7df3ec4ec0"
+  },
+  "llm-principles/02-deep-dive-llms": {
+    "title": "大语言模型全流程：预训练、后训练与强化学习",
+    "hash": "0cca51f97335fb2e21d89d9b76731c5ffe6d1eaa290ebc31644b13e2b2638e7a"
+  },
+  "llm-principles/03-how-i-use-llms": {
+    "title": "如何使用大模型：从聊天框到工具箱",
+    "hash": "0c5d45492af6eed12793622b27502d212df5e150d3d22abc94395941069baf9d"
+  },
+  "llm-principles/04-critical-thinking-agents": {
+    "title": "当智能体替你做事：把批判性思维留在流程里",
+    "hash": "38db65cc460bfa72dc40d4635264844037aad47c68c084545d37855b5192adc7"
+  },
+  "mit-discrete-applied-mathematics/01-pigeonhole-principle": {
+    "title": "鸽巢原理：抽屉、碰撞与证明的写法",
+    "hash": "c1e4e24845ad0feb449c4f7a0dc48bc8cd2a5fbe2bf3e5ac75e46b0799450c9d"
+  },
+  "mit-discrete-applied-mathematics/02-independence-conditioning": {
+    "title": "条件概率、独立性与期望：从贝叶斯到骰子悖论",
+    "hash": "b3c41023b1fc1f5d9e858a2c0aec02762de4cd85fee5489da95216380febc5e1"
+  },
+  "mit-discrete-applied-mathematics/03-inclusion-exclusion": {
+    "title": "容斥原理：从错排到 1/e",
+    "hash": "01f2c8aeb6e7e9dd448124dc2a029259fac9ff2f2b80dd7e1176a72e8f4a45df"
+  },
+  "mit-discrete-applied-mathematics/04-counting-catalan": {
+    "title": "计数：二项式系数、双射与卡特兰数",
+    "hash": "7027fb06b232ff14f05daac1a719810841f1803dd2685dcb9f01b7200bd379ea"
+  },
+  "mit-discrete-applied-mathematics/05-generating-functions": {
+    "title": "生成函数：从凯莱树定理到求和的机械化",
+    "hash": "9f1694cfa95e6e55dea993fd091928ee8588fcf690922d34fa7b2434f4509d4a"
+  },
+  "mit-discrete-applied-mathematics/06-fibonacci-generating-functions": {
+    "title": "生成函数、Fibonacci 数与 Pascal 三角形",
+    "hash": "95a8746677f27df5903521d65c3cc905361471e5575b84565b7211f43c82a457"
+  },
+  "mit-discrete-applied-mathematics/07-catalan-generating-function": {
+    "title": "Catalan 数的生成函数",
+    "hash": "e5c49d0a3b584bc4da8dc0e27dec6922ce27705611639b1a7e1da92862b69403"
+  },
+  "mit-discrete-applied-mathematics/08-tail-bounds": {
+    "title": "尾界、大数定律与概率方法",
+    "hash": "2041f82ae672b681fe4445236a41cea28f32bb75d757032a45fde93517115777"
+  },
+  "mit-discrete-applied-mathematics/09-chernoff-bounds": {
+    "title": "Chernoff 界：用指数矩控制偏差",
+    "hash": "2be232689fe1c3237a39ca8abaaf699ed8242e69845a6f36352224f2394ad3a1"
+  },
+  "mit-discrete-applied-mathematics/10-modular-arithmetic": {
+    "title": "同余、欧几里得算法与中国剩余定理",
+    "hash": "ad686b08f0484ae8f60b66cba84a7b7c7d2d3d9ef854c00e13181043fbf62216"
+  },
+  "mit-discrete-applied-mathematics/11-group-theory": {
+    "title": "群、Lagrange 定理与费马小定理",
+    "hash": "601d7f827ae39206a273e7cd137a260662c0efd9b86b68b969616f034a6b27a1"
+  },
+  "mit-discrete-applied-mathematics/12-linear-programming": {
+    "title": "线性规划入门：建模、标准形与对偶",
+    "hash": "7715b3c216904831d3601c7fe1c5e421f045b64ffe104b5ec574da8973b3371b"
+  },
+  "mit-discrete-applied-mathematics/13-duality-complementary-slackness": {
+    "title": "一般线性规划的对偶与互补松弛",
+    "hash": "3ff4760f0b57ab8d17cc49ff8f12c039e56e5ef4f2d0b5b4e58b7a4dda187a3c"
+  },
+  "mit-discrete-applied-mathematics/14-zero-sum-games": {
+    "title": "零和博弈、混合策略与极小极大定理",
+    "hash": "64b7dc39f5c1efb1634cfd258c205b76606274b18106493747889cbc892259e0"
+  },
+  "mit-discrete-applied-mathematics/15-max-flow-min-cut": {
+    "title": "最大流最小割：对偶与增广路径",
+    "hash": "0fb05af11aec0ea4a9c830fa71232c45d6cb629a3d40e7555c8393d13ce217eb"
+  },
+  "mit-discrete-applied-mathematics/16-source-coding-entropy": {
+    "title": "数据压缩与 Shannon 无噪声编码定理",
+    "hash": "7ba91abc372c8f45d7f8be9a42d44bef098a0f4e3ca69e01ac432bed14e7a5bf"
+  },
+  "mit-discrete-applied-mathematics/17-huffman-coding": {
+    "title": "Huffman 编码：交换论证与最优前缀码",
+    "hash": "0b41740d3c49412a19bfa6aeea47a7bdc5b41528967c5c783c98bfffc075b11e"
+  },
+  "mit-discrete-applied-mathematics/18-noisy-channel-coding": {
+    "title": "噪声信道与 Shannon 编码定理",
+    "hash": "0b297979d802e279bb7a580db3d8b079ff364b285e9793db1e6613cc17302a52"
+  },
+  "mit-discrete-applied-mathematics/19-hamming-codes": {
+    "title": "线性码与 Hamming 码：从维恩图到综合解码",
+    "hash": "7dc7e61f3885f79655f66b4213c17b9b4065a3848cd066f6641c6efaad891c8c"
+  },
+  "mit-discrete-applied-mathematics/20-reed-solomon": {
+    "title": "Reed–Solomon 码：多项式求值与错误定位",
+    "hash": "41620029a879c44164bec94bdd428e131c724a718094fe5c6582ebb118da6729"
+  },
+  "mit-real-analysis/01-real-numbers": {
+    "title": "实数的起点：从介值定理到有序域",
+    "hash": "b76cfe04299217b63a9cbd258a809b19ded58ee855dc76dd851a89407950f2d8"
+  },
+  "mit-real-analysis/02-completeness": {
+    "title": "完备性：最小上界与 √2 的存在",
+    "hash": "3bd90e04f3478b640fb955d5c0565a26b5717c84548aab0b24465ccb894ceef2"
+  },
+  "mit-real-analysis/03-writing-proofs": {
+    "title": "怎样写证明：上确界、√2 与阿基米德性质",
+    "hash": "4fdbc87e4bb1bcbcb4014a40f14b9a053b8a91a98ab8293d5cab381847a09ded"
+  },
+  "mit-real-analysis/04-sequences-convergence": {
+    "title": "数列与收敛：ε-N 定义、四则运算与子列",
+    "hash": "c65d722d4d404e076b59ddf37d2de798c2767abdfd8c8e5fea442d4b30d9f530"
+  },
+  "mit-real-analysis/05-monotone-convergence": {
+    "title": "单调收敛定理：有界加单调就够了",
+    "hash": "b1ce15ae739f83a373005c3dbcbea347bd395215405384a871ac26d4a506fd0d"
+  },
+  "mit-real-analysis/06-cauchy-convergence": {
+    "title": "柯西收敛定理：不用猜极限也能证明存在",
+    "hash": "f04a68d7c0206ff637a72df9371c3452a01a6f0de2a76e72e9504d41043c1861"
+  },
+  "mit-real-analysis/07-subsequences-and-series": {
+    "title": "Bolzano–Weierstrass 定理与级数入门",
+    "hash": "f17a97075377208d4c65d74ece39dc79a32baabaebf7b2b1876118cdd63b57da"
+  },
+  "mit-real-analysis/08-series-tests-power-series": {
+    "title": "级数判别法：比较、比值、根值与幂级数",
+    "hash": "57905e1f98d9869c897b1ee6ed4e7ee9fc1fcf1a37cac7a1388e25d17bd6fcb0"
+  },
+  "mit-real-analysis/09-limsup-continuity": {
+    "title": "limsup、收敛半径与连续函数",
+    "hash": "8e26f05175b71491030aaa85acdc743904544b94351d74fe369649cf8eafde97"
+  },
+  "mit-real-analysis/10-exponential-product": {
+    "title": "级数乘积、指数加法公式与处处不连续的函数",
+    "hash": "359443094d74056a89453d47dab61f8afcd463a9e3c0d91d15d9588287eb1046"
+  },
+  "mit-real-analysis/11-value-theorems-metric-spaces": {
+    "title": "极值定理、介值定理与度量空间",
+    "hash": "83b3788f59286b3e33b82efd021a81c89c47a96a29d2c03146e11a276f0f5307"
+  },
+  "mit-real-analysis/12-midterm-review": {
+    "title": "期中复习：从完备性到幂级数",
+    "hash": "2a5a94fd639d1c05072d20e6220d30991a34d91e0c5d8fcb5369fe0e8411da78"
+  },
+  "mit-real-analysis/13-metric-convergence-sets": {
+    "title": "度量空间：哪些结论能搬离实数轴",
+    "hash": "d51bb7a3e216621efcca34ce90006fc932b525022bb0086ac6af8a1b3021a1d0"
+  },
+  "mit-real-analysis/14-closed-sets-compactness": {
+    "title": "闭集、开覆盖与紧性",
+    "hash": "2fb6597505e31737bd02fe5459b21afbb17b05f31fece19b98ce2e1b573afc13"
+  },
+  "mit-real-analysis/15-sequential-compactness": {
+    "title": "紧性如何恢复 Bolzano–Weierstrass 定理",
+    "hash": "6d2a078e6693b85229b42a07a46ed5359d14c573477b95875a4b18a47dd88ba3"
+  },
+  "mit-real-analysis/16-derivatives-rules": {
+    "title": "导数：从差商到链式法则",
+    "hash": "e5710ab81df20f36b562809f1c8d7c37da96b969ad8eb9decfc87cb2eb1f3fac"
+  },
+  "mit-real-analysis/17-mean-value-taylor": {
+    "title": "Rolle、中值定理与 Taylor 展开：把导数变成估计",
+    "hash": "dc4d9c4011c5d798ed40b5957d7ea8470949eedb40e161ed7e7021a40cd53c8d"
+  },
+  "mit-real-analysis/18-taylor-riemann": {
+    "title": "Taylor 余项与 Riemann 积分：从近似到面积",
+    "hash": "fb901036417010c4bddeb2cd5fe669cfdd76e1f633cae7af31c159d946416f64"
+  },
+  "mit-real-analysis/19-integrable-functions": {
+    "title": "哪些函数可积：判据、一致连续与连续函数",
+    "hash": "4906ace7d3959153c872217f5507ac411f21e84cb0ed4d2b0966a32692999259"
+  },
+  "mit-real-analysis/20-fundamental-theorem": {
+    "title": "微积分基本定理：把积分变成求原函数",
+    "hash": "a3a6b571d7ed0f54e3267d6b71d1597360fffd34474be2aa929e76792fa8dc66"
+  },
+  "mit-real-analysis/21-uniform-convergence": {
+    "title": "弧长、逐点收敛与一致收敛",
+    "hash": "a94b856a5d7d4f6676fca532b7d9e33f99b0c3e5f9a5472dd3a6cb59d6459cdf"
+  },
+  "mit-real-analysis/22-uniform-limits-integrals": {
+    "title": "一致极限：连续性的保持、完备性与积分交换",
+    "hash": "63fe04e094e0ddd5b73a122099ff6fe22bedf4b27ed369bc4c934cafa717dcaa"
+  },
+  "mit-real-analysis/23-power-series-odes": {
+    "title": "逐项求导、逐项积分与常微分方程",
+    "hash": "02e8cbbcebab83f8f218972ed8731e9ee90a493c4f41fe0220d60033ebc51fbd"
+  },
+  "mit-real-analysis/24-picard-lindelof": {
+    "title": "Picard–Lindelöf 定理：把微分方程变成不动点",
+    "hash": "4c26c7a60cab8da95e7504989ec8c728bee24cd3d79927c78b4aafd061f60674"
+  },
+  "mit-real-analysis/25-final-review": {
+    "title": "Picard–Lindelöf 的收尾：连通性、唯一性与爆破",
+    "hash": "e833ac9694cc1e268325770d7b7e1f5b7f2d958f149ff3d82e037ae99c558a55"
+  },
+  "cpp-programming-course/01-intro-and-tools": {
+    "title": "第 1 章：开发工具链与第一个 C++ 程序",
+    "hash": "37085cba50f4987c6f3ff58ea8cac9db4a7b3a28719f10ba5f56a256d62416a4"
+  },
+  "cpp-programming-course/02-first-program-and-workflow": {
+    "title": "第 2 章：注释、错误、语句与函数",
+    "hash": "cf9e9f1225586edc057e31a3a59df50fb76eefe3c34bcd39cf04dee045750bfb"
+  },
+  "cpp-programming-course/03-variables-and-types": {
+    "title": "第 3 章：变量、数据类型与进制",
+    "hash": "52ac96edce70e2fb9fdfb9d90351ff2330258ba3e14a4680d5b69b009b7497bc"
+  },
+  "cpp-programming-course/04-booleans-chars-auto": {
+    "title": "第 4 章：布尔、字符与 auto",
+    "hash": "2a00c6e99d4aacb1cd41f4eaded5087ee0c486164936e4195d2e48f92630f93b"
+  },
+  "cpp-programming-course/05-operators-and-precedence": {
+    "title": "第 5 章：算术、优先级与逻辑运算",
+    "hash": "091dfb95e30e59b0737f5d25ef9b8993dbb51d67463d29a2ff28d4dd2253492c"
+  },
+  "cpp-programming-course/06-output-formatting-and-math": {
+    "title": "第 6 章：输出格式化、数值范围与数学函数",
+    "hash": "247c22c1ab02cafae42aba1ee7934de3201397b49709373d7cb84aa01c9dd749"
+  },
+  "cpp-programming-course/07-conditionals": {
+    "title": "条件分支：if、else if、switch 与三元运算符",
+    "hash": "20b659d9d5559b9b11bcaae8d9133bcee559400ca535f7c776b0546e4ee73fb7"
+  },
+  "cpp-programming-course/08-loops": {
+    "title": "循环：for、while、do-while 的五个组成部分",
+    "hash": "99deaf44a2408bf837cbbc1abfe3bb7f8c624ebf174a08bdc0d132cc1b26198f"
+  },
+  "cpp-programming-course/09-arrays": {
+    "title": "数组：连续内存、零索引与 C 字符串",
+    "hash": "4c69f32a1192910ed8f4490a407fa23bab08f7afb51051559b02526ce75599f4"
+  },
+  "cpp-programming-course/10-pointers": {
+    "title": "指针、字符指针与程序内存模型",
+    "hash": "ca27829fe651217dadbaa683320751f72a90a571adea57c19e76d38b0c0b997c"
+  },
+  "cpp-programming-course/11-dynamic-memory-and-ownership": {
+    "title": "动态内存：悬空指针、分配失败、泄漏与动态数组",
+    "hash": "58068ab96218aa3d3aa112ad0617d3a868b94b831a600f2170edf4c3ef5f94ad"
+  },
+  "cpp-programming-course/12-references": {
+    "title": "引用：不能为空的别名，以及它与指针的分工",
+    "hash": "1b03462567f3fbc56ac241ba2b371c5d26667e381dc7ffde3f38ba22cc27e6a1"
+  },
+  "cpp-programming-course/13-strings-and-c-strings": {
+    "title": "字符与字符串：cctype、cstring 与 std::string",
+    "hash": "7c6c2f1e1ad434ad25f4b823a9ab2fa87513731182e363ef0aff17bd7387d097"
+  },
+  "cpp-programming-course/14-odr-linkage-declarations": {
+    "title": "程序如何组装：单一定义规则、函数声明与分离编译",
+    "hash": "25174dcf29e31c04e04741e6420a2b5dfae2f02f6e4c841db45d89cf6f42f858"
+  },
+  "cpp-programming-course/15-function-parameters": {
+    "title": "函数参数与返回值：值、指针、引用与输出参数",
+    "hash": "2d1913b234edc3d753c002a28684f1805077d7d1e70076fc0ea95589a0751267"
+  },
+  "cpp-programming-course/16-overloading-and-lambdas": {
+    "title": "函数重载与 Lambda：同名函数的挑选规则与匿名函数",
+    "hash": "dad51220c8c16d654ffcc7b7aab6db2f2e4b83a9b6f6c33d4beeb851be83dcf5"
+  },
+  "cpp-programming-course/17-templates-and-concepts": {
+    "title": "模板与 Concepts：从函数蓝图到编译期约束",
+    "hash": "0969829953260c7492110b55a2152ebab1532e6006dc01e04d2b9018f57c52e0"
+  },
+  "cpp-programming-course/18-classes-constructors-methods": {
+    "title": "类、构造与析构：从圆柱体到 this 指针",
+    "hash": "02a8ffe10ceecf39588cec8a0d3c5fecd26bc2367d41bcc488739bc95bf54fb3"
+  },
+  "cpp-programming-course/19-structs-sizes-inheritance-basics": {
+    "title": "struct、对象大小与继承入门",
+    "hash": "8c8f991e0fa21b3221f6de5b2560dd48a9535705219e71eaf7ef5e7c710850fe"
+  },
+  "cpp-programming-course/20-inheritance-constructors-scope": {
+    "title": "继承中的构造、拷贝与名称遮蔽",
+    "hash": "0deda41a606fa09828c18dc1ff9f76f32ebd7dbc35b5a8fc277d848a46cb95d9"
+  },
+  "cpp-programming-course/21-virtual-functions-polymorphism": {
+    "title": "虚函数与多态：动态绑定、切片与 override",
+    "hash": "b0a231473566c2b149d3439e3b4ae6093906e0bf68d509eb511c4d3d9fb6d908"
+  },
+  "cpp-programming-course/22-dynamic-cast-abstract-classes": {
+    "title": "dynamic_cast、抽象类与接口",
+    "hash": "8f6a312fd3e75a012c559fbd91a57e2c87f7250acc3ff268a73123e75fca86cd"
+  },
+  "cs50-python/01-functions-and-variables": {
+    "title": "函数与变量：从 hello, world 到自己的函数",
+    "hash": "7d19eb029f65836b9ae615579dc2ec27fcb5b3107869c7cbea25156cfdb5a950"
+  },
+  "cs50-python/02-conditionals": {
+    "title": "条件语句：让代码在岔路口做选择",
+    "hash": "6248bf4c2569752a810b25ff2eaee9bedd8206ef7c03403d222f79481127c232"
+  },
+  "cs50-python/03-loops": {
+    "title": "循环：让重复变成结构",
+    "hash": "c3db7a62fa48c47f07608dd2e34a0b77ba0c051aeb80ea689eb13a5eca88c8d3"
+  },
+  "cs50-python/04-exceptions": {
+    "title": "异常：为出错的那一天提前写代码",
+    "hash": "a2379f4896e3fcab6f1172bba6b37ed50fe0f3ebd52c6da81488b80cdece9d20"
+  },
+  "cs50-python/05-libraries": {
+    "title": "库、包与 API：站在别人的代码上",
+    "hash": "a9ca2f0ca3c4794324ad5ed26b24ddfc792aa06ddd6489d4b54e5b9bba4afe82"
+  },
+  "cs50-python/06-unit-tests": {
+    "title": "单元测试：从 assert 到 pytest",
+    "hash": "2aa11ae997dbf2b31c0af8cfa29c862fc7eef9bf34e7d504635fca6d98ccde01"
+  },
+  "cs50-python/07-file-io": {
+    "title": "文件读写：从 names.txt 到 CSV 与图片",
+    "hash": "a6876ecb363e1e5af4037b73978a1872b9d62642aaa0d268dcf0195a86a75fa7"
+  },
+  "cs50-python/08-regular-expressions": {
+    "title": "正则表达式：把「格式」写成模式",
+    "hash": "93635f30d22b45753f4c1fead77ff7cdce28e10d1f5ec0c170978a253025b04c"
+  },
+  "cs50-python/09-object-oriented-programming": {
+    "title": "面向对象：从元组、字典到自己的类",
+    "hash": "94edcf73f08780e6d743788f93b5ec8fe8d6502408f5be84b71a02492c58fb51"
+  },
+  "cs50-python/10-et-cetera": {
+    "title": "收尾工具箱：集合、类型提示、argparse 与生成器",
+    "hash": "93f5da765f1873c2d65e421bbdf025b520bf9c37df40581b30300c0440ff4ca5"
+  },
+  "python-for-ai/01-setup-and-tooling": {
+    "title": "环境搭建：Python、VS Code 与虚拟环境",
+    "hash": "a19c93dc77289f1a56c585b625dff46df9fc2f33d2b54493429849f3980aad39"
+  },
+  "python-for-ai/02-syntax-variables-types": {
+    "title": "语法、变量与数据类型",
+    "hash": "d3c0707bc0a51d430b3b55f4cced9a59102620a859b42cf40f054d36a3f0eba2"
+  },
+  "python-for-ai/03-control-flow-and-data-structures": {
+    "title": "控制流与数据结构",
+    "hash": "68ec861e961dabd99e8ed0d6f6c4938d3731679450401dc1c36c56929bbb5a29"
+  },
+  "python-for-ai/04-functions-and-scope": {
+    "title": "函数、参数与作用域",
+    "hash": "cd28729e8f4bc9f65ddde232e3a22d165a0f6fda65cefd53f1b13c6821dc3f8c"
+  },
+  "python-for-ai/05-packages-apis-data": {
+    "title": "第三方包、API 与数据处理",
+    "hash": "5c541585299678b7b3921f598284bca74b8388b6eaaf9203d34c927f0fd1c30f"
+  },
+  "python-for-ai/06-project-structure-and-errors": {
+    "title": "从脚本到项目：结构、路径、文件与错误处理",
+    "hash": "0255cb317f727de713b84fdf881253c245a7ead0043660206109a296c5da45c6"
+  },
+  "python-for-ai/07-classes-and-oop": {
+    "title": "类与面向对象：把数据和操作打包在一起",
+    "hash": "1bea95ce0c3b65e9d19a447d43b3ff10d494e4f1586d86a921d4718eb426af9e"
+  },
+  "python-for-ai/08-git-and-github": {
+    "title": "Git 与 GitHub：给代码加上版本与备份",
+    "hash": "6752c01bc39131062f30bbb5aa045a702b5fbe00c8b4a259f73429adb856509d"
+  },
+  "python-for-ai/09-env-ruff-uv-workflow": {
+    "title": "密钥、代码风格与依赖：.env、Ruff 与 uv",
+    "hash": "f40089a2b30b4be46dc51270a7f77810e188f220ad3da1d674ae639bcc86e74b"
+  },
+  "english-news-reading/01-us-tech-stocks-ai-spending": {
+    "title": "美科技股下跌与 AI 投资 雅思精读",
+    "hash": "fcfbe717ceb35fd063b2475d3b2af0f2cb40a6ab21350c41ee0f001e167dfcc1"
+  },
+  "english-news-reading/02-marco-rubio-peace-diplomacy": {
+    "title": "卢比奥手握和平筹码却选择不用 雅思精读",
+    "hash": "0a2732e4b374e4ee1e6def1a77b09b2b9f6bda722793cf8328793c8bd2f4ebfb"
+  },
+  "english-news-reading/03-guardian-view-global-inequality": {
+    "title": "极端财富如何威胁民主 雅思精读",
+    "hash": "98477b4c2006e835781a5bec335567f5803b86bee9199e411417e10d7d93a79f"
+  },
+  "english-news-reading/04-ai-hiring-tools-discrimination": {
+    "title": "AI 招聘工具与算法歧视 雅思精读",
+    "hash": "84f0039ddea4a0b528d3ec16bbba0da8397a6951d620e9464c09108272a36241"
+  },
+  "english-news-reading/05-la-lakers-private-equity": {
+    "title": "湖人队如何变成私募基金的一笔押注 雅思精读",
+    "hash": "43e7c8f7b548b5f8d574f2f640de48b004e2da9d378e1486d5456c007217869c"
+  },
+  "english-news-reading/06-new-start-after-60-grocer": {
+    "title": "六十岁重新开始：他成了蔬果采购员 雅思精读",
+    "hash": "e581f4315309d30d11bf8091de4968791d5327bbd02657296684904b8f21aa64"
+  },
+  "english-news-reading/07-dolly-parton-best-recordings": {
+    "title": "多莉·帕顿十首代表作 雅思精读",
+    "hash": "596180ac7fcca3375563a8454bda957f605d83a0661a35a7b714a7e00d393e84"
+  },
+  "english-news-reading/08-planetary-boundaries-breached": {
+    "title": "行星边界被大规模突破 雅思精读",
+    "hash": "46c3d31fe824d715dbfe510b3db8fdb17418a26e5bcd7460ecdfd2f0fd0e07a1"
+  },
+  "english-news-reading/09-paris-pickpocketing-clan-sentenced": {
+    "title": "巴黎扒窃团伙头目被判八年 雅思精读",
+    "hash": "b334453667b1dc494e3414c0c5a9c0c5358e6ca0041041b4562ccf0b32e105d8"
+  },
+  "cmu-ai-agents/01-what-is-an-agent": {
+    "title": "什么是 AI Agent：把一个模型放进循环里",
+    "hash": "19a1f0ad52a6755a4a6b6ba04cf830d6f7260b6627e03d3b3f368f699cc8f470"
+  },
+  "cmu-ai-agents/02-tool-use": {
+    "title": "工具调用：把语言模型接到外部世界",
+    "hash": "14ae9d00ef23e0b5cacd13174c85756c0a603f78b77b056c4cd92c164da6fd4e"
+  },
+  "cmu-ai-agents/03-long-context": {
+    "title": "长上下文：容量、效率与压缩",
+    "hash": "75cdff0cd44dab0d5ee1be842125c0abc9727de415799014c3d71d4caa5b1739"
+  },
+  "cmu-ai-agents/04-memory-and-skills": {
+    "title": "记忆与技能：把经验留在上下文之外",
+    "hash": "3de546ae40d51334212ecfa716d6af98b0cb7f0a4c727ba50091643531730854"
+  },
+  "cmu-ai-agents/05-planning-and-multi-agent": {
+    "title": "规划、任务分解与多智能体协作",
+    "hash": "d819278bef4c405a24595178ec818f79ff8820819e9cc3af1b964b10283ad734"
+  },
+  "cmu-ai-agents/06-coding-agents": {
+    "title": "编码 Agent：从会写代码到会改仓库",
+    "hash": "bb0ea3a4d99f56a0beb6d2d0264b0f465d21cf3cd650c3de9a94bbf52ae37365"
+  },
+  "cmu-ai-agents/07-computer-use": {
+    "title": "计算机使用 Agent：像人一样操作图形界面",
+    "hash": "137f99adf5faff40f29fc2da5e8c7381582ce4c97ab2ca0a3e903edb45dadc0a"
+  },
+  "cmu-ai-agents/08-supervised-fine-tuning": {
+    "title": "Agent 的监督微调：把轨迹变成可训练的信号",
+    "hash": "3db7c334675a9447887955280e034ddd22f4cfe308e7e18cfdeaaa580712b0f4"
+  },
+  "cmu-ai-agents/09-rl-basics": {
+    "title": "强化学习基础：从策略梯度到 GRPO",
+    "hash": "ce74755375aafe5afac32035981e5e5577dfc1048c42f36c1d23e392cab1737a"
+  },
+  "cmu-ai-agents/10-deep-research": {
+    "title": "深度研究 Agent：复杂信息需求的检索、评估与训练",
+    "hash": "49defd9a3f446be42b50835bfe2151989027ad50148f3b0dc3d5d4c6c227f86e"
+  },
+  "cmu-ai-agents/11-advanced-rl": {
+    "title": "Agentic RL 的进阶算法：把稀疏奖励变成可学的信号",
+    "hash": "55dcadc3ebf1dd5759c770f097e64b5fb37f3ffa6a18bf6dcbbb1cb961c2a9b0"
+  },
+  "cmu-ai-agents/12-rl-systems": {
+    "title": "RL 系统：推理引擎与训练引擎为什么必须分开",
+    "hash": "b32b4b1ffd0414f40fb158c701bb4717b18ddd4b3c1b38f28646072110587b57"
+  },
+  "cmu-ai-agents/13-agentic-safety": {
+    "title": "Agent 安全：威胁模型、沙箱、凭据与监控",
+    "hash": "717dffdcb625f14ad2072ebfe214998da74c35712e04a8d97d7d9f17c6ec0a38"
+  },
+  "cmu-ai-agents/14-openhands-lessons": {
+    "title": "从 OpenHands 学到的：单 agent、技能、界面与自动化",
+    "hash": "b5dcd6e1d0b3a5b9d8d213ce8b77c1f173fe56e3eb92295bc6419d14ec500114"
+  },
+  "mit-linear-algebra/00-interview-teaching": {
+    "title": "Strang 谈教学：把数学讲成人能想明白的东西",
+    "hash": "2f2f7e24c537aad9a1f78eef5484ea550bbed07a7135d8ef2fac296f5fc76d38"
+  },
+  "mit-linear-algebra/01-geometry-of-equations": {
+    "title": "线性方程组的三种视角：行、列与矩阵",
+    "hash": "e3257a5926ac75e8fd548558e91725d341497955f5102086af6d324c537cfd2b"
+  },
+  "mit-linear-algebra/02-elimination": {
+    "title": "消元法：从方程组到上三角矩阵",
+    "hash": "9308a09edca9aee67a8f3561f048c890000d9884c3ca86f50e5c99166a7b30ef"
+  },
+  "mit-linear-algebra/03-multiplication-and-inverses": {
+    "title": "矩阵乘法与逆矩阵：五种算法与 Gauss-Jordan",
+    "hash": "c029d1e07b771303fc6e746dc64a3b79645ad9103913e17d31efcd0271b1c686"
+  },
+  "mit-linear-algebra/04-lu-factorization": {
+    "title": "A = LU：把消元写成一次分解",
+    "hash": "c2d92bc033212e998d3c3935fb3db7bd6ecf0f7d82ea503949bb3db3c36114b3"
+  },
+  "mit-linear-algebra/05-transposes-permutations-spaces": {
+    "title": "转置、排列与向量空间 R^n",
+    "hash": "5eb3149ed72bbf4e7ebea146b27b5284ca032df620137ddfc8b6a6408c1b8a75"
+  },
+  "mit-linear-algebra/06-column-space-nullspace": {
+    "title": "列空间与零空间：矩阵产生的两个子空间",
+    "hash": "58c038f4cec24396ded71467606114f57194af6110bae9d7fda3731840b15059"
+  },
+  "mit-linear-algebra/07-ax-equals-zero": {
+    "title": "解 Ax = 0：主元变量、自由变量与特殊解",
+    "hash": "668b505a9999b25659027c9228d1fd927504a58719657da571a128772ea69b61"
+  },
+  "mit-linear-algebra/08-ax-equals-b": {
+    "title": "解 Ax = b：特解加零空间，以及秩决定一切",
+    "hash": "85c68b071749bd488c2e3f319df443a36092014763555b47cfbe50b0b097ad6c"
+  },
+  "mit-linear-algebra/09-independence-basis-dimension": {
+    "title": "线性无关、基与维数",
+    "hash": "5afe94e8b6dc0688bb2009306f8fbe5a5b4f8bc2baab5854ffb48c456e65b28b"
+  },
+  "mit-linear-algebra/10-four-fundamental-subspaces": {
+    "title": "四个基本子空间",
+    "hash": "aacffe7620a5be40b20d4da49b465dcf842f0f411750b16babc05d02cf685167"
+  },
+  "mit-linear-algebra/11-matrix-spaces-rank-one": {
+    "title": "矩阵空间、秩一矩阵与小世界图",
+    "hash": "b44d8b6fdb09a71b6b731177eca93436154ce51737006e35fee28d5f924f1d64"
+  },
+  "mit-linear-algebra/12-graphs-networks-incidence": {
+    "title": "图、网络与关联矩阵",
+    "hash": "42715d6e8d32bd771f10b0162dc94401c452d7006f4047f3430d2c333b80782f"
+  },
+  "mit-linear-algebra/13-quiz-1-review": {
+    "title": "第一次测验复习：按题型整理",
+    "hash": "69bf2818603a17d13791f4a3ca1acf3bd8f42c634c4742c6a78fe7b288d159a2"
+  },
+  "mit-linear-algebra/14-orthogonality": {
+    "title": "正交向量与正交子空间",
+    "hash": "ba6106152b2c3ee9673165865f61fbd59f28056ab079103e42fc005710925509"
+  },
+  "mit-linear-algebra/15-projections": {
+    "title": "投影到子空间",
+    "hash": "614c4ab419a900d1decf2d2880ab83a6ddc00e74ec1cd9b50b22aede062aec0b"
+  },
+  "mit-linear-algebra/16-least-squares": {
+    "title": "投影矩阵与最小二乘",
+    "hash": "9650debabee33be2f04e750f784a650f1e81d3824e4c373509dcc34c2ac3305c"
+  },
+  "mit-linear-algebra/17-gram-schmidt": {
+    "title": "正交矩阵与 Gram-Schmidt",
+    "hash": "8078118a33117247b562061cccf27b87a5b1c1e8dfe2678ee8cbe3689aec2e66"
+  },
+  "mit-linear-algebra/18-determinant-properties": {
+    "title": "行列式的性质：用三条公理推出整个理论",
+    "hash": "36eb800cfc946b74b4d80c20ec5292f39256d1ff152db27a871c72c01cf88fd3"
+  },
+  "mit-linear-algebra/19-determinant-formulas": {
+    "title": "行列式的显式公式：大公式与代数余子式",
+    "hash": "062dff9311a3578315fd02c2cd04cc9614d5d9d4e87c05854356fd68760dba06"
+  },
+  "mit-linear-algebra/20-cramers-rule": {
+    "title": "行列式的三个应用：逆矩阵、Cramer 法则与体积",
+    "hash": "03440df8af3899fa24675cf2036d4daffe07489ff95563c7e16a24bb81cb70ef"
+  },
+  "mit-linear-algebra/21-eigenvalues": {
+    "title": "特征值与特征向量：矩阵作用下方向不变的向量",
+    "hash": "b2fdd1fe78173178e39cdd8a274d7def49eda34f250a25244abb652faeb917e1"
+  },
+  "mit-linear-algebra/22-diagonalization": {
+    "title": "对角化与矩阵的幂：把演化拆成互不干扰的方向",
+    "hash": "355407f6f8c72aae2179ec437ccf94b24c339a94417fbaef26269178a905b4b1"
+  },
+  "mit-linear-algebra/23-differential-equations": {
+    "title": "微分方程与矩阵指数 e^{At}",
+    "hash": "6b75b40bae46b2c7a0cf886e62ba50752765905fcaf3a60fefdc68c645323a8f"
+  },
+  "mit-linear-algebra/24-markov-fourier": {
+    "title": "Markov 矩阵与傅里叶级数：特征值的两个应用",
+    "hash": "b4fdb4a10c9039708d5c0443c525f8ca5e149d52da8c6b756b6de567901cdd0d"
+  },
+  "mit-linear-algebra/24-quiz-2-review": {
+    "title": "第二次测验复习：按题型串起正交、行列式与特征值",
+    "hash": "f273fe2e15619da6a44f45739c3696c52404bcc5bb3d62577bb3db8866fc1518"
+  },
+  "mit-linear-algebra/25-symmetric-positive-definite": {
+    "title": "对称矩阵与正定性：谱定理和三个等价判据",
+    "hash": "69ca8d5ab62b998500bf888e62aa7a5350ffe57418deb96516e43e5a03b6b582"
+  },
+  "mit-linear-algebra/26-complex-fft": {
+    "title": "复矩阵与快速傅里叶变换：从 Hermitian 到 FFT",
+    "hash": "38eb1d3d3b23b7849aad5f7f5f35721a65d6f85ae53c6e0ce036da9545befdec"
+  },
+  "mit-linear-algebra/27-positive-definite-minima": {
+    "title": "正定矩阵与极小值：四个判据与一个碗",
+    "hash": "d12e102b707be9541e50aac6073299c46def711186dadf531508e70a4ccc2c97"
+  },
+  "mit-linear-algebra/28-similar-jordan": {
+    "title": "相似矩阵与 Jordan 形：同一特征值下的不同家族",
+    "hash": "7414aabf6b0fce9104b4df44dc42e58710e551b79bb887d4838d6898cfa2760e"
+  },
+  "mit-linear-algebra/29-svd": {
+    "title": "奇异值分解：给四个子空间同时选对基",
+    "hash": "2a7773ed203a783f85d65749e6416ad98edb521663ce29e6b232e69432f56d12"
+  },
+  "mit-linear-algebra/30-linear-transformations": {
+    "title": "线性变换与它的矩阵：先有变换，后有坐标",
+    "hash": "92860ea8efb988fe275eaee0ac3c97bad29f3cee807b6456062faf9e616fb0f9"
+  },
+  "mit-linear-algebra/31-change-of-basis": {
+    "title": "换基与图像压缩：好基的三个标准",
+    "hash": "b26ce5f4bf9d41efbe8e97f367cafc43aa75612f39c086ca3a45f798bd66ee83"
+  },
+  "mit-linear-algebra/32-quiz-3-review": {
+    "title": "第三次测验复习：按题型整理的特征值专题",
+    "hash": "57cff0d5e1048ca1474f69b55eef033a4234e12fbcdbc11a3db96f454c8c7061"
+  },
+  "mit-linear-algebra/33-pseudoinverse": {
+    "title": "左逆、右逆与伪逆：按秩分类的四种「求逆」",
+    "hash": "175ad6f6027c58c73e64f8a8b7ccc80026e8d9f0b72c50fe5c52a71e9e394d49"
+  },
+  "mit-linear-algebra/34-final-review": {
+    "title": "期末总复习：用六道旧题串起整门课",
+    "hash": "f3058f3a6673a3731feefe827535c37eb235fce76bd42c7da02ae1c975881c24"
+  },
+  "vibe-coding/01-the-loop": {
+    "title": "从零到上线：用 AI 做一个能收款的 SaaS",
+    "hash": "edbbb0ae1240c8ae3df7764aae7187e963596559a4434d5a4891875bcc43b491"
+  },
+  "vibe-coding/02-my-ai-workflow": {
+    "title": "用 AI 稳定交付：五步流程与三条不能省的原则",
+    "hash": "1bd7d73d350f2eb5386ec8fdd88c5cf584e19b4eec7ab28a0df11292664191ff"
+  },
+  "vibe-coding/03-saas-ai-workflow": {
+    "title": "用 AI 交付一个完整 SaaS：从规划、界面、后端到自动排错",
+    "hash": "1b7925ffd10965bf1d2a2125ee52619b55cd40701f600c537ada2da91c383d18"
+  }
+}

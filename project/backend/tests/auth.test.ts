@@ -107,7 +107,7 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
     for (const statement of sql.split(/;(?=\s*(?:CREATE|PRAGMA|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();

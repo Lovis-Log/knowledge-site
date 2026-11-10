@@ -1,5 +1,2 @@
-import { GuestbookView } from "@/components/guestbook";
-
-export default function Page() {
-  return <GuestbookView />;
-}
+import {CommunityView} from "@/components/community-view";
+export default function Page(){return <CommunityView/>;}

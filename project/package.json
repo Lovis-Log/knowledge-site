@@ -24,7 +24,8 @@
     "test:auth": "tsx --test backend/tests/*.test.ts",
     "types:backend": "wrangler types backend/env.d.ts --env-interface Env",
     "typecheck:backend": "wrangler types backend/env.d.ts --env-interface Env && tsc -p backend/tsconfig.json && tsc -p scripts/tsconfig.json",
-    "benchmark:auth": "tsx scripts/benchmark-password.ts"
+    "benchmark:auth": "tsx scripts/benchmark-password.ts",
+    "updates:prepare": "tsx scripts/content-updates.ts"
   },
   "dependencies": {
     "@noble/hashes": "^2.4.0",

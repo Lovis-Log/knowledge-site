@@ -48,6 +48,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
+          <Link href="/search/" prefetch={false}><UiText zh="搜索" en="Search" /></Link>
           <AccountMenu />
           {site.nav.filter((item) => item.href === "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
