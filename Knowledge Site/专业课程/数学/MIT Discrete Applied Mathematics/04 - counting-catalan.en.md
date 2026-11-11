@@ -320,11 +320,11 @@ The lecture admits that the reflection idea is hard to invent from nothing. Gene
 
 Traverse a full binary tree around its outside (preorder), recording each vertex the first time it is visited. Mark **internal nodes as $+1$ and leaves as $-1$**, then read the sequence as up/down steps.
 
-- A full binary tree with $n$ internal nodes has $n+1$ leaves, so the traversal has $2n+1$ entries;
-- the first and last are leaves ($-1$);
-- because leaves outnumber internal nodes by one, the running height never drops below $0$.
+- A full binary tree with $n$ internal nodes has $n+1$ leaves, so the traversal has $2n+1$ entries and total sum $n-(n+1)=-1$;
+- for $n\ge1$, the first entry is the root ($+1$) and the last is a leaf ($-1$);
+- Start with one pending position for the root. Visiting an internal node consumes one position and creates two, for a net gain of 1. Visiting a leaf consumes one. Every proper prefix still leaves a position pending, so its sum is nonnegative. Only the full traversal brings the sum to $-1$.
 
-Dropping the final step yields a Dyck path of length $2n$.
+Dropping the final step yields a Dyck path of length $2n$ that starts at $0$ and returns to $0$.
 
 ### Path to tree
 
@@ -401,7 +401,7 @@ Reference answer: $\binom63=20$ total paths and $\binom62=15$ bad paths, so $c_3
 
 **5. Why does a full binary tree always have one more leaf than internal node, and where is that used in the tree-to-path bijection?**
 
-Reference answer: Induct on internal nodes. For $n=1$ the tree is a root with two leaves: $2$ leaves, $1$ internal node, difference $1$. In the induction step, replace any leaf by one internal node with two leaves: internal nodes increase by $1$ and leaves go from $1$ to $2$, also increasing by $1$, so the difference is preserved. Hence "leaves − internal nodes = 1" always. In the bijection this guarantees that the traversal sequence has $2n+1$ entries and that every prefix has at least as many $+1$s as $-1$s (each leaf's $-1$ is backed by an earlier internal node's $+1$), so dropping the final step gives a genuine Dyck path.
+Reference answer: Induct on internal nodes. For $n=1$ the tree is a root with two leaves: $2$ leaves, $1$ internal node, difference $1$. In the induction step, replace any leaf by one internal node with two leaves: internal nodes increase by $1$ and leaves go from $1$ to $2$, also increasing by $1$, so the difference is preserved. Hence "leaves − internal nodes = 1" always. In the bijection this guarantees that the traversal sequence has $2n+1$ entries, that every **proper** prefix has at least as many $+1$s as $-1$s (the traversal still has at least one pending position), and that the full sequence sums to $-1$. Dropping the final step therefore gives a genuine Dyck path.
 
 **6. Use Stirling's formula to estimate $\binom{20}{10}$ and compare with the exact value.**
 

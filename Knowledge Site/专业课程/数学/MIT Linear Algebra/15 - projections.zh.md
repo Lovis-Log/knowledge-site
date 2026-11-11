@@ -46,7 +46,7 @@ sources:
 
 ## 一维情形：投影到一条直线
 
-![图示](/images/projection-rich-zh.svg)
+![把向量 b 投影到由 a 张成的直线上：误差 e 垂直于直线，投影矩阵 P=aaᵀ/aᵀa；右图为三点 (1,1),(2,2),(3,2) 的最小二乘直线拟合](/images/projection-rich-zh.svg)
 
 *图：投影的几何、投影矩阵与三个点的最小二乘拟合。*
 

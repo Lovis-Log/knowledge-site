@@ -202,6 +202,8 @@ R=\begin{bmatrix}I&F\\0&0\end{bmatrix},
 F=\begin{bmatrix}2&-2\\0&2\end{bmatrix}.
 $$
 
+Read this with pivot columns first and free columns after: columns 1 and 3 make up $I$, columns 2 and 4 make up $F$. Laid out in their original order the four columns do not look like $\begin{bmatrix}I&F\end{bmatrix}$ — the block form is a reordered notation, not a literal layout.
+
 ### Reading the nullspace off $R$
 
 Write $R\mathbf{x}=\mathbf{0}$ in blocks:
@@ -234,6 +236,8 @@ N=\begin{bmatrix}-F\\ I\end{bmatrix}
 $$
 
 Its columns are exactly $\mathbf{s}_1,\mathbf{s}_2$. The "special solutions" are not a trick; they are $-F$ moved into the pivot-variable slots.
+
+This $4\times2$ matrix also has its rows put back in the original variable order: the two rows of $-F$ belong to $x_1$ and $x_3$, the two rows of $I$ to $x_2$ and $x_4$. Only when the pivot columns happen to be the first $r$ columns (as in the next example) can $[-F;I]$ be stacked literally block on block.
 
 ## A second example: the transpose
 

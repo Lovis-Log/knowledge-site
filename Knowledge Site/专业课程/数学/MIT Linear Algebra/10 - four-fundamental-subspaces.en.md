@@ -67,9 +67,9 @@ The lesson opens the lecture: **relations among rows constrain the columns**. To
 
 ## The four subspaces
 
-![Figure](/images/four-subspaces-rich-en.svg)
+![The four fundamental subspaces of an m by n matrix, with their dimensions, bases, and the two orthogonality relations](/images/four-subspaces-rich-en.svg)
 
-*Figure：The four subspaces: dimensions, bases and orthogonality。*
+*Figure: the four subspaces, their dimensions and bases, and the two orthogonality relations.*
 
 For an $m\times n$ matrix $A$:
 
@@ -245,7 +245,7 @@ Check: $2+4=6=n$ and $2+2=4=m$. The column and left null spaces live in $\mathbb
 Reference answer: In the space of $3\times3$ matrices, let $S$ be symmetric and $U$ upper triangular.
 
 - Intersection $S\cap U$: a matrix that is both. Upper triangular means $a_{ij}=0$ for $i>j$; symmetry forces $a_{ji}=a_{ij}$, so all off-diagonal entries vanish. The intersection is the diagonal matrices, of dimension $3$.
-- Sum $S+U$: every matrix is a sum of a symmetric and an upper triangular matrix. One construction: for an arbitrary $M$, take the strictly lower triangular part separately; its transpose is upper triangular, and adding the two recovers the diagonal-and-below part of $M$; the rest is upper triangular. Hence $S+U=M$ and $\dim(S+U)=9$.
+- Sum $S+U$: every matrix is a sum of a symmetric and an upper triangular matrix. Construction: split an arbitrary $B\in M$ into its diagonal $D$, strictly lower part $L$, and strictly upper part $U_0$, so $B=D+L+U_0$. The matrix $L+L^\top$ belongs to $S$, and $D+U_0-L^\top$ belongs to $U$. Their sum is $B$, so $S+U=M$ and $\dim(S+U)=9$.
 
 Substituting,
 $$

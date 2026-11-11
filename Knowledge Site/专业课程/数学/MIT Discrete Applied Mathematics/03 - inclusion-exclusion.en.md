@@ -68,9 +68,9 @@ The problem reduces to computing the probability of a union of $n$ events.
 
 ## Inclusion–exclusion: over-count, then correct
 
-![Figure](/images/inclusion-exclusion-rich-en.svg)
+![The n=3 derangement problem worked by inclusion–exclusion: three overlapping circles corrected layer by layer, with the general formula and the value 1/3 below](/images/inclusion-exclusion-rich-en.svg)
 
-*Figure：The n=3 derangement example: Venn counts, the correction ladder, the general formula。*
+*Figure: the n=3 derangement example — Venn counts, the correction ladder, and the general formula.*
 
 ### The case $n=2$
 

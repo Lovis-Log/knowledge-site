@@ -255,7 +255,7 @@ $$
 \min\ 60x_1+35x_2\quad\text{s.t.}\quad 5x_1+7x_2\ge8,\;4x_1+2x_2\ge15,\;2x_1+x_2\ge7,\;x_1,x_2\ge0 .
 $$
 
-Without $x_1,x_2\ge0$ the model allows negative amounts of grain, which are physically meaningless; the feasible set no longer describes the problem. Non-negativity is part of the problem, not a solution technique.
+Without $x_1,x_2\ge0$, the starch and protein constraints meet at $(89/18,-43/18)$, which also satisfies the vitamin constraint. Adding $10/9$ times the starch constraint to $245/18$ times the protein constraint gives a cost lower bound of $3835/18$ cents. The intersection attains it, but the second ingredient has a negative amount, so the recipe cannot be made.
 
 **2. Convert to canonical form: $\min 3x_1+5x_2$ subject to $x_1+x_2\ge4$, $x_1-2x_2\le6$, $x_1\ge0$, $x_2$ free.**
 

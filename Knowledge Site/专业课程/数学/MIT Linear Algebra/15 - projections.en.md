@@ -46,9 +46,9 @@ That is projection. Geometrically it is a foot of a perpendicular; algebraically
 
 ## The one-dimensional case: projecting onto a line
 
-![Figure](/images/projection-rich-en.svg)
+![Projecting b onto the line spanned by a, with the error e perpendicular to the line and projection matrix P=aaᵀ/aᵀa; at right, the least-squares line fitted to the three points (1,1), (2,2), (3,2)](/images/projection-rich-en.svg)
 
-*Figure：Projection geometry, the projection matrix, and a three-point least-squares fit。*
+*Figure: projection geometry, the projection matrix, and a three-point least-squares fit.*
 
 Let the line be spanned by $\mathbf{a}$, and project $\mathbf{b}$ onto it.
 

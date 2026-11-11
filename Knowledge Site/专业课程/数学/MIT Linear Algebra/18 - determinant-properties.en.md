@@ -78,13 +78,13 @@ That derivation is the template for the whole lecture: **split rows, let most te
 
 ### Property 4: Two equal rows give zero
 
-If row 1 equals row 3, exchanging them leaves the matrix unchanged, so the determinant is unchanged. But property 2 demands a sign flip. A number equal to its own negative must be zero.
+If row $i$ equals row $k$, exchanging them leaves the matrix unchanged, so the determinant is unchanged. But property 2 demands a sign flip. A number equal to its own negative must be zero.
 
 The proof uses only property 2, so it holds at every size.
 
 ### Property 5: Subtracting a multiple of one row from another changes nothing
 
-Replace row $k$ by row $k$ minus $\ell$ times row $i$. By 3B this splits into two determinants: the original, plus one whose row $k$ is $-\ell$ times row $i$. Property 3A pulls out $-\ell$, leaving a matrix with proportional rows, which is zero by property 4. Therefore
+Replace row $k$ by row $k$ minus $\ell$ times row $i$. By 3B this splits into two determinants: the original, plus one whose row $k$ is $-\ell$ times row $i$. Property 3A pulls out $-\ell$, which makes row $k$ exactly equal to row $i$, so that determinant is zero by property 4. Therefore
 
 $$
 \det(\text{matrix after elimination}) = \det A
@@ -98,7 +98,7 @@ By 3A with $t=0$: a zero row is $0$ times any row, so the determinant is $0$ tim
 
 ### Property 7: A triangular matrix has determinant equal to its diagonal product
 
-Let $U$ be upper triangular with diagonal $d_1,\dots,d_n$. Property 5 clears every entry above the diagonal using the rows below, leaving a diagonal matrix with the same determinant. Then 3A pulls out $d_1,\dots,d_n$ one row at a time, leaving the identity, whose determinant is 1. Hence
+Let $U$ be upper triangular with diagonal $d_1,\dots,d_n$. Work upwards from the last row. When you reach row $k$, its entries to the right of the diagonal have already been cleared. If $d_k=0$, the whole row is zero, so both the determinant and the diagonal product are zero. Otherwise, use that row to clear column $k$ above the diagonal. If all diagonal entries are nonzero, this leaves a diagonal matrix. Property 5 preserves the determinant, and property 3A then factors out the diagonal entries, giving
 
 $$
 \det U = d_1 d_2 \cdots d_n

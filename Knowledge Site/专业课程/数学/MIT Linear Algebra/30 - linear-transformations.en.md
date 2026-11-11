@@ -337,7 +337,7 @@ Reference answer: In the eigenvector basis $v_1=\frac1{\sqrt2}(1,1)^T$, $v_2=\fr
 $$
 P=\frac{aa^{\mathsf T}}{a^{\mathsf T}a}=\frac12\begin{bmatrix}1&1\\1&1\end{bmatrix}.
 $$
-They are similar because they are matrices of the **same** transformation in different bases, related by $P=S^{-1}\operatorname{diag}(1,0)S$ with $S=[v_1\ v_2]$ the change-of-basis matrix. The similarity invariants agree: trace $1$, determinant $0$, eigenvalues $1$ and $0$.
+They are similar because they are matrices of the **same** transformation in different bases: with $S=[v_1\ v_2]$ the matrix whose columns are the eigenvectors, the matrix in the new basis is $S^{-1}PS=\operatorname{diag}(1,0)$, equivalently $P=S\operatorname{diag}(1,0)S^{-1}$. The similarity invariants agree: trace $1$, determinant $0$, eigenvalues $1$ and $0$.
 
 **5. What is the null space of the derivative matrix $\begin{bmatrix}0&1&0\\0&0&2\end{bmatrix}$, and what does it correspond to among polynomials?**
 

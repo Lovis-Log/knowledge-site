@@ -275,7 +275,7 @@ About a 200-fold speedup. That is why the FFT changed entire industries.
 
 **1. Compute the squared length of $z=(1,i,1+i)$.**
 
-Reference answer: The squared length is $\bar z^Tz=|z_1|^2+|z_2|^2+|z_3|^2$. Term by term: $|1|^2=1$, $|i|^2=1$, and $|1+i|^2=1^2+1^2=2$. Hence $\|z\|^2=1+1+2=4$ and the length is $2$. Using $z^Tz$ instead gives $1+i^2+(1+i)^2=1-1+2i=-2+2i$, which is neither real nor correct — the complex inner product must conjugate.
+Reference answer: The squared length is $\bar z^Tz=|z_1|^2+|z_2|^2+|z_3|^2$. Term by term: $|1|^2=1$, $|i|^2=1$, and $|1+i|^2=1^2+1^2=2$. Hence $\|z\|^2=1+1+2=4$ and the length is $2$. Using $z^Tz$ instead gives $1+i^2+(1+i)^2=1-1+2i=2i$, which is neither real nor correct — the complex inner product must conjugate.
 
 **2. Write $F_4$ and verify that columns 2 and 3 are orthogonal, remembering the conjugate.**
 

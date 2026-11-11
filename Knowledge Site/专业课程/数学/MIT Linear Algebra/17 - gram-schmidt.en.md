@@ -116,7 +116,7 @@ Q=\frac12\begin{bmatrix}
 \end{bmatrix}.
 $$
 
-Orthogonal matrices with only $\pm1$ entries exist for some sizes; exactly which sizes admit them is still open.
+A Hadamard matrix has entries $\pm1$ and mutually orthogonal rows, so $HH^\top=nI$. Scaling by $1/\sqrt n$ makes it an orthogonal matrix. Its order must be 1, 2, or a multiple of 4. Whether every multiple of 4 occurs is the Hadamard conjecture.
 
 ### Rectangular case
 

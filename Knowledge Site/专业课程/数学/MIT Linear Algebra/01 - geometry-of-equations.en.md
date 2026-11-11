@@ -183,6 +183,8 @@ The two are the same statement, because $A\mathbf{x}$ is by definition the combi
 
 For this $3\times 3$ example the answer is yes: the three columns are not coplanar, so their combinations reach every point of three-dimensional space. Such a matrix is **nonsingular**, or invertible.
 
+Non-coplanarity can be checked directly. Set $x\mathbf{c}_1+y\mathbf{c}_2+z\mathbf{c}_3=\mathbf{0}$ and read it by rows. The first row gives $2x-y=0$, so $y=2x$. Substituting into the second row, $-x+4x-z=0$, gives $z=3x$. Substituting both into the third row, $-3(2x)+4(3x)=6x=0$, forces $x=0$, hence $y=z=0$. Only the zero combination produces the zero vector, so the three columns really do point in three independent directions.
+
 ### When it fails
 
 If all three columns lie in one plane, every combination lies in that plane:

@@ -102,7 +102,7 @@ The mnemonic fails because the sign comes from permutation parity, not from whic
 
 ### A $4 \times 4$ example: only two nonzero terms
 
-Take a matrix with many zeros (the lecture writes one on the spot). Scanning one entry per row and column leaves only two complete paths:
+The lecture identifies two permutations with nonzero terms. A matrix built from those two choices is $A=\begin{bmatrix}0&0&1&1\\0&1&1&0\\1&1&0&0\\1&0&0&1\end{bmatrix}$. Selecting one entry per row and per column gives just two ways to avoid the zeros:
 
 - permutation $(4,3,2,1)$: product $1$, two exchanges, sign $+1$;
 - permutation $(3,2,1,4)$: product $1$, one exchange, sign $-1$.
@@ -131,7 +131,7 @@ The group containing $a_{12}$ leaves the determinant after deleting row 1 and co
 
 ### Definition
 
-For $a_{ij}$, delete row $i$ and column $j$ to get the $(n-1)\times(n-1)$ minor $M_{ij}$. The cofactor is
+For $a_{ij}$, delete row $i$ and column $j$ to get the $(n-1)\times(n-1)$ matrix $M_{ij}$; its determinant $\det M_{ij}$ is the **minor** of $a_{ij}$. The cofactor is
 
 $$
 C_{ij} = (-1)^{i+j} \det M_{ij}

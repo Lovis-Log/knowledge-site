@@ -224,7 +224,7 @@ Let the columns be $\mathbf{c}_1,\dots,\mathbf{c}_n$.
 - The particular solution gives $\mathbf{c}_1x_{p1}+\cdots+\mathbf{c}_nx_{pn}=\mathbf{b}$: one known combination of the columns equals $\mathbf{b}$.
 - Each null-space basis vector $\mathbf{v}$ gives $\mathbf{c}_1v_1+\cdots+\mathbf{c}_nv_n=\mathbf{0}$: a homogeneous linear relation among the columns.
 
-That is $1+(n-r)$ vector equations for $n$ unknown columns; together with the rank condition they usually determine the columns uniquely (if not, only the column space and the relations are determined). In the lecture's example, the null vector $\mathbf{e}_3$ forces $\mathbf{c}_3=\mathbf{0}$, $(1,1,0)$ forces $\mathbf{c}_1+\mathbf{c}_2=\mathbf{0}$, and the particular solution then fixes $\mathbf{c}_1$, recovering all of $A$.
+Together: $n-r$ homogeneous relations describe how the columns depend on each other, and the particular solution supplies one known combination. When that is enough, every column is pinned down — as in the lecture's example, where rank 1 leaves the two relations $\mathbf{c}_3=\mathbf{0}$ and $\mathbf{c}_1+\mathbf{c}_2=\mathbf{0}$, and $2\mathbf{c}_1=\mathbf{b}$ then fixes $\mathbf{c}_1$, hence everything. The null space alone gives the homogeneous relations between columns. It need not determine the column space: without the equation supplied by the particular solution, the first column in this example could be any nonzero vector in three dimensions.
 
 **4. Why is the row space usually different from the column space when $m=n$? When are they equal?**
 

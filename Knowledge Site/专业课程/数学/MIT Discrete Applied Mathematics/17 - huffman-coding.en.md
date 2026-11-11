@@ -167,7 +167,7 @@ This lemma is the hinge of the algorithm: **the optimum of the original problem 
 
 ## Huffman's algorithm
 
-![Figure](/images/huffman-tree-rich-en.svg)
+![The Huffman tree for six symbols: a takes the single bit 0 while everything else branches inside the subtree starting with 1; the code table and the average length 2.32 are shown below](/images/huffman-tree-rich-en.svg)
 
 *Figure：The merged tree, the code table, and the average length 2.32。*
 

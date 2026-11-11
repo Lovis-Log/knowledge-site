@@ -206,7 +206,7 @@ $$
 
 ### 但 $A+B$ 没有这种性质
 
-一个常见错误是：若 $Ax=\lambda x$、$By=\alpha y$，就断言 $A+B$ 的特征值是 $\lambda+\alpha$。这**不成立**，因为 $x$ 一般不是 $B$ 的特征向量。$-x$ 只有在 $B$ 是 $I$ 的倍数时才碰巧成立。
+一个常见错误是：若 $Ax=\lambda x$、$By=\alpha y$，就断言 $A+B$ 的特征值是 $\lambda+\alpha$。这**不成立**，因为 $x$ 一般不是 $B$ 的特征向量。如果同一个非零向量 $x$ 同时满足 $Ax=\lambda x$ 和 $Bx=\alpha x$，就有 $(A+B)x=(\lambda+\alpha)x$。$B=cI$ 是自动满足这一条件的例子，此时 $\alpha=c$。
 
 同理，$AB$ 的特征值一般也不是特征值的乘积。
 

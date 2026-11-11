@@ -170,12 +170,9 @@ In the lecture's variant, changing the $8$ in row two to $6$ makes row two $[0,\
 
 If the pivot position is $0$ and nothing below it is nonzero, the pivot simply does not exist. The matrix is **singular**, not invertible, and the system has either no solution or infinitely many.
 
-The lecture's variant changes the bottom-right $1$ to $-4$. The first two steps are unchanged, but the last row becomes $[0,\ 0,\ 0]$, so the third pivot vanishes:
+The lecture's variant changes the bottom-right $1$ to $-4$. The first two steps are unchanged, but the last row becomes $[0,\ 0,\ 0]$, so the third pivot vanishes.
 
-$$
-1 \xrightarrow{\text{original}} 5,\qquad
--4 \xrightarrow{\text{after elimination}} 0.
-$$
+Watch that one entry. Leaving it at $1$, subtracting twice row two (whose third entry is $-2$) gives $1-2\cdot(-2)=5$, the pivot above. Change it to $-4$ and the same slot becomes $-4-2\cdot(-2)=0$: no pivot.
 
 Two pivots instead of three: the matrix is singular.
 
@@ -348,7 +345,7 @@ Check:
 $$
 E_{21}^{-1}E_{21}=\begin{bmatrix}1&0&0\\3&1&0\\0&0&1\end{bmatrix}\begin{bmatrix}1&0&0\\-3&1&0\\0&0&1\end{bmatrix}=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}.
 $$
-Subtracting again would repeat the operation, leaving row two as $-6$ times row one — further from the identity, not closer.
+Subtracting again would repeat the operation, leaving row two as its old value minus six times row one — further from the identity, not closer.
 
 **5. Compute the determinant of the example from the pivots and compare with direct expansion.**
 

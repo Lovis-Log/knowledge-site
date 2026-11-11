@@ -223,7 +223,7 @@ $$
 
 **1. 证明两个子空间的交集是子空间，并给出并集不是子空间的反例。**
 
-参考答案：设 $S,T$ 是子空间，$\mathbf{v},\mathbf{w}\in S\cap T$。由 $S$ 是子空间，$\mathbf{v}+\mathbf{w}\in S$；由 $T$ 是子空间，$\mathbf{v}+\mathbf{w}\in T$，所以 $\mathbf{v}+\mathbf{w}\in S\cap T$。数乘同理：$c\mathbf{v}\in S$ 且 $c\mathbf{v}\in T$。封闭性成立，交集是子空间（空集情形另论，通常指非空交集）。
+参考答案：设 $S,T$ 是子空间，$\mathbf{v},\mathbf{w}\in S\cap T$。由 $S$ 是子空间，$\mathbf{v}+\mathbf{w}\in S$；由 $T$ 是子空间，$\mathbf{v}+\mathbf{w}\in T$，所以 $\mathbf{v}+\mathbf{w}\in S\cap T$。数乘同理：$c\mathbf{v}\in S$ 且 $c\mathbf{v}\in T$。封闭性成立，交集是子空间。两个子空间都含零向量，所以交集至少包含 $\mathbf{0}$，不会是空集。
 并集的反例：在 $R^3$ 中取平面 $P=\{(x,y,0)\}$ 与直线 $L=\{(0,0,z)\}$。$\mathbf{u}=(1,0,0)\in P$，$\mathbf{w}=(0,0,1)\in L$，但
 $$
 \mathbf{u}+\mathbf{w}=(1,0,1),

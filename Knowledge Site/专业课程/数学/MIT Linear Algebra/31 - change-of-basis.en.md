@@ -131,7 +131,7 @@ $$
 \end{aligned}
 $$
 
-Every entry is $1$, $-1$, or $0$, so multiplication is just addition and subtraction. The vectors are pairwise orthogonal, with lengths $\sqrt8,\sqrt4,\sqrt2,\dots,\sqrt2$; normalizing gives an orthonormal basis.
+Every entry is $1$, $-1$, or $0$, so multiplication is just addition and subtraction. The vectors are pairwise orthogonal; in the order listed their lengths are $\sqrt8,\sqrt8,\sqrt4,\sqrt4,\sqrt2,\sqrt2,\sqrt2,\sqrt2$ — the first two have eight $\pm1$ entries, the middle two have four nonzero entries, and the last four have two. Normalizing gives an orthonormal basis.
 
 ### Transforming with wavelets
 

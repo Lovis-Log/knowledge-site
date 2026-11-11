@@ -156,7 +156,7 @@ Still loose, but no longer absurd — nothing like the $11$-foot-$6$ answer. Mor
 
 ### Statement
 
-Fix $\varepsilon>0$. Let $X_1,\dots,X_n$ be independent copies of a random variable $X$ with $\mathbb E[X]=C$ and finite variance, and let
+Fix $\varepsilon>0$. Let $X_1,\dots,X_n$ be independent copies of a random variable $X$ with $\mathbb E[X]=\mu$ and finite variance, and let
 
 $$
 S_n=\frac{1}{n}\sum_{i=1}^{n}X_i .
@@ -165,7 +165,7 @@ $$
 Then
 
 $$
-\lim_{n\to\infty}\mathbb P\big(|S_n-C|\ge\varepsilon\big)=0 .
+\lim_{n\to\infty}\mathbb P\big(|S_n-\mu|\ge\varepsilon\big)=0 .
 $$
 
 **The order of quantifiers matters**: fix the accuracy $\varepsilon$ first (say a polling error of $0.01$), then find a large enough $n$. The claim is not that the probability is small for every $n$, but that a sufficiently large $n$ exists.
@@ -175,10 +175,10 @@ $$
 First, the mean. By linearity,
 
 $$
-\mathbb E[S_n]=\frac1n\sum_{i=1}^{n}\mathbb E[X_i]=C .
+\mathbb E[S_n]=\frac1n\sum_{i=1}^{n}\mathbb E[X_i]=\mu .
 $$
 
-So $S_n$ is an unbiased estimator of $C$.
+So $S_n$ is an unbiased estimator of $\mu$.
 
 Second, the variance — the heart of the proof. Scaling a random variable by a constant scales the variance by its square:
 
@@ -199,7 +199,7 @@ $$
 Third, Chebyshev:
 
 $$
-\mathbb P\big(|S_n-C|\ge\varepsilon\big)
+\mathbb P\big(|S_n-\mu|\ge\varepsilon\big)
 \le\frac{\operatorname{Var}(S_n)}{\varepsilon^2}
 =\frac{\sigma^2}{n\varepsilon^2}\xrightarrow[n\to\infty]{}0 .
 $$

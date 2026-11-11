@@ -167,7 +167,7 @@ $$
 
 ## Huffman 算法
 
-![图示](/images/huffman-tree-rich-zh.svg)
+![六个符号的 Huffman 树：a 直接用 0，其余在以 1 开头的子树里逐层分叉；下方给出码表与平均码长 2.32](/images/huffman-tree-rich-zh.svg)
 
 *图：合并得到的树、码表与平均码长 2.32。*
 

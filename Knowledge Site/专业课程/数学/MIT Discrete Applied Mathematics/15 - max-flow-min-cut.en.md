@@ -56,7 +56,7 @@ The lecture first works a five-vertex example by hand, pushing flow along paths 
 
 ## Cuts
 
-![Figure](/images/maxflow-mincut-rich-en.svg)
+![A five-node network: each edge is labelled flow/capacity, and the dashed cut has capacity 9, equal to the current flow value](/images/maxflow-mincut-rich-en.svg)
 
 *Figure：A five-node network: labels are flow/capacity; the dashed cut has capacity 9。*
 
@@ -103,7 +103,7 @@ $$
 \end{aligned}
 $$
 
-The third line writes "$z$ equals the total inflow at the sink" as a constraint, so the objective is a single variable and the dual comes out tidily.
+The third line writes "$z$ equals the total inflow at the sink" as a constraint, so the objective is a single variable and the dual comes out tidily. This follows the usual convention that the network has been normalised so that nothing enters the source and nothing leaves the sink — any such edge can simply be deleted without changing the max flow — hence net inflow equals gross inflow, matching the definition of $z$ above.
 
 ## Taking the dual
 

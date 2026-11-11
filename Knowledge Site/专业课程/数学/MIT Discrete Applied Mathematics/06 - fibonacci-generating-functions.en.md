@@ -218,7 +218,7 @@ The constant factor $1/\sqrt5$ and the shift $n+1$ affect only lower-order terms
 
 ## A tiling problem: the sequence formula at work
 
-Tile a $2\times n$ strip with two shapes of tiles that may be reflected. Following the lecture, first count **indecomposable** pieces $a_n$: tilings that cannot be split by a vertical line into two separately tileable strips.
+Tile a $2\times n$ strip with L-shaped triominoes and Z-shaped tetrominoes, allowing rotation and reflection. Following the lecture, first count **indecomposable** pieces $a_n$: tilings that cannot be split by a vertical line into two separately tileable strips.
 
 Checking small cases gives
 
@@ -269,7 +269,7 @@ $$
 
 This also explains the curious value $b_2=0$. Applied at $n=2$, the recurrence would give $b_2=b_0+2b_{-1}=1$, but the numerator contributes a $-1$ at $x^2$ that corrects it. Combinatorially, the empty tiling cannot be extended to length $2$ by adding an indecomposable piece, since the shortest such piece has length $3$.
 
-The recurrence is also visible directly: any nonempty tiling either ends with a vertical piece of length $2$ ($b_{n-2}$ ways) or with a length-$3$ indecomposable piece in one of its two orientations ($2b_{n-3}$ ways).
+Counting by the final indecomposable piece gives $b_n=\sum_{j\ge1}a_j b_{n-j}$. The shortest such piece has length 3. The two-term recurrence above comes from simplifying the generating function for this count.
 
 ## Pascal's triangle and Fibonacci numbers
 
@@ -296,8 +296,10 @@ $$
 Shallow diagonal sums give Fibonacci numbers:
 
 $$
-1+1=2,\qquad 1+3+1=5,\qquad 1+6+5+1=13,\dots
+1+1=2,\qquad 1+3+1=5,\qquad 1+5+6+1=13,\dots
 $$
+
+These correspond to $n=2,4,6$, with sums $f_2,f_4,f_6$.
 
 The reason: substitute $x=z^2,\ y=z$. Then $x^ay^b=z^{2a+b}$, so
 

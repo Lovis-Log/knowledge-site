@@ -125,6 +125,8 @@ $$
 
 In words: **a tight constraint may carry a nonzero dual weight; a slack constraint must carry zero weight.** Conversely, a nonzero primal variable forces its dual constraint to be tight.
 
+For the maximization primal under the convention above, the same conclusion holds for mixed constraint directions, with each dual variable’s sign following its constraint direction: the slack of a $\le$ constraint multiplies $y_i\ge0$ to give zero, the slack of a $\ge$ constraint multiplies $y_i\le0$, and an equality constraint carries no such condition. A free variable $x_j$ is exempt from the "$x_j=0$ or dual constraint tight" alternative — its dual constraint is **always** tight. The worked example below uses exactly this extended form.
+
 ### Proof
 
 The chain behind weak duality is

@@ -168,18 +168,20 @@ The sign encodes orientation: exchanging two rows exchanges two edges, leaving t
 
 ### Proof via the three defining properties
 
-Earlier we proved that a quantity satisfying the three properties is unique. So it suffices to check that "volume" satisfies them too.
+The determinant is unique given its defining properties. Here we check four conditions, since the third property splits into scaling and additivity. So it suffices to check that "volume" satisfies them too.
 
-1. **Identity.** The three edges are the coordinate unit vectors, spanning the unit cube. Volume 1 matches $\det I=1$.
-2. **Orthogonal matrix.** The columns of $Q$ are orthonormal, so they still span a unit cube, merely rotated, with volume 1. And
-   $$
-   Q^TQ=I \implies (\det Q)^2 = 1 \implies \det Q = \pm 1
-   $$
-   The absolute value is 1, matching the volume.
+1. **Identity.** The edges are the coordinate unit vectors, spanning the unit cube. Signed volume 1 matches $\det I=1$.
+2. **Exchanging two rows.** Swap two of the edges: the parallelepiped itself is unchanged, but the signed volume changes sign, because a right-handed frame becomes left-handed. This corresponds to property 2.
 3. **Scaling a row by $t$.** Stretching one edge by $t$ multiplies the volume by $t$, matching property 3A.
 4. **Splitting a row.** This is 3B. In two dimensions it says a parallelogram splits along a diagonal into two triangles whose areas add. This is the one step the lecture only sketches; the book draws the figure.
 
-All four hold, so the volume and the determinant satisfy the same defining properties and must be equal.
+All four hold, so the signed volume satisfies the same defining properties as the determinant and equals $\det A$; taking absolute values gives $V=|\det A|$.
+
+A useful corollary: the columns of an orthogonal matrix are orthonormal, so they still span a unit cube, merely rotated or reflected, and the volume is 1. Algebraically $Q^TQ=I$ gives
+$$
+(\det Q)^2 = 1 \implies \det Q = \pm 1,
+$$
+whose absolute value is 1, exactly as the geometry requires.
 
 ### The two-dimensional formula
 
@@ -238,7 +240,7 @@ Subtracting the first row from the second and third turns the first two columns 
 
 **1. Which determinant property proves that the off-diagonal entries of $AC^T$ vanish?**
 
-Reference answer: The property "two equal rows give determinant zero" (property 4). Entry $(i,j)$ with $i\ne j$ is the inner product of row $i$ of $A$ with the cofactors of row $j$; it equals the cofactor expansion along column $j$ of the matrix obtained by replacing row $j$ of $A$ with row $i$. That matrix has two equal rows, so its determinant is zero and the inner product vanishes. Note that replacing a column does not change the cofactors, because column $j$ is deleted in the expansion anyway.
+Reference answer: The property "two equal rows give determinant zero" (property 4). Entry $(i,j)$ with $i\ne j$ is the inner product of row $i$ of $A$ with the cofactors of row $j$; it equals the cofactor expansion along row $j$ of the matrix obtained by replacing row $j$ of $A$ with row $i$. That matrix has two equal rows, so its determinant is zero and the inner product vanishes. The cofactors are exactly those of $A$, because row $j$ is deleted in the expansion anyway — the replaced row never enters the minors.
 
 **2. Write Cramer's rule for a $2\times2$ system and compare it with direct inversion.**
 

@@ -282,7 +282,7 @@ Reference answer: The gradient is $\nabla f=(2x+4y,\,4x+2y)$, which vanishes at 
 $$
 H=\begin{bmatrix}2&4\\4&2\end{bmatrix}.
 $$
-Its leading minor $2>0$, but its determinant $4-16=-12<0$, so $H$ is indefinite; the eigenvalues are $6$ and $-2$. Along $(1,1)$ the quadratic form is $6>0$, while along $(1,-1)$ it is $-2<0$. The origin is therefore a **saddle point**, not an extremum.
+Its leading minor $2>0$, but its determinant $4-16=-12<0$, so $H$ is indefinite; the eigenvalues are $6$ and $-2$. At the unit vector along $(1,1)$ the quadratic form equals $6>0$, and along $(1,-1)$ it equals $-2<0$. The origin is therefore a **saddle point**, not an extremum.
 
 **5. Why is the semi-axis of $x^{\mathsf T}Ax=1$ equal to $1/\sqrt{\lambda}$ rather than $1/\lambda$?**
 

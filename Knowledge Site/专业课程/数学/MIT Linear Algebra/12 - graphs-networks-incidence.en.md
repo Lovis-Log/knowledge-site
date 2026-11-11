@@ -149,7 +149,9 @@ $$
 \#\text{nodes}-\#\text{edges}+\#\text{loops}=1.
 $$
 
-This is Euler's formula. Nodes are zero-dimensional, edges one-dimensional, loops two-dimensional, and the count holds for every connected planar graph. Linear algebra supplies a proof of a topological fact.
+This is Euler's formula. Nodes are zero-dimensional, edges one-dimensional, loops two-dimensional.
+
+Note the hypothesis: the derivation above used only connectedness, so the identity holds for every connected graph, planar or not. Planar graphs are just the case Euler first discussed — there the independent loop count also equals the number of faces minus one (the outer face is not counted as a loop). Linear algebra supplies a proof of a topological fact.
 
 ## Three equations: the skeleton of applied math
 

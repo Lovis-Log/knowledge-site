@@ -156,7 +156,7 @@ $c=2$ 时：偏离两个标准差的概率不超过 $1/4$。
 
 ### 陈述
 
-固定 $\varepsilon>0$。设 $X_1,\dots,X_n$ 是某随机变量 $X$ 的独立同分布副本，$\mathbb E[X]=C$，方差有限。令
+固定 $\varepsilon>0$。设 $X_1,\dots,X_n$ 是某随机变量 $X$ 的独立同分布副本，$\mathbb E[X]=\mu$，方差有限。令
 
 $$
 S_n=\frac{1}{n}\sum_{i=1}^{n}X_i .
@@ -165,7 +165,7 @@ $$
 则
 
 $$
-\lim_{n\to\infty}\mathbb P\big(|S_n-C|\ge\varepsilon\big)=0 .
+\lim_{n\to\infty}\mathbb P\big(|S_n-\mu|\ge\varepsilon\big)=0 .
 $$
 
 **量词顺序很重要**：先固定精度 $\varepsilon$（例如民调误差 $0.01$），再找足够大的 $n$。结论说「存在足够大的 $n$ 使概率任意小」，而不是「对所有 $n$ 都小」。
@@ -175,10 +175,10 @@ $$
 第一步，估计均值。由线性期望，
 
 $$
-\mathbb E[S_n]=\frac1n\sum_{i=1}^{n}\mathbb E[X_i]=C .
+\mathbb E[S_n]=\frac1n\sum_{i=1}^{n}\mathbb E[X_i]=\mu .
 $$
 
-$S_n$ 是 $C$ 的无偏估计。
+$S_n$ 是 $\mu$ 的无偏估计。
 
 第二步，估计方差——这是全证的关键。缩放一个随机变量时，方差乘以缩放的平方：
 
@@ -199,7 +199,7 @@ $$
 第三步，用 Chebyshev：
 
 $$
-\mathbb P\big(|S_n-C|\ge\varepsilon\big)
+\mathbb P\big(|S_n-\mu|\ge\varepsilon\big)
 \le\frac{\operatorname{Var}(S_n)}{\varepsilon^2}
 =\frac{\sigma^2}{n\varepsilon^2}\xrightarrow[n\to\infty]{}0 .
 $$

@@ -267,7 +267,7 @@ $$
 Suppose someone reports the answer $2$. How can you be sure it is the **greatest** common divisor rather than merely some common divisor?
 
 - It divides both: $2\mid46$ and $2\mid360$ are checked directly.
-- Nothing larger divides both: if $k$ divides $46$ and $360$, then from $2=47\cdot46-6\cdot360$ dividing by $k$ gives an integer on the left and a sum of integers on the right, so $k\mid2$, hence $k\le2$.
+- Nothing larger divides both: if $k$ divides $46$ and $360$, then it divides each term of $47\cdot46-6\cdot360=2$, hence $k\mid2$ and $k\le2$.
 
 One identity establishes both "is a common divisor" and "no larger one exists". That is the value of Bézout: it turns a comparison of sizes into a divisibility check.
 

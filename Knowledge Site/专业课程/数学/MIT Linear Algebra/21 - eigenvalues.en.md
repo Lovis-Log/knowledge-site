@@ -206,7 +206,7 @@ The eigenvectors are unchanged and every eigenvalue increases by $c$. In the lec
 
 ### But $A+B$ does not work that way
 
-A common mistake: given $Ax=\lambda x$ and $By=\alpha y$, conclude that $A+B$ has eigenvalue $\lambda+\alpha$. This is **false**, because $x$ is generally not an eigenvector of $B$. It works only when $B$ is a multiple of $I$.
+A common mistake: given $Ax=\lambda x$ and $By=\alpha y$, conclude that $A+B$ has eigenvalue $\lambda+\alpha$. This is **false**, because $x$ is generally not an eigenvector of $B$. If the same nonzero vector $x$ satisfies $Ax=\lambda x$ and $Bx=\alpha x$, then $(A+B)x=(\lambda+\alpha)x$. The case $B=cI$ guarantees this with $\alpha=c$.
 
 Likewise, the eigenvalues of $AB$ are generally not the products of the eigenvalues.
 

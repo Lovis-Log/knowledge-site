@@ -68,7 +68,7 @@ $$
 
 ## 容斥：先过计，再修正
 
-![图示](/images/inclusion-exclusion-rich-zh.svg)
+![n=3 错排问题的容斥过程：三个圆的韦恩图逐层加减，下方写出容斥公式与 1/3 的数值结果](/images/inclusion-exclusion-rich-zh.svg)
 
 *图：n=3 的错排例子：韦恩图计数、逐层加减与一般公式。*
 

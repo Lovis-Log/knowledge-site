@@ -238,7 +238,7 @@ Two conclusions:
 
 The first component of $(x^*)^TC$ is $\frac23>\frac13$; the other two equal $\frac13$. Why is $y^*_1=0$?
 
-Complementary slackness: a dual constraint that is not tight forces its primal variable to zero. If Bob put positive probability on column 1, Alice's expected payoff would exceed $\frac13$, contradicting the value. So column 1 must receive probability zero. Conversely, all three components of $Cy^*$ equal $\frac13$, so no extra constraint is placed on $x^*$.
+Complementary slackness: in the row player's LP ($\max\lambda$ subject to $x^TCe_j\ge\lambda$), a constraint $j$ that is **not tight** forces its dual variable $y_j$ to zero. If Bob put positive probability on column 1, Alice's expected payoff would exceed $\frac13$, contradicting the value. So column 1 must receive probability zero. Conversely, all three components of $Cy^*$ equal $\frac13$, so no extra constraint is placed on $x^*$.
 
 The game-theoretic reading is: **optimal strategies and the vectors of expected payoffs must be compatible** — where the payoff is not tight, no weight may be placed.
 

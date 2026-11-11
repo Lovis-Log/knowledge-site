@@ -1,7 +1,7 @@
 ---
 slug: 20-reed-solomon
 title: "Reed–Solomon Codes: Polynomial Evaluation and Error Location"
-summary: "Write the message as a polynomial of degree below k and evaluate it at n distinct points to obtain the codeword. The bound on the number of roots immediately gives minimum distance n−k+1 and correction of (n−k)/2 errors. Decoding becomes a linear system: introduce an error-locator f and q=pf, solve, then divide. Concatenated with an inner code, Reed–Solomon drives the failure probability at a 10% bit error rate to about 10⁻⁶⁰."
+summary: "Write the message as a polynomial of degree below k and evaluate it at n distinct points to obtain the codeword. The bound on the number of roots immediately gives minimum distance n−k+1 and correction of (n−k)/2 errors. Decoding becomes a linear system: introduce an error-locator f and q=pf, solve, then divide. In the concatenated example with independent 10% bit errors, the probability of exceeding the outer code’s correction guarantee is bounded by about 7.9×10⁻⁶."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -40,7 +40,7 @@ Encode the message as the values of a polynomial at several points. Two differen
 | 30:23 | Decoding as a linear system |
 | 36:28 | One more unknown than equations; normalization makes it unique |
 | 45:02 | Concatenation: RS outer, $(19,8,7)$ inner |
-| 59:07 | At a 10% bit error rate, failure about $10^{-60}$ |
+| 59:07 | Estimating concatenated decoding failure at a 10% bit error rate |
 | 1:02:41 | Inner decoding by table lookup |
 
 ## Construction: the message as a polynomial
@@ -246,13 +246,13 @@ Decoding reverses this: table-decode each 19-bit block (up to three bit errors),
 
 ### Performance
 
-The probability that a 19-bit block has four or more errors — the inner-code failure probability — is about
+Assume independent bit errors. The inner code guarantees correction of up to three bit errors, so the probability of a wrong or missing byte is at most the probability of four or more errors in a 19-bit block:
 
 $$
 1-\sum_{j=0}^{3}\binom{19}{j}(0.1)^j(0.9)^{19-j}\approx0.115 .
 $$
 
-After inner decoding, each byte is still wrong with probability about 11%. Among 256 bytes the expected number of errors is about 29, well below the correctable 53, and a binomial tail bound puts the probability of exceeding 53 at roughly $10^{-60}$.
+Let $p$ be that block probability. The number of blocks beyond the inner code’s guarantee is $X\sim\operatorname{Bin}(256,p)$, with mean about 29.44. The outer code guarantees correction of up to 53 byte errors, so the overall decoding failure probability is bounded by $\Pr(X\ge54)=\sum_{j=54}^{256}\binom{256}{j}p^j(1-p)^{256-j}\approx7.9\times10^{-6}$. The lecture gives $10^{-60}$ at 59:07. The stated parameters do not reproduce that figure.
 
 The cost is bandwidth: 1200 bits become 4864, about a factor of four. Shannon's capacity $1-H(0.1)\approx0.53$ says an ideal code would need only about a factor of two. Being within a factor of two was good enough in the 1970s, and RS codes stayed in service for decades — in CDs, DVDs, deep-space links, and QR codes.
 
@@ -264,7 +264,7 @@ The cost is bandwidth: 1200 bits become 4864, about a factor of four. Shannon's 
 - They correct $\lfloor(n-k)/2\rfloor$ symbol errors.
 - The decoding theorem uses the error locator $f=\prod(x-i_j)$ and $q=pf$, giving $q(i)=r_if(i)$ at every point.
 - These identities are linear in the coefficients; with one more unknown than equation, normalizing $f_e=1$ yields a unique solution, and $p=q/f$.
-- The constraints $n\le q$ and $e<n/2$ make a single layer insufficient at high bit error rates; concatenating the $(19,8,7)$ inner code brings the failure probability at 10% bit errors to about $10^{-60}$.
+- With the $(19,8,7)$ inner code and independent 10% bit errors, the binomial probability of exceeding the correction guarantee bounds the overall decoding failure probability by about $7.9\times10^{-6}$.
 
 ## Comprehension check
 
@@ -331,7 +331,7 @@ $$
 
 An RS code corrects a fraction $(n-k)/(2n)<1/2$ of symbols; for the example, $53/256\approx0.207$. Since $0.57$ far exceeds $0.207$, the outer code is overwhelmed.
 
-Concatenation first encodes each byte with the $(19,8,7)$ inner code, correcting three bit errors and reducing the failure probability of a 19-bit block to about 11%. That 11% byte error rate is below the RS threshold of $20.7\%$, so the outer code can finish the job.
+Concatenation protects each byte with a 19-bit block whose inner code can correct up to three bit errors. The chance that a block exceeds this guarantee is about 11.5%. For 256 independent blocks, use the binomial tail in the Effects section to bound the chance of exceeding the outer code’s correction budget of 53 bytes.
 
 **7. RS codes attain the Singleton bound (MDS). Why do they still fall short of Shannon capacity?**
 
