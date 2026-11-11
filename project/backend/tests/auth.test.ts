@@ -376,6 +376,8 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/images/projection-error.svg",
     "/images/vault-preview/unlisted.png",
     "/about/",
+    "/about/index.html",
+    "/about/index.txt",
     "/guestbook/",
     "/favorites/",
     "/admin/users/",
