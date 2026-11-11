@@ -158,7 +158,7 @@ Given beliefs, how do you choose? Ball first disposes of two plausible alternati
 
 The course adopts **expected utility** instead. Optimism and pessimism should live in your beliefs, not in your decision rule: an optimist can believe $p$ is high and a pessimist can believe it is low, but given beliefs both apply the same rule.
 
-Ball is explicit that this is an **assumption**, not a theorem. The lecture notes carry an appendix on its axiomatic foundations; the course simply takes it as given. He also names its weak point. Estimating the chance of rain tomorrow is easy; estimating the probability that your income in fifteen years falls in some range is hard; estimating whether a great-great-grandchild will be short of money is close to absurd. Belief formation is realistic in simple problems and questionable in very rich ones.
+Ball is explicit that this is an **assumption**, not a theorem. The lecture notes carry an appendix on its axiomatic foundations; the course simply takes it as given. He also names its weak point. Estimating the chance of rain tomorrow is easy; estimating the probability that your income in fifteen years falls in some range is hard; estimating whether your tenth-generation descendant will be short of money is close to absurd. Belief formation is realistic in simple problems and questionable in very rich ones.
 
 ### Walking or the subway: a worked example
 
@@ -284,6 +284,8 @@ u\!\left(\sum_i p_i z_i\right) \;>\; \sum_i p_i\, u(z_i)
 $$
 
 for every non-degenerate lottery (non-degenerate meaning it is not "outcome $z$ with probability one"). The left side takes the expected value first and then applies utility; the right side applies utility first and then averages. **A concave function makes the left side larger** — this is Jensen's inequality.
+
+The definition compares a lottery with the certain receipt of that lottery's expected value: applied to lottery A, it gives $u(9.90) > U(A)$. It does not by itself rank A against B — that depends on how sharply $u$ bends; concavity says the person will pay something to remove the variance.
 
 ![A concave utility curve and risk aversion: at the lottery's expected value EV the curve sits above the chord, so u(EV) exceeds the expected utility EU, and the gap is the risk premium](/images/risk-aversion-concavity-en.svg)
 

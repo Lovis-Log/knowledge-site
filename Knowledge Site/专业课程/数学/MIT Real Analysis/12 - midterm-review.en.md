@@ -47,7 +47,7 @@ Exam format, as announced: five main problems plus six bonus problems, each with
 
 A set $A\subseteq\mathbb R$ is bounded above if some $M$ satisfies $a\le M$ for all $a\in A$. The number $M$ is the **least upper bound** (written $\sup A$) exactly when $M$ bounds $A$ above and every upper bound $\bar M$ satisfies $M\le\bar M$.
 
-The key property of the reals is the **least upper bound property**: every nonempty set bounded above has a supremum; every set bounded below has an infimum. Every convergence result in the course ultimately traces back to this.
+The key property of the reals is the **least upper bound property**: every nonempty set bounded above has a supremum; every nonempty set bounded below has an infimum. Every convergence result in the course ultimately traces back to this.
 
 ### The quantifiers of convergence
 
@@ -116,7 +116,7 @@ In $\mathbb R$ every Cauchy sequence converges (the Cauchy convergence theorem),
 
 In $\mathbb R$, **every bounded sequence has a convergent subsequence**.
 
-This is the key ingredient in the Cauchy convergence theorem: extract a convergent subsequence by BW, then show the whole Cauchy sequence converges to that subsequence's limit. The review stresses that both the Cauchy convergence theorem and BW can be *stated* in any metric space but need not *hold* there — they depend on completeness of the reals.
+This is the key ingredient in the Cauchy convergence theorem: a Cauchy sequence is bounded by the same $\varepsilon=1$ argument used above, so BW supplies a convergent subsequence; then show the whole Cauchy sequence converges to that subsequence's limit. The review stresses that both the Cauchy convergence theorem and BW can be *stated* in any metric space but need not *hold* there — they depend on completeness of the reals.
 
 ## Third chain: continuous functions
 
@@ -283,7 +283,7 @@ $$
 x_1=a,\quad x_2=\frac{a}{1}=a,\quad x_3=\frac{a}{2},\quad x_4=\frac{a}{6},\quad x_5=\frac{a}{24}.
 $$
 
-The pattern is $x_n=\dfrac{a}{(n-1)!}$ for $n\ge1$. Induction confirms it: $x_{n+1}=\dfrac{x_n}{n}=\dfrac{a}{n!}$. Hence
+The pattern is $x_n=\dfrac{a}{(n-1)!}$ for $n\ge1$. Induction confirms it: $x_{n+1}=\dfrac{x_n}{n}=\dfrac{a}{n!}$. Hence, for $n\ge2$,
 
 $$
 |x_n|=\frac{|a|}{(n-1)!}\le\frac{|a|}{n-1}\to0 ,
@@ -351,8 +351,8 @@ Reference answer: This mistakes a necessary condition for a sufficient one. Conv
 
 **7. Why does "Cauchy implies convergent" fail in a general metric space? Illustrate with $X=(0,1]$.**
 
-Reference answer: Cauchy-ness only says the tail bunches together; it does not say the point it is heading for belongs to the space. In $X=(0,1]$ take $x_n=1/n$. For any $\varepsilon>0$, choose $N>1/\varepsilon$; then $m,n\ge N$ gives $|1/m-1/n|<1/N<\varepsilon$, so the sequence is Cauchy. Its only candidate limit in $X$ would be $0$, which is not in $X$, so it does not converge in $X$. The Cauchy convergence theorem in $\mathbb R$ holds precisely because $\mathbb R$ is complete and has no such missing points.
+Reference answer: Cauchy-ness only says the tail bunches together; it does not say the point it is heading for belongs to the space. In $X=(0,1]$ take $x_n=1/n$. For any $\varepsilon>0$, choose $N>1/\varepsilon$; then $m,n\ge N$ gives $|1/m-1/n|<1/N<\varepsilon$, so the sequence is Cauchy. Its only candidate limit in $\mathbb R$ is $0$, which is not in $X$, so it does not converge in $X$. The Cauchy convergence theorem in $\mathbb R$ holds precisely because $\mathbb R$ is complete and has no such missing points.
 
 ## Relation to neighbouring lectures
 
-This lecture compresses the first half of the semester into one network. The next lecture moves to metric spaces: convergence, Cauchy-ness and boundedness are transported from $\mathbb R$ to arbitrary distance spaces, and open sets, closed sets and compactness enter. The review's repeated emphasis on "which results depend on completeness" is exactly the dividing line the next lecture makes precise.
+This lecture compresses the first half of the semester into one network. The next lecture continues the discussion of metric spaces: convergence, Cauchy-ness and boundedness are transported from $\mathbb R$ to arbitrary distance spaces, and open sets, closed sets and compactness enter. The review's repeated emphasis on "which results depend on completeness" is exactly the dividing line the next lecture makes precise.

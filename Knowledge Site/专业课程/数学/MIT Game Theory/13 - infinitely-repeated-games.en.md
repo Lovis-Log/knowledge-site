@@ -142,7 +142,7 @@ $$
 
 **A strange-looking implication.** Suppose period 0 actually produced $(C,D)$: player 1 cooperated, player 2 defected. In period 1 both defect. Player 1's motive is obvious — you defected, I punish you. Player 2's is odd: I was the one who defected and you cooperated, so why do I defect too?
 
-The answer is not self-punishment but **anticipating the other's punishment**. Player 2 knows player 1 will defect tomorrow; since tomorrow is $(D,D)$ regardless, defecting today at least salvages something. Ball flags the detail because behaviour that looks like self-punishment is really a response to being punished.
+The answer is not self-punishment but **anticipating the other's punishment**. Player 2 knows player 1 will defect in period 1; since the opponent plays $D$, playing $D$ gets $0$ where cooperating gets $-1$ — defecting too at least salvages something. Ball flags the detail because behaviour that looks like self-punishment is really a response to being punished.
 
 **Verification.** There are infinitely many histories, so they cannot be checked one by one; they are grouped according to the strategy's own structure.
 
@@ -198,7 +198,7 @@ Ball notes that "copy the opponent's last action" does not yet define a strategy
 
 **The outcome.** Period 0 both cooperate; period 1 each copies the other's cooperation; and so on, forever. The outcome is the same as under grim trigger.
 
-**But it is not an SPNE.** Group histories by what happened yesterday: $(C,C)$, $(C,D)$, $(D,C)$, $(D,D)$, with the empty history folded into the $(C,C)$ group because cooperation is played there.
+**But apart from $\delta=1/3$, it is not an SPNE.** Group histories by what happened yesterday: $(C,C)$, $(C,D)$, $(D,C)$, $(D,D)$, with the empty history folded into the $(C,C)$ group because cooperation is played there.
 
 Two groups suffice to make the point.
 
@@ -208,7 +208,7 @@ $$
 3,\ -1,\ 3,\ -1,\ \dots
 $$
 
-with discounted sum
+Pairing adjacent periods gives $(3-\delta)\big(1+\delta^{2}+\delta^{4}+\cdots\big)$, so the discounted sum is
 
 $$
 \frac{3-\delta}{1-\delta^2}.
@@ -260,7 +260,7 @@ Because defecting once gains $3-2=1$ today and costs $2-0=2$ every period afterw
 
 **4. Under grim trigger, after $(C,D)$ in period 0, why does even the defector defect in period 1?**
 
-Because they expect to be punished. The opponent's history contains $D$ (the defector put it there), so the opponent will certainly defect tomorrow; since tomorrow is $(D,D)$ regardless, defecting today at least salvages something. This is not self-punishment but a response to anticipated punishment. Ball highlights it because it looks like self-punishment and is easy to misread.
+Because they expect to be punished. The opponent's history contains $D$ (the defector put it there), so the opponent will certainly play $D$ in period 1; given that, playing $D$ gets $0$ where playing $C$ gets $-1$ — defecting too at least salvages something. This is not self-punishment but a response to anticipated punishment. Ball highlights it because it looks like self-punishment and is easy to misread.
 
 **5. Why does tit for tat work only at $\delta=1/3$?**
 

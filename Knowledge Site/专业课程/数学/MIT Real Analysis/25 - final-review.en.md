@@ -1,7 +1,7 @@
 ---
 slug: 25-final-review
 title: "Finishing Picard–Lindelöf: Connectedness, Uniqueness, and Blow-Up"
-summary: "This lecture in fact continues the previous one: it completes the contraction estimate, uses connectedness of intervals to upgrade local uniqueness to global uniqueness, and uses the blow-up of y'=y² to show why the theorem must be local."
+summary: "This lecture in fact continues the previous one: it completes the contraction estimate, uses connectedness of intervals to show that solutions with the same initial value agree on their common interval, and uses the blow-up of y'=y² to show why the theorem must be local."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -32,7 +32,7 @@ This note is therefore organized as a knowledge map, the core arguments, typical
 | 0:00 | Restating the ODE, the initial condition, and the contraction mapping theorem |
 | 6:03 | The integral operator $T$; fixed points are solutions |
 | 11:22 | Recalling the closed ball $\|y\|\le R$ and the self-map property |
-| 16:57 | Shrinking the interval; completing the contraction with $\delta=1/(2L)$ |
+| 16:57 | Shrinking the interval; completing the contraction with $\delta\le1/(2L)$ |
 | 30:43 | Definition of connectedness |
 | 33:04 | Theorem: an interval is connected |
 | 46:34 | Lemma: continuous functions that agree locally agree everywhere |
@@ -60,7 +60,7 @@ First, the step left open last time.
 $$
 R=|a|+2,
 \qquad
-L=\max_{|z|\le R}|f'(z)|,
+L=\max\left\{1,\ \max_{|z|\le R}|f'(z)|\right\},
 $$
 
 and shrink the interval to
@@ -71,7 +71,7 @@ $$
 
 where $\delta_0$ is the constant from last time that made $T$ map the ball into itself. Since $\delta\le\delta_0$, $T$ still maps the ball of radius $R$ into itself.
 
-**The contraction estimate.** Take $y_1,y_2$ in the ball. The constants $a$ and the terms $g$ cancel:
+**The contraction estimate.** Take $y_1,y_2$ in the ball and write $d(y_1,y_2)=\max_{|x|\le\delta}|y_1(x)-y_2(x)|$. The constants $a$ and the terms $g$ cancel:
 
 $$
 \bigl(Ty_1\bigr)(x)-\bigl(Ty_2\bigr)(x)
@@ -119,15 +119,15 @@ $$
 d(Ty_1,Ty_2)\le\frac12\,d(y_1,y_2).
 $$
 
-The contraction constant is $1/2$, independent of $y_1,y_2$. The previous lecture defined $\delta=\min(\delta_0,1/(2M+1))$ and reaches the same conclusion, only with a messier constant:
+The contraction constant is $1/2$, independent of $y_1,y_2$. The previous lecture defined $\delta=\min(\delta_0,1/(2M+1))$ (there $M$ is that lecture's bound on $|f'|$) and reaches the same conclusion, only with a messier constant:
 
 $$
-\delta=\frac{1}{2L}
+\delta\le\frac{1}{2L}
 \quad\Longrightarrow\quad
-c=\frac12 .
+c\le\frac12 .
 $$
 
-**What has been proved is local**: inside $(-\delta,\delta)$ the map $T$ has a unique fixed point, hence the ODE has a unique solution. Outside that interval nothing has been said.
+**What has been proved is local**: the integral operator $T$ has a unique fixed point in the closed ball. It gives a solution on $(-\delta,\delta)$ and uniqueness within the ball’s bound. Next we show that solutions with the same initial value agree on their common interval.
 
 ## Connectedness
 
@@ -222,7 +222,7 @@ The lemma is a discrete version of analytic continuation: two continuous functio
 
 ## Uniqueness: gluing the local into the global
 
-**Theorem (uniqueness part of Picard–Lindelöf).** Let $y_1,y_2$ both solve
+**Theorem (uniqueness part of Picard–Lindelöf).** Let $f$ be differentiable with $f'$ continuous and $g$ continuous, and let $y_1,y_2$ both solve
 
 $$
 y'=f(y)+g(x),
@@ -343,7 +343,7 @@ The recipe is fixed:
 
 1. take $R=|a|+2$, compute $L_1=\max_{|z|\le R}|f(z)|$ and $L_2=\max_{|z|\le1}|g(z)|$;
 2. take $\delta_0=\min(1,1/(L_1+1),1/(L_2+1))$ and check $|Ty(x)|\le|a|+\delta_0L_1+\delta_0L_2<R$;
-3. take $L=\max_{|z|\le R}|f'(z)|$ and shrink the interval to $\delta=1/(2L)$;
+3. take $L=\max\left\{1,\ \max_{|z|\le R}|f'(z)|\right\}$ and shrink the interval to $\delta=\min(\delta_0,1/(2L))$;
 4. use the mean value theorem to get $d(Ty_1,Ty_2)\le\delta L\,d(y_1,y_2)\le\frac12 d(y_1,y_2)$.
 
 ### Type two: extend uniqueness by connectedness

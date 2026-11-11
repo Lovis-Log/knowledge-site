@@ -1,7 +1,7 @@
 ---
 slug: "15-implicit-cartels"
 title: "Implicit Cartels: Making 'Produce Less' Self-Enforcing in a Repeated Game"
-summary: "A cartel wants to coordinate on lower output and higher prices, but every member wants to overproduce, and contracts are either illegal or unenforceable. Written as an infinitely repeated Cournot game, Nash reversion and carrot-and-stick strategies deliver the same cutoff: one-shot gain over gain plus permanent loss."
+summary: "A cartel wants to coordinate on lower output and higher prices, but every member wants to overproduce, and contracts are either illegal or unenforceable. Written as an infinitely repeated Cournot game, the model compares the different equilibrium conditions for permanent Nash reversion and finite punishment."
 updatedAt: "2026-11-08"
 content_type: "video-course"
 tags:
@@ -220,7 +220,7 @@ $$
 =\frac{g}{g+l},
 $$
 
-where $g=g(q^{M})-f(q^{M})$ is the **one-shot gain** and $l=f(q^{M})-f(q^{NE})$ the **per-period loss**. The form is identical to the previous lecture, with "profit" in place of "payoff".
+where $g=g(q^{M})-f(q^{M})$ is the **one-shot gain** and $l=f(q^{M})-f(q^{NE})$ the **per-period loss**. The form is identical to the previous lecture, with "profit" in place of "payoff". By the one-shot deviation principle — it suffices to check that no single deviation at any state pays — this inequality is both necessary and sufficient: for $\delta\ge\bar\delta$ Nash reversion is a subgame perfect equilibrium, and for $\delta<\bar\delta$ deviation in state $M$ is strictly profitable (the condition for state $NE$ holds automatically; see below).
 
 State $NE$ needs no condition: $q^{NE}$ is a best response, and whatever I do today, tomorrow is still $NE$, so deviation cannot help.
 
@@ -293,7 +293,7 @@ The second condition is the interesting one: it requires that even the best devi
 
 One easily missed detail: a one-shot deviation in state $s$ actually traces the path "deviate today, still in $s$ tomorrow (producing $q^s$ as the strategy says), back to $c$ the day after, then $c$ forever", i.e. $s,s,c,c,c,\dots$. That path is complicated, yet the formula contains only $\delta v_s$. The reason is that $v_s$ already folds in "in $s$ today, in $s$ tomorrow, in $c$ afterwards". The value function means you never track the whole path, only which state you reach tomorrow.
 
-If $q^{c}=q^{M}$ and $q^{s}=q^{NE}$, the condition $v_s\ge g(q^{NE})$ reduces to the same threshold form as Nash reversion (supplementary calculation): $\delta\ge g'/(g'+l')$ with $g'=g(q^{NE})-f(q^{NE})$ and $l'=f(q^{M})-f(q^{NE})$. So the two strategies are not simply "harsher" and "softer"; at extreme parameters they constrain the same thing. The real value of carrot and stick is that the punishment need not be permanent, which is closer to observed behaviour.
+If $q^{c}=q^{M}$ and $q^{s}=q^{NE}$, the condition $v_s\ge g(q^{NE})$ in state $s$ is in fact satisfied automatically: $q^{NE}$ is a best response, so $g(q^{NE})=f(q^{NE})$, and $v_s=(1-\delta)f(q^{NE})+\delta f(q^{M})\ge f(q^{NE})$. The binding condition is the one in state $c$: substituting $v_s$ gives $\delta\ge\big[g(q^{M})-f(q^{M})\big]/\big[f(q^{M})-f(q^{NE})\big]=g_0/l_0$ with $g_0=g(q^{M})-f(q^{M})$ and $l_0=f(q^{M})-f(q^{NE})$, and this ratio exceeds 1 ($(1/64)/(1/72)=9/8$ when $n=2$, $c=0$), so a one-period return to Nash is too mild a punishment and no amount of patience sustains $q^{M}$. For carrot and stick to work with $q^{c}=q^{M}$, the state-$s$ and state-$c$ conditions must hold together; taking $q^{s}$ harsher than $q^{NE}$, the state-$s$ condition reads $\delta\ge\big[g(q^{s})-f(q^{s})\big]/\big[f(q^{M})-f(q^{s})\big]$. The real value of the design is that the punishment need not be permanent, which is closer to observed behaviour.
 
 ## What this lecture establishes
 

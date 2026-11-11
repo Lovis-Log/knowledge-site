@@ -28,7 +28,7 @@ Ball's model is deliberately spare: $n$ advertisers, $m$ slots, slot $j$ has cli
 
 **GSP (generalised second price)** is the obvious generalisation: the $k$-th highest bid takes slot $k$ and pays the $(k+1)$-th highest bid. With one item it reduces to the second price, so it looks sensible. It has one fatal flaw: **it no longer rewards truthfulness**. Losing is now a milder punishment — you do not get nothing, you drop one slot. If two slots have similar click-through rates, shading pays well.
 
-**VCG** generalises along a different axis. Instead of asking "pay the next bid", it asks what the second price was really charging: the **externality**. By showing up, I push everyone else from "gets the object" to "gets nothing", and their loss is my payment. In the multi-slot version, occupying slot $j$ pushes everyone below me down one slot, so I should pay the total click-through loss I impose. The result is a weighted average of all lower bids, with weights $(\alpha^{k-1}-\alpha^k)/\alpha^j$ — nonnegative, summing to at most one. The price is therefore strictly below GSP's, the motive to shade disappears, and truthful reporting becomes weakly dominant.
+**VCG** generalises along a different axis. Instead of asking "pay the next bid", it asks what the second price was really charging: the **externality**. By showing up, I push everyone else from "gets the object" to "gets nothing", and their loss is my payment. In the multi-slot version, occupying slot $j$ pushes everyone below me down one slot, so I should pay the total click-through loss I impose. The result is a weighted average of all lower bids, with weights $(\alpha^{k-1}-\alpha^k)/\alpha^j$ — nonnegative, summing to at most one. For the same nonnegative bids, this price is no higher than GSP’s. VCG’s truthfulness follows from its externality-based incentive argument.
 
 The final fifteen minutes abstract the mechanism: a decision $x$ from some set $X$, each player's value a whole function $v_i:X\to\mathbb R$, reports elicited, the welfare-maximising $x$ chosen, and each player charged "how much better off others could have been" minus "how well off they actually are". That is VCG in general form.
 
@@ -83,7 +83,7 @@ $$
 \tilde v_1=\theta_1+\tfrac12 .
 $$
 
-Then treat this as an ordinary private-values auction and, in a second-price format, bid $\theta_1+1/2$ truthfully.
+Then treat this as an ordinary private-values auction and, in a second-price format, bid $\theta_1+1/2$ truthfully. The switch of format is deliberate: only in a second price is "bid your value" already optimal, so the private-values argument can be carried over intact and then watched for the point where it breaks.
 
 Ball kills this with numbers. Let $\theta_1=0.4$ and $\theta_2=0.3$. The naive strategy has bidder 1 bid $0.4+0.5=0.9$ and bidder 2 bid $0.3+0.5=0.8$.
 
@@ -265,13 +265,13 @@ $$
 p^{j}_{VCG}\le b^{(j+1)}=p^{j}_{GSP}.
 $$
 
-**VCG charges strictly less** unless every lower bid equals $b^{(j+1)}$.
+**With the same nonnegative bids, the VCG price is no higher than GSP for each slot.** It is strictly lower if a later bid with positive weight is below the next bid. Check it on the earlier example: slot 1 has two lower bids, so $p^1_{VCG}=\big(7(\alpha^1-\alpha^2)+5\alpha^2\big)/\alpha^1=7-2\alpha^2/\alpha^1<7$, while slot 2 has only the bid 5 below it, the weights sum to exactly 1, and $p^2_{VCG}=5=p^2_{GSP}$. Thus the last slot in this example has the same price under both rules.
 
 That explains both phenomena at once. GSP charges too much, so shading pays; VCG shades on your behalf and then charges you, so there is nothing left to gain from shading — truthful bidding is weakly dominant.
 
-![For the same bids, GSP pins the price to the next bid while VCG charges a weighted average of all lower bids, so the VCG price lies inside that interval and is strictly lower](/images/ad-auctions-gsp-vs-vcg-en.svg)
+![For the same bids, GSP uses the next bid and VCG weights later bids. The example in the figure gives a lower VCG price, while other slots can tie](/images/ad-auctions-gsp-vs-vcg-en.svg)
 
-*Figure: where the two rules differ. GSP takes the left end of the interval (the highest of the lower bids); VCG takes a weighted average inside it. A lower price removes the motive to shade.*
+*Figure: the VCG price is lower in the slot shown. For the same bids, it is no higher than GSP, and the last slot in the two-slot example ties.*
 
 ### The extreme case: identical slots
 
@@ -339,7 +339,7 @@ This also closes the arc: second price, then revenue equivalence, then GSP's fai
 2. In a wallet auction private values fail — another's information enters my valuation — so winning is itself bad news. That is the **winner's curse**, and treating an expectation as a valuation loses money systematically.
 3. Keyword advertising is a **multi-object, heterogeneous** auction, so single-item tools do not transfer; the primitives are slot click-through rates $\alpha_j$ and per-click values $v_i$.
 4. GSP gives slot $k$ to the $k$-th highest bid and charges the $(k+1)$-th. Because losing only costs you one slot, shading becomes attractive and truthful bidding is no longer an equilibrium.
-5. VCG charges the externality: the price is a weighted average of all lower bids with weights $w_k=(\alpha^{k-1}-\alpha^k)/\alpha^j$, nonnegative and summing to $(\alpha^j-\alpha^n)/\alpha^j\le 1$, hence strictly below GSP.
+5. VCG charges the externality: the price is a weighted average of all lower bids with weights $w_k=(\alpha^{k-1}-\alpha^k)/\alpha^j$, nonnegative and summing to $(\alpha^j-\alpha^n)/\alpha^j\le 1$, hence no higher than GSP's price, and equal to it in the last slot.
 6. Abstract VCG works for any collective decision problem: choose the welfare-maximising $x$, charge "what others could have had minus what they got", and truthful reporting is weakly dominant.
 
 ## Check your understanding

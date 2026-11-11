@@ -247,6 +247,8 @@ Because whether "reject" is credible depends entirely on this undefined belief.
 - If the school believes a student without an essay is probably $t_P$, rejecting her means giving up a student worth 3, which is not optimal — so "no essay means rejection" is not credible.
 - If the school believes such a student is probably $t_N$, rejecting is exactly right — the threat is credible.
 
+The dividing line, though, is not $1/2$: with payoffs $3$ and $-2$ the threshold comes out at $p\le 2/5$, as the next section derives; "probably $t_N$" ($p<1/2$) is not enough, and $p$ has to fall below $2/5$.
+
 Ball says this is precisely the point he wants to convey: **the situation is genuinely murky**. Several beliefs are defensible, and credibility depends on which one is chosen.
 
 So the way out is not to find a cleverer application of Bayes' rule, but to concede that **beliefs themselves must be part of the equilibrium**. It is not enough to write down strategies; one must also write down what is believed at each information set.
@@ -269,7 +271,7 @@ $$
 0\ \ge\ 5p-2\quad\Longrightarrow\quad p\le \tfrac25 .
 $$
 
-So for any $p\le 2/5$ this is a perfect Bayesian equilibrium. Ball's phrasing: we have constructed a **family** of equilibria — same strategies, with the belief varying continuously over an interval.
+So for any $p\le 2/5$ — with $c<1$ still in force, so that both types want to submit — this is a perfect Bayesian equilibrium. Ball's phrasing: we have constructed a **family** of equilibria — same strategies, with the belief varying continuously over an interval.
 
 ![The school's expected payoff from admitting, 5p − 2, rises with the belief p and crosses zero at p = 2/5; rejection is sequentially rational only when p does not exceed 2/5, while the pooling equilibrium's p = 1/2 sits in the acceptance region](/images/perfect-bayesian-equilibrium-credibility-en.svg)
 
@@ -288,7 +290,7 @@ Under this strategy both information sets are on the equilibrium path (each is r
 - On seeing an essay: only a passionate student could have sent it, so the belief is $(1,0)$.
 - On seeing no essay: only an unenthusiastic student could have skipped it, so the belief is $(0,1)$.
 
-The school's best response follows: admit on an essay (worth 3), reject without one (worth $-2$). Sequential rationality holds at both of the school's information sets.
+The school's best response follows: admit on an essay (payoff 3), reject without one (where admitting would pay $-2$, worse than the 0 from rejecting). Sequential rationality holds at both of the school's information sets.
 
 Now the students. The passionate type is meant to submit, yielding $2-c$; deviating to no essay means rejection, hence 0. The requirement is
 
@@ -347,7 +349,7 @@ In the application game, the student has two information sets ($t_P$, $t_N$), bo
 
 "Wherever possible" is vague, so Ball gives the precise version: **at every information set reached with positive probability under the strategy profile**. Reachability is judged from the strategy profile itself: given that everyone plays their strategies, some information sets are visited and some never are. Beliefs at the former must be computed by Bayes' rule; beliefs at the latter are entirely free.
 
-This maps exactly onto the two cases in the application game: in the separating equilibrium both information sets are reached, so the beliefs are pinned to $(1,0)$ and $(0,1)$; in the pooling equilibrium the "no essay" set is never reached, so $p$ is free.
+This maps exactly onto the two cases in the application game: in the separating equilibrium both information sets are reached, so the beliefs are pinned to $(1,0)$ and $(0,1)$; in the pooling equilibrium the "no essay" set is never reached, so $p$ is free of Bayes' rule (though still constrained by sequential rationality).
 
 **Sequential rationality**: at **every** information set, the action prescribed by the strategy is optimal given the belief and the rest of the strategy profile.
 

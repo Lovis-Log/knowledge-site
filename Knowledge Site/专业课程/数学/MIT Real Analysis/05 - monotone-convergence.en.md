@@ -129,7 +129,7 @@ $$
 b_n\ge b_{n+1}.
 $$
 
-**$c_n$ increases.** Dually, shrinking the set cannot raise the infimum:
+**$c_n$ increases.** Dually, shrinking the set can only raise the infimum:
 
 $$
 c_n\le c_{n+1}.
@@ -193,7 +193,7 @@ So $10b_n$ is an admissible natural number at step $n+1$. Since $b_{n+1}$ is the
 
 ### Boundedness
 
-Take $2\cdot10^{n-1}$; its square is $4\cdot10^{2n-2}>2\cdot10^{2n-2}$, so it is not admissible and exceeds $b_n$. Hence
+Take $2\cdot10^{n-1}$; its square is $4\cdot10^{2n-2}>2\cdot10^{2n-2}$, so it is not admissible. Every natural number below $b_n$ has square at most $b_n^2\le2\cdot10^{2n-2}$ and is therefore admissible, so the non-admissible $2\cdot10^{n-1}$ must exceed $b_n$. Hence
 
 $$
 b_n<2\cdot10^{n-1}
@@ -201,7 +201,7 @@ b_n<2\cdot10^{n-1}
 a_n=\frac{b_n}{10^{n-1}}<2 .
 $$
 
-Since $a_1=1>0$, the sequence is increasing and bounded above by $2$. By monotone convergence, $a_n\to a$ with $a=\sup a_n\le2$.
+The sequence is increasing (proved above) and bounded above by $2$, so monotone convergence gives $a_n\to a$ with $a=\sup a_n\le2$.
 
 ### The limit squares to 2
 

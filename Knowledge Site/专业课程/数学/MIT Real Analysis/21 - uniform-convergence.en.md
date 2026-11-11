@@ -77,7 +77,7 @@ $$
 =\sqrt{f'(\xi_i)^2+g'(\eta_i)^2}\;\Delta s_i .
 $$
 
-Summing over $i$ produces a Riemann sum. Since $f',g'$ are continuous on a compact interval, they are uniformly continuous; for a fine enough partition, $\xi_i$ and $\eta_i$ lie in the same small piece, and the factor $\sqrt{f'(\xi_i)^2+g'(\eta_i)^2}$ differs from $\sqrt{f'(s)^2+g'(s)^2}$ by a uniformly small amount on that piece. Hence the Riemann sums converge to
+Summing over $i$ gives the sum of chord lengths; it looks like a Riemann sum, but each piece carries two sample points $\xi_i,\eta_i$, so it is not the Riemann sum of a single function. Since $f',g'$ are continuous on a compact interval, they are uniformly continuous, and for a fine enough partition the factor $\sqrt{f'(\xi_i)^2+g'(\eta_i)^2}$ differs from $\sqrt{f'(s)^2+g'(s)^2}$ by a uniformly small amount on the same small piece. Hence these sums converge to
 
 $$
 \int_a^b\sqrt{f'(s)^2+g'(s)^2}\;ds .
@@ -174,7 +174,7 @@ $$
 \lim_{n\to\infty}f_n(x)=f(x).
 $$
 
-In $\varepsilon$ language: for every $x\in I$ and every $\varepsilon>0$ there is $N$ such that $n>N$ implies $|f_n(x)-f(x)|<\varepsilon$. The $N$ may depend on $x$.
+In $\varepsilon$ language: for every $x\in I$ and every $\varepsilon>0$ there is $N$ such that $n>N$ implies $|f_n(x)-f(x)|<\varepsilon$. The $N$ may depend on $x$: write $N=N(\varepsilon,x)$.
 
 **Example 1.** On $[0,1]$ let $f_n(x)=x^n$ and
 
@@ -207,7 +207,7 @@ n>N
 \quad\text{for all }x\in I .
 $$
 
-The only change: **the same $N$ must work for every $x$**.
+The only change: **the same $N$ must work for every $x$** — that is, $N=N(\varepsilon)$. Equivalently, uniform convergence is $\sup_{x\in I}|f_n(x)-f(x)|\to0$, compressing "for all $x$" into one number free of $x$ (the supremum may be $+\infty$).
 
 **Lemma.** Uniform convergence implies pointwise convergence.
 
@@ -235,11 +235,13 @@ $$
 |f_n(x_n)-f(x_n)|=\frac12 .
 $$
 
-Take $\varepsilon=\frac14$. If convergence were uniform, some $N$ would make $|f_n(x)-f(x)|<\frac14$ for **all** $x$ whenever $n>N$. But at $x=x_n$ the gap is $\frac12>\frac14$, a contradiction. $\square$
+Take $\varepsilon=\frac14$. If convergence were uniform, some $N$ would make $|f_n(x)-f(x)|<\frac14$ for **all** $x$ whenever $n>N$. But for any $n>N$, the corresponding point $x_n\in(0,1)$ still has gap $\frac12>\frac14$, a contradiction. $\square$
 
 Geometrically, every $f_n$ climbs from $0$ to $1$ and must pass through $\frac12$; that "half-height point" moves right toward $1$ as $n$ grows. The limit function is $0$ there, so the error stays at $\frac12$ no matter how large $n$ is. **Pointwise convergence only promises that each fixed point eventually becomes accurate; it does not promise that the whole interval becomes accurate at once.**
 
 This also explains why the limit of $x^n$ is discontinuous: uniformity is exactly what would let continuity pass to the limit.
+
+That is not just a figure of speech: if every $f_n$ is continuous and $f_n\to f$ uniformly, then $f$ is continuous — in the sandwich $|f(x)-f(y)|\le|f(x)-f_n(x)|+|f_n(x)-f_n(y)|+|f_n(y)-f(y)|$ the first and third terms are made small for **all** $x$ (including $y$) by the same $N$, and the middle term by continuity of $f_n$ at $y$. Under mere pointwise convergence the $N$ in the first term moves with $x$, so $x\to y$ and $n\to\infty$ cannot be run together.
 
 ## The Weierstrass M-test
 
@@ -320,7 +322,7 @@ $$
 \sum_{n=0}^{\infty}\frac{x^n}{n!}
 $$
 
-converges uniformly on $[-L,L]$ to $e^x$. Since $L$ is arbitrary, it converges uniformly on **every bounded interval** — but not on all of $\mathbb R$, for reasons the next lecture makes precise.
+converges uniformly on $[-L,L]$ to $e^x$. Since $L$ is arbitrary, it converges uniformly on **every bounded interval** — but not on all of $\mathbb R$: for fixed $n$, $e^x-S_n(x)\to+\infty$ as $x\to+\infty$, so $\sup_{x\in\mathbb R}|e^x-S_n(x)|=+\infty$.
 
 ## Power series and uniform convergence on compact subintervals
 
@@ -363,7 +365,7 @@ $$
 
 The root test gives convergence of $\sum|a_n|L^n$. With $M_n=|a_n|L^n$, the M-test yields uniform convergence on $[-L,L]$. $\square$
 
-The hypothesis $L<R$ is strict. At the endpoints $\pm R$ convergence may or may not hold, and uniformity generally fails. For instance $\sum x^n$ has radius $1$; it converges uniformly on $[-L,L]$ for every $L<1$, but not on $[0,1)$ — the same phenomenon as the $x^n$ counterexample.
+The hypothesis $L<R$ is strict. At the endpoints $\pm R$ convergence may or may not hold, and uniformity generally fails. For instance $\sum x^n$ has radius $1$; it converges uniformly on $[-L,L]$ for every $L<1$, but not on $[0,1)$: the gap between the $n$-th partial sum and $1/(1-x)$ is $x^{n+1}/(1-x)$, which at $x_n=1-1/n$ is about $n/e$ — unbounded, the same phenomenon as the $x^n$ counterexample.
 
 The lecture notes that uniformity matters because it permits **term-by-term integration and differentiation**: if $f_n\to f$ uniformly, then
 

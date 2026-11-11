@@ -238,7 +238,7 @@ $$
 
 Hence $1/a_n\to1/a$.
 
-The core fact is one sentence: **a nonzero limit eventually pushes the sequence at least $|a|/2$ away from zero**. Every division argument rests on it.
+The core fact is one sentence: **a nonzero limit eventually pushes the sequence at least $|a|/2$ away from zero**. Every division argument rests on it. The two hypotheses also do different jobs: $a_n\ne0$ for all $n$ only makes each $1/a_n$ meaningful, whereas the bound actually used, $|a_n|>|a|/2$, is only eventual and comes from $a\ne0$.
 
 ## Subsequences
 
@@ -292,7 +292,7 @@ Note that a single convergent subsequence does **not** imply convergence of the 
 
 **1. Why may $N$ depend on $\varepsilon$ but not on $n$? What would the definition become if $N$ could depend on $n$?**
 
-Reference answer: Convergence requires that one threshold works for every sufficiently large index. Dependence on $\varepsilon$ is allowed because the challenger fixes the accuracy first and you respond with a threshold. Dependence on $n$ would let you choose $N=n$ for each term, reducing the condition to $|a_n-a|<\varepsilon$ for every $n$ — which every sequence satisfies, so the definition would carry no content.
+Reference answer: Fix $\varepsilon$, choose one threshold $N$, and then require the error bound for every $n\ge N$. If $N$ could instead be chosen after each $n$, one could take $N=n+1$. The premise $n\ge N$ would then be false, so the implication would hold for any sequence and any proposed limit. A single threshold has to control the whole tail.
 
 **2. Prove from the definition that $a_n=\dfrac{2n+1}{n}\to2$.**
 

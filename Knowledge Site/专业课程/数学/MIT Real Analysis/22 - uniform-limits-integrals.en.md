@@ -213,7 +213,7 @@ Thus $f_n\to f$ uniformly, i.e. $d(f_n,f)\to0$.
 
 Each $f_n$ is continuous and $f_n\to f$ uniformly, so by the first theorem of this lecture, $f$ is continuous. Hence $f\in C([a,b])$, and Step 2 gives $f_n\to f$ in the metric $d$. $\square$
 
-The division of labour is worth remembering: **completeness is used only in Step 1** (completeness of the reals), **uniform convergence is established in Step 2**, and **closure (continuity) is supplied in Step 3**. Each step handles one thing.
+The division of labour is worth remembering: **completeness is used only in Step 1** (completeness of the reals), **uniform convergence is established in Step 2**, and **closure (continuity) is supplied in Step 3**. Each step handles one thing, and none can be dropped.
 
 ## Theorem: integration commutes with uniform limits
 
@@ -232,7 +232,7 @@ $$
 U(f,P)-L(f,P)<\varepsilon ,
 $$
 
-where $U,L$ are the upper and lower sums. The plan is to squeeze the upper and lower sums of $f$ between those of $f_N$, with an error of $\pm\varepsilon/3$, and then choose for $f_N$ a partition whose upper and lower sums are close.
+where $U,L$ are the upper and lower sums. The plan is to squeeze the upper and lower sums of $f$ between those of some $f_n$ with $n$ large, with an error of $\pm\varepsilon/3$, and then choose for that $f_n$ a partition whose upper and lower sums are close.
 
 ### Estimating the upper and lower sums
 
@@ -334,7 +334,17 @@ $$
 \left|\int_a^b f-\int_a^b f_N\right|<\varepsilon .
 $$
 
-Since $\varepsilon>0$ was arbitrary, $\int f_n\to\int f$. $\square$
+This estimate was written for the single index $n=N$. Extending it to every $n\ge N$ needs no further partition argument: $f$ is now known to be integrable, so
+
+$$
+\left|\int_a^b f_n-\int_a^b f\right|
+=\left|\int_a^b (f_n-f)\right|
+\le\int_a^b|f_n-f|
+\le(b-a)\sup_{x\in[a,b]}|f_n(x)-f(x)|
+<\varepsilon,
+$$
+
+and the last step is exactly the bound independent of $x$ that uniform convergence provides. Since $\varepsilon>0$ was arbitrary, $\int_a^b f_n\to\int_a^b f$. $\square$
 
 At the end of the lecture a student asked about strict versus non-strict inequalities. The lecturer's answer: it does not matter, because $\varepsilon$ is arbitrary; choosing constants like $\varepsilon/4$ produces strict inequalities whenever desired.
 
@@ -396,7 +406,7 @@ Reference answer: Pointwise convergence only controls each point separately. It 
 
 **4. In the integration theorem, what roles do the $3$ and the $(b-a)$ in $\varepsilon/(3(b-a))$ play?**
 
-Reference answer: $(b-a)$ cancels the total length produced by summing: a constant error of $\varepsilon/(3(b-a))$ integrated over an interval of length $b-a$ totals $\varepsilon/3$, so each of the upper and lower sums shifts by $\varepsilon/3$. The $3$ splits the total error budget: the two shifts between $f$ and $f_n$ cost $2\varepsilon/3$, leaving $\varepsilon/3$ for the gap $U(f_n,P)-L(f_n,P)$ supplied by integrability, for a total below $\varepsilon$. Any constants with the same total work, e.g. quarters.
+Reference answer: $(b-a)$ cancels the total length produced by summing: a constant error of $\varepsilon/(3(b-a))$ integrated over an interval of length $b-a$ totals $\varepsilon/3$, so each of the upper and lower sums shifts by $\varepsilon/3$. The $3$ splits the total error budget: the two shifts between $f$ and $f_n$ cost $2\varepsilon/3$, leaving $\varepsilon/3$ for the gap $U(f_n,P)-L(f_n,P)$ supplied by integrability, for a total below $\varepsilon$. Any constants that split the budget the same way — quarters, say — work just as well, as long as the three parts sum to less than $\varepsilon$.
 
 **5. The theorem assumes only that $f_n$ is integrable, not continuous. Why can we not simply say "the limit of continuous functions is integrable"?**
 
@@ -404,6 +414,6 @@ Reference answer: Because a uniform limit of continuous functions is continuous,
 
 ## Relation to neighbouring lectures
 
-The previous lecture established the Weierstrass $M$-test and the pointwise/uniform distinction; this lecture turns them into a toolkit: preservation of continuity, the metric viewpoint, completeness, and interchange with integrals. The next lecture handles the remaining piece — **whether differentiation commutes with limits** — which needs a stronger hypothesis (uniform convergence of the derivatives). With it, power series can be differentiated term by term arbitrarily often, and the exponential satisfies $E'=E$.
+The previous lecture established the Weierstrass $M$-test and the pointwise/uniform distinction; this lecture turns them into a toolkit: preservation of continuity, the metric viewpoint, completeness, and interchange with integrals. The next lecture handles the remaining piece — **whether differentiation commutes with limits** — which needs a stronger hypothesis: $f_n$ must converge at one point, and the derivatives $f_n'$ must converge uniformly. Uniform convergence of $f_n$ alone is not enough: $f_n(x)=x^n/n$ converges uniformly to $0$ on $[0,1]$, while $f_n'(x)=x^{n-1}$ does not converge uniformly (for every $n$, $f_n'(1)=1$, whereas the derivative of the limit is identically $0$). With that theorem, power series can be differentiated term by term arbitrarily often, and the exponential satisfies $E'=E$.
 
 Further on, the completeness of $C([a,b])$ in the sup metric is used directly to prove the Picard–Lindelöf theorem, by writing the solution of a differential equation as a fixed point of an integral operator. The abstract three-step proof in this lecture is the foundation of that line.

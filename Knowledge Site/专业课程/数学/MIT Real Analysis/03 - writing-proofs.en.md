@@ -107,7 +107,7 @@ The set is written out explicitly, including $x\in\mathbb R$ — a formal proof 
 
 **Step 1: $A$ is nonempty.** $1\in A$, since $1>0$ and $1^2=1<2$.
 
-**Step 2: $A$ is bounded above.** Claim that $2$ is an upper bound. If $x\in A$ and $x\ge2$, then $x^2\ge4>2$, contradicting $x^2<2$. Hence $x<2\le2$.
+**Step 2: $A$ is bounded above.** Claim that $2$ is an upper bound. If $x\in A$ and $x\ge2$, then $x^2\ge4>2$, contradicting $x^2<2$. Hence $x<2$, so $2$ is an upper bound.
 
 **Step 3: fix $\alpha$.** Since $A$ is nonempty and bounded above and $\mathbb R$ is complete, set
 
@@ -177,7 +177,7 @@ h=\frac{2-\alpha^2}{4\alpha},
 \alpha_2=\alpha+h .
 $$
 
-**$0<h<\frac12$**: numerator and denominator are positive, so $h>0$; and since $\alpha\ge1$,
+**$0<h<\frac12$**: numerator and denominator are positive, so $h>0$; and since $\alpha\ge1$ (Step 4),
 
 $$
 h=\frac{2-\alpha^2}{4\alpha}<\frac{2}{4\alpha}\le\frac12<1 .
@@ -259,7 +259,7 @@ Each is smaller than the next, and $\sqrt2$ is their limit.
 
 **Definition.** A real sequence is a function $a:\mathbb N\to\mathbb R$, usually written $(a_n)_{n\ge1}$ with $a_n=a(n)$.
 
-Writing the index as a subscript rather than an argument emphasises that a sequence is a function.
+Treating the index as the input emphasises that a sequence is a function; writing $a_n$ rather than $a(n)$ is convention.
 
 The list above is increasing, $a_n<a_{n+1}$, and $\sqrt2=\lim_{n\to\infty}a_n$. But "limit" is still only intuitive; the $\varepsilon$ definition arrives in the next lecture.
 

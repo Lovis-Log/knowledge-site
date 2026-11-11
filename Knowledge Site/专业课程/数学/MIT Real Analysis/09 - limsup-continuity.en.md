@@ -1,7 +1,7 @@
 ---
 slug: 09-limsup-continuity
 title: "Limsup, Radius of Convergence and Continuous Functions"
-summary: "Limits superior repair the root test, shrinking the convergence set of a power series to a single interval centred at 0. The exponential function is then defined by its power series and its rational values are matched to e^m. Finally, epsilon-delta continuity is defined, two basic examples and five algebraic rules are proved, and polynomials and rational functions are shown continuous."
+summary: "The limsup extends the root test to sequences whose roots do not converge, and determines the radius of convergence of a power series. The exponential function is then defined by its power series and its values at rational q are matched to e^q. Finally, epsilon-delta continuity is defined, two basic examples and five algebraic rules are proved, and polynomials and rational functions are shown continuous."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -35,7 +35,7 @@ So $(b_n)$ decreases. If it is bounded below, monotone convergence gives a limit
 $$
 \limsup_{n\to\infty}a_n=\inf_{n}b_n .
 $$
-If $(a_n)$ is unbounded above, set $\limsup a_n=+\infty$.
+If $(a_n)$ is unbounded above, set $\limsup a_n=+\infty$. If instead $(b_n)$ has no lower bound — as for $a_n=-n$, where $b_n=-n$ — then $\inf_n b_n=-\infty$, and this too is written $\limsup a_n=-\infty$.
 
 Symmetrically, if $(a_n)$ is bounded below, let
 $$
@@ -51,7 +51,7 @@ $$
 \liminf a_n=\lim a_n=\limsup a_n .
 $$
 
-Intuitively, the limsup is the smallest eventual upper bound: a sequence may exceed a value repeatedly, but if it eventually stays below that value, the value is not the limsup.
+Intuitively, the limsup is the smallest eventual upper bound: every number larger than it is eventually an upper bound for the sequence, while every number smaller than it is exceeded infinitely often.
 
 ## Timeline
 
@@ -96,7 +96,7 @@ The right side is a geometric series with ratio $\bar d<1$, so by comparison $\s
 
 The point is that the definition of limsup itself provides "from some index on, every term is controlled by $\bar d$", with no limit required. That is exactly what makes it more useful than the limit.
 
-**Proof ($d>1$).** Choose $\bar d$ with $1<\bar d<d$. Then infinitely many $n$ satisfy $\sqrt[n]{|d_n|}>\bar d$, i.e. $|d_n|>\bar d^{\,n}>1$. So the terms do not tend to zero (infinitely many have absolute value exceeding $1$), and the series diverges.
+**Proof ($d>1$).** Choose $\bar d$ with $1<\bar d<d$. Here the quantifiers run the other way: since $\inf_n\sup_{k\ge n}\sqrt[k]{|d_k|}=d>\bar d$, every tail supremum is at least $d$, so for each $N$ there is $k\ge N$ with $\sqrt[k]{|d_k|}>\bar d$ — infinitely many such $k$. For those $k$, $|d_k|>\bar d^{\,k}>1$, so the terms do not tend to zero (infinitely many have absolute value exceeding $1$) and the series diverges.
 
 ## Radius of convergence of a power series
 
@@ -113,7 +113,7 @@ $$
 R=\frac{1}{\limsup_{n\to\infty}\sqrt[n]{|a_n|}} .
 $$
 
-Conventions: if $\limsup|a_n|^{1/n}=0$ then $R=+\infty$; if $\limsup|a_n|^{1/n}=+\infty$ then $R=0$.
+Conventions: if $\limsup|a_n|^{1/n}=0$ then $R=+\infty$; if $\limsup|a_n|^{1/n}=+\infty$ then $R=0$. The interval of convergence can therefore be all of $\mathbb R$ ($R=+\infty$), or collapse to the single point $\{0\}$ ($R=0$).
 
 Applying root test 2.0 to $\sum a_nx^n$:
 

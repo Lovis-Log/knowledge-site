@@ -24,7 +24,7 @@ With that step filled in, he abstracts the class of games involved and calls the
 
 Inside this framework sits a theorem, the **one-shot deviation principle**: a profile is subgame perfect if and only if at every history no player can gain by changing their action at that single history and following the original strategy everywhere else. On its face this only replaces "all deviations" with "one kind of deviation", but the replacement is substantive: a general deviation can pull levers at hundreds of histories at once, while a one-shot deviation pulls exactly one.
 
-With the theorem in hand, the problem last lecture dodged becomes tractable: **infinite-horizon** alternating-offer bargaining. The earlier model needed an artificial deadline, because without a last period there is nowhere for backward induction to start — and the deadline itself distorted the answer, handing almost everything to whoever held the last offer. Remove the deadline and the answer becomes a clean formula: the proposer keeps $1/(1+\delta)$ and offers $\delta/(1+\delta)$. As $\delta\to 0$ the first mover takes all; as $\delta\to 1$ the split approaches even.
+With the theorem in hand, the problem last lecture dodged becomes tractable: **infinite-horizon** alternating-offer bargaining. The earlier model needed an artificial deadline, because without a last period there is nowhere for backward induction to start — and the deadline itself distorted the answer, handing almost everything to whoever held the last offer. Remove the deadline and the answer becomes a clean formula: the proposer keeps $1/(1+\delta)$ and offers $\delta/(1+\delta)$, where $\delta$ is the per-period discount factor. As $\delta\to 0$ the first mover takes all; as $\delta\to 1$ the split approaches even.
 
 ## Timeline
 
@@ -93,7 +93,7 @@ The reason is that histories accumulate. What I do in period 9 becomes part of t
 
 So "for every subgame" can be rewritten "for every history", and histories are objects one can handle by induction.
 
-**Theorem.** Let $s^\ast$ be a profile in a multistage game. The following are equivalent:
+**Theorem.** Let $s^\ast$ be a profile in a continuous multistage game. The following are equivalent:
 
 1. $s^\ast$ is a subgame perfect Nash equilibrium;
 2. for every history $h$, the restriction of $s^\ast$ to the $h$-subgame is a Nash equilibrium of that subgame;
@@ -146,7 +146,7 @@ The closer $\delta$ is to 1, the more patient the players: waiting is cheap. Nea
 
 Ball also answers a student's question: in an infinite horizon it is unclear when "breakdown" actually happens. A cleaner reading is in flow terms — zero utility each period until agreement, then the agreed utility forever, with the whole flow discounted and averaged; that reduces to the same model.
 
-**Is it a multistage game?** It does not look like one, since players take turns rather than moving simultaneously. But treat one offer-and-response round as a stage: within it a single player moves (a subset of size one), and at its start everything earlier has been observed, so the conditions hold. The one-shot deviation principle therefore applies.
+**Is it a multistage game?** It does not look like one, since players take turns rather than moving simultaneously. But the stages here are not periods: each individual move is a stage — player 1's offer is stage 0, player 2's accept-or-reject is stage 1, and a rejection opens a new stage with a new offer. Within each stage a single player moves (a subset of size one), and at its start everything earlier has been observed, so the conditions hold. The one-shot deviation principle therefore applies.
 
 ## The candidate equilibrium and its verification
 

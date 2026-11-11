@@ -116,7 +116,7 @@ The **type** is Harsanyi's key device. It packages a player's entire mental stat
 
 The **prior** $P$ is defined on $\Theta\times T_1\times\cdots\times T_n$, not merely on $\Theta$. This is easy to overlook: saying "$\theta$ takes each value with probability one half" is not enough; you must also say which type each player has in each state. $P$ is a joint distribution. A complete tuple $(\theta,t_1,\dots,t_n)$ is a **state of the world**, specifying both the physical state and everyone's mental state.
 
-Back to the group project. The physical states are $\Theta=\{\theta_H,\theta_E\}$ (hard, easy). Player 1 knows $\theta$, so he has two mental states — "knows the project is hard" and "knows it is easy" — written $t_H$ and $t_E$. Player 2 knows nothing, so he has a single mental state $t_0$:
+Back to the group project. The physical states are $\Theta=\{\theta_H,\theta_E\}$ (hard, easy). The infinite regress of the previous section has to be cut off here by assumption: player 2 knows that player 1 knows $\theta$, player 1 knows that player 2 knows that player 1 knows, and so on up the hierarchy — these higher-order beliefs are common knowledge. Otherwise, were player 2 unsure whether player 1 knows $\theta$, $T_2$ could not be a singleton: it would need one type for each possibility. Player 1 knows $\theta$, so he has two mental states — "knows the project is hard" and "knows it is easy" — written $t_H$ and $t_E$. Player 2 knows nothing, so he has a single mental state $t_0$:
 
 $$
 T_1=\{t_H,t_E\},\qquad T_2=\{t_0\}.
@@ -142,7 +142,7 @@ P(\theta_E,t_H,t_0)=\tfrac{1-q}{2},\quad
 P(\theta_E,t_E,t_0)=\tfrac{q}{2}.
 $$
 
-A check: the first two rows sum to $\tfrac{q}{2}+\tfrac{1-q}{2}=\tfrac12$, which is exactly $P(\theta=\theta_H)$. Summing over types given the physical state recovers the marginal on the physical state, as it must.
+A check: the first two terms sum to $\tfrac{q}{2}+\tfrac{1-q}{2}=\tfrac12$, which is exactly $P(\theta=\theta_H)$. Summing over types given the physical state recovers the marginal on the physical state, as it must.
 
 Two extremes are worth remembering. At $q=1$ the middle rows vanish and we are back to example one: perfect observation. At $q=1/2$ all four cells are $1/4$: the distribution of the signal is the same whichever state obtains, so the signal carries no information and player 1's hunch is useless. Ball remarks that this is a rather good model of how retail stock traders operate.
 
@@ -173,7 +173,7 @@ $$
 =\frac{P(\theta,t_i,t_{-i})}{\displaystyle\sum_{\theta'\in\Theta}\ \sum_{t'_{-i}\in T_{-i}}P(\theta',t_i,t'_{-i})}.
 $$
 
-The numerator is the joint probability that the world is exactly this; the denominator is the marginal probability of my type. The formula turns the public prior $P$ into a private map.
+The numerator is the joint probability that the world is exactly this; the denominator is the marginal probability of my type. The formula turns the public prior $P$ into a private map. Plug example two in and the weights become visible: $\pi_1(\theta_H\mid t_H)=\frac{q/2}{q/2+(1-q)/2}=q$ — the prior $\tfrac12$ times the likelihood $q$, divided by the sum of that product over the two states — while $t_E$ gives $1-q$. Player 2 has a single type, and conditioning gives $\pi_2(t_H\mid t_0)=\frac{q/2+(1-q)/2}{1}=\tfrac12$ regardless of $q$, since the prior is even and the signal symmetric; when he takes an expectation he uses the four joint probabilities themselves, because $\theta$ and $t_1$ are correlated and $\mathbb{E}[\theta e_1]$ does not factor into a product of marginal expectations.
 
 Why do I care about $\theta$? Because it enters my payoff directly — if the project is hard, effort may not be worth it. Why do I care about others' types? **Not because their mental states affect my payoff directly, but because their types affect their actions, and their actions affect my payoff.** That chain is the key to reading Bayesian games: I form beliefs about your type, then use the equilibrium strategy to translate your type into an action.
 

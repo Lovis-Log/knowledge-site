@@ -103,7 +103,7 @@ $$
 \mathrm{WG}(\sigma_1)=\min_{\sigma_2\in\Sigma_2} u(\sigma_1,\sigma_2).
 $$
 
-Here $\Sigma_2$ is the set of all mixtures for player 2. One simplification is used constantly: **the minimum need only range over pure strategies**,
+Here $\Sigma_2$ is the set of all mixtures for player 2 and $S_2$ the set of his pure strategies, with $S_1$ analogous. One simplification is used constantly: **the minimum need only range over pure strategies**,
 
 $$
 \mathrm{WG}(\sigma_1)=\min_{s_2\in S_2} u(\sigma_1,s_2).
@@ -180,7 +180,7 @@ Three examples put the language to work.
 | T | 1 | 1 |
 | B | −4 | −8 |
 
-At a glance this looks terrible for player 1 — two large negative numbers underneath. But structure beats magnitudes. Playing T yields 1 whatever the opponent does, so $\mathrm{WG}(T)=1$; playing B yields at worst −8. Hence $\underline{v}=1$ and T is a security strategy. On player 2's side, L has worst loss $\max\{1,-4\}=1$ and R has worst loss $\max\{1,-8\}=1$, so both are security strategies and $\bar{v}=1$. The value is 1, consistent with the theorem. Ball adds a warning: the large negative numbers do not mean the game favours player 2, because those cells are never reached under optimal play.
+At a glance this looks terrible for player 1 — two large negative numbers underneath. But structure beats magnitudes. Playing T yields 1 whatever the opponent does, so $\mathrm{WG}(T)=1$; playing B yields at worst −8. Mixing cannot raise it either: with probability $p$ on T the expectation against L is $5p-4$, below 1 whenever $p<1$, so the maximum is still attained at $p=1$. Hence $\underline{v}=1$ and T is a security strategy. On player 2's side, L has worst loss $\max\{1,-4\}=1$ and R has worst loss $\max\{1,-8\}=1$, so both are security strategies and $\bar{v}=1$. The value is 1, consistent with the theorem. Ball adds a warning: the large negative numbers do not mean the game favours player 2, because those cells are never reached under optimal play.
 
 **Example two.** Make every payoff in the same game positive: against L, player 2 loses only 1 no matter what player 1 does; against R, player 2 may lose 23 or 8. Cell by cell, every payoff is at least as high as in example one. Yet the value is still 1 — player 2 can hold his loss to 1 by playing L, and player 1 can guarantee 1 with either row.
 

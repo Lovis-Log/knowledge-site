@@ -1,7 +1,7 @@
 ---
 slug: "19-revenue-equivalence"
 title: "Revenue Equivalence: Why Changing the Rules Leaves the Auctioneer's Take Alone"
-summary: "The coincidence from the previous lecture becomes a theorem: in any equilibrium of any generalised auction, a bidder's expected payment depends only on two things — what the lowest type pays, and how the win probability varies with valuation. The formula is then used backwards to solve the all-pay auction and the first price."
+summary: "The coincidence from the previous lecture becomes a theorem: in equilibria satisfying the theorem’s hypotheses in the risk-neutral independent private values model, a bidder's expected payment depends only on two things — what the lowest type pays, and how the win probability varies with valuation. The formula is then used backwards to solve the all-pay auction and the first price."
 updatedAt: "2026-11-08"
 content_type: "video-course"
 tags:
@@ -357,7 +357,7 @@ $$
 
 exactly the integral from the previous lecture.
 
-Ball stresses the logical layering: **the general formula always holds** (given an equilibrium and differentiability of $\hat Q$); the special case needs extra conditions. So "revenue equivalence only holds under certain conditions" and "the revenue formula is very general" are not in tension — they describe different statements.
+Ball stresses the logical layering: **the general formula always holds** (given an equilibrium and differentiability of $\hat Q$); the special case needs extra conditions. So "revenue equivalence only holds under certain conditions" and "the revenue formula is very general" are not in tension — they describe different statements. The "always" has premises of its own, though: writing utility as $v\hat Q-\hat T$ uses risk neutrality, writing the pretence as $\hat Q(v')$ uses the fact that opponents' values do not depend on my type (private values, independently drawn), and symmetry is spent when $\hat Q_1=G$. Drop risk neutrality, independence or symmetry and the corresponding step fails.
 
 ### Supplement: reading the formula again
 
@@ -369,7 +369,7 @@ $$
 =v\hat Q(v)-\int_{\underline v}^{v}\hat Q(x)\,dx,
 $$
 
-using $\hat Q(\underline v)=0$ (the lowest type cannot win). Substituting back,
+using $\hat Q(\underline v)=0$ (the lowest type cannot win). Substituting back into the revenue formula also uses condition one from the previous section, $\hat T(\underline v)=0$; without it the right-hand side carries an extra $-\hat T(\underline v)$.
 
 $$
 \hat T(v)=v\hat Q(v)-\int_{\underline v}^{v}\hat Q(x)\,dx .
@@ -420,7 +420,7 @@ $$
 \beta(v_1)=\frac{v_1^2}{2}.
 $$
 
-Done. Ball calls this the practical payoff of revenue equivalence: the theorem supplies one side, the format supplies the other, and the equilibrium drops out.
+Done — though strictly this is only a necessary condition: the formula pins down what any equilibrium must pay, and the $\beta$ it produces still has to be checked against the equilibrium condition, a check Ball flags. Ball calls this the practical payoff of revenue equivalence: the theorem supplies one side, the format supplies the other, and the equilibrium drops out.
 
 ## Running it backwards: the first price
 

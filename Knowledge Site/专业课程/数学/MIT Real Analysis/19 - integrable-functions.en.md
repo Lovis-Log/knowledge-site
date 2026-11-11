@@ -156,7 +156,7 @@ $$
 
 so the function is not integrable.
 
-The example shows that boundedness is not the issue. Integrability requires that the oscillation over small intervals can be made small in aggregate; here the oscillation is $1$ on every interval.
+The example shows that boundedness — even being defined everywhere — is not enough. Integrability requires that the oscillation over small intervals can be made small in aggregate; here the oscillation is $1$ on every interval.
 
 ## The integrability criterion
 
@@ -224,7 +224,7 @@ $$
 
 The only difference from ordinary continuity is one word: $\delta$ may not depend on the point. Ordinary continuity says "for each $x_0$ and each $\varepsilon$ there is $\delta(\varepsilon,x_0)$"; uniform continuity requires **one $\delta$ that works everywhere**.
 
-Geometrically: given an error band of height $\varepsilon$ on the $y$-axis, there is a uniform horizontal width $\delta$ such that any piece of the graph of width less than $\delta$ stays within a band of height $2\varepsilon$.
+Geometrically: given an error band $(-\varepsilon,\varepsilon)$ on the $y$-axis, there is a uniform horizontal width $\delta$ such that any piece of the graph of width less than $\delta$ stays within a band of height $2\varepsilon$.
 
 ### Counterexample 1: $x^2$ on $\mathbb R$
 
@@ -324,7 +324,7 @@ $$
 |f(x)-f(y)|<\frac{\varepsilon}{b-a}.
 $$
 
-Choose a partition $P$ with every $\Delta x_i<\delta$.
+Choose a partition $P$ with every $\Delta x_i<\delta$ (for instance the uniform partition into $n>(b-a)/\delta$ pieces).
 
 On each $[x_{i-1},x_i]$, the function is continuous, so by the extreme value theorem $M_i$ and $m_i$ are attained at points $y_i,y_i^*$. Those points lie at distance less than $\delta$, hence
 

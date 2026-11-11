@@ -115,7 +115,7 @@ At $x=x_0$ the left side is $0<\varepsilon$ anyway. Hence $f$ is continuous at $
 
 The proof is worth reading closely: it first translates "the difference quotient is close to the derivative" into "the function difference is close to $L(x-x_0)$", then separates the error from the linear term with the triangle inequality. The same decomposition reappears in the product rule.
 
-**The converse fails.** Continuity does not imply differentiability; the three examples below go from bad to good.
+**The converse fails.** Continuity does not imply differentiability; the three examples below grow more complex, and the last one turns out differentiable.
 
 ## Three examples
 
@@ -221,7 +221,7 @@ g(x)\cdot\frac{f(x)-f(x_0)}{x-x_0}
 f(x_0)\cdot\frac{g(x)-g(x_0)}{x-x_0}.
 $$
 
-Now take limits term by term. Differentiability gives continuity of $f$ at $x_0$, so $g(x)\to g(x_0)$; the first quotient tends to $f'(x_0)$. In the second term $f(x_0)$ is constant and the quotient tends to $g'(x_0)$. Therefore
+Now take limits term by term. Differentiability of $g$ gives continuity of $g$ at $x_0$, so $g(x)\to g(x_0)$; the first quotient tends to $f'(x_0)$. In the second term $f(x_0)$ is constant and the quotient tends to $g'(x_0)$. Therefore
 
 $$
 \lim_{x\to x_0}\frac{f(x)g(x)-f(x_0)g(x_0)}{x-x_0}
@@ -354,7 +354,7 @@ The product tends to $g'(y_0)f'(x_0)$.
 If $f'(x_0)=0$, split into two subcases.
 
 - **$y=y_0$:** the numerator of the composite difference quotient is $g(y_0)-g(y_0)=0$, so the quotient is identically $0$ and the limit is $0=g'(y_0)\cdot0$.
-- **$y\ne y_0$:** use the factorisation above. The second factor tends to $f'(x_0)=0$; the first factor $\dfrac{g(y)-g(y_0)}{y-y_0}$ is **bounded** near $y_0$ — it converges to the finite number $g'(y_0)$, and a convergent sequence is bounded. A bounded quantity times one tending to zero tends to $0$.
+- **$y\ne y_0$:** use the factorisation above. The second factor tends to $f'(x_0)=0$; the first factor $\dfrac{g(y)-g(y_0)}{y-y_0}$ is **bounded** near $y_0$ — as $y\to y_0$ with $y\ne y_0$ it tends to the finite number $g'(y_0)$, so taking $\varepsilon=1$ in the definition of the limit keeps it below $|g'(y_0)|+1$ on some punctured neighbourhood of $y_0$. A bounded quantity times one tending to zero tends to $0$.
 
 Both subcases give the limit $0=g'(y_0)f'(x_0)$. $\square$
 
@@ -379,7 +379,7 @@ This theorem is the seed of Rolle's theorem, hence of the mean value theorem, he
 - Differentiable implies continuous; continuous does not imply differentiable. $|x|$ and $x\sin(1/x)$ are continuous but not differentiable; $x^2\sin(1/x)$ is differentiable.
 - The sum, Leibniz and quotient rules are proved by inserting cross terms and using limit algebra; Leibniz and the quotient rule rely on "differentiable implies continuous".
 - The chain rule splits into $f'(x_0)\ne0$ and $f'(x_0)=0$; the latter needs separate treatment of $f(x)=f(x_0)$.
-- From these rules every polynomial and rational function is differentiable, with an explicit derivative.
+- From these rules every polynomial and rational function is differentiable wherever its denominator does not vanish, with an explicit derivative.
 - At a local extremum the derivative vanishes (Fermat's lemma), the seed of the mean value theorem.
 
 ## Comprehension check

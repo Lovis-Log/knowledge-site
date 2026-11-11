@@ -359,7 +359,7 @@ Because knowledge requires the whole cell to lie inside the event, and student $
 
 **4. What if the teacher had announced "at least two hats are red"?**
 
-That would be higher-order information already. At the true state 111, "at least two red hats" is itself common knowledge — everyone sees two red hats, and everyone knows that everyone does. Announcing it changes no cell, so it changes no answer. The contrast is the point: announcing "at least one" works precisely because it is **not** common knowledge at 111. An announcement has force only when it converts non-common knowledge into common knowledge.
+Yes. At 111 the first student still says no: both 011 and 111 survive the announcement in her information cell. The second student initially considers 101 and 111. At 101 the first student would see a white hat and a red one and, given the announcement, would know her own hat is red. Hearing no rules out 101, so the second student says yes. If asked, the third can likewise rule out 110 from the first answer. The first yes comes on the second question instead of the third.
 
 **5. Why is "deleting 000" the same as "changing the partition"?**
 
@@ -367,4 +367,4 @@ Because a partition must cover the whole space with disjoint cells. Once 000 is 
 
 **6. Does the riddle still work with only two students?**
 
-No. With two students and both hats red, the teacher announces at least one red hat and asks the first: she sees one red hat, cannot judge her own, says no. The second sees one red hat and knows the first said no — but the first would say no in every state (whether her own hat is red or white, she always sees the second student's red hat), so the second learns nothing and also says no. The chain needs at least three people, because only at the third level does "someone would have said yes" become a discriminating signal.
+Yes — the chain is simply one link shorter. With two students, write states as two bits (student 1, student 2); the true state is 11. The teacher announces at least one red hat, then asks the first: she sees the second student's red hat, but if her own were white she would see the same red hat, so she cannot tell and says no. The second knows the state is 11 or 10 (10 meaning she is white and the first is red); if it were 10, the first would have seen a white hat and, with 00 deleted by the announcement, her cell would be $\lbrace 10\rbrace$ alone — she would have said yes. She said no, so the state is 11, and the second says yes. The announcement still does its work; the discriminating signal simply arrives at the second question. Each extra student adds one more round of "no".

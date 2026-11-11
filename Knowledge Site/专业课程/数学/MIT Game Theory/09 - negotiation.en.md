@@ -105,7 +105,7 @@ Offer more and it is accepted but money is wasted; offer less and it is rejected
 
 Move back to period $2n-2$, where the plaintiff proposes and the defendant responds.
 
-The defendant's preferences run the other way: he accepts a **sufficiently low** offer, so the threshold has the form $s\le s^\ast_{2n-2}$. It is pinned down by indifference — at the threshold, accepting and rejecting pay the same:
+The defendant's preferences run the other way: he accepts a **sufficiently low** offer, so the threshold has the form $s\le s^\ast_{2n-2}$. The plaintiff wants the highest demand that will pass, which is exactly that threshold. It is pinned down by indifference — at the threshold, accepting and rejecting pay the same:
 
 $$
 -s^\ast_{2n-2}-c_d(2n-1)\;=\;-s^\ast_{2n-1}-c_d\cdot 2n .
@@ -150,7 +150,7 @@ $$
 
 the defendant accepts, and the game ends in the very first period.
 
-The result is a little ironic: the model builds $2n$ periods, a pile of legal fees and a chain of thresholds, and the equilibrium path is a single step. Yet **the potential length still shapes the amount** — with no room to negotiate at all ($n=0$) the plaintiff would get only $J-\hat C_p$; it is precisely because talks could drag that the defendant will pay the extra $n c_d$.
+The result is a little ironic: the model builds $2n$ periods, a pile of legal fees and a chain of thresholds, and the equilibrium path is a single step. Yet **the potential length still shapes the amount** — with no room to negotiate at all ($n=0$) the plaintiff would get only $J-\hat C_p$; it is precisely because talks could drag that the defendant will pay the extra $n c_d-(n-1)c_p$.
 
 Three comparative statics are worth remembering:
 
@@ -196,6 +196,8 @@ $$
 
 $\delta$ is the discount factor. It multiplies once per period, so the longer the wait the smaller the utility from any given price. A $\delta$ near 1 means patient players (time barely bites); a $\delta$ near 0 means extreme impatience (one period of waiting wipes almost everything out). Ball offers a financial reading: if the stakes are money, the cost of delay is the interest or return that money could have earned.
 
+One assumption is easy to miss: **$v$ and $\delta$ are common knowledge** — the seller knows exactly how much the buyer is willing to pay, and both sides know each other's patience. The model is therefore one of complete information.
+
 The timing mirrors the previous model: periods $0$ to $2n-1$, **the seller proposes in even periods** (opening in period 0), the buyer counters in odd periods, and at period $2n$ "the world ends" — if no trade has occurred, both get 0.
 
 Ball is unhappy with that hard end date and admits the real reason for it: we do not yet have the tools to handle an indefinite horizon. He says taking $n$ large enough gives predictions very close to the infinite-horizon model, and offers two stories to make it palatable: the tour bus leaves in $2n$ periods and this is the last chance to trade, or the ice cream cone melts. The assumption gets relaxed later.
@@ -232,7 +234,7 @@ $$
 
 Two recursions: one presses down from above (the most the buyer will pay), one props up from below (the least the seller will take). Starting from $p^\ast_{2n-1}=0$ and iterating gives the whole strategy. Ball says the algebra becomes ugly, so he skips it and reports the result and the limit.
 
-**The outcome** is again trade in period 0: the seller names $P_0^\ast$ and the buyer accepts. No delay.
+**The outcome** is again trade in period 0: the seller names $P_0^\ast$ and the buyer accepts. No delay, for the same reason as in the settlement model — $v$ is common knowledge, so in every even period the seller can name exactly the buyer's indifference price, and time has no reason to pass.
 
 **The limit** (as $n\to\infty$, i.e. with room to bargain for a very long time):
 
@@ -247,6 +249,8 @@ P_0^\ast=\frac{\delta v}{1+\delta}.
 $$
 
 The two differ by a factor $\delta$, so **the first mover has an advantage**. The intuition: by moving first I can exploit the fact that you also fear delay, and name a price that is not good for you but that you know beats waiting until tomorrow. Ball calls this a general pattern — the first mover shifts the cost of waiting onto the other side.
+
+Writing out the payoffs makes the comparison exact: with the seller first the seller keeps $\frac{v}{1+\delta}$ and the buyer keeps $v-\frac{v}{1+\delta}=\frac{\delta v}{1+\delta}$; with the buyer first the buyer pays $\frac{\delta v}{1+\delta}$ and keeps $\frac{v}{1+\delta}$, while the seller keeps only $\frac{\delta v}{1+\delta}$. So **the first proposer always takes $\frac{v}{1+\delta}$ of the surplus $v$ and the second takes $\frac{\delta v}{1+\delta}$**; the factor $\delta$ between the two prices is just that split seen from the two sides.
 
 ![With the seller proposing first the price v/(1+δ) always exceeds the buyer-first price δv/(1+δ), and both converge to v/2 as δ approaches 1](/images/negotiation-first-mover-en.svg)
 

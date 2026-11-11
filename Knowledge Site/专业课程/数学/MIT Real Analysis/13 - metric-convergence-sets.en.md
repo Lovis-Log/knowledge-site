@@ -1,7 +1,7 @@
 ---
 slug: 13-metric-convergence-sets
 title: "Metric Spaces: What Survives Away from the Real Line"
-summary: "Transporting convergence, the Cauchy property and boundedness from the reals to arbitrary distance spaces; proving convergent implies Cauchy and Cauchy implies relatively bounded; then using balls to introduce open sets, closed sets and the algebra of unions, intersections and complements."
+summary: "Transporting convergence, the Cauchy property and boundedness from the reals to arbitrary distance spaces; proving convergent implies Cauchy and Cauchy implies bounded; then using balls to introduce open sets, closed sets and the algebra of unions, intersections and complements."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -123,6 +123,8 @@ $$
 
 Both definitions are word-for-word those on $\mathbb R$, with $|x_n-x|$ replaced by $d(x_n,x)$.
 
+One fact used repeatedly below: **a limit, if it exists, is unique**. If $x_n\to x$ and $x_n\to y$, choose $N$ so that for $n\ge N$ both distances are less than $\varepsilon$; the triangle inequality gives $d(x,y)\le d(x,x_n)+d(x_n,y)<2\varepsilon$ for every $\varepsilon>0$, so $d(x,y)=0$, and positive definiteness then gives $x=y$. The two axioms split the work: the triangle inequality pulls $x$ and $y$ onto a common $x_n$, and only positive definiteness turns "distance $0$" into "the same point".
+
 ### Theorem: convergent implies Cauchy
 
 **Theorem.** In any metric space, every convergent sequence is Cauchy.
@@ -155,7 +157,7 @@ $$
 \left|\frac1m-\frac1n\right|<\frac1N<\varepsilon .
 $$
 
-- It does not converge in $X$: the only possible limit is $0$, and $0\notin X$.
+- It does not converge in $X$: the distance on $X$ is just $|\cdot|$, so in $\mathbb R$ we have $x_n\to0$; if it converged in $X$ to some $L$, that $L$ would also be its limit in $\mathbb R$, so uniqueness forces $L=0$, and $0\notin X$.
 
 So "Cauchy" guarantees only that the tail bunches together, not that the clustering point belongs to the space.
 
@@ -274,6 +276,8 @@ A fact proved formally later: the closed ball $\{y : d(x,y)\le r\}$ is closed. I
 
 ## Set operations and De Morgan's laws
 
+This section uses only set operations, never the distance: here $X$ is just a set, not necessarily a metric space.
+
 For $A,B\subseteq X$:
 
 - **Union**: $A\cup B=\{x : x\in A\ \text{or}\ x\in B\}$.
@@ -358,7 +362,7 @@ Contrast this with unions: arbitrary unions are fine, intersections only finitel
 
 - A metric space is a set plus a distance satisfying positive definiteness, symmetry and the triangle inequality; general spaces have no order and no arithmetic, so series are meaningless.
 - Convergence, subsequences, Cauchy sequences and boundedness all transfer from $\mathbb R$; the proofs use almost nothing but the triangle inequality.
-- Convergent ⟹ Cauchy ⟹ bounded; the reverse implications need extra hypotheses (complete, compact).
+- Convergent ⟹ Cauchy ⟹ bounded; neither arrow reverses: it is completeness that makes Cauchy sequences converge, and compactness that restores Bolzano–Weierstrass for bounded sequences.
 - A Cauchy sequence that fails to converge reflects a missing cluster point; $(0,1]$ with $x_n=1/n$ is the standard example.
 - Open balls are open; arbitrary unions of open sets are open, finite intersections are open, infinite intersections need not be.
 - A closed set is one whose complement is open; open and closed are not opposites.
@@ -382,7 +386,7 @@ Symmetry is used to convert both distances into the ones already estimated.
 
 **3. In $X=(0,1]$, the sequence $x_n=1/n$ is Cauchy but not convergent. Does it have a convergent subsequence? Explain.**
 
-Reference answer: No. If a subsequence $x_{n_k}\to L\in(0,1]$, then $L>0$; but $x_{n_k}\to0$ in $\mathbb R$, and limits are unique, a contradiction. More directly, every subsequence stays at distance approaching $0$ from $0$ while eventually being at distance at least $L/2$ from any fixed $L>0$. The example simultaneously shows that BW fails in a general metric space.
+Reference answer: No. If a subsequence $x_{n_k}\to L\in(0,1]$, then $L>0$; but $x_{n_k}\to0$ in $\mathbb R$, and limits are unique, a contradiction. More directly, the distance from any subsequence to $0$ tends to $0$, while its distance to any fixed $L>0$ is eventually at least $L/2$; so it cannot converge to $L$. The example simultaneously shows that BW fails in a general metric space.
 
 **4. Prove that an open ball is open. Why take $s=r-d(x,y)$ rather than $r$?**
 

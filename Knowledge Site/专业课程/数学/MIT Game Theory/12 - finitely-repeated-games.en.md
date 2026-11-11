@@ -36,7 +36,7 @@ So a punishment needs something to punish **with**: the final stage must contain
 | 1:31 | The room plays three rounds, observing after each, scored on average payoff |
 | 4:49 | Repetition plus observability is what makes rewards and punishments possible |
 | 6:14 | The two-period tree |
-| 7:31 | Drawing simultaneous moves: each period-two history gets its own information set |
+| 7:31 | Drawing simultaneous moves: player 2 has a two-node information set for each period-two history |
 | 8:22 | Five subgames: one at the start, four in period two |
 | 10:26 | All four period-two subgames must play DD |
 | 12:01 | Period one has no scope for rewards or punishments either |
@@ -83,7 +83,7 @@ Three periods is too messy to draw, so Ball draws two and says the pattern repea
 
 The tree: in period 0, player 1 picks C or D and player 2 picks C or D without observing (the two nodes share an information set, encoding simultaneity). In period 1, each period-0 outcome leads to a fresh pair of nodes. Player 1's period-1 nodes sit in separate information sets, because player 1 knows what happened; player 2's are likewise separated by history, but the two within each pair are joined by a dotted line, since period 1 is simultaneous too.
 
-**The subgames.** Walk the non-terminal nodes: the initial node starts one (the whole game), and each of the four period-1 nodes starts one, since each is a singleton information set and cuts nothing. Five in total.
+**The subgames.** Walk the non-terminal nodes: the initial node starts one (the whole game), and each of player 1's four period-1 nodes starts one, since each is a singleton information set and cuts nothing. Five in total.
 
 **Period 1.** In any period-1 subgame only one period of play remains. The payoffs already earned are **sunk**: whatever happened in period 0 is written in the ledger and does not change with today's choice. So the incentives are exactly those of the one-shot prisoner's dilemma, whose unique Nash equilibrium is $(D,D)$. Four subgames, four $(D,D)$.
 
@@ -151,7 +151,7 @@ Now period $T-1$. In principle my behaviour here could affect the period-$T$ his
 
 What remains in period $T-1$ is the first effect: maximise the flow payoff. And the only way nobody wants to deviate unilaterally is to play the stage-game Nash equilibrium. Hence $s_i(h^{T-1})=a_i^\ast$.
 
-Iterate back to period 0.
+**The induction hypothesis.** Suppose that from period $t+1$ through $T$ the strategy equals $a^\ast$ at every history ($t=T-1$ is the case just proved). The step's conclusion makes period $t$ constant at $a^\ast$ too, so the same argument runs again, pushing the hypothesis one period further back, all the way to period 0, where the empty history also gets $a_i^\ast$.
 
 **Why the argument must proceed step by step.** Ball stresses that the key is not "the future is fixed" but "the future is **independent of history**". If period-$T$ behaviour depended on history, then what I do in $T-1$ would feed through the history into period-$T$ behaviour, rewards and punishments would reappear, and the conclusion would collapse. Uniqueness, not fixity, is doing the work.
 
@@ -217,7 +217,7 @@ Player 2 deviating to $H$ (period 0 becomes $(H,H)$, period 1 stays $(H,H)$): 1 
 
 So both deviations are **exactly** unprofitable, resting on weak inequalities. Item by item: player 1 gains 1 in period 0 and loses 1 in period 1; player 2 gains 1 and loses 1. The gain and the loss cancel, which is what Ball means by "the punishment is just large enough to offset the gain today".
 
-The equality is tight. Change $(S,S)$ to $(3,3)$ and player 1's deviation pays $(3+1)/2=2>1.5$, and the equilibrium disappears. Stag hunt supports this example half because it has two equilibria and half because these particular numbers happen to balance.
+The equality is tight, and it is worth seeing exactly where: staying on path gives $(1+2)/2$ and deviating gives $(2+1)/2$, and the difference is precisely the gap between player 1's payoff at $(H,S)$ and at $(H,H)$ — $1-1=0$ — independent of how large $(S,S)$ is, since a bigger reward also makes the deviation more tempting in period 0 and both sides rise together. So changing $(S,S)$ to $(3,3)$ does not break it ($2$ against $2$, still level); what breaks it is weakening the punishment: raise player 1's payoff at $(H,H)$ from 1 to 2 and the deviation pays $(2+2)/2=2>1.5$, and the equilibrium disappears. Stag hunt supports this example half because it has two equilibria and half because these particular numbers happen to balance.
 
 ![The five-cell strategy table for two-period stag hunt: play (H,S) at the empty history, reward with (S,S), punish either deviation with (H,H), and fill (S,H) with either equilibrium; the right panel shows 1.5 against 1.5 for player 1 and 1 against 1 for player 2](/images/finitely-repeated-games-stag-hunt-en.svg)
 
@@ -250,7 +250,7 @@ Because a reward requires tomorrow's behaviour to **depend on** today's. In that
 
 **4. In the stag hunt example, what does player 1 gain by deviating, and why is the equilibrium "weak"?**
 
-On path player 1 gets $(1+2)/2=1.5$; deviating to $S$ gives $(2+1)/2=1.5$. Identical, so the deviation is not strictly harmful, merely not profitable. Player 2 is the same: $1$ against $1$. The equality makes it a weak equilibrium — perturb the payoffs, say to $(3,3)$ at $(S,S)$, and player 1 deviates for $(3+1)/2=2>1.5$, and the equilibrium vanishes.
+On path player 1 gets $(1+2)/2=1.5$; deviating to $S$ gives $(2+1)/2=1.5$. Identical, so the deviation is not strictly harmful, merely not profitable. Player 2 is the same: $1$ against $1$. The equality makes it a weak equilibrium: the net gain from deviating is just the gap between player 1's payoff at $(H,S)$ and at $(H,H)$, here $1-1=0$. Changing $(S,S)$ does nothing (reward and temptation move together, $2$ against $2$), but if $(H,H)$ paid player 1 a 2, the deviation would give $(2+2)/2=2>1.5$ and the equilibrium would vanish.
 
 **5. Why can the $(S,H)$ cell be filled with anything?**
 

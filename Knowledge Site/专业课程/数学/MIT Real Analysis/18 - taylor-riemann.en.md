@@ -107,7 +107,7 @@ $$
 \left|\frac{f'(x_0)}{g'(x_0)}-L\right|<\varepsilon .
 $$
 
-Letting $y\to a$ turns the left side into $\left|\frac{f(x)}{g(x)}-L\right|$, hence
+Now send $y\to a$. By the identity above, the left side equals $\left|\frac{f(x)-f(y)}{g(x)-g(y)}-L\right|$, which tends to $\left|\frac{f(x)}{g(x)}-L\right|$, hence
 
 $$
 \left|\frac{f(x)}{g(x)}-L\right|\le\varepsilon .
@@ -133,7 +133,7 @@ f(x)=P_{k-1}(x)+R_k(x),
 R_k(x)=\frac{f^{(k)}(c)}{k!}(x-a)^k .
 $$
 
-The polynomial is easy to evaluate; the error is controlled by $R_k$. But the location of $c$ is unknown — only that it lies between $a$ and $x$. All work with remainders is therefore about eliminating $c$.
+The hypothesis is used here to make $f^{(k)}(c)$ meaningful: $c$ lies inside the interval, where $f^{(k)}$ exists. The polynomial is easy to evaluate; the error is controlled by $R_k$. But the location of $c$ is unknown — only that it lies between $a$ and $x$. All work with remainders is therefore about eliminating $c$.
 
 ## Example 1: the exponential
 
@@ -156,7 +156,7 @@ $$
 |R_k(x)|\le \frac{e}{k!}.
 $$
 
-For $k=10$ this is about $2.7\times10^{-6}$; for $k=15$ about $7\times10^{-12}$. The factorial drives the convergence, and it is very fast. This is the quantitative statement behind "the exponential is easy to compute with a low-degree polynomial near zero".
+For $k=10$ this is about $7.5\times10^{-7}$; for $k=15$ about $2.1\times10^{-12}$. The factorial drives the convergence, and it is very fast. This is the quantitative statement behind "the exponential is easy to compute with a low-degree polynomial near zero".
 
 **The inverse question: given an error $\varepsilon$ and a degree $k$, how far from $0$ can one go?** Bound
 
@@ -195,7 +195,7 @@ f^{(n+1)}(0)=\lim_{h\to0}\frac{f^{(n)}(h)-0}{h}
 =\lim_{h\to0}\frac{P_n(1/h)}{h}e^{-1/h^2}=0,
 $$
 
-because the exponential decays faster than any power. Induction gives the claim.
+For $h>0$, $f^{(n)}(h)=P_n(1/h)e^{-1/h^2}$ and the exponential decays faster than any power, so the right limit is $0$; for $h<0$, $f^{(n)}(h)=0$ and the numerator vanishes, so the left limit is $0$ as well. Induction gives the claim.
 
 Consequently the Taylor polynomial at $0$ is
 
@@ -314,7 +314,7 @@ $$
 \le M_i(y-x_{i-1})+M_i(x_i-y)=M_i(x_i-x_{i-1}),
 $$
 
-exactly the contribution of $P_1$. Summing over intervals gives $U(f,P_2)\le U(f,P_1)$. Replacing sup by inf reverses the inequalities for lower sums. $\square$
+exactly the contribution of $P_1$. If several points are inserted in the same piece, add them one at a time and repeat the argument; summing over intervals gives $U(f,P_2)\le U(f,P_1)$. Replacing sup by inf reverses the inequalities for lower sums. $\square$
 
 The lemma is nothing but "a supremum over a smaller interval is smaller", yet everything below rests on it.
 

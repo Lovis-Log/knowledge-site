@@ -106,7 +106,7 @@ Two sanity checks. First, points outside the hull are unreachable: if a vector i
 
 ![The convex hull of the four prisoner's dilemma payoff vectors (2,2), (3,−1), (−1,3), (0,0) is the feasible set; removing the regions where u1<0 or u2<0 leaves the darker region with vertices (0,0), (0,8/3), (2,2), (8/3,0)](/images/folk-theorem-feasible-set-en.svg)
 
-*Figure: the feasible set is the hull of the four payoff vectors; adding the requirement that each player's average payoff be at least the 0 from always defecting leaves the darker region. The folk theorem says every point there is achievable by some SPNE.*
+*Figure: the shaded region consists of feasible payoffs with both components at least 0. The sufficiency result also requires the hypotheses of the particular folk theorem, such as payoffs strictly above the minmax values and a discount factor sufficiently close to 1.*
 
 ## Individual rationality: 0 is not magic
 
@@ -122,7 +122,7 @@ $$
 
 Read it from the inside out: everyone else jointly picks a profile $a_{-i}$, player $i$ best-responds to it, and since the others want him as badly off as possible there is a min on the outside. This is the payoff player $i$ can guarantee himself. In the prisoner's dilemma $\underline{v}_i=0$, since defecting yields at least 0 whatever the opponent does.
 
-Note that the definition lets player $i$ respond *after* seeing $a_{-i}$. That is more generous than choosing simultaneously, so the value is an upper bound on what he can guarantee — a conservative measure that favours the deviator. This matters in the proof of the third version.
+Note that the definition lets player $i$ respond *after* seeing $a_{-i}$. That is more generous than choosing simultaneously, so the value is at least as high as the simultaneous-move one — a conservative measure that favours the deviator. This matters in the proof of the third version.
 
 ## The template
 
@@ -148,7 +148,7 @@ $$
 
 That is, one Nash equilibrium is worse than $v$ for *everyone*. In the prisoner's dilemma $a^{NE}=(D,D)$ pays $(0,0)$, so the assumption reduces to $v_i>0$, which is precisely the darker region in the figure. The assumption itself screens out the bad points.
 
-**Strategy**: everyone plays $a^\ast$ (with $u(a^\ast)=v$) until somebody deviates; after any deviation, everyone plays $a^{NE}$ forever.
+**Strategy**: everyone plays $a^\ast$ (with $u(a^\ast)=v$) until somebody deviates; after any deviation, everyone plays $a^{NE}$ forever. This section and the next two prove only the case where $v$ equals the payoff $u(a^\ast)$ of a single action profile. A general $v\in V(G)$ may only be a lottery over action profiles, with no single profile delivering it, so each period has to draw from that lottery — and when the lottery correlates the players' actions, a public randomisation device is needed — which adds one layer of work on mixing: messier, Ball says, but the conclusion is unchanged.
 
 **Verification**. Use the one-shot deviation principle: a profile is an SPNE exactly when no player gains from deviating once and then returning to the profile, at any history. There are infinitely many histories, so the key step is to group them — and here the strategy only distinguishes two cases.
 
@@ -219,7 +219,7 @@ The proof sketch has three stages:
 
 1. Everyone plays $a^\ast$ until a deviation.
 2. If player $i$ deviates, everyone minmaxes player $i$ for $n$ periods.
-3. If all three stages were followed, reward all punishers forever after.
+3. If the first two stages are carried out, reward all punishers forever after.
 
 If anyone deviates at any stage, the whole sequence restarts for that deviator: minmax him for $n$ periods, then reward the punishers. The structure is recursive and far more intricate than the first two versions; Ball says the exam will not require the full argument, though a problem set may ask about part of it.
 
@@ -231,7 +231,7 @@ A note on why the punishment is finite (supplement): an endless punishment would
 2. The **feasible set** is the convex hull of the stage game's payoff vectors. Points outside it are unreachable because each period produces a single vertex.
 3. **Individual rationality** requires each player's average payoff to be at least his minmax value $\underline{v}_i$; below that he can improve by switching strategy. In the prisoner's dilemma the line is 0, but 0 is not special.
 4. The folk theorem is a template: given a feasible $v$ and a set of assumptions, there is a cutoff $\bar\delta$ beyond which some SPNE delivers $v$. Weaker assumptions give a stronger theorem and a harder proof.
-5. The three versions punish with a common Nash equilibrium, with a deviator-specific Nash equilibrium, and with the minmax value. The common threshold is $\delta\ge g/(g+l)$: one-shot gain over gain plus permanent loss.
+5. The three versions punish with a common Nash equilibrium, with a deviator-specific Nash equilibrium, and with the minmax value. In the first two the threshold is $\delta\ge g/(g+l)$: one-shot gain over gain plus permanent loss; the third proof has no such form.
 6. The obstacle to harshest punishment is that the punisher would rather not execute it; rewarding the punisher, rather than punishing the non-punisher, cuts the infinite regress.
 
 ## Check your understanding
@@ -242,7 +242,7 @@ $a^\ast=(C,C)$ pays 2, $a^{NE}=(D,D)$ pays 0, and the best deviation is to switc
 
 **2. How is $(1,1)$ achieved inside the feasible set, and why is $(2.5,2.5)$ impossible?**
 
-$(1,1)$ is the midpoint of $(0,0)$ and $(2,2)$: defect half the time, cooperate half the time, and the average is $(1,1)$. Strict implementation has to handle the timing bias introduced by discounting, which randomisation or long blocks take care of. $(2.5,2.5)$ lies outside the hull: the highest single-period payoff is 3, but the period in which a player gets 3 gives the opponent $-1$, so there is no period in which both exceed 2, and no average can put both above 2.
+$(1,1)$ is the midpoint of $(0,0)$ and $(2,2)$: defect half the time, cooperate half the time, and the average is $(1,1)$. Strict implementation has to handle the timing bias introduced by discounting, which randomisation or long blocks take care of. $(2.5,2.5)$ lies outside the hull: the highest single-period payoff is 3, but the period in which a player gets 3 gives the opponent $-1$, so the two payoffs in any period sum to at most 4 (attained only at $(2,2)$), and averaging preserves that, so both components cannot exceed 2.
 
 **3. Why does the Nash reversion proof need only one cutoff, and what changes with continuous actions?**
 
@@ -258,4 +258,4 @@ Permanent minmax need not be subgame perfect: the punisher is hurt by his own pu
 
 **6. Does the folk theorem say that anything at all can be an equilibrium of a repeated game?**
 
-No. It characterises feasible and individually rational payoff vectors. Points outside the feasible set are unreachable, and points below the minmax value are unreachable because the player can fall back on a guarantee. The content of the theorem is that these two conditions are also **sufficient**: apart from them there is no further restriction.
+Feasibility and individual rationality give necessary bounds: discounted averages cannot leave the convex hull of stage payoffs, and a player can guarantee the minmax value. Sufficiency depends on the version’s additional hypotheses, such as strict individual rationality and sufficiently patient players. Even then, the theorem describes attainable payoffs without selecting a unique equilibrium.

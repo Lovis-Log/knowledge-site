@@ -1,7 +1,7 @@
 ---
 slug: 24-picard-lindelof
 title: "The Picard–Lindelöf Theorem: Turning an ODE into a Fixed Point"
-summary: "We prove the contraction mapping theorem, build the integral operator whose fixed points are solutions of the initial value problem, and use a closed ball with explicit constants to show that the operator is a contraction, yielding local existence and uniqueness."
+summary: "We prove the contraction mapping theorem, build the integral operator whose fixed points are solutions of the initial value problem, and use a closed ball with explicit constants to show that the operator is a contraction, yielding a local solution and uniqueness among solutions in that closed ball."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [mathematics]
@@ -284,7 +284,7 @@ $$
 \bigl|f(y_1(s))-f(y_2(s))\bigr|\le M\,|y_1(s)-y_2(s)| ,
 $$
 
-where $M$ is the maximum of $|f'|$ on some range. But if $y_1,y_2$ take arbitrarily large values, $f'$ may be unbounded, $M$ may not exist, and the contraction property fails.
+where $M$ is the maximum of $|f'|$ on some range. This inequality is the Lipschitz estimate for $f$, coming from the mean value theorem, and a contraction needs exactly such linear control with a uniform constant. Plain continuity cannot supply it: continuity only says that $f(y_1)$ and $f(y_2)$ are close when $y_1,y_2$ are close, which yields no constant independent of $s$ to multiply $d(y_1,y_2)$ by. But if $y_1,y_2$ take arbitrarily large values, $f'$ may be unbounded, $M$ may not exist, and the contraction property fails.
 
 This is the same phenomenon as the need for a good starting point in Newton's method: the map is only locally contracting. The remedy is to restrict the space to a **closed ball**, on which $|f'|$ has a maximum and the contraction constant can be computed.
 
@@ -296,7 +296,7 @@ $$
 B_R=\Bigl\{\,y\in C([-\delta_0,\delta_0]) : |y(x)|\le R\ \text{for all }x\,\Bigr\}.
 $$
 
-This is the **closed ball** of radius $R$ about the zero function in the space of continuous functions.
+This is the **closed ball** of radius $R$ about the zero function in the space of continuous functions ($R$ and $\delta_0$ are pinned down in the next subsection; for now they only serve to write the ball down).
 
 Why closed? Because only a closed subset inherits completeness. An open ball is not closed, a Cauchy sequence may converge to a boundary point outside it, and the completeness hypothesis of the contraction theorem would fail.
 
@@ -470,13 +470,13 @@ Note: the lecture reached this point just as time ran out; the final step $\delt
 
 Assembling the pieces:
 
-1. $B_R$ is a closed subset of the complete space $C([-\delta,\delta])$, hence complete.
+1. $B_R$ is a closed subset of the complete space $C([-\delta,\delta])$ (uniform convergence preserves $|y|\le R$: $|y(x)|=\lim_n|y_n(x)|\le R$), hence complete.
 2. $T:B_R\to B_R$.
 3. $T$ is a contraction on $B_R$ with constant $1/2$.
 4. By the contraction mapping theorem, $T$ has a unique fixed point $y$.
 5. Fixed points are exactly solutions of the ODE.
 
-This proves **existence and local uniqueness** in the Picard–Lindelöf theorem: on $(-\delta,\delta)$ the ODE with initial value $a$ has exactly one solution.
+This proves **existence and local uniqueness** in the Picard–Lindelöf theorem: on $(-\delta,\delta)$ the ODE with initial value $a$ has a solution, and among the solutions satisfying $|y(x)|\le R$ there is exactly one.
 
 What is proved is uniqueness "inside one small ball". If two solutions are defined on a larger interval, they must agree inside the ball; what happens outside requires the connectedness argument of the next lecture.
 

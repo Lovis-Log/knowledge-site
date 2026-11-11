@@ -42,7 +42,7 @@ $$
 \forall\varepsilon>0\ \exists N\ \forall n,m\ge N:\quad |x_n-x_m|<\varepsilon .
 $$
 
-Unlike convergence, no candidate limit $a$ appears. Intuitively: convergence says distant terms cluster around $a$; Cauchy says distant terms cluster around each other.
+Unlike convergence, no candidate limit $a$ appears, and a single $N$ must serve all $n,m\ge N$ (in the convergence definition $N$ is chosen only after $a$ is given). Intuitively: convergence says distant terms cluster around $a$; Cauchy says distant terms cluster around each other.
 
 **Theorem.** Every Cauchy sequence is bounded.
 
@@ -164,7 +164,7 @@ $$
 
 Since $0\le c<1$, $c^n\to0$. Given $\varepsilon>0$, choose $n$ large enough that the right side is below $\varepsilon$; then all $m>n$ satisfy $|a_m-a_n|<\varepsilon$. So $(a_n)$ is Cauchy.
 
-**Both hypotheses are used**: $c<1$ makes the geometric series converge; $c\ge0$ makes $c^n$ decrease to $0$. With $c=1$ the estimate becomes $(m-n)|a_1-a_0|$, unbounded in $m$, and the iterates may wander off.
+**Both hypotheses are used**: $c<1$ makes the geometric series converge; $c\ge0$ gives $c^k\ge0$, which is what lets the finite sum $\sum_{k=n}^{m-1}c^k$ be enlarged to the full series $\sum_{k=n}^{\infty}c^k$ (the monotone decay of $c^n$ also needs it). With $c=1$ the estimate becomes $(m-n)|a_1-a_0|$, unbounded in $m$, and the iterates may wander off.
 
 ## The contraction mapping theorem
 
@@ -231,7 +231,7 @@ $$
 \left|\frac{f(x)f''(x)}{f'(x)^2}\right|\le c<1,
 $$
 
-then $T$ is a contraction and Newton's iteration converges to the unique zero.
+then $T$ is a contraction on that interval. If it is a closed interval $I$ on which $f'$ is nonzero and $T(I)\subseteq I$, Newton’s iteration from any point in $I$ converges to the unique zero in $I$.
 
 A "good initial guess" now has a precise meaning: near the starting point, $|ff''|/(f')^2$ must be small. But the lecture warns that Newton's method only guarantees convergence inside a contracting region; one must also argue that the iterates never leave it, which the theorem alone does not supply.
 
@@ -275,7 +275,7 @@ $$
 f(x_n)\to S .
 $$
 
-(Take $\varepsilon=1/n$: since $S-1/n$ is not an upper bound, some $x_n$ has $f(x_n)>S-1/n$.)
+(Take $\varepsilon=1/n$: since $S-1/n$ is not an upper bound, some $x_n$ has $f(x_n)>S-1/n$; if $S=+\infty$, take $x_n$ with $f(x_n)>n$ instead.)
 
 Because $a\le x_n\le b$, the sequence $(x_n)$ is bounded. Bolzano–Weierstrass gives a subsequence $x_{n_k}\to X$. Since $[a,b]$ is closed, $X\in[a,b]$ (limits preserve non-strict inequalities: $a\le x_{n_k}\le b$ gives $a\le X\le b$).
 
@@ -295,7 +295,7 @@ Thus $S$ is a finite real number attained by $f$: the supremum is a maximum. The
 - In $\mathbb R$, Cauchy ⇔ convergent, via Bolzano–Weierstrass.
 - A contraction uses one $c<1$ for all pairs; it has at most one fixed point since $(1-c)|x-y|\le0$.
 - The iteration satisfies $|a_m-a_n|\le\dfrac{c^n}{1-c}|a_1-a_0|$, hence is Cauchy, yielding existence of a fixed point.
-- Newton's method turns $f(x)=0$ into the fixed-point equation $T(x)=x-f/f'$, contracting when $T'=ff''/(f')^2<1$.
+- Newton's method turns $f(x)=0$ into the fixed-point equation $T(x)=x-f/f'$, contracting when $\left|T'\right|=\left|\dfrac{ff''}{(f')^2}\right|\le c<1$ on the interval.
 - Continuity ⇔ limits may pass through $f$; hence a continuous function on a closed interval attains its extrema.
 
 ## Comprehension check

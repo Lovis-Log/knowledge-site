@@ -75,7 +75,7 @@ This presumes $v>c$. If $v<c$ there is never any trade; if $v=c$ the only possib
 The timing is that the seller posts a price and the buyer, seeing it, decides whether to buy. Backward induction:
 
 - The buyer accepts if and only if $v-p\ge 0$, i.e. $p\le v$. Ball adds a technical aside: when indifferent, stipulate that she accepts, which avoids a non-existence problem for the seller's optimum.
-- Anticipating this, the seller picks the highest acceptable price, $p=v$.
+- Anticipating this, the seller picks the highest acceptable price, $p=v$. This step uses $v>c$: if $v<c$, posting $v$ would not cover cost, and the seller would rather not sell.
 
 So the buyer gets $v-v=0$ and the seller gets $v-c>0$. **The seller extracts all the gains from trade.** In the split-the-dollar language, $v-c$ is the dollar on the table and the first mover takes all of it, because he can forecast the second mover's response.
 
@@ -189,7 +189,7 @@ v\ge p
 c\ge \frac{p-\alpha}{\beta}.
 $$
 
-**Only people whose cost exceeds the threshold buy.** This is **adverse selection**: you post a price and the customers who show up are exactly the ones most expensive to cover.
+**Only people whose cost exceeds the threshold buy.** This is **adverse selection**: you post a price and the customers who show up are exactly the ones most expensive to cover. (The figure uses $\alpha=0.1$ and $\beta=2$, the same numbers used again below.)
 
 ![At a price of 1 only buyers with cost above 0.45 purchase, and their mean cost is 0.725, far above the 0.45 threshold; each unit of price moves the threshold by 0.5 and lifts mean buyer cost by 0.25](/images/bargaining-adverse-selection-en.svg)
 
@@ -224,7 +224,7 @@ $$
 Ball rewrites it explicitly in $p$ and points at the coefficient on $p$:
 
 $$
-\pi(p)=\Big(p\big(1-\tfrac{1}{2\beta}\big)-\tfrac{\alpha}{2\beta}\Big)\big(1-c^\ast\big).
+\pi(p)=\Big(p\big(1-\tfrac{1}{2\beta}\big)-\tfrac{1}{2}+\tfrac{\alpha}{2\beta}\Big)\big(1-c^\ast\big).
 $$
 
 ### Why the coefficient is not one
@@ -247,9 +247,9 @@ $\beta$ is the sensitivity of value to cost, the slope of the line. It governs h
 - $\beta$ **large**: the line is steep, a price change barely moves cost, $1-\frac{1}{2\beta}$ is near 1, and adverse selection hardly matters.
 - $\beta$ **small**: someone who values the good slightly more is much costlier, $1-\frac{1}{2\beta}$ is well below 1, and adverse selection is severe.
 
-The extreme case is $\beta<\tfrac12$. Then $1-\dfrac{1}{2\beta}<0$, so **profit decreases in price**: raising the price earns less per sale, because the composition effect dominates the direct effect.
+The extreme case is $\beta<\tfrac12$. Then $1-\dfrac{1}{2\beta}<0$, so the **per-sale margin falls with price**: raising the price earns less per sale, because the composition effect dominates the direct effect.
 
-Profit then falls over the whole range, so the optimum is at a corner:
+Wherever the margin per sale is still positive, total profit falls in price, and a negative margin cannot be optimal. So the optimum is at a corner:
 
 - $p=\alpha$: everyone buys (threshold $c^\ast=0$), i.e. **universal coverage**.
 - or sell to nobody, for zero profit.
@@ -310,7 +310,7 @@ Ball spends his last two minutes on a neat impossibility argument: **there is no
 
 The reason is short. If the buyer buys at $p_L$ and at $p_H$, both qualities sell for certain. Since both sell for certain, why post the lower price? The low-quality seller switches to $p_H$, and separation collapses.
 
-So a separating equilibrium requires the buyer to buy at $p_H$ only **with some probability**, i.e. to mix, making the high-quality seller indifferent between "a high price that may not sell" and "a low price that certainly sells". Ball leaves the construction to the problem set.
+So a separating equilibrium requires the buyer to buy at $p_H$ only **with some probability**, i.e. to mix, holding that probability down until the low-quality seller is indifferent between "a high price that may not sell" and "a low price that certainly sells" — the low-quality seller has the lowest cost and gains most from a higher price, so it is the one with an incentive to imitate. Ball leaves the construction to the problem set.
 
 ## What this lecture establishes
 

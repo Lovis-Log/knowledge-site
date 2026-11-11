@@ -218,6 +218,8 @@ Q^\ast=\frac{n(1-c)}{n+1},\qquad
 p^\ast=c+\frac{1-c}{n+1}.
 $$
 
+It takes two lines to check. With the other $n-1$ firms shipping $Q_{-i}$, firm $i$ maximises $q_i(1-Q_{-i}-q_i-c)$ — the same $x(a-x)$ problem as before — so $q_i=\frac{1-Q_{-i}-c}{2}$; in the symmetric equilibrium $Q_{-i}=(n-1)q$, which gives $(n+1)q=1-c$.
+
 Three things deserve separate attention:
 
 - **Individual output falls in $n$.** The more firms there are, the smaller the residual demand I can capture; the others are already dragging the price down, so there is less point shipping more.
@@ -271,7 +273,7 @@ $$
 
 Note the **closed** interval, unlike the previous case. The difference: when the rival is strictly below cost, matching means splitting a loss; when the rival is exactly at cost, matching means splitting zero.
 
-**Case three: $c<p_2\le\frac{1+c}{2}$.** Now there is positive profit to take, and I want to be **just barely cheaper**, capturing the whole market. The trouble is that "barely" has no minimum: a dollar cheaper is worse than a cent cheaper, a cent worse than half a cent. So in this range the best response is **empty** — no optimal price exists.
+**Case three: $c<p_2\le\frac{1+c}{2}$.** Now there is positive profit to take, and I want to be **just barely cheaper**, capturing the whole market. The upper bound is exactly the monopoly price computed in the monopoly section: below it $(p-c)(1-p)$ is still rising in $p$, so the closer I sit to $p_2$ the more I earn, while matching only splits the market. The trouble is that "barely" has no minimum: a dollar cheaper is worse than a cent cheaper, a cent worse than half a cent. So in this range the best response is **empty** — no optimal price exists.
 
 Ball deliberately rings a warning bell here: when a conclusion looks like a mathematical artefact, ask whether the density of the reals is doing the work rather than the economics. He redoes the analysis with prices restricted to a finite grid of cents, and the conclusions are essentially unchanged. The empty set is technical and does not disturb the equilibrium.
 
@@ -289,7 +291,7 @@ $$
 p_1^\ast=p_2^\ast=c .
 $$
 
-Verify it: given a rival at $c$, charging more sells nothing (profit 0), charging less loses money on every unit (negative profit), charging $c$ earns 0. Nothing is strictly better, so it is a Nash equilibrium. Uniqueness takes longer: if both are above $c$, the lower one wants to cut slightly; if they are equal and above $c$, each wants to shave a hair and take everything; if either is below $c$, that firm is losing money and prefers to move to $c$. Every other configuration is eliminated.
+Verify it: given a rival at $c$, charging more sells nothing (profit 0), charging less loses money on every unit (negative profit), charging $c$ earns 0. Nothing is strictly better, so it is a Nash equilibrium. Uniqueness takes longer: if both are above $c$ but unequal, the higher-priced firm sells nothing and can take the whole market by pricing below $\min\{p_2,1\}$; if they are equal and above $c$, each wants to shave a hair and take everything; if one sits exactly at $c$ and the other is higher, the low one can raise its price slightly, stay under the rival, and earn a positive profit; if either is below $c$, that firm is losing money and prefers to move to $c$. Every other configuration is eliminated.
 
 ![Cournot price falls slowly from the monopoly price 0.6 toward marginal cost 0.2 as firms are added, while Bertrand reaches 0.2 with only two firms](/images/imperfect-competition-markup-en.svg)
 

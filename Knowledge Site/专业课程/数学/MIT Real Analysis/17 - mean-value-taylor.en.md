@@ -367,7 +367,7 @@ $$
 |f(b)-P_{k-1}(b)|\le \frac{C}{k!}|b-a|^k .
 $$
 
-The bound shrinks extremely fast in $k$ because the factorial sits in the denominator. For smooth functions, low-degree polynomials therefore give excellent local approximations — the practical meaning of Taylor expansion.
+If the same $C$ bounds the derivatives of all orders under consideration, the factorial makes the right-hand side tend to zero as $k$ grows with $|b-a|$ fixed. If the derivative bounds grow with the order, include that growth in the estimate. Smoothness alone does not ensure that the Taylor series converges to the function.
 
 ## What this lecture establishes
 

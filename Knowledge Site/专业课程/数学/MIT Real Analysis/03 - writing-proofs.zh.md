@@ -111,7 +111,7 @@ $$
 
 **第一步：$A$ 非空。** $1\in A$，因为 $1>0$ 且 $1^2=1<2$。
 
-**第二步：$A$ 有上界。** 断言 $2$ 是上界。若 $x\in A$ 且 $x\ge2$，则 $x^2\ge4>2$，与 $x^2<2$ 矛盾。所以 $x<2\le2$，即 $2$ 是上界。
+**第二步：$A$ 有上界。** 断言 $2$ 是上界。若 $x\in A$ 且 $x\ge2$，则 $x^2\ge4>2$，与 $x^2<2$ 矛盾。所以 $x<2$，即 $2$ 是上界。
 
 **第三步：取定 $\alpha$。** 由 $A$ 非空有上界与 $\mathbb R$ 完备，令
 
@@ -181,7 +181,7 @@ h=\frac{2-\alpha^2}{4\alpha},
 \alpha_2=\alpha+h .
 $$
 
-**$0<h<\frac12$**：分子为正，分母为正，故 $h>0$；又 $\alpha\ge1$，所以
+**$0<h<\frac12$**：分子为正，分母为正，故 $h>0$；又由第四步已知 $1\le\alpha$，所以
 
 $$
 h=\frac{2-\alpha^2}{4\alpha}<\frac{2}{4\alpha}\le\frac12<1 .
@@ -199,7 +199,7 @@ $$
 \alpha_2^2<\alpha^2+2\alpha h+h .
 $$
 
-代入 $2\alpha h=\dfrac{2-\alpha^2}{2}$，并用 $h<\dfrac{2-\alpha^2}{2}$（由 $\alpha\ge1$ 得 $\frac1{2\alpha}\le1$，故 $h=\frac{2-\alpha^2}{4\alpha}\le\frac{2-\alpha^2}{2}$），得到
+代入 $2\alpha h=\dfrac{2-\alpha^2}{2}$，并用 $h\le\dfrac{2-\alpha^2}{2}$（由 $\alpha\ge1$ 得 $\frac1{2\alpha}\le1$，故 $h=\frac{2-\alpha^2}{4\alpha}\le\frac{2-\alpha^2}{2}$），得到
 
 $$
 \alpha_2^2<\alpha^2+\frac{2-\alpha^2}{2}+\frac{2-\alpha^2}{2}=2 .

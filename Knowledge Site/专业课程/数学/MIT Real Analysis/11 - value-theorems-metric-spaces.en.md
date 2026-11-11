@@ -61,7 +61,7 @@ The converse also holds (the equivalence is standard): if $f(x_n)\to f(x)$ for e
 | 26:25 | IVT: build the set $E$ and take its supremum |
 | 39:57 | Metric spaces: definition and three axioms |
 | 44:55 | Examples: $\mathbb R$, Euclidean, taxicab, $C[0,1]$ |
-| 53:57 | A strange example: $|1/n-1/m|$ on the integers |
+| 53:57 | A strange example: $|1/n-1/m|$ on the nonzero integers |
 | 57:23 | The French railway metric |
 | 1:01:22 | Convergence and Cauchy sequences in metric spaces |
 | 1:12:12 | Continuous functions on metric spaces; the evaluation map |
@@ -161,7 +161,7 @@ $$
 f(x)<f(x_0)+\varepsilon<0 .
 $$
 
-This contradicts $x_0=\sup E$. Pick
+We now derive the contradiction with $x_0=\sup E$. Pick
 $$
 x_1\in\left(x_0,\ \min\{x_0+\delta,\ b\}\right).
 $$
@@ -204,19 +204,19 @@ d(x,y)=|x_1-y_1|+|x_2-y_2|.
 $$
 All three axioms are easy: positive definiteness and symmetry are clear, and the triangle inequality follows coordinate by coordinate from the one on $\mathbb R$. It measures the distance when one may only travel parallel to the axes.
 
-**The space $C[0,1]$. Let $X$ be the continuous functions on $[0,1]$ and
+**The space $C[0,1]$.** Let $X$ be the continuous functions on $[0,1]$ and
 $$
 d(f,g)=\max_{x\in[0,1]}|f(x)-g(x)| .
 $$
-The maximum exists because $|f-g|$ is continuous, by the **extreme value theorem**. Positive definiteness comes from "a continuous function that vanishes everywhere has distance zero"; symmetry is clear; the triangle inequality is applied pointwise and then maximized.
+The maximum exists because $|f-g|$ is continuous, by the **extreme value theorem**. Positive definiteness: $d(f,g)=0$ means the maximum of $|f-g|$ is $0$, so $f=g$; symmetry is clear; the triangle inequality is applied pointwise and then maximized.
 
 There is a pleasant interplay here: defining this metric needs the EVT, whose proof uses only the structure of $\mathbb R$ and not $C[0,1]$. The logic is therefore clean.
 
-**A strange distance on the integers.**
+**A strange distance on the nonzero integers.**
 $$
 d(n,m)=\left|\frac1n-\frac1m\right| .
 $$
-Positive definiteness and symmetry are clear. The triangle inequality need not be checked by hand: the map $n\mapsto1/n$ injects $\mathbb Z$ into $\mathbb R$, and this distance is simply the usual distance pulled back along that injection, so the triangle inequality is inherited.
+Positive definiteness and symmetry are clear. The triangle inequality need not be checked by hand: the map $n\mapsto1/n$ injects $\mathbb Z\setminus\{0\}$ into $\mathbb R$, and this distance is simply the usual distance pulled back along that injection, so the triangle inequality is inherited.
 
 The effect is counterintuitive: $1000$ and $1001$ are one unit apart in the usual sense but about $10^{-6}$ apart here. **Distance is added structure, not something a set carries by itself.**
 
@@ -284,7 +284,7 @@ Finally, the sequence lemma holds in metric spaces with an unchanged proof: if $
 - EVT: a continuous function on a closed interval is bounded and attains its maximum and minimum. The proof has two steps — bounded image (contradiction plus Bolzano–Weierstrass), then attainment of the supremum (approximation, subsequence, squeezing).
 - IVT: take the supremum $x_0$ of $E=\{x: f\le0\ \text{on}\ [a,x]\}$ and prove both $f(x_0)\le0$ and $f(x_0)\ge0$.
 - A metric space is a set with a distance satisfying positive definiteness, symmetry and the triangle inequality.
-- Euclidean and taxicab distances give different geometries; the sup metric on $C[0,1]$ relies on the EVT; $|1/n-1/m|$ on the integers and the French railway metric show how counterintuitive distance can be.
+- Euclidean and taxicab distances give different geometries; the sup metric on $C[0,1]$ relies on the EVT; $|1/n-1/m|$ on the nonzero integers and the French railway metric show how counterintuitive distance can be.
 - Convergent implies Cauchy, but the converse needs completeness; the sequence $1/n$ in $(0,1]$ is the standard counterexample.
 - Continuity on a metric space just replaces the absolute value by the distance; the evaluation map $f\mapsto f(0)$ is continuous.
 
@@ -302,7 +302,7 @@ Reference answer: For each $n$, $x_0-1/n$ is not an upper bound of $E$, so there
 
 Reference answer: Choose $\varepsilon>0$ with $f(x_0)+\varepsilon<0$. Continuity gives $\delta>0$ such that $|x-x_0|<\delta$ implies $f(x)<0$. Pick $x_1\in(x_0,\min\{x_0+\delta,b\})$. For $y<x_0$, the supremum property yields $e\in E$ with $e>y$, so $f\le0$ on $[a,e]$ and in particular $f(y)\le0$. For $y\in[x_0,x_1]$, continuity gives $f(y)<0$. Hence $f\le0$ on $[a,x_1]$, i.e. $x_1\in E$, contradicting that $x_0$ is an upper bound. The essential property: elements of $E$ keep $f$ non-positive from $a$ onward, and the supremum can be approached from below by elements of $E$.
 
-**4. Verify that $d(n,m)=|1/n-1/m|$ is a metric on $\mathbb Z$, and explain why $1000$ and $1001$ are close in it.**
+**4. Verify that $d(n,m)=|1/n-1/m|$ is a metric on $\mathbb Z\setminus\{0\}$, and explain why $1000$ and $1001$ are close in it.**
 
 Reference answer: Let $\varphi(n)=1/n$; then $d(n,m)=|\varphi(n)-\varphi(m)|$. Since $\varphi$ is injective, $d(n,m)=0$ iff $n=m$; non-negativity and symmetry are inherited from the absolute value; the triangle inequality follows from that on $\mathbb R$:
 $$

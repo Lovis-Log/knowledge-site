@@ -154,7 +154,7 @@ Ball switches to a 3×2 game and writes only player 1's payoffs, since only play
 | M | 0 | 0 |
 | B | −1 | 2 |
 
-Compare pairwise. T against M: 2>0 under L but −1<0 under R, so T does not dominate M. M against B fails the same way. **No strategy dominates any other.**
+Compare pairwise. T against M: 2>0 under L but −1<0 under R, so T does not dominate M. M against B fails the same way, and so does T against B (2>−1 under L, −1<2 under R). That exhausts the three pairs, so **no pure strategy dominates another**.
 
 So how should you play? The room's answer is right: you need an estimate of how likely the opponent is to play L. That reintroduces **beliefs** from the previous lecture — the same move as checking the weather app in lecture one.
 
@@ -232,6 +232,8 @@ $$
 
 - Against L: $\tfrac12(2)+\tfrac12(-1)=\tfrac12$.
 - Against R: $\tfrac12(-1)+\tfrac12(2)=\tfrac12$.
+
+Here $\sigma$ is a probability distribution over player 1's own strategies (weights non-negative and summing to 1); a mixture is evaluated by its expected payoff, $u_1(\sigma,s_{-1})=\tfrac12u_1(T,s_{-1})+\tfrac12u_1(B,s_{-1})$. The definition of dominance is unchanged — only $u_1$ is replaced by this expectation.
 
 Either way it pays $\tfrac12$ for sure, while M pays 0. Hence
 

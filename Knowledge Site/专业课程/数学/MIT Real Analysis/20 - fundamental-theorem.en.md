@@ -241,7 +241,7 @@ $$
 \lim_{x\to x_0^+}\frac{F(x)-F(x_0)}{x-x_0}=f(x_0).
 $$
 
-For $x<x_0$ the denominator is negative, so the inequalities reverse, but the same squeeze gives the left-hand limit $f(x_0)$. The two sides agree, hence $F'(x_0)=f(x_0)$. $\square$
+For $x<x_0$, $F(x)-F(x_0)=-\int_x^{x_0}f$ while $x-x_0=-(x_0-x)$, so the two minus signs cancel: the quotient equals $\frac{1}{x_0-x}\int_x^{x_0}f$ and is again trapped between $m$ and $M$ on $[x,x_0]$; the same squeeze gives the left-hand limit $f(x_0)$. The two sides agree, hence $F'(x_0)=f(x_0)$. $\square$
 
 The structure is a **squeeze**: the integral sits between two rectangles, the quotient between $\inf$ and $\sup$, and both converge to $f(x_0)$. Continuity is used exactly once — to make $M,m\to f(x_0)$.
 
@@ -253,7 +253,7 @@ $$
 \int_a^b f(x)\,dx=F(b)-F(a).
 $$
 
-The lecture leaves the proof to the notes; here is the argument, which uses only the mean value theorem and the criterion.
+The lecture leaves the proof to the notes; here is the argument, which uses only the mean value theorem and the integrability of $f$ (upper and lower integrals agree), with no $\varepsilon$.
 
 **Proof.** Take any partition $P=\{a=x_0<\cdots<x_n=b\}$. On each subinterval the mean value theorem gives $c_i\in(x_{i-1},x_i)$ with
 
@@ -353,7 +353,7 @@ Divergent. Both functions tend to $0$, but $1/x^2$ decays fast enough and $1/x$ 
 
 ### Type 2: unbounded function
 
-Suppose $f$ is integrable on $[c,b]$ for every $c>a$ (possibly unbounded or undefined near $a$). If
+Suppose $f$ is integrable on $[c,b]$ for every $a<c<b$ (possibly unbounded or undefined near $a$). If
 
 $$
 \lim_{c\to a^+}\int_c^b f(x)\,dx
@@ -454,7 +454,7 @@ Reference answer: For every $x$, $f(x)\le|f(x)|$ and $-f(x)\le|f(x)|$. Monotonic
 
 **4. Prove version 1 of the fundamental theorem and say where continuity is used.**
 
-Reference answer: Let $F(x)=\int_a^x f$ and fix $x_0$. For $x>x_0$, $F(x)-F(x_0)=\int_{x_0}^x f$. On $[x_0,x]$, continuity gives a minimum $m$ and maximum $M$, so $m(x-x_0)\le\int_{x_0}^x f\le M(x-x_0)$, and dividing by $x-x_0$ gives $m\le\frac{F(x)-F(x_0)}{x-x_0}\le M$. As $x\to x_0^+$, continuity gives $M,m\to f(x_0)$, so the right derivative is $f(x_0)$; the left side is analogous, with inequalities reversed because the denominator is negative. Continuity is used precisely here: it makes the extrema converge to $f(x_0)$ as the interval shrinks. Without continuity at the point, $F$ is still differentiable, but its derivative is a limit of averages and need not equal $f(x_0)$.
+Reference answer: Let $F(x)=\int_a^x f$ and fix $x_0$. For $x>x_0$, $F(x)-F(x_0)=\int_{x_0}^x f$. On $[x_0,x]$, continuity gives a minimum $m$ and maximum $M$, so $m(x-x_0)\le\int_{x_0}^x f\le M(x-x_0)$, and dividing by $x-x_0$ gives $m\le\frac{F(x)-F(x_0)}{x-x_0}\le M$. As $x\to x_0^+$, continuity gives $M,m\to f(x_0)$, so the right derivative is $f(x_0)$; the left side is analogous (the interval becomes $[x,x_0]$ and the two signs cancel the same way). Continuity is used precisely here: it makes the extrema converge to $f(x_0)$ as the interval shrinks. Without continuity at the point, $F$ is still continuous but need not be differentiable: where $f$ jumps, the one-sided derivatives differ (for $f=0$ on $[0,\frac12)$ and $f=1$ on $[\frac12,1]$, $F$ has left derivative $0$ and right derivative $1$ at $\frac12$). If $f$ has a removable discontinuity there, the derivative of $F$ equals the limit of $f$, which can differ from the value assigned to $f(x_0)$.
 
 **5. Prove version 2 using the mean value theorem, and explain why $f=F'$ must be integrable.**
 

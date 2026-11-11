@@ -75,7 +75,7 @@ Then choose as $a_{n_2}$ the first term after $a_{n_1}$ that lies in this half. 
 
 **Step $k$.** Repeat: bisect $[b_{k-1},c_{k-1}]$, keep a half containing infinitely many terms as $[b_k,c_k]$, and take the first term after $a_{n_{k-1}}$ that lands inside it.
 
-The construction never stalls, thanks to an inductive invariant: after bisecting, the two halves cover the previous interval, which contains infinitely many terms, so at least one half does too.
+The construction never stalls, thanks to an inductive invariant: after bisecting, the two halves cover the previous interval, which contains infinitely many terms, so at least one half does too. The same invariant supplies the next index: the chosen half contains infinitely many terms, while only finitely many indices are $\le n_{k-1}$, so that half contains a term with index $>n_{k-1}$.
 
 ### The length recursion
 
@@ -105,7 +105,7 @@ c-b=\lim_{k\to\infty}(c_k-b_k)=\lim_{k\to\infty}2^{1-k}=0,
 $$
 so $b=c$.
 
-Finally, for $l\ge k$ the construction gives $a_{n_l}\in[b_l,c_l]\subseteq[b_k,c_k]$, hence
+Finally, for $l\ge k$ nesting gives $a_{n_l}\in[b_l,c_l]\subseteq[b_k,c_k]$; and $b_k\le b\le c_k$, because the two endpoint sequences approach $b$ monotonically, so both $a_{n_l}$ and $b$ lie in $[b_k,c_k]$, hence
 $$
 |a_{n_l}-b|\le c_k-b_k=2^{1-k}.
 $$
@@ -200,7 +200,7 @@ Substituting,
 $$
 s_{2^{n+1}-1}\ge \frac{n}{2}+\frac12=\frac{n+1}{2}.
 $$
-The induction is complete. Hence $s_{2^n-1}\ge n/2\to\infty$ is unbounded. A convergent series would have every subsequence convergent, hence bounded — contradiction. So the harmonic series diverges. $\square$
+The induction is complete. Hence the subsequence $(s_{2^n-1})$ is unbounded, since $s_{2^n-1}\ge n/2\to\infty$. A convergent series would have every subsequence convergent, hence bounded — contradiction. So the harmonic series diverges. $\square$
 
 The engine is **grouping**: terms $2^n$ through $2^{n+1}-1$ form a block of $2^n$ terms, each at least $2^{-(n+1)}$, so each block contributes at least $1/2$. Infinitely many halves diverge.
 
@@ -288,7 +288,7 @@ s_{2^{n+1}-1}\le\sum_{i=0}^{n-1}\frac{1}{2^{i}}+\frac{1}{2^{n}}
 $$
 Induction complete.
 
-Thus every partial sum of the form $s_{2^n-1}$ is controlled by the geometric series $\sum2^{-i}=2$, and that subsequence is increasing, so the whole sequence is bounded by $2$ and the series converges.
+Thus every partial sum of the form $s_{2^n-1}$ is at most $\sum_{i\ge0}2^{-i}=2$. Since the terms are non-negative, $(s_n)$ is increasing; and for any $m$ we may choose $n$ with $2^n-1\ge m$, which gives $s_m\le s_{2^n-1}<2$. Hence the whole sequence is bounded by $2$ and the series converges.
 
 The proof is the exact mirror of the harmonic argument: the harmonic series uses the **smallest** term of each block to get a lower bound, $\sum1/n^2$ uses the **largest** to get an upper bound. One bisection scheme, two opposite conclusions.
 
@@ -308,7 +308,7 @@ $$
 $$
 for all sufficiently large $n$ and $\sum b_n$ converges, then $\sum a_n$ converges.
 
-It works in both directions: compare a complicated series with a known convergent one to prove convergence, or with a known divergent one (with the inequality reversed) to prove divergence. The geometric series matters precisely because it is the usual yardstick.
+It is used in both directions: to prove convergence by comparing with a known convergent series, and to prove divergence by exhibiting $0\le b_n\le a_n$ with $\sum b_n$ divergent. The geometric series matters precisely because it is the usual yardstick.
 
 ## What this lecture establishes
 

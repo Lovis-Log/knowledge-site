@@ -1,7 +1,7 @@
 ---
 slug: "02-completeness"
 title: "Completeness: Least Upper Bounds and the Existence of √2"
-summary: "We first prove that √2 is irrational, then introduce upper bounds and least upper bounds, and define a complete ordered field as one where every bounded subset has a least upper bound. We then construct √2 inside the reals and prove the Archimedean property and the density of the rationals."
+summary: "We first prove that √2 is irrational, then introduce upper bounds and least upper bounds, and define a complete ordered field as one where every nonempty subset bounded above has a least upper bound. We then construct √2 inside the reals and prove the Archimedean property and the density of the rationals."
 updatedAt: "2026-11-01"
 content_type: "video-course"
 categories: [mathematics]
@@ -126,7 +126,7 @@ One detail is easy to miss: the least upper bound need not belong to $A$. For $A
 
 The definition is short:
 
-> A **complete ordered field** is an ordered field in which every bounded subset has a least upper bound.
+> A **complete ordered field** is an ordered field in which every nonempty subset bounded above has a least upper bound.
 
 "Bounded" means bounded above. The lecture notes that defining only upper bounds loses nothing: replace a set by its "mirror image" and upper bounds become lower bounds, so the two notions are equivalent and stating both would be redundant. Concretely, lower bounds and infima come from applying suprema to $-A=\{-a:a\in A\}$.
 
@@ -229,7 +229,7 @@ Together, $x^2=2$. So $\sup A$ is $\sqrt 2$: the number genuinely exists in $\ma
 
 **Proof.** Let $F$ be any complete ordered field containing $\mathbb Q$. The construction above uses only field operations, order and completeness, so $\sqrt2=\sup\{x\in F:x>0,x^2<2\}$ must lie in $F$. But the first part of the lecture showed $\sqrt2\notin\mathbb Q$. If $\mathbb Q$ were complete, taking $F=\mathbb Q$ would be a contradiction. $\square$
 
-Concretely, consider $A_{\mathbb Q}=\{x\in\mathbb Q:x>0,x^2<2\}$. It has upper bounds in $\mathbb Q$ (for instance $2$) but no least upper bound. Indeed, let $q\in\mathbb Q$ be any upper bound. Since $1\in A_{\mathbb Q}$, $q\ge1>0$. If $q^2<2$ then $q\in A_{\mathbb Q}$, contradicting that $q$ bounds the set; if $q^2=2$ then $q$ is a rational square root of $2$, which is impossible. Hence $q^2>2$.
+Concretely, consider $A_{\mathbb Q}=\{x\in\mathbb Q:x>0,x^2<2\}$. It has upper bounds in $\mathbb Q$ (for instance $2$) but no least upper bound. Indeed, let $q\in\mathbb Q$ be any upper bound. Since $1\in A_{\mathbb Q}$, $q\ge1>0$. If $q^2<2$, take a small rational $h>0$ with $h<1$ and $h<\dfrac{2-q^2}{1+2q}$ (the estimate from step two); then $(q+h)^2<2$, so $q+h\in A_{\mathbb Q}$ while $q+h>q$, contradicting that $q$ bounds the set; if $q^2=2$ then $q$ is a rational square root of $2$, which is impossible. Hence $q^2>2$.
 
 Define
 
@@ -283,7 +283,7 @@ $$
 
 Thus $y-1$ is also an upper bound for $\mathbb N$. Yet $y-1<y$, contradicting that $y$ is the least upper bound. $\square$
 
-The proof is short but uses three things: closure of $\mathbb N$ under $+1$, transitivity of order, and minimality of the least upper bound. The lecture stresses that arguments of this kind are the basic craft of analysis.
+The proof is short but uses three things: closure of $\mathbb N$ under $+1$, compatibility of the order with addition (subtract $1$ from both sides), and minimality of the least upper bound. The lecture stresses that arguments of this kind are the basic craft of analysis.
 
 ## Corollary: the rationals are dense in the reals
 
@@ -299,7 +299,7 @@ $$
 \frac1n<\beta .
 $$
 
-Now take the **smallest** integer $m$ with $m/n>x$. Such an $m$ exists: by the Archimedean property there is an integer $k>nx$, so $k/n>x$ and the set of admissible integers is nonempty; since it is bounded below, it has a least element.
+Now take the **smallest** integer $m$ with $m/n>x$. Such an $m$ exists: by the Archimedean property there is an integer $k>nx$, so $k/n>x$ and the set of admissible integers is nonempty; that set is bounded below by $nx$, and every nonempty set of integers bounded below has a least element, which we take as $m$.
 
 By minimality of $m$, the integer $m-1$ does not satisfy the condition, so
 
@@ -320,7 +320,7 @@ Geometrically: choose a ruler of length $1/n$, shorter than the distance from $x
 ## What this lecture establishes
 
 - $\sqrt2\notin\mathbb Q$; the pivot of the contradiction is reducing to coprime $m,n$.
-- Completeness = every bounded subset has a least upper bound (supremum).
+- Completeness = every nonempty subset bounded above has a least upper bound (supremum).
 - $\mathbb R$ is the smallest complete ordered field, and it contains $\mathbb Q$.
 - In $\mathbb R$, $\sup\{x>0:x^2<2\}$ exists and squares to $2$; that is the construction of $\sqrt2$.
 - $\mathbb Q$ is not complete: the same set has no least upper bound among the rationals.

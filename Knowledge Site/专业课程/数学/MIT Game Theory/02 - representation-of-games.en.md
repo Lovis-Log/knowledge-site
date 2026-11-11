@@ -164,6 +164,8 @@ Two restrictions are required, or the model contradicts itself:
 | Information sets | Has them | None (all singletons) |
 | Drawn as | Filled circle | Hollow circle |
 
+Strictly speaking only the first three are differences in the definition; the last is a drawing convention.
+
 Nature does not strategize; it spins a wheel and draws an edge. Those probabilities are part of the game and are given; whether a strategic player goes to the Celtics game with probability 0.2 is precisely what we are trying to explain, so it cannot be assumed.
 
 Ball adds that Nature is not only about coin flips. You set the price at your gas station and then a war breaks out and oil moves; you set a price and then your rival is hit with an antitrust case. Events you cannot anticipate and can only form beliefs about are modelled as moves of Nature.

@@ -76,7 +76,7 @@ Picture the partial sums walking back and forth on the line:
 - $s_3=-\tfrac12-\tfrac13=-\tfrac56$ goes down, yet stays above the previous low $-1$;
 - $s_4=-\tfrac56+\tfrac14=-\tfrac7{12}$ goes up, yet stays below the previous high $-\tfrac12$.
 
-So the even partial sums increase, the odd ones decrease, each set brackets the other, and the step size $1/n\to0$; both converge to the same number. This is the geometric content of the **alternating series test**.
+So the odd partial sums increase, the even ones decrease, each set brackets the other, and consecutive sums differ by $|s_n-s_{n-1}|=1/n\to0$; both converge to the same number. This is the geometric content of the **alternating series test**.
 
 **Test (stated).** If the signs of $a_n$ alternate, $|a_n|$ decreases monotonically, and $|a_n|\to0$, then $\sum a_n$ converges.
 
@@ -235,7 +235,7 @@ Basic examples:
 - Cosine: $\displaystyle \cos x=\sum_{n=0}^{\infty}\frac{(-1)^n x^{2n}}{(2n)!}$.
 - Sine: $\displaystyle \sin x=\sum_{n=0}^{\infty}\frac{(-1)^n x^{2n+1}}{(2n+1)!}$.
 
-Not every function admits a power series. Those that do are called **analytic**. The lecture points to a function that is "dead zero" up to a point and only then becomes interesting, which is analytic nowhere. Note: the standard example is $f(x)=e^{-1/x^2}$ for $x\ne0$ and $f(0)=0$; every derivative at $0$ vanishes, so any power series expansion would have to be identically zero, contradicting the function.
+Not every function admits a power series. Those that do are called **analytic**. The lecture points to a function that is "dead zero" up to a point and only then becomes interesting; it fails to be analytic at that junction point. Note: the standard example is $f(x)=e^{-1/x^2}$ for $x\ne0$ and $f(0)=0$; every derivative at $0$ vanishes, so any power series expansion would have to be identically zero, contradicting the function.
 
 ### The central question: for which $x$ does it converge?
 
@@ -273,7 +273,7 @@ Reference answer: If a series converges then $a_n=s_n-s_{n-1}\to0$, a necessary 
 
 **2. Use the comparison test to prove $\sum2^{-n}/n$ converges, and explain why the test cannot be used in the opposite direction.**
 
-Reference answer: Since $1/n\le1$, we have $0\le2^{-n}/n\le2^{-n}$; the right side is the geometric series with $c=1/2$, which converges, so by the first comparison test $\sum2^{-n}/n$ converges. The reverse use fails because $a_n\le b_n$ together with divergence of $\sum a_n$ says nothing about $\sum b_n$ — the larger series could still converge. Proving divergence requires the inequality to go the other way: $0\le b_n\le a_n$ with $\sum b_n$ divergent.
+Reference answer: Since $1/n\le1$, we have $0\le2^{-n}/n\le2^{-n}$; the right side is the geometric series with $c=1/2$, which converges, so by the first comparison test $\sum2^{-n}/n$ converges. The reverse use fails: if all you know is $a_n\le b_n$, divergence of $\sum b_n$ says nothing about $\sum a_n$ — the smaller series may still converge. Proving divergence requires the inequality the other way round: $0\le b_n\le a_n$ with $\sum b_n$ divergent.
 
 **3. Why does limit comparison require $L$ to be neither $0$ nor $\infty$? Give an example where $L=0$ changes the conclusion.**
 

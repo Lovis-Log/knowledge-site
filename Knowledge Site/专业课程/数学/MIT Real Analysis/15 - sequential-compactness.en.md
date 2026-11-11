@@ -21,7 +21,7 @@ The previous lecture defined compactness — every open cover has a finite subco
 - In $\mathbb R^n$ with the Euclidean metric, **closed and bounded implies compact**; that is a privilege of $\mathbb R^n$.
 - In a general metric space it **fails**.
 
-This lecture gives two counterexamples, one mundane and one deep, then proves the main theorem: **every sequence in a compact set has a convergent subsequence**. That is the metric-space Bolzano–Weierstrass theorem, and the real purpose of compactness.
+This lecture gives two counterexamples, one mundane and one deep, then proves the main theorem: **every sequence in a compact set has a convergent subsequence**. That is the metric-space Bolzano–Weierstrass theorem, and one of the motivations for defining compactness.
 
 Why is it needed? In $\mathbb R$, the Cauchy convergence theorem is proved via BW; BW fails in a general metric space, so the Cauchy convergence theorem does too. Compactness fills the gap. The lecturer also stresses that the proof **may not assume completeness**, so both the subsequence and its limit must be constructed — which is exactly what the nested-ball lemma delivers.
 
@@ -183,7 +183,9 @@ Radii tending to zero give uniqueness; compactness gives existence. Together the
 
 **Theorem.** Let $A$ be compact and let $(x_n)$ be a sequence in $A$. Then $(x_n)$ has a convergent subsequence, and its limit lies in $A$.
 
-The proof has three moves: use finite covers to single out a chain of balls each holding infinitely many terms, double them to obtain nested closed sets, then use the corollary to extract the unique intersection point as the limit.
+Here "compact" still means the open-cover definition of the previous lecture; the conclusion — every sequence has a subsequence converging to a limit inside $A$ — is **sequential compactness**. So the direction proved is: open-cover compact $\Longrightarrow$ sequentially compact.
+
+The proof has four moves: use finite covers to single out a chain of balls each holding infinitely many terms, refine layer by layer and double the balls to obtain nested closed sets, verify that the nestedness really holds, then use the corollary to extract the unique intersection point as the limit.
 
 ### Step 1: one covering
 
@@ -193,7 +195,7 @@ $$
 A\subseteq B_1(y_1)\cup\cdots\cup B_1(y_k).
 $$
 
-The sequence has infinitely many terms but lands in finitely many balls, so **at least one ball contains infinitely many terms**. Denote it $B_{r_1}(y_1)$ with $r_1=1$.
+The sequence has infinitely many terms but lands in finitely many balls, so **at least one ball contains infinitely many terms**. Denote it $B_{r_1}(y_1)$ with $r_1=1$. Here "infinitely many terms" means infinitely many indices $n$, not infinitely many distinct values — the sequence may well be constant.
 
 From now on, look only at the terms in this ball — they form a subsequence. Call its first term $x_{n_1}$.
 
@@ -209,13 +211,13 @@ $$
 
 $C_k$ is a closed subset of the compact set $A$ (a closed ball intersected with $A$), hence **compact** — this is exactly where the previous lecture's "closed subsets of compact sets are compact" is used.
 
-Cover $C_k$ with open balls of radius $r_{k+1}=r_k/4$ centred at points of $C_k$. By compactness finitely many suffice. The current subsequence has infinitely many terms in $C_k$ (they already lie in $B_{r_k}(y_k)\subseteq C_k$), so **one of these finitely many balls still contains infinitely many terms**. Call it $B_{r_{k+1}}(y_{k+1})$, and choose the next index $n_{k+1}>n_k$ from it.
+Cover $C_k$ with open balls of radius $r_{k+1}=r_k/4$ centred at points of $C_k$. By compactness finitely many suffice — those finitely many centres form a finite $r_{k+1}$-net of $C_k$. The current subsequence has infinitely many terms in $C_k$ (these terms lie in $B_{r_k}(y_k)$ and in $A$, hence in $\overline{B_{2r_k}(y_k)}\cap A=C_k$), so **one of these finitely many balls still contains infinitely many terms**. Call it $B_{r_{k+1}}(y_{k+1})$, and choose the next index $n_{k+1}>n_k$ from it.
 
 ### Step 3: verifying nestedness
 
 We need $C_{k+1}\subseteq C_k$, otherwise the lemma does not apply.
 
-Both $B_{r_{k+1}}(y_{k+1})$ and $B_{r_k}(y_k)$ contain infinitely many terms, so they intersect. Pick $q$ in the intersection; then
+The infinitely many terms in the chosen $B_{r_{k+1}}(y_{k+1})$ are terms of the current subsequence, and the current subsequence lies entirely in $B_{r_k}(y_k)$, so the two balls intersect. Pick $q$ in the intersection; then
 
 $$
 d(y_{k+1},y_k)\le d(y_{k+1},q)+d(q,y_k)<r_{k+1}+r_k .
@@ -258,7 +260,7 @@ Nothing assumes completeness: the limit $p$ is **constructed** from nested close
 - Nested nonempty closed sets in a compact set intersect; if their radii tend to zero, the intersection is a single point.
 - Every sequence in a compact set has a convergent subsequence with limit in the set — the metric-space Bolzano–Weierstrass theorem.
 - The technique: finite cover to filter → doubling to build nested closed balls → nested lemma to extract the unique limit.
-- The theorem does not need completeness, so compactness can replace "complete plus bounded" as the working hypothesis in analysis.
+- The theorem uses only compactness and never assumes completeness; but compactness is not the same as "closed and bounded" — the second counterexample shows that even complete, closed and bounded is not enough.
 
 ## Comprehension check
 

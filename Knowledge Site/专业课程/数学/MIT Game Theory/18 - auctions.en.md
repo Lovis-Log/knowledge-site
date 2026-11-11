@@ -81,7 +81,7 @@ Fix your valuation $v_1$ and consider deviating in either direction. Ball draws 
 2. $b_1'<b_2<v_1$: bidding $v_1$ wins, pays $b_2<v_1$, and nets $v_1-b_2>0$; bidding $b_1'$ loses and gets $0$. **Strictly worse.**
 3. $b_2>v_1$: both lose. **No difference.**
 
-Four regions out of six show no difference, two are strictly worse, and none is strictly better. Hence
+Four regions out of six show no difference, two are strictly worse, and none is strictly better. The split uses only the two cut points $v_1$ and $b_1'$, and in either case the winner pays the highest opponent bid, so swapping $b_2$ for $p=\max_{j\neq 1}b_j$ carries the same three regions over to $n$ bidders. Write $b_{-1}=(b_2,\dots,b_n)$ for the opponents' bids. Then
 
 $$
 u_1(v_1,\,b_{-1})\ \ge\ u_1(b_1',\,b_{-1})\quad\text{for all } b_{-1},
@@ -288,7 +288,7 @@ $$
 
 Before solving, Ball offers a version that needs no derivatives, and it is worth keeping.
 
-Suppose my valuation is $v$ and I am meant to bid $\beta(v)$. Consider raising the bid slightly to $\beta(v)+\varepsilon$ with $\varepsilon>0$ small. By Taylor expansion the extra bid is about $\varepsilon\beta'(v)$.
+Suppose my valuation is $v$ and I am meant to bid $\beta(v)$. Consider raising the bid slightly — bidding $\beta(v+\varepsilon)$ as if my valuation were $v+\varepsilon$, with $\varepsilon>0$ small. By Taylor expansion the extra bid is about $\varepsilon\beta'(v)$.
 
 - **Extra cost**: whenever I win I now pay $\varepsilon\beta'(v)$ more. Winning happens with probability $G(v)$, so expected extra cost is $\varepsilon\beta'(v)G(v)$.
 - **Extra benefit**: the higher bid changes the outcome only in one new event — the highest opponent valuation falls in $(v,v+\varepsilon)$. There, bidding $\beta(v)$ loses and the higher bid wins. That event has probability about $g(v)\varepsilon$, and a win is worth $v-\beta(v)$, so expected extra benefit is $(v-\beta(v))\,g(v)\,\varepsilon$.
@@ -408,4 +408,4 @@ Zero. Winning means paying exactly her valuation, for a net of $0$; losing pays 
 
 **6. Both formats raise $1/3$ here — does that mean the choice of format does not matter?**
 
-It does in this example and for these two equilibria, but the conclusion does not generalise freely. Equality relies on symmetry, independence, private values, values on a continuum, and both sides playing the equilibrium. The next lecture makes the point sharp: revenue equivalence compares *an equilibrium* of one auction with *an equilibrium* of another, not one format with another, and different equilibria of the same format can raise very different revenue.
+It does in this example and for these two equilibria, but the conclusion does not generalise freely. Equality relies on symmetry, independence, private values, values on a continuum, risk-neutral bidders, and both sides playing the equilibrium. The next lecture makes the point sharp: revenue equivalence compares *an equilibrium* of one auction with *an equilibrium* of another, not one format with another, and different equilibria of the same format can raise very different revenue.

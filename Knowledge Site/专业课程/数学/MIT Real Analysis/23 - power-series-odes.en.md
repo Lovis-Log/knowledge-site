@@ -102,7 +102,7 @@ $$
 +\left|\int_{x_0}^{x}\bigl(f_n'(s)-g(s)\bigr)\,ds\right| .
 $$
 
-Bound the integral by "length times maximum error". If $x\ge x_0$,
+Bound the integral by "length times maximum error"; here $d(f_n',g)=\sup_{s\in(A,B)}\bigl|f_n'(s)-g(s)\bigr|$ is the sup distance, finite for large $n$ by hypothesis 2. If $x\ge x_0$,
 
 $$
 \left|\int_{x_0}^{x}\bigl(f_n'(s)-g(s)\bigr)\,ds\right|
@@ -118,6 +118,8 @@ $$
 \le (x_0-x)\,d(f_n',g)
 \le (b-a)\,d(f_n',g).
 $$
+
+(If $x_0\notin[a,b]$, replace $b-a$ by $\max\{|a-x_0|,|b-x_0|\}$, which likewise depends only on the interval and $x_0$, not on $x$ or $n$.)
 
 In either case, for all $x\in[a,b]$,
 
@@ -288,7 +290,7 @@ $$
 =\sum_{k=0}^{\infty}\frac{a_k}{k+1}x^{k+1}.
 $$
 
-This is again a power series with the same radius. Integrating a power series, like differentiating one, is a term-by-term operation.
+The lower limit is $0$, so both sides vanish at $x=0$ and no extra constant of integration appears. This is again a power series with the same radius. Integrating a power series, like differentiating one, is a term-by-term operation.
 
 ## What an ordinary differential equation is
 

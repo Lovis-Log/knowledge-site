@@ -1,7 +1,7 @@
 ---
 slug: "22-signaling"
 title: "Signaling: when a degree is an expensive certificate"
-summary: "In Spence's job-market model education teaches nothing and is priced by type; with continuous education, pooling yields a single threshold e* while separation yields an interval, both pinned down by the requirement that the wage premium cover the cost of schooling."
+summary: "In Spence's job-market model education teaches nothing and is priced by type; with continuous education, pooling allows a range of thresholds e* while separation yields an interval, both pinned down by the requirement that the wage premium cover the cost of schooling."
 updatedAt: "2026-11-08"
 content_type: "video-course"
 tags:
@@ -281,6 +281,8 @@ $$
 l(h-l)\;\le\;e_h^{2}\;\le\;h(h-l).
 $$
 
+The two inequalities can hold at once only because of the **single-crossing** (Spence–Mirrlees) condition: the marginal cost of a unit of schooling is $2e/l$ for the low type and $2e/h$ for the high type, larger for the low type at every $e$, so the two indifference curves cross only once. In the inequalities the condition shows up as the different coefficients on the same $e_h$ — $\frac{1}{l}e_h^{2}$ for the low type, $\frac{1}{h}e_h^{2}$ for the high type — which is why the two bounds differ by $(h-l)^{2}>0$ and the interval is nonempty: every $e_h$ inside it separates the types.
+
 The constant on the right is $h$, not $\mu$: the separating premium is $h-l$, larger than the pooling premium $\mu-l$, because high education now **fully reveals** the high type and the market pays $h$.
 
 The two inequalities read in opposite directions. The upper bound says schooling must not be so costly that even the high type gives up. The lower bound says it must not be so cheap that the low type is tempted to imitate. Ball draws the parallel with the essay problem of the previous lecture: the essay had to be cheap enough for keen students and expensive enough for unenthusiastic ones. The mechanism is identical.
@@ -370,4 +372,4 @@ Differentiate $w=\bar u+e^{2}/t$ to get slope $2e/t$. Since $l<h$, we have $1/l>
 
 **6. Can this model speak to grade inflation or "the diploma is worth less"?**
 
-Within the model one can say something directional: if $\pi$ rises (more high types), $\mu$ rises, the pooling bound $\sqrt{l(\mu-l)}$ rises, and a higher threshold can still be sustained; conversely, if schooling becomes cheaper (higher $l$), the same threshold is easier to clear and the diploma is less of a hurdle. But these comparative statics depend entirely on which parameter moves, and the model has no endogenous human capital and no feedback from diploma expansion to beliefs. Treat them as directional hints, not as a quantitative account of credential inflation.
+Within the model one can say something directional: if $\pi$ rises (more high types), $\mu$ rises, the pooling bound $\sqrt{l(\mu-l)}$ rises, and a higher threshold can still be sustained; conversely, if schooling becomes cheaper (higher $l$), the premium $\mu-l=\pi(h-l)$ shrinks at the same time; for the usual case $l>h/2$ (in the figure, $l=1$, $h=1.5$) the bound $\sqrt{l(\mu-l)}$ falls rather than rises, so the highest sustainable threshold drops and the diploma is less of a hurdle. But these comparative statics depend entirely on which parameter moves, and the model has no endogenous human capital and no feedback from diploma expansion to beliefs. Treat them as directional hints, not as a quantitative account of credential inflation.

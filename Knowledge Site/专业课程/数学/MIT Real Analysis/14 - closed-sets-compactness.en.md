@@ -84,7 +84,7 @@ $$
 
 is not open. The reason is sharp: $\inf_n 1/n=0$, there is no positive lower bound, and the `min` step has no infinite analogue.
 
-The counterexample returns later — it also shows why "infinite intersection of open sets" and "finite union of closed sets" both need the finiteness restriction.
+The counterexample returns later — it also shows why "infinite intersection of open sets" and "infinite union of closed sets" both need a finiteness restriction.
 
 ## Definition of a closed set
 
@@ -114,7 +114,7 @@ $$
 
 Hence $z\in E$, i.e. $B_s(y)\subseteq E$, and $E$ is open. $\square$
 
-This is almost the proof that a ball is open, with the triangle inequality used on the other side: to prove a distance is **greater** than something, the quantity being estimated must sit on the right of the inequality. The same trick returns when proving compact implies closed.
+This is almost the proof that a ball is open, with the triangle inequality used on the other side: to prove a distance is **greater** than something, put the known $d(x,y)$ on the left of the inequality and the estimated $d(x,z)$ on the right, then rearrange. The same trick returns when proving compact implies closed.
 
 It follows at once that the closed ball $\{y : d(y,x)\le r\}$ is closed, since its complement is exactly $E$.
 
@@ -153,7 +153,7 @@ Both directions rest on one translation: **"not in the open set" becomes "there 
 - $[0,1]\subseteq\mathbb R$ is closed: its complement $(-\infty,0)\cup(1,\infty)$ is open.
 - $[0,1)$ is **neither open nor closed**: its complement $(-\infty,0)\cup[1,\infty)$ omits points just left of $1$, so it is not open.
 - $[0,1]\cup[2,3]$ is closed.
-- A singleton $\{p\}$ is closed: its complement $\{y : d(y,p)>0\}$ is the $r=0$ limiting case of the lemma, or can be checked directly.
+- A singleton $\{p\}$ is closed: its complement is $\{y : d(y,p)>0\}=X\setminus\{p\}$. The lemma is stated only for $r>0$, but its proof applies verbatim at $r=0$: then $y\ne p$, so $s=d(y,p)>0$, and the same ball $B_s(y)$ still lies in the complement.
 
 A consequence of the last point: every finite set is closed (a finite union of singletons).
 
@@ -266,7 +266,7 @@ $$
 E_n=\left\{y\in X : d(y,x)>\frac1n\right\}.
 $$
 
-Each $E_n$ is open by the lemma above, and $\bigcup_n E_n=X\setminus\{x\}$: if $y\ne x$, choose $n>1/d(y,x)$. Since $x\notin A$,
+Each $E_n$ is open by the lemma above, and $\bigcup_n E_n=X\setminus\{x\}$: if $y\ne x$, the Archimedean property ($\mathbb N$ is unbounded) supplies $n\in\mathbb N$ with $n>1/d(y,x)$. Since $x\notin A$,
 
 $$
 A\subseteq X\setminus\{x\}=\bigcup_{n=1}^{\infty}E_n
@@ -282,7 +282,7 @@ $$
 
 But $x_n\in A$ and $x_n\to x$, so eventually $d(x_n,x)<1/N$ — a contradiction. Therefore $x\in A$ and $A$ is closed. $\square$
 
-The structure is worth remembering: **to prove a point lies outside a closed hull, construct an increasing family of open sets "distance greater than $1/n$" that isolates it**. A similar construction appears next lecture when proving that closed subsets of compact sets are compact.
+The structure is worth remembering: **to prove $A$ is closed, suppose $x\notin A$ and construct an increasing family of open sets "distance greater than $1/n$" that separates $x$ from $A$**. The same use of open covers returns at the end of this lecture, when closed subsets of compact sets are shown to be compact.
 
 ### The converse fails
 
@@ -317,7 +317,7 @@ Short, but it uses two essential facts: $C$ closed (so the complement is open an
 
 ## Comprehension check
 
-**1. Why can a closed set not simply be defined as "every point has a ball that is not entirely outside the set"?**
+**1. Why can a closed set not simply be defined as "not open"?**
 
 Reference answer: That phrasing is the negation of the open-set condition and characterises "not open", not "closed". For instance $[0,1)$ is not open, but it is not closed either; and in $\mathbb R$ the complement of $(0,1]$ is $(-\infty,0]\cup(1,\infty)$, which is not open, so $(0,1]$ is not closed. The correct meaning of "closed" is **the complement is open**, which says points in the complement have room to move — a different statement from "every point of the set has a ball inside".
 
@@ -337,7 +337,7 @@ Reference answer: Suppose $x\notin C$. Then $x$ lies in the open set $X\setminus
 
 **4. Give a family of closed sets whose union is not closed, and relate it to the failure of infinite intersections of open sets.**
 
-Reference answer: Take $C_n=[1/n,1]$; each is closed, but $\bigcup_n C_n=(0,1]$, which is not closed ($0$ is a limit point outside the set). Its complement $(-\infty,0)\cup(1,\infty)$ omits points near $0$, so it is not open. Taking complements turns this union into the intersection of the open sets $(-1/n,1/n)$, whose intersection is $\{0\}$ and is not open — the two facts correspond exactly through De Morgan.
+Reference answer: Take $C_n=[1/n,1]$; each is closed, but $\bigcup_n C_n=(0,1]$, which is not closed ($0$ is a limit point outside the set). Its complement is $(-\infty,0]\cup(1,\infty)$: it contains $0$, yet no ball about $0$ stays inside it, so it is not open. Taking complements turns this union into the intersection of the open sets $(-\infty,1/n)\cup(1,\infty)$, whose intersection is again $(-\infty,0]\cup(1,\infty)$ and is not open — the same failure of infinite intersections of open sets, and the two facts correspond exactly through De Morgan.
 
 **5. Use compactness to prove that a compact set is bounded (show how $r$ is chosen).**
 

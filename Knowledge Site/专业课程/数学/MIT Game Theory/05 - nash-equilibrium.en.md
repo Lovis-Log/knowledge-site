@@ -1,7 +1,7 @@
 ---
 slug: "05-nash-equilibrium"
 title: "Nash Equilibrium: From \"I Can Explain It\" to \"I Got It Right\""
-summary: "Rationalizability only guarantees that each surviving strategy has some explanation, not that the explanation is true. Nash equilibrium demands that beliefs match actual play, which yields \"no one gains by deviating alone\"; it sits between the other solution concepts, collapses in pure-conflict games, needs mixed strategies and an indifference condition to survive there, and exists in every finite game by Nash's 1948 theorem."
+summary: "Rationalizability only guarantees that each surviving strategy has some explanation, not that the explanation is true. Nash equilibrium demands that beliefs match actual play, which yields \"no one gains by deviating alone\"; it sits between the other solution concepts, collapses in pure-conflict games, needs mixed strategies and an indifference condition to survive there, and exists in every finite game by Nash's theorem."
 updatedAt: "2026-11-08"
 content_type: "video-course"
 tags:
@@ -127,7 +127,7 @@ Ball gives the condition three forms:
 - **Deviation form**: no player has a strictly profitable unilateral deviation, where "profitable" means higher utility, not more money.
 - **Belief-consistency form**: beliefs are invisible in the definition because **beliefs are required to equal reality**. The symbol $s_{-i}^\ast$ is simultaneously the opponents' actual play and my (correct) belief about it. Merging the two into one symbol is exactly what makes the distinction easy to forget.
 
-Ball calls the third point Nash's most important idea: **when reasoning about other people, take their strategies as given**. I cannot control them; I control one coordinate.
+Ball ties the second form to what he calls Nash's most important idea: **when reasoning about other people, take their strategies as given**. I cannot control them; I control one coordinate.
 
 ### Underlining
 
@@ -167,7 +167,7 @@ The last inclusion is trivial — rationalizable profiles are profiles. The firs
 
 Let $s^\ast$ be a dominant-strategy equilibrium. To show it is a Nash equilibrium, fix a player $i$ and a deviation $s_i'$ and show $u_i(s_i^\ast,s_{-i}^\ast)\ge u_i(s_i',s_{-i}^\ast)$.
 
-Start from the hypothesis. Since $s^\ast$ is a $DSE$, $s_i^\ast$ is weakly dominant for player $i$: it weakly dominates **every** other strategy of player $i$, and in particular $s_i'$:
+Start from the hypothesis. A $DSE$ is a profile in which every player's strategy is weakly dominant, so since $s^\ast$ is a $DSE$, $s_i^\ast$ is weakly dominant for player $i$: it weakly dominates **every** other strategy of player $i$, and in particular $s_i'$:
 
 $$
 u_i(s_i^\ast,s_{-i})\ \ge\ u_i(s_i',s_{-i})\qquad \text{for all } s_{-i}.
@@ -317,7 +317,7 @@ The standard move is to add a row. Suppose player 1 plays $\tfrac12 A+\tfrac12 B
 - Player 2 looks at A: $\tfrac12(1)+\tfrac12(-1)=0$.
 - Player 2 looks at B: $\tfrac12(-1)+\tfrac12(1)=0$.
 
-Both pure strategies pay 0, so player 2 is indifferent, and by the converse of the lemma — here both pure strategies are best responses — mixing $\tfrac12,\tfrac12$ is a best response for player 2 as well.
+Both pure strategies pay 0, so player 2 is indifferent, and since they are tied for the best payoff available to him, both are best responses. By the stronger version of the lemma — you may only mix over best responses — mixing $\tfrac12,\tfrac12$ pays 0 as well and is a best response for player 2 too.
 
 The other direction is symmetric: if player 2 plays $\tfrac12 A+\tfrac12 B$, both of player 1's pure strategies pay 0, so mixing is a best response for player 1.
 
@@ -364,6 +364,8 @@ So the mixed equilibrium is
 $$
 \left(\tfrac23 C+\tfrac13 R,\ \tfrac13 C+\tfrac23 R\right).
 $$
+
+Both solutions lie in $(0,1)$, so the assumption that both players really mix is consistent. The step also needs more than the necessity of indifference: at $P_1=2/3$ player 2's two pure strategies both pay $2/3$, tied for the maximum, so mixing $\tfrac13 C+\tfrac23 R$ also pays $2/3$ and, by the previous section's test, is a best response for player 2; at $P_2=1/3$ the same argument covers player 1.
 
 ![Best-response correspondences in the Boston game: the horizontal axis is player 1's probability of going to the Celtics and the vertical axis is player 2's; the ink staircase jumps from x=0 to x=1 at y=1/3, the ochre staircase jumps from y=0 to y=1 at x=2/3, and the two staircases cross at (0,0), (1,1) and (2/3,1/3), the two pure equilibria plus the mixed one](/images/nash-equilibrium-best-response-en.svg)
 
@@ -415,7 +417,7 @@ Ball does not end by treating the definition as self-evident. It is often called
 
 1. Rationalizability only requires that a player **has an explanation**, and permits the explanation to be false. Nash equilibrium requires the explanation to be **true**: the strategies you believe your opponents will play are the ones they play. That is the entire boundary between the two concepts.
 2. Formally, for every player, holding everyone else at the equilibrium, no deviation yields strictly higher utility. The inequality is weak, so break-even deviations are allowed and only strict improvement is forbidden.
-3. The three concepts nest strictly: $DSE\subseteq NE\subseteq S^\infty\subseteq S$. In the Boston game the counts are 0, 2, 4 and 4.
+3. The three concepts nest in this order, though none of the inclusions need be strict: $DSE\subseteq NE\subseteq S^\infty\subseteq S$. Counting only pure profiles, the Boston game has 0, 2, 4 and 4, respectively. It also has a mixed Nash equilibrium.
 4. The two inclusions are proved differently. $DSE\subseteq NE$ weakens "for all opponent profiles" to "for this one profile". $NE\subseteq S^\infty$ needs induction on elimination rounds, and the inductive hypothesis must cover all players at once, because what determines my survival is what my opponents still have.
 5. Pure-conflict games may have no pure-strategy equilibrium. Mixed strategies fill the gap, with a precise asymmetry: the equilibrium strategy may mix, while deviations need only be checked in pure strategies. Indifference over what you mix is necessary, and sufficient only when everything you mix over is a best response.
 6. My mixing probability in equilibrium is pinned down by my **opponent's** indifference condition, so it encodes his preference gap, not mine. Every finite game has a mixed-strategy equilibrium (Nash 1948).
@@ -440,7 +442,7 @@ Because a mixed deviation pays a weighted average of pure payoffs: $u_i(\sigma_i
 
 **5. In the Boston game, is $P_1=2/3$ because player 1 prefers the Celtics?**
 
-No. $P_1$ must satisfy player 2's indifference condition $1\cdot P_1=2(1-P_1)$, and the coefficient 2 on the right is player 2's preference for the Red Sox. Player 1's taste for the Celtics shows up in $P_2=1/3$, because player 2's condition is $2P_2=1-P_2$, where the 2 on the left is player 1's Celtics payoff. Each player's ratio encodes the other's preference gap: the less my opponent likes an outcome, the more often I must play it to leave him indifferent.
+No. $P_1$ must satisfy player 2's indifference condition $1\cdot P_1=2(1-P_1)$, and the coefficient 2 on the right is player 2's preference for the Red Sox. Player 1's taste for the Celtics shows up in $P_2=1/3$, because what pins $P_2$ down is player 1's own indifference condition $2P_2=1-P_2$, where the 2 on the left is player 1's Celtics payoff. Each player's ratio encodes the other's preference gap: the less my opponent likes an outcome, the more often I must play it to leave him indifferent.
 
 **6. If a strategy is indifferent to another given a belief, may I mix between them?**
 

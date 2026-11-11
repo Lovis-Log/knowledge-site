@@ -185,6 +185,8 @@ $$
 
 Supplementary: the figure takes $\beta=0.1$, giving $t_1=0.3$, $y(L)=0.15$, $y(H)=0.65$ and $t_1+\beta=0.4$. One can check that $0.4$ is exactly the average of $0.15$ and $0.65$.
 
+The check at $t=t_1$ alone covers every state: the payoff difference between the two messages is $\big(y(H)-y(L)\big)\cdot 2(t_1-t)$, linear and decreasing in $t$ and zero exactly at $t_1$, so every $t<t_1$ prefers low and every $t>t_1$ prefers high.
+
 ### Why the threshold leans left
 
 In $t_1=\tfrac12-2\beta$, one thing stands out: for any $\beta>0$ the threshold sits **below** $\frac12$, so the right cell is longer.
@@ -246,7 +248,7 @@ $$
 
 Count them: $k$ receiver conditions (one midpoint per cell) and $k-1$ sender conditions (one indifference per cut), against $k-1$ unknowns $t_1,\dots,t_{k-1}$. Ball flags the classic fence-post arithmetic: $k-1$ cuts make $k$ pieces.
 
-Equations equal unknowns does not mean every $k$ works. The solution must lie inside $[0,1]$ and be strictly increasing, and that requirement produces the restriction on $\beta$. Put differently, for large $\beta$ the system still has a formal solution, but the partition "runs off the end": the last cell would have to extend past 1, or the first cell would need negative length. The existence condition is read off that failure.
+Equations equal unknowns does not mean every $k$ works. The solution must lie inside $[0,1]$ and be strictly increasing, and that requirement produces the restriction on $\beta$. Put differently, for large $\beta$ the system still has a formal solution, but the partition "runs off the end": the first cell would need a negative length (equivalently, $t_1<0$). The existence condition is read off that failure.
 
 ### The length recursion
 
@@ -254,7 +256,7 @@ The algebra can be done, but there is a nicer reading. Look at two adjacent cell
 
 If the cells were equal, the two midpoints would be symmetric about $t_j$, and the advisor standing at $t_j$ (ideal point $t_j+\beta$, to the right) would strictly prefer the higher decision. To make her indifferent, the average of the two midpoints must shift **right by $\beta$**, i.e. equal $t_j+\beta$.
 
-Moving the right endpoint $t_{j+1}$ to the right moves the midpoint by only half as much, so the endpoint must move by $2\beta$ to move the midpoint by $\beta$; combining with the fixed left endpoint gives
+Now move only the right endpoint $t_{j+1}$; $t_j$ stays put, so the left midpoint does not move. For the average to shift by $\beta$, the right midpoint must shift by $2\beta$; and the right midpoint moves only half as far as the endpoint, so $t_{j+1}$ must move by $4\beta$. This gives
 
 $$
 t_{j+1}-t_j=(t_j-t_{j-1})+4\beta .

@@ -112,6 +112,8 @@ In this small game B is strictly dominated by T and F is strictly dominated by A
 
 That exposes what is wrong with $XT\cdot F$ and $XB\cdot F$: they require "play T or B after entry while the opponent plays F", and neither $(T,F)$ nor $(B,F)$ is a Nash equilibrium of that small game. If player 1 actually entered, player 2 would want to change their mind on the spot.
 
+Conversely, $NT\cdot A$ passes both tests: it is a Nash equilibrium of the whole game, and its restriction to the post-entry block is $(T,A)$, the block's only equilibrium. So this game has exactly one SPNE, the profile $NT\cdot A$, and the outcome it produces is $(2,2)$.
+
 ## Defining subgames
 
 **Definition.** Given an extensive-form game $G$, take a non-terminal node $n$ and collect $n$ together with all of its successor nodes. If
@@ -163,7 +165,7 @@ Player 1 first chooses to exit (both get 1.5, as if both stayed home) or enter; 
 
 There are only two subgames: the whole game, and the post-entry block.
 
-The post-entry block is the standard coordination game with two pure Nash equilibria, $CC$ and $RR$. Here something differs from backward induction on perfect-information trees: there, each decision point had a single player and usually a unique best action, so you just rolled back. Now the rolling back happens at the level of a **subgame**, and a subgame can have several equilibria. So each equilibrium must be assumed in turn, and the tree rolled back once for each.
+The post-entry block is the standard coordination game with two pure Nash equilibria, $CC$ and $RR$. Check it: given the opponent picks C, following with C yields 2 (player 1) or 1 (player 2) against 0 for the other choice; given the opponent picks R, following with R yields 1 or 2 against 0 for C — only $CC$ and $RR$ are mutual best responses. Here something differs from backward induction on perfect-information trees: there, each decision point had a single player and usually a unique best action, so you just rolled back. Now the rolling back happens at the level of a **subgame**, and a subgame can have several equilibria. So each equilibrium must be assumed in turn, and the tree rolled back once for each.
 
 **Assume the subgame plays $CC$.** Payoffs are $(2,1)$. Player 1 compares 2 from entering with 1.5 from exiting, and enters. That gives one SPNE: player 1 picks $N$ at the initial node and $C$ at the post-entry information set (written $NC$), player 2 picks $C$.
 
@@ -270,7 +272,7 @@ Because under $(X,F)$, player 2's F is only tested on the path where player 1 st
 
 **2. What does each of the two subgame conditions rule out? Illustrate with this lecture's example.**
 
-The singleton condition rules out a starting node inside a multi-node information set, guaranteeing that everyone knows we are at this history. The no-cutting condition rules out a subgame whose players share an information set with players outside it, guaranteeing the block is closed. In the example, the two nodes inside player 1's information set violate both at once: neither is singleton, and collecting successors from either one slices player 2's two-node information set.
+The singleton condition rules out a starting node inside a multi-node information set, guaranteeing that everyone knows we are at this history. The no-cutting condition rules out a subgame whose players share an information set with players outside it, guaranteeing the block is closed. In the example, the two nodes inside player 1's information set violate both at once: neither is singleton, and collecting successors from either one slices player 1's two-node information set.
 
 **3. Why is the whole game always a subgame, and what is that good for?**
 

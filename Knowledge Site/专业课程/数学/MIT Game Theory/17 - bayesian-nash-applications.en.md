@@ -153,7 +153,7 @@ $$
 q_1(\theta_L)<q_2<q_1(\theta_H).
 $$
 
-On the left: $q_1(\theta_L)<q_2\iff(\theta_L-q_2)/2<q_2\iff\theta_L<3q_2=(\theta_L+\theta_H)/2\iff\theta_L<\theta_H$. The right-hand inequality is identical. So "the uninformed firm's output lies between the informed firm's two" is not an artefact of the parameterisation but a necessity.
+On the left: $q_1(\theta_L)<q_2\iff(\theta_L-q_2)/2<q_2\iff\theta_L<3q_2=(\theta_L+\theta_H)/2\iff\theta_L<\theta_H$. The right-hand inequality is identical. So "the uninformed firm's output lies between the informed firm's two" is not an artefact of the parameterisation but a necessity. All of this presumes an interior solution: if $\theta_H>5\theta_L$, then $q_1(\theta_L)=(\theta_L-q_2)/2$ comes out negative, the constraint $q_1\ge0$ binds, the low type produces nothing, and both the first-order conditions and the averaging result have to be redone.
 
 ## Why auctions
 
@@ -237,7 +237,7 @@ $$
 =(v_1-b_1)\cdot\Pr\big[b_1>\alpha v_2\big].
 $$
 
-Losing pays zero, so only the winning branch matters. And $\Pr[b_1>\alpha v_2]=\Pr[v_2<b_1/\alpha]$, which under uniformity equals $b_1/\alpha$, provided $b_1\le\alpha$ — that is, provided I do not bid above the highest bid my opponent could make. That proviso is safe: bidding above $\alpha$ guarantees a win, so raising the bid further only raises the price paid.
+Losing pays zero, so only the winning branch matters; the tie branch drops out as well, since $v_2$ is continuous and $\alpha v_2$ equals the fixed number $b_1$ with probability zero — the point made when the payoff function was written down. And $\Pr[b_1>\alpha v_2]=\Pr[v_2<b_1/\alpha]$, which under uniformity equals $b_1/\alpha$, provided $b_1\le\alpha$ — that is, provided I do not bid above the highest bid my opponent could make. That proviso is safe: bidding above $\alpha$ guarantees a win, so raising the bid further only raises the price paid.
 
 Hence
 
@@ -250,6 +250,8 @@ Since $\alpha$ is a constant it does not affect the maximiser, and $b_1(v_1-b_1)
 $$
 b_1^\ast=\frac{v_1}{2}.
 $$
+
+One check remains on the proviso used above: at $\alpha=1/2$ the solution satisfies $b_1^\ast=v_1/2\le 1/2=\alpha$ for every $v_1\in[0,1]$, so no type falls into the $b_1>\alpha$ case and $\Pr[b_1>\alpha v_2]=b_1/\alpha$ is valid across the whole type space.
 
 **Matching coefficients.** The guess was $b=\alpha v$ and the best response is $b=v/2$, which is indeed in the linear family with coefficient $1/2$. Consistency requires $\alpha=1/2$, so
 

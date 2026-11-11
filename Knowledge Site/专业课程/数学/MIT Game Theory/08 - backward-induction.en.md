@@ -116,7 +116,7 @@ $$
 (C,C)=(2,1),\quad (C,R)=(0,0),\quad (R,C)=(0,0),\quad (R,R)=(1,2).
 $$
 
-Same payoffs, different timing, very different equilibria — the same phenomenon as Cournot versus Stackelberg in the previous lecture.
+Same payoffs, different timing, very different equilibria — the same phenomenon as the comparison between Cournot and Stackelberg later in this lecture.
 
 In the strategic form player 1 has two strategies, C and R; player 2 has two information sets (after C, after R), so a strategy is a four-tuple CC, CR, RC, RR, where the first letter says what he does on seeing C and the second what he does on seeing R.
 
@@ -140,7 +140,7 @@ Which is the right one? Ball polls the room and the answer converges quickly on 
 - At "saw C": playing C gives 1, playing R gives 0, so C.
 - At "saw R": playing C gives 0, playing R gives 2, so R.
 
-That is exactly CR. In the first equilibrium player 2 claims "even after seeing R I go to C" — going alone to basketball gives 0 while following gives 2, so the claim would not be carried out if tested. The third equilibrium has the mirror-image problem.
+That is exactly CR. Substituting upward: after C, player 2 follows to C and player 1 gets 2; after R, player 2 follows to R and player 1 gets 1, so player 1 chooses C at the root. In the first equilibrium player 2 claims "even after seeing R I go to C" — going alone to basketball gives 0 while following gives 2, so the claim would not be carried out if tested. The third equilibrium has the mirror-image problem.
 
 Ball calls such a claim a **non-credible threat**. Player 2 would of course like player 1 to believe "I go to baseball no matter what", because then player 1 goes to baseball himself; but once the threat is actually tested (player 1 goes to basketball), player 2 has no reason to carry it out. Backward induction **systematically eliminates** equilibria of this kind.
 
@@ -174,13 +174,13 @@ The beauty of the argument is that it **never computes anything**. The strategy 
 
 The last example applies backward induction to an economic question: **sequential quantity competition**, also called Stackelberg competition.
 
-The setup is nearly the previous lecture's Cournot: two firms, constant marginal cost $C\in(0,1)$, inverse demand $P(Q)=\max\{1-Q,0\}$ with $Q=q_1+q_2$, and profits
+The setup is nearly the Cournot setup from lecture 6: two firms, constant marginal cost $C\in(0,1)$, inverse demand $P(Q)=\max\{1-Q,0\}$ with $Q=q_1+q_2$, and profits
 
 $$
 \pi_i=q_i\,(1-q_1-q_2-C).
 $$
 
-The only change is that **firm 1 moves first and firm 2 observes before moving**. The payoff functions are identical; what changed is the information structure.
+The only change is that **firm 1 moves first and firm 2 observes before moving**. The payoff functions are identical; what changed is the information structure. Strictly this steps outside the algorithm's input conditions: $q_1$ ranges over a continuum, so a single node has infinitely many branches. Ball's reading is that what finiteness really requires is that the players move back and forth only finitely many times; infinitely many options at one node do not block the recursion, so he applies it anyway.
 
 The definition of a strategy becomes delicate. Firm 1's strategy is still a number $q_1\ge 0$. Firm 2's cannot be a number, because it must say something at every possible $q_1$, and $q_1$ ranges over all non-negative reals; so the strategy is a **function**
 
@@ -204,7 +204,7 @@ $$
 Q_2^\ast(q_1)=\frac{1-q_1-C}{2}.
 $$
 
-A truncation is needed. If $q_1$ exceeds $1-C$ the market price is already 0, below the cost $C$, so any production loses money. Hence
+A truncation is needed. Once $q_1$ exceeds $1-C$ the price $1-q_1$ is already below the cost $C$ (larger $q_1$ only drives $P=\max\{1-Q,0\}$ to its floor), so any production loses money. Hence
 
 $$
 Q_2^\ast(q_1)=\max\left\{\frac{1-q_1-C}{2},\;0\right\}.
@@ -273,7 +273,7 @@ $$
 
 In words: stay at or below $\bar q_1$ and I respond optimally; exceed it and I **flood the market** — produce 100, crash the price to 0, and leave you with nothing.
 
-Given that strategy, firm 1's best choice is exactly $\bar q_1$: one unit more triggers the flood and zero payoff, one unit less wastes the allowance that does not trigger it. So $(q_1=\bar q_1,\ Q_2)$ is a Nash equilibrium.
+Given that strategy, firm 1's best choice is exactly $\bar q_1$: one unit more triggers the flood and zero payoff, one unit less wastes the allowance that does not trigger it. One premise deserves writing down: on the no-flood range firm 1 earns $q_1\frac{1-q_1-C}{2}$, which rises up to $q_1=\frac{1-C}{2}$, so choosing exactly $\bar q_1$ is optimal only if $\bar q_1\le\frac{1-C}{2}$ (the lecture's $\bar q_1=\frac{1-C}{4}$ satisfies this). So $(q_1=\bar q_1,\ Q_2)$ is a Nash equilibrium.
 
 Someone immediately objects: is that a threat? Flooding loses firm 2 money too. Ball's answer is the point: **it is not credible, which is why it fails backward induction**. Check the unreached contingencies $q_1\in(\bar q_1,\,1-C)$: flooding yields 0 there, while producing $\frac{1-q_1-C}{2}$ yields positive profit. So firm 2 plays suboptimally at those nodes — precisely "a mistake off the path".
 

@@ -110,13 +110,13 @@ The crucial point: what shrank the set was not "player 2 is rational" — that w
 
 Player 2 is down to R and stays there.
 
-Player 1 knows that player 2 knows player 1 is rational, so player 1 can infer that player 2 must play R. Against R, player 1's best response is B (payoff 2, against −1 for T). Hence
+Player 1 is in fact stacking two pieces of knowledge: player 2 is rational (step one), and player 2 knows player 1 is rational (step two). Combining them, player 1 can redo the calculation of step two and conclude that player 2 must play R. Against R, player 1's best response is B (payoff 2, against −1 for T). Hence
 
 $$
 S_1'''=\{B\}.
 $$
 
-Both players are now down to one strategy each, and the prediction is the unique profile $(B,R)$. Notice that **both numbers in that cell have been underlined** at some point: B is a best response to R, and R is a best response to B.
+Both players are now down to one strategy each, and the prediction is the unique profile $(B,R)$. The lecture records best responses by underlining the relevant payoff. Notice that **both numbers in that cell have been underlined** at some point: B is a best response to R, and R is a best response to B.
 
 ### The rhythm of elimination
 
@@ -146,7 +146,7 @@ $$
 \mathrm{SCD}_i(S_{-i}') = \left\{\, s_i \in S_i \;:\; s_i \text{ is strictly dominated given } S_{-i}' \text{ by some mixture } \sigma_i \,\right\}.
 $$
 
-Beginners routinely trip on one point, and Ball stops the lecture to ask it: whose mixed strategy does the dominating? **Player $i$'s own.** Beliefs are about opponents, but a dominance relation always holds between two strategies of the *same* player, because a player compares only things she can choose.
+Beginners routinely trip on one point, and Ball stops the lecture to ask it: whose mixed strategy is doing the dominating? **Player $i$'s own.** Beliefs are about opponents, but a dominance relation always holds between two strategies of the *same* player, because a player compares only things she can choose.
 
 ### The theorem in set notation
 
@@ -169,7 +169,7 @@ The generalisation yields a clean monotonicity:
 - As $S_{-i}'$ shrinks, $\mathrm{SCD}_i(S_{-i}')$ **grows**. Fewer inequalities need checking, so it is easier to be judged dominated.
 - The two always sum to $S_i$, so one shrinking forces the other to grow.
 
-Ball explains the second by counting inequalities: a larger $S_{-i}'$ means more constraints to satisfy simultaneously, so dominance is harder; a stronger condition is easier to meet.
+Ball explains the second by counting inequalities: dominance requires the mixture to be strictly better against **every** strategy in $S_{-i}'$, so the larger that set is, the more inequalities must hold at once and the harder dominance is to establish; conversely, the tighter the restriction, the easier the conclusion.
 
 In the extreme, if $S_{-i}'$ has a single element, $\mathrm{BR}_i$ degenerates to "the set of best responses to that particular strategy" — the naive definition we started from.
 
@@ -180,7 +180,7 @@ Formalised as a recursion. The input is a **finite** strategic form game (Ball s
 - **Base case**: $S_i^{0}=S_i$ for every player.
 - **Recursion**: $S_i^{k+1}=\mathrm{BR}_i\!\left(S_{-i}^{k}\right)$.
 
-Each round keeps only the strategies that are best responses given the opponent's feasible set from the previous round. In a finite game the process stabilises after finitely many steps, since the sets only shrink and are finite.
+Each round keeps only the strategies that are best responses given the opponent's feasible set from the previous round. By the theorem from last week the round can equivalently be written $S_i^{k+1}=\mathrm{BR}_i(S_{-i}^{k})=S_i\setminus \mathrm{SCD}_i(S_{-i}^{k})$: keeping best responses and dropping strictly dominated strategies are two descriptions of one operation, provided dominance is allowed to use mixtures ($M$ is the case in point — no pure strategy dominates it, only $\tfrac12 T+\tfrac12 B$ does). In a finite game the process stabilises after finitely many steps, since the sets only shrink and are finite. The test for stopping is that **every** player set has stopped changing at the same time: if any set is still shrinking, keep going — in the example player 1 is unchanged at step two, but player 2 is not, so a third step is still needed.
 
 The strategies that survive are the **rationalizable** ones. A game is **dominance solvable** if the process leaves each player with exactly one strategy, yielding a unique prediction.
 
@@ -227,4 +227,4 @@ No. Dominance solvability says: if both are rational, and each knows the other i
 
 **6. Why does the algorithm require a finite game?**
 
-Because finiteness guarantees that the decreasing sequence $S_i^0 \supseteq S_i^1 \supseteq \cdots$ stabilises in finitely many steps and that each best-response set is non-empty (a continuous function on a finite set attains a maximum). With infinite strategy sets, best responses may fail to exist or the elimination may never converge. Ball says the course still uses infinite games as examples but makes no formal claims about them.
+Because finiteness guarantees that the decreasing sequence $S_i^0 \supseteq S_i^1 \supseteq \cdots$ stabilises in finitely many steps and that each best-response set is non-empty (with a finite strategy set, a maximum is attained against any belief). With infinite strategy sets, best responses may fail to exist or the elimination may never converge. Ball says the course still uses infinite games as examples but makes no formal claims about them.

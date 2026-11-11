@@ -154,7 +154,7 @@ c_n=\frac{(x+y)^n}{n!}
 $$
 exactly the required shape. $\square$
 
-For general signs the corollary applies: both sides can be written as products of absolutely convergent series, and matching terms gives equality. The lecture does not spell this out, saying only that it is not hard.
+For general signs the corollary applies: the binomial expansion is an identity of real numbers and does not care about the signs of $x$ and $y$, so $c_n=\sum_{i=0}^{n}a_ib_{n-i}$ still holds; and $\sum x^n/n!$, $\sum y^n/n!$ converge absolutely for every real $x,y$, so the corollary gives $\sum c_n=E(x)E(y)$, that is, $E(x+y)=E(x)E(y)$. The lecture does not spell this out, saying only that it is not hard.
 
 Note: with the addition formula in hand, both borrowed facts from the previous lecture follow — $E(x)=1/E(-x)>0$ for negative $x$, and $e^{m/n}=E(m/n)$.
 
@@ -210,7 +210,7 @@ The previous lecture listed five rules; two are proved here.
 
 ### Composition (rule 5)
 
-Let $f:A\to B$ and $g:B\to\mathbb R$ be continuous, and let $h=g\circ f$. Show $h$ is continuous at $x_0$; write $y_0=f(x_0)$.
+Let $A,B\subseteq\mathbb R$, let $f:A\to B$ and $g:B\to\mathbb R$ be continuous, and let $h=g\circ f$. For any $x_0\in A$, show $h$ is continuous at $x_0$; write $y_0=f(x_0)$.
 
 Given $\varepsilon>0$. Since $g$ is continuous at $y_0$, there is $\delta_g>0$ with
 $$
@@ -271,7 +271,7 @@ The pattern matches the product rule's "first prove boundedness": **push the den
 - Non-negativity cannot be dropped: rearrangements change the sum of a conditionally convergent series, even arbitrarily.
 - The binomial theorem writes $((x+y)^n/n!)$ as a product series, giving $E(x+y)=E(x)E(y)$.
 - The Dirichlet function is discontinuous at rational and irrational points alike, because each set is dense in the other.
-- Compositions pass $\delta$ from outside in; reciprocals are handled by first pushing the denominator below $|f(x_0)|/2$ in absolute value.
+- Compositions pass $\delta$ from outside in; reciprocals are handled by first keeping the denominator above $|f(x_0)|/2$ in absolute value.
 
 ## Comprehension check
 
