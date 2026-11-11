@@ -1,5 +1,36 @@
 [
   {
+    "date": "2026-11-11",
+    "features": [],
+    "content": [
+      {
+        "title": "全站正文精修 · 审阅 20 本书的 244 章，更新 156 章 / Sitewide review · Reviewed 244 chapters across 20 books and updated 156",
+        "href": "/library/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "专业课程：补足数学推导，校正算例和编程示例 / Course notes: filled gaps in mathematical derivations and corrected worked and code examples",
+        "href": "/categories/courses/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "AI Era：核对工具与 API 的适用条件，修正示例代码 / AI Era: checked when tool and API behavior applies and fixed example code",
+        "href": "/categories/ai-era/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "精选收录：校对外刊精读的词义、数据口径和说法归属 / Curated reading: checked vocabulary, figures in context and attribution",
+        "href": "/categories/curated/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "《股市入门》补齐英文版，可在原章节内切换中英 / Stock Market for Beginners now has an English edition in the same chapter",
+        "href": "/books/finance-and-business/06-stock-market-for-beginners/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-10",
     "features": [
       {
