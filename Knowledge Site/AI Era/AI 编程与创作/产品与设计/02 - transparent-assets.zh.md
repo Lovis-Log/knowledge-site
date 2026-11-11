@@ -1,7 +1,7 @@
 ---
 slug: 02-transparent-assets
 title: "透明素材：生成真 alpha 通道，再验证与复用"
-summary: "透明 PNG 的价值在于一张图能复用到任何背景。本文给出生成、校验、合成三步的完整代码，覆盖电商、演示图表、设计模板与印花商品四类场景，并说明为什么提示词会覆盖 background 参数。"
+summary: "用透明 PNG 生成、验证与合成可复用素材，解释背景参数、提示词与 alpha 检查，并给出四种应用场景。"
 updatedAt: 2026-11-01
 content_type: technical-tutorial
 categories: [ai-coding]
@@ -51,7 +51,7 @@ asset_dir.mkdir(parents=True, exist_ok=True)
 
 ## 一条容易踩的规则：提示词优先于 background 参数
 
-如果提示词里描述了背景、场景、颜色或「放在某物上」，模型可能照着描述生成背景，而不是给你透明底。
+对于支持透明背景的模型，设置 `background="transparent"`，并选择 PNG 或 WebP。提示词中也要说明主体应独立呈现，避免引入场景、底板或边框。背景参数和提示词各有用途；最终应检查实际返回的 alpha 通道。
 
 所以提示词必须同时做到两件事：
 
@@ -60,15 +60,15 @@ asset_dir.mkdir(parents=True, exist_ok=True)
 
 一个可复用的「品牌 + 透明」约束段落：
 
-```text
-One object from STILLROOM, an understated luxury botanical home-fragrance atelier:
+```python
+brand_prompt = """One object from STILLROOM, an understated luxury botanical home-fragrance atelier:
 artisanal warm amber and honey-tinted hand-blown glass, subtle brushed brass hardware,
 natural ivory cotton cord, quiet Japanese-Scandinavian restraint,
 warm side-lit editorial studio photography, photorealistic micro-detail.
 Full object completely visible and generously padded. Preserve every natural transparency,
 refraction, translucent layer and fine material edge.
 Output an isolated object on actual fully transparent alpha; no backdrop, no rectangle,
-no plinth, no cast shadow, no readable writing, no label text, no watermark.
+no plinth, no cast shadow, no readable writing, no label text, no watermark."""
 ```
 
 把这段和每个产品的具体描述拼起来，就能让同系列的四件产品在视觉上保持一致。
@@ -96,7 +96,7 @@ for filename, product_prompt in products.items():
     (asset_dir / f"{filename}.png").write_bytes(image_bytes)
 ```
 
-注意 `output_format="png"` 与 `background="transparent"` 必须同时出现；只设背景参数、却让提示词描述场景，结果会退回不透明。
+示例显式选择 PNG，和下方的 `.png` 文件名一致。WebP 也支持透明；若改用 WebP，保存时要改用 `.webp` 后缀。
 
 ## 验证 alpha：不要相信肉眼
 
@@ -202,7 +202,7 @@ merchandise-blank-tshirt: 正面平铺的象牙色 T 恤，胸前留空，轮廓
 merchandise-blank-sweatshirt: 同样的平铺森林绿卫衣。
 ```
 
-合成时用 Pillow 去掉透明留白，再按比例贴到胸前：
+这三个提示词是本用例的输入，前面的四款香氛循环不会生成这些文件。先按本节的文件名分别保存 PNG 到 BTasset_dirBT，再用 Pillow 裁掉透明留白并把图案贴到胸前。
 
 ```python
 def visible_region(image):
@@ -239,7 +239,7 @@ garment.alpha_composite(artwork, dest=(chest_x, chest_y))
 
 **1. `background="transparent"` 已经设置了，为什么还可能在结果里看到白色背景？**
 
-参考答案：因为提示词优先于参数。如果提示词描述了背景、场景、颜色或「放在某物上」，模型可能照着描述生成背景。解决办法是让提示词只描述孤立主体，并明确写出「输出在真正的透明 alpha 上，不要 backdrop、矩形、底座、投影」。
+参考答案：先核对模型、背景参数和输出格式，再查看 alpha 通道。看上去是白色，可能只是查看器用白色显示透明区，也可能是图像里真的画进了白色底板。只描述孤立的主体有助于减少画进去的背景。
 
 **2. 只检查「看起来是白底」为什么不够？应该怎么验证？**
 

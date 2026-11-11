@@ -1,7 +1,7 @@
 ---
 slug: 02-transparent-assets
 title: "Transparent Assets: Generate Real Alpha, Then Verify and Reuse"
-summary: "A transparent PNG is worth having because one file works on any background. This note gives complete code for generating, validating, and compositing, across four use cases, and explains why prompts override the background parameter."
+summary: "Generate, validate and composite reusable transparent assets across four use cases, with notes on background settings, prompts and alpha checks."
 updatedAt: 2026-11-01
 content_type: technical-tutorial
 categories: [ai-coding]
@@ -51,7 +51,7 @@ asset_dir.mkdir(parents=True, exist_ok=True)
 
 ## The rule that bites: prompts override the background parameter
 
-If the prompt describes a backdrop, scene, color, or an object "on" something, the model may generate that background instead of returning transparency.
+For a model that supports transparency, set `background="transparent"` and use PNG or WebP. Describe an isolated subject so the prompt does not ask for scenery, a panel, or a frame. The parameter selects a background mode, and the prompt describes the content. Check the returned alpha channel.
 
 So the prompt must do two things at once:
 
@@ -60,15 +60,15 @@ So the prompt must do two things at once:
 
 A reusable brand-plus-transparency constraint:
 
-```text
-One object from STILLROOM, an understated luxury botanical home-fragrance atelier:
+```python
+brand_prompt = """One object from STILLROOM, an understated luxury botanical home-fragrance atelier:
 artisanal warm amber and honey-tinted hand-blown glass, subtle brushed brass hardware,
 natural ivory cotton cord, quiet Japanese-Scandinavian restraint,
 warm side-lit editorial studio photography, photorealistic micro-detail.
 Full object completely visible and generously padded. Preserve every natural transparency,
 refraction, translucent layer and fine material edge.
 Output an isolated object on actual fully transparent alpha; no backdrop, no rectangle,
-no plinth, no cast shadow, no readable writing, no label text, no watermark.
+no plinth, no cast shadow, no readable writing, no label text, no watermark."""
 ```
 
 Combining this with each product's own description keeps a collection visually consistent.
@@ -96,7 +96,7 @@ for filename, product_prompt in products.items():
     (asset_dir / f"{filename}.png").write_bytes(image_bytes)
 ```
 
-`output_format="png"` and `background="transparent"` must appear together. Setting the background flag while describing a scene in the prompt falls back to an opaque image.
+The example explicitly selects PNG to match the `.png` filenames below. WebP also supports transparency; use the `.webp` extension if you switch to it.
 
 ## Verify alpha: do not trust your eyes
 
@@ -204,7 +204,7 @@ everything outside the garment silhouette transparent.
 merchandise-blank-sweatshirt: the same, in forest green.
 ```
 
-When compositing, trim the transparent padding and place the artwork proportionally on the chest:
+The four-product loop above does not create these garment assets. Generate the files for this use case and save them in BTasset_dirBT using the listed names and the BT.pngBT extension. Then trim transparent padding and place the artwork on the chest.
 
 ```python
 def visible_region(image):
@@ -241,7 +241,7 @@ Human review can be paired with a vision-capable model against a clear rubric, f
 
 **1. `background="transparent"` is set, so why can the result still come back with a white background?**
 
-Reference answer: Because the prompt takes priority over the parameter. If the prompt describes a backdrop, scene, color, or an object "on" something, the model may generate that background. The fix is to describe only an isolated subject and to state explicitly that the output must be on real transparent alpha with no backdrop, rectangle, plinth, or cast shadow.
+Reference answer: Check the model, background mode, and output format, then inspect the alpha channel. A white-looking area may be the viewer’s backdrop or an actual white panel in the image. Describing an isolated subject helps avoid requesting that panel in the first place.
 
 **2. Why is "it looks like a white background" insufficient, and how should you verify?**
 

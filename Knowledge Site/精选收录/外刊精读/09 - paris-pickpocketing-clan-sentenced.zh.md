@@ -87,7 +87,7 @@ sources:
 | 2.5 万欧元 / 天 | 警方称团伙日均非法收入 | 日收入，不是人均收入 | [2] |
 | 10 岁 | 部分被利用儿童的最低年龄 | 实际年龄，与谎报年龄相对 | [2] |
 | 8 年 / 50 万欧元 | 罗伯托的刑期与罚金（法定最高） | 刑期与罚金两种量纲，不可混读 | [6] |
-| 5 至 7 年 | 其余四名亲属的刑期区间 | 区间值，不是每人固定刑期 | [6] |
+| 5 至 7 年 | 其余五名亲属的刑期区间 | 区间值，不是每人固定刑期 | [6] |
 | 75% | 该团伙据信占巴黎地铁盗窃案的比重 | 警方估计，未经法庭认定 | [8] |
 | 12 岁 | 让孩子对警方谎报的年龄 | 谎报年龄，比法国刑责年龄低一岁 | [9] |
 | 约 200 万欧元 | 夫妇二人据信聚敛的资产 | 估计总额，大部分据称藏于境外 | [14] |
@@ -163,7 +163,7 @@ sources:
 
 **主干**：主句 `Many of the dozens of children ... disappeared`；after 从句给出时间。
 
-**层次与易错点**：`used as pickpockets` 是过去分词修饰 children；`who were not called ...` 是非限定定语从句，说明为何没有出庭；after 从句里有两个并列谓语 were arrested 与 were taken（后者再接 placed）。易错点：after 后面两个被动结构的施动者不同——被警方逮捕、被社会服务机构带走；把 placed 看成与 disappeared 并列会读错主语。
+**层次与易错点**：`used as pickpockets` 修饰 children，`who were not called ...` 是说明他们为何未出庭的非限定定语从句。主句用 `or` 并列 `disappeared after the seven were arrested` 和 `were taken by social services and placed in foster homes`，两种情况都说的是这些孩子。`after` 从句止于 `were arrested`；被捕的是七名被告，被带走的是孩子。
 
 **逻辑关系**：原因 + 结果（未被传唤作证，随后失联）。
 
@@ -182,9 +182,9 @@ sources:
 ## 背景补充
 
 - **事实**：2010 年法国警方曾逮捕罗伯托的叔父费赫米及其两名儿子和十余名家族成员（[7]）。当时的警方负责人称「像是捣毁了一个彻底中世纪式的结构」。
-- **事实**：费赫米 2013 年被判七年，此后罗伯托接管团伙（[8]）。这说明本案是该家族的第二代案件，也是法官强调「三代人」的原因。
-- **事实**：《世界报》的审前调查披露，罗伯托之子「戈尼」负责调度扒窃小组，甚至为他们叫出租车送往各处（[11]）。报道的运作细节多来自这项调查。
-- **观点（检察官 Guillet）**：她提出「决定论」问题——七名被告童年时也被父母逼去偷窃，因此从受害者变成施害者（[17][18]）。这是控方主张，辩方并不认同。
+- **事实**：费赫米 2013 年被判七年，此后罗伯托接管团伙（[8]）。这说明本案是该家族的第二代案件，也是检察官提到「三代人」的原因。
+- **事实**：《世界报》的审前调查披露，罗伯托之子「戈尼」负责调度扒窃小组，甚至为他们叫出租车送往各处（[11]）。文中 [11][15] 的细节出自该调查，[12] 则出自侦查人员。
+- **观点（检察官 Guillet）**：她提出「决定论」问题，认为七名被告童年时也曾被父母逼去偷窃，由受害者变成施害者（[17][18]）。报道另引述 Roberto 的律师质疑量刑和人口贩运罪的证据（[21]）。
 
 ## 雅思迁移
 
@@ -198,7 +198,7 @@ sources:
 - 主体二：对被迫参与的孩子，惩罚无效，教育、安置与就业才是阻断循环的关键。
 - 结论：按角色分层处理——严惩组织者，救助受害者。
 
-示范段（85 词）：
+示范段（80 词）：
 
 > Harsh sentences are most defensible when they target organisers rather than people at the bottom of a criminal network. Someone who recruits children and takes most of the profit calculates risk, and a long sentence changes that calculation. For the children involved, punishment addresses nothing. They need placement, schooling and a legal route to work, or they will return to the same network as adults. The two approaches are not rivals; they apply to different people in the same case.
 
@@ -240,7 +240,7 @@ sources:
 > - what the outcome was
 > and explain why it stayed with you.
 
-2 分钟提纲（56 词）：`I remember a case about children being sent to pick pockets in a European city's metro. I read it in a newspaper report. The organiser was jailed and the family was banned from the country. It stayed with me because the children were victims and offenders at the same time, which the court itself struggled to describe.`
+2 分钟提纲（57 词）：`I remember a case about children being sent to pick pockets in a European city's metro. I read it in a newspaper report. The organiser was jailed and the family was banned from the country. It stayed with me because the children were victims and offenders at the same time, which the court itself struggled to describe.`
 
 **Part 3**
 

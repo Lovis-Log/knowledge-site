@@ -68,7 +68,7 @@ sources:
 
 ## 文章脉络
 
-歌单式特写：以去世消息开篇，随后按时间顺序挑出十首作品，每首一段，兼顾创作背景与演唱细节。这种「十篇小传」结构本身就是一次论证——用作品序列说明她的跨代影响力。
+歌单式特写：以去世消息开篇，随后逐首介绍十首作品（顺序并非按年份），每首一段，兼顾创作背景与演唱细节。这种「十篇小传」结构本身就是一次论证——用作品序列说明她的跨代影响力。
 
 | 段号范围 | 作用 | 一句话要点 | 事实 / 评论 |
 | --- | --- | --- | --- |
@@ -92,7 +92,7 @@ sources:
 | **tour de force** | [3] "her tour de force romantic anthem" | 杰作、力作；源自法语，可指作品或表演 | 写作 | *The final movement is a tour de force of orchestration.* 末乐章是配器上的杰作。 |
 | **in light of** | [3] "penning the track in light of going solo" | 鉴于、考虑到；后接名词或动名词 | 写作 | *The policy was revised in light of new evidence.* 该政策依据新证据作了修订。 |
 | **land on a list** | [2] "Landing on multiple lists that rank the greatest songs" | 上榜、被列入榜单；land on 也可指「落在」 | 写作 | *The album landed on several year-end lists.* 这张专辑进入多个年终榜单。 |
-| **get something out of one's head** | [6] "impossible to get the earworm out of your head" | 让某段旋律在脑中挥之不去 | 口语 | *I can't get that tune out of my head.* 那支曲子在我脑子里挥之不去。 |
+| **get something out of one's head** | [6] "impossible to get the earworm out of your head" | 把……从脑中赶走、忘掉；否定式才表示挥之不去 | 口语 | *I can't get that tune out of my head.* 那支曲子在我脑子里挥之不去。 |
 | **a bona fide** | [6] "a bona fide karaoke staple" | 名副其实的、真正的；置于名词前 | 写作 | *She is a bona fide expert in the field.* 她是该领域名副其实的专家。 |
 | **strike a chord with** | [9] "she would strike a chord with a song" | 引起共鸣；后接人 | 写作 | *The speech struck a chord with younger voters.* 这番话引起了年轻选民的共鸣。 |
 | **flip the narrative** | [9] "she flips the narrative" | 反转叙事、把视角倒过来 | 写作 | *The novel flips the narrative by telling the story from the child's side.* 这部小说从孩子的视角讲述，反转了叙事。 |
@@ -172,9 +172,9 @@ sources:
 
 - **事实**：帕顿于 2026 年 8 月 25 日去世，享年 80 岁（[1]）。这篇特写发表于次日，属纪念性报道。
 - **事实**：她的生涯跨越六十年、五十张专辑（[1]），这次入选的十首从 1971 年的《Coat of Many Colors》到 2025 年的《If You Hadn't Been There》。
-- **事实**：《I Will Always Love You》写给她单飞前的合作者、导师 Porter Wagoner（[3]）；1992 年惠特妮·休斯顿的翻唱使其再度流行。
+- **事实**：《I Will Always Love You》写给她单飞前的合作者、导师 Porter Wagoner（[3]）；文中提到惠特妮·休斯顿后来把这首歌变成了自己的代表作，未给年份。
 - **观点（作者）**：作者认为她的特别之处在于「敢于放松」与「敢于脆弱」并存（[11]）。这是评论判断，不是可验证的事实。
-- **事实**：《Jolene》曾两度获得格莱美最佳乡村女歌手演唱提名——一次凭 1975 年的原版，一次凭次年的现场版（[2]）。同一首歌两度入围同一奖项，这也是它在报道中被放在首位的原因之一。
+- **事实**：《Jolene》曾两度获得格莱美最佳乡村女歌手演唱提名——一次凭 1975 年的原版，一次凭次年的现场版（[2]）。同一首歌两度入围同一奖项；报道未说明十首歌的排序依据。
 
 ## 雅思迁移
 
@@ -188,7 +188,7 @@ sources:
 - 主体二：今天的音乐类型更细分、制作门槛更低，优秀作品依然存在，只是更难被统一评价。
 - 结论：与其比较代际优劣，不如看音乐是否仍能提供情感与共同记忆。
 
-示范段（81 词）：
+示范段（74 词）：
 
 > Comparing today's music with the past is harder than it looks. What survives from earlier decades is a small selection of the best work, while we hear everything produced now, including the forgettable parts. Streaming has also fragmented audiences, so no single song shapes a generation in the way it once did. That does not mean quality has fallen. It means success is measured differently, and a fair judgement should compare like with like.
 
@@ -230,7 +230,7 @@ sources:
 > - when you first heard their work
 > and explain why you admire them.
 
-2 分钟提纲（58 词）：`I would talk about Dolly Parton, a country singer who kept writing and performing into her seventies. I first heard her songs through a film soundtrack, without knowing who sang them. What I admire most is her honesty — she wrote about jealousy, poverty and grief in plain words and never pretended to be someone else.`
+2 分钟提纲（55 词）：`I would talk about Dolly Parton, a country singer who kept writing and performing into her seventies. I first heard her songs through a film soundtrack, without knowing who sang them. What I admire most is her honesty — she wrote about jealousy, poverty and grief in plain words and never pretended to be someone else.`
 
 **Part 3**
 

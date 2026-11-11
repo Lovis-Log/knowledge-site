@@ -237,7 +237,7 @@ Reference answer: All of them affect image quality and latency. Changing only th
 
 **2. What are the hard constraints on a custom resolution? Give an invalid example and explain why.**
 
-Reference answer: Each edge at most 3,840 pixels; both edges multiples of 16; long-to-short edge ratio at most 3:1; total pixels between 655,360 and 8,294,400. `1000x1000` is invalid because 1000 is not a multiple of 16; `4000x1000` violates the edge limit, sits exactly on the 3:1 boundary, and exceeds the pixel budget.
+Reference answer: Each edge at most 3,840 pixels; both edges multiples of 16; long-to-short edge ratio at most 3:1; total pixels between 655,360 and 8,294,400. `1000x1000` is invalid because 1000 is not a multiple of 16; `4000x1000` violates the edge limit and its 4:1 ratio exceeds the 3:1 limit, but its 4,000,000 pixels remain within the budget.
 
 **3. Why is a drawn checkerboard not transparency? What must be done at the API level?**
 

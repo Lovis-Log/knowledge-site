@@ -104,12 +104,12 @@ The key property: **the old prompt is an exact prefix of the new one**. This is 
 
 ## Why the prefix property decides performance
 
-If the whole conversation were resent every turn, the JSON payload would grow **quadratically** with the number of turns. The Responses API offers `previous_response_id` to mitigate that, but Codex does not use it, for two reasons:
+The article describes a Codex implementation that replays its input items each turn. With roughly equal amounts of new content each turn, request size grows approximately linearly, while total bytes sent through turn $n$ grow roughly as $n^2$. The article gives two reasons for that design:
 
 - Requests stay **fully stateless**, so the provider need not store sessions.
-- It supports **ZDR** (Zero Data Retention) customers: storing session state conflicts with retaining nothing. Such customers do not lose access to proprietary reasoning from earlier turns, because the associated `encrypted_content` can be decrypted server-side (OpenAI keeps the decryption key, not the data).
+- The design accounted for Zero Data Retention (ZDR). The current [Responses WebSocket guide](https://developers.openai.com/api/docs/guides/websocket-mode) also allows `previous_response_id` with `store=false` or ZDR on a live connection’s in-memory cache, without a persistent fallback.
 
-The dominant cost is not network traffic but **model sampling**. So the optimization target is reusing computation from the previous call — prompt caching. On cache hits, sampling becomes linear rather than quadratic.
+Prefix caching reuses work on input that has already been processed, which can lower repeated-input cost and latency. The model still generates new output, and a cache hit does not shrink the request the client sends.
 
 Caching only works on exact prefixes. Static content (instructions, examples) goes first; variable content goes last. Images and tool definitions must also be identical between requests.
 
@@ -132,7 +132,7 @@ Even with caching, the prompt keeps growing and eventually hits the context wind
 
 The early implementation required a manual `/compact` command, which sent the conversation plus summarization instructions to the model and used the summary as the new `input`.
 
-Later, the Responses API added a dedicated `/responses/compact` endpoint that compacts more efficiently. It returns items that can replace the previous `input`, including a `type=compaction` item whose `encrypted_content` preserves the model's latent understanding of the original conversation. Codex now calls this endpoint automatically when `auto_compact_limit` is exceeded.
+The [Responses API compaction guide](https://developers.openai.com/api/docs/guides/compaction) describes server-side compaction within `/responses` using `compact_threshold`, as well as a standalone `/responses/compact` call that returns a new input window. The encrypted compaction item is opaque. The Codex trigger described in the article belongs to that implementation.
 
 Compaction is **lossy**: details are summarized away. It answers "can we keep going", not "is everything still here". Facts that must survive should live in files or `AGENTS.md`, not in the hope that history is never compacted.
 
@@ -159,9 +159,9 @@ Reference answer: Prompt caching only hits on exact prefixes. After each tool ca
 
 Reference answer: First, changing the `tools` list mid-conversation, since tool definitions sit near the front and the prefix breaks immediately. Second, switching models, because model-specific instructions change the third prompt item. Third, changing sandbox configuration, approval mode, or working directory, which are recorded in system-level items; Codex appends new messages to avoid breaking the prefix, but editing the old items directly would invalidate it. MCP servers dynamically changing their tool list or ordering also causes misses.
 
-**4. Why doesn't Codex use `previous_response_id` to shrink requests?**
+**4. Why did the Codex implementation in the article replay the full input each turn?**
 
-Reference answer: To keep requests fully stateless and to support Zero Data Retention customers. `previous_response_id` requires the provider to store conversation state, which conflicts with retaining no data. Without it the payload grows quadratically, but sampling dominates cost anyway, and caching flattens the sampling cost.
+Reference answer: The client managed the history, so calls did not depend on persistent server-side conversation state. With roughly constant new content each turn, individual requests grew approximately linearly and the total bytes sent grew roughly quadratically. Current WebSocket continuation can also use `previous_response_id` on a live connection, under the conditions above.
 
 **5. What does compaction solve, and what does it cost?**
 

@@ -43,7 +43,7 @@ sources:
 | [1] | 引入 | 加州亿万富翁税成为「财富能否买断政治」的检验 | 事实 + 评论（社论称这应让任何民主国家不安） |
 | [2] | 展开 | 学者呼吁英国加入全球反不平等行动，拟设 IPI | 事实 + 评论（社论主张首相应响应） |
 | [3] | 展开 | 不平等数据：全球与英国的最富人群财富份额大幅上升 | 事实 |
-| [4] | 展开 | 社论主张英国应支持 IPI，并把征税列为 G20 议程 | 评论 |
+| [4] | 展开 | 社论主张英国应支持 IPI，并把应对全球不平等列为 2027 年 G20 主席国优先事项 | 评论 |
 | [5] | 展开 | 对外援助削减后需要可信的国际发展姿态；与美分歧不等于交恶 | 事实 + 评论 |
 | [6] | 收束 | 强硬分歧未必损害关系，首相应坚持自己 | 事实 + 评论 |
 
@@ -72,7 +72,7 @@ sources:
 | **an open question** | [1] "is now an open question" | 尚无定论的问题；前接 whether 从句 | 写作 | *Whether the policy can be enforced remains an open question.* 该政策能否执行仍是未知数。 |
 | **trouble** | [1] "That alone should trouble any democracy." | 使担忧、使不安；作动词，比 worry 更书面 | 写作 | *The trend should trouble anyone who values free speech.* 这一趋势应让重视言论自由的人感到不安。 |
 | **heed the call** | [2] "the prime minister should heed the call" | 听取呼吁；heed 后接 warning、advice、call | 写作 | *Governments should heed the call for cleaner air.* 各国政府应听取改善空气质量的呼吁。 |
-| **the yawning gap** | [2] "the yawning gap between rich and poor" | 悬殊的差距；yawning 喻大得惊人 | 仅新闻评论 | 写作改用 *a widening gap*：*The widening gap between regions worries planners.* 地区间日益扩大的差距令规划者担忧。 |
+| **the yawning gap** | [2] "the yawning gap between rich and poor" | 悬殊的差距；yawning 喻大得惊人 | 仅新闻评论 | 写作改用 *a wide gap*：*The wide gap between regions worries planners.* 地区间巨大的差距令规划者担忧。 |
 | **corrode** | [2] "corroding democracy and social cohesion" | 侵蚀、腐蚀（抽象事物）；比 damage 更形象 | 写作 | *Corruption corrodes public trust.* 腐败侵蚀公众信任。 |
 | **take shape** | [3] "a distinct Burnhamism could take shape" | 逐渐成形；主语多为计划、想法、运动 | 写作 | *A new approach to housing is taking shape.* 一种新的住房思路正在成形。 |
 | **mirror** | [3] "Britain mirrors this divide" | 与……如出一辙；作动词表对应关系 | 写作 | *The city's schools mirror the income gap.* 该市的学校状况与收入差距如出一辙。 |
@@ -88,7 +88,7 @@ sources:
 
 **主干**：主语是 `Whether voters can impose costs on the super-rich ...`，谓语 `is now an open question`。
 
-**层次与易错点**：主语从句内部先有 `once their fortunes are big enough to shape the political process` 这个条件从句，再有 `to shape` 作 enough 的补足语。易错点：once 在此是「一旦」，不是「一次」；主语从句很长，读到 poll 时容易以为 voters 就是谓语的主语，实际上整个 whether 从句才是主语。
+**层次与易错点**：主语从句内部先有 `once their fortunes are big enough to shape the political process` 这个条件从句，再有 `to shape` 作 enough 的补足语。易错点：once 在此是「一旦」，不是「一次」；主语从句很长，读到 voters 时容易把它当成谓语的主语，实际上整个 whether 从句才是主语。
 
 **逻辑关系**：条件 + 判断——一旦财富大到能左右政治，选民还能否对其课以成本，尚无定论。
 
@@ -150,7 +150,7 @@ sources:
 ## 背景补充
 
 - **事实**：加州拟议的税针对净资产超过 10 亿美元的居民，预计约 200 人缴纳，可筹集约 1000 亿美元（[1]）。社论用这些数字说明「少数人承担、多数人受益」的设计。
-- **事实**：G20 首次发布不平等报告，学者据此推动设立联合国不平等专门小组（[2]）。这是文中一切政策建议的来源。
+- **事实**：G20 首次发布不平等报告，学者据此推动设立联合国不平等专门小组（[2]）。这是设立 IPI 这一建议的来源。
 - **事实**：2000 至 2024 年，全球新增财富的 41% 流向最富的 1%，最穷的一半只得到 1%（[3]）。这是社论「不平等在扩大」的核心证据。
 - **观点（社论）**：社论认为与美国总统公开分歧并不必然损害双边关系，并以纽约市长与特朗普的互动为例（[6]）。这是社论的推论，不是已被证明的规律。
 
@@ -190,7 +190,7 @@ sources:
 4. 作者为什么提到英美之间的税收争端？
    定位：[5]
    依据："Policy disagreement need not poison the relationship."
-   答案：为了说明英国在数字服务税等问题上与美国存在分歧，但这不等于要放弃国际合作。
+   答案：为了说明英国在数字服务税等问题上与美国存在分歧，但政策分歧不必破坏英美关系。
 
 5. 结尾用纽约市长的例子想说明什么？
    定位：[6]
@@ -208,7 +208,7 @@ sources:
 > - who it affects most
 > and explain why you think it deserves attention.
 
-2 分钟提纲（58 词）：`I would talk about the wealth gap. I first noticed it through a news report on a proposed tax for billionaires. It affects young families most, because housing and education costs rise faster than wages. It deserves attention because unequal societies tend to become less stable and less open to newcomers.`
+2 分钟提纲（51 词）：`I would talk about the wealth gap. I first noticed it through a news report on a proposed tax for billionaires. It affects young families most, because housing and education costs rise faster than wages. It deserves attention because unequal societies tend to become less stable and less open to newcomers.`
 
 **Part 3**
 

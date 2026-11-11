@@ -46,7 +46,7 @@ sources:
 
 | 段号范围 | 作用 | 一句话要点 | 事实 / 评论 |
 | --- | --- | --- | --- |
-| [1] | 引入 | 湖人靠「耐心资本 + 好莱坞包装」成为联盟模板，1980 年代起由巴斯家族持有 | 事实 |
+| [1] | 引入 | 湖人靠「耐心资本 + 好莱坞包装」成为联盟模板，1979 年起由巴斯家族持有 | 事实 |
 | [2] | 展开 | 2013 年估值 10 亿，如今拟以 125 亿美元出售；家族成员为是否卖股争吵 | 事实 |
 | [3] | 展开 | 一年多内两度易手，估值抬升 25 亿美元，球队像公寓一样被「翻卖」 | 事实 + 评论（作者定性） |
 | [4] | 展开 | 仍有老东家坚守，但多数在寻机退出，例如库班卖队后又后悔 | 事实 + 评论 |
@@ -159,7 +159,7 @@ sources:
 
 - **事实**：巴斯 1979 年以 1600 万美元买下湖人，2013 年去世时球队估值约 10 亿美元；如今报价 125 亿美元（[1][2]）。这组数字是专栏论证「估值暴涨」的基础。
 - **事实**：2025 年 6 月 Walter 与 Boehly 以 100 亿美元估值买入多数股权，一年多后即传出转手，估值增加约 25 亿美元（[3]）。这是作者所说「翻卖」的直接依据。
-- **事实**：NBA 2022 年向机构资本开放，并规定单一基金不得持有一支球队超过 20%（[5]）。这解释了为什么买家必须以财团与债务结构入场。
+- **事实**：NBA 2022 年向机构资本开放，并规定单一基金不得持有一支球队超过 20%（[5]）。再加上两人财力相对有限，文中推测交易需以财团、债务与现金混合的方式安排。
 - **观点（作者）**：作者认为多数体育投资已从「经营球队」转为「保护投资人的资产负债表」，体育本身退居其次（[9]）。这是专栏立场，不是行业共识。
 
 ## 雅思迁移
@@ -174,7 +174,7 @@ sources:
 - 主体二：当所有者把球队当作资产买卖，球迷的长期利益容易被牺牲。
 - 结论：关键不在所有权形式，而在治理规则：透明的定价、球迷代表与转售约束。
 
-示范段（80 词）：
+示范段（81 词）：
 
 > Community ownership protects the relationship between a club and the place it represents, and that relationship is hard to rebuild once it is lost. Private investors, however, bring capital that most communities cannot raise, and that money often improves facilities and stability. The real question is therefore not who owns the club but how ownership is governed. Transparent valuations, fan representation on boards and limits on rapid resale would allow outside investment without turning a local institution into a short-term trade.
 
@@ -188,7 +188,7 @@ sources:
 2. 为什么说这笔交易显示「耐心资本」正在消失？
    定位：[3]
    依据："comes a little over a year after the franchise was sold to an entirely different set"
-   答案：一年多内球队两度易手，估值抬升约 25 亿美元，说明持有者追求的是转手获利而非长期经营。
+   答案：一年多前球队刚易主，如今又传出转手报价，估值抬升约 25 亿美元，说明持有者追求的是转手获利而非长期经营。
 
 3. 伊格与库什纳为什么要组财团、安排复杂结构？
    定位：[5]
@@ -216,7 +216,7 @@ sources:
 > - what it means to its fans
 > and explain whether you think it should stay with its local community.
 
-2 分钟提纲（56 词）：`I would talk about a basketball team I followed as a student. I got into it through friends who watched games together every weekend. For fans it is a shared ritual, not just a business. I think it should stay close to its city, because once it becomes an asset to be traded, that ritual loses its meaning.`
+2 分钟提纲（58 词）：`I would talk about a basketball team I followed as a student. I got into it through friends who watched games together every weekend. For fans it is a shared ritual, not just a business. I think it should stay close to its city, because once it becomes an asset to be traded, that ritual loses its meaning.`
 
 **Part 3**
 

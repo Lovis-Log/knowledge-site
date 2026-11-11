@@ -67,7 +67,7 @@ sources:
 | [12]–[14] | 展开 | 母亲教过他的生活技能在蔬果工作中重新用上 | 事实 + 观点 |
 | [15]–[16] | 收束 | 身体变强、心里更平静；他说这是自己做过最好的工作 | 事实 + 观点（本人说法） |
 
-阅读提醒：这篇的「事实」几乎都来自受访者的自述，记者没有独立核实他的健康状况或求职经历；引语中的评价属于他本人，不是报道结论。读的时候还要留意，记者的提问没有出现在文中，我们只能从回答的语气推断采访的走向。
+阅读提醒：这篇的「事实」几乎都来自受访者的自述，文中未出现记者对健康状况或求职经历的独立核实；引语中的评价属于他本人，不是报道结论。读的时候还要留意，记者的提问没有出现在文中，我们只能从回答的语气推断采访的走向。
 
 ## 地道表达
 
@@ -79,7 +79,7 @@ sources:
 | **hunt for** | [2] "hunted for grocery positions" | 寻找（工作、住处）；比 look for 更强调费力 | 口语 | *She hunted for a flat for three months.* 她找了三个月房子。 |
 | **a low-fantasy job** | [6] "it's a low-fantasy job" | 不需要幻想与自我包装的工作；受访者自创说法 | 仅新闻评论 | 写作改用 *a practical job*：*He wanted a practical job with visible results.* 他想要一份成果可见的实在工作。 |
 | **let one's mind wander** | [6] "his mind doesn't wander too often" | 走神；否定形式常作褒义 | 写作 | *Music helps me focus; otherwise my mind wanders.* 音乐让我集中，否则我就会走神。 |
-| **a step up** | [8] "to them it was a step up to be doing something technical" | 地位或层次的提升；后接 to doing | 写作 | *The promotion was a step up for her.* 这次晋升对她来说是上了一个台阶。 |
+| **a step up** | [8] "to them it was a step up to be doing something technical" | 地位或层次的提升；原句 it 为形式主语，后接不定式（to be doing），to 不是介词 | 写作 | *The promotion was a step up for her.* 这次晋升对她来说是上了一个台阶。 |
 | **a stint at** | [9] "He had stints at night school" | 一段（工作或学习）经历；常与 at、in 搭配 | 写作 | *He had a short stint at a local newspaper.* 他曾在当地一家报纸短暂工作。 |
 | **aspire to** | [10] "he aspired to become a computer programmer" | 渴望成为；后接名词或动词 | 写作 | *Many graduates aspire to work in research.* 许多毕业生渴望从事研究工作。 |
 | **go terribly wrong** | [10] "In each case things went terribly wrong." | 一败涂地；比 go wrong 程度更强 | 口语 | *The launch went terribly wrong.* 这次发布彻底搞砸了。 |
@@ -138,7 +138,7 @@ sources:
 
 **主干**：主句 `he's remembered one of his mother's sayings`；when 从句说明这句俗语出现的场合。
 
-**层次与易错点**：`when he'd pitch a tantrum` 中的 'd 是 would，表示过去反复发生的习惯，不是 had；冒号后是俗语原文。易错点：would 表示「过去常常」，与虚拟语气无关；`a chicken with your head cut off` 是固定比喻，指慌乱乱窜，不宜逐字直译成「被砍头的鸡」。
+**层次与易错点**：`when he'd pitch a tantrum` 中的 'd 是 would，表示过去反复发生的习惯，不是 had；冒号后是俗语原文。易错点：would 表示「过去常常」，与虚拟语气无关；`a chicken with your head cut off` 是固定比喻，指慌乱乱窜，直译「被砍了头的鸡」时要补出「慌乱乱窜」的意思，不能只取字面。
 
 **逻辑关系**：举例说明（这句俗语何时被说起）。
 
@@ -176,7 +176,7 @@ sources:
 - 主体二：对愿意且有能力工作的人，继续就业带来收入、社交与健康收益。
 - 结论：制度上应保留弹性退休，同时防止因经济压力被迫延退。
 
-示范段（79 词）：
+示范段（74 词）：
 
 > A fixed retirement age gives employers predictable staffing and protects people in physically demanding jobs. On the other hand, many older workers remain capable and find that employment gives structure and company, not just income. A flexible system therefore seems fairer than a single cut-off age. The important safeguard is that later retirement should be a genuine choice, rather than something people are forced into because their pension is too small to live on.
 
@@ -218,7 +218,7 @@ sources:
 > - why they changed
 > and explain what you learned from their story.
 
-2 分钟提纲（57 词）：`I would talk about a man in his seventies who became a produce buyer after years of odd jobs. He changed because the pandemic cut his hours and he realised he preferred practical work. What struck me was his honesty — he had failed at several careers and still called this the best job he ever had.`
+2 分钟提纲（56 词）：`I would talk about a man in his seventies who became a produce buyer after years of odd jobs. He changed because the pandemic cut his hours and he realised he preferred practical work. What struck me was his honesty — he had failed at several careers and still called this the best job he ever had.`
 
 **Part 3**
 

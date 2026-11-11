@@ -143,7 +143,7 @@ The concrete advice comes in three layers:
 
 - **Proof ≠ understanding**: Proof has long served as a proxy for understanding. When AI can generate proofs without understanding, the proxy breaks. True understanding shows up in theory building — digesting proofs into a coherent narrative and framework.
 - **Value chain propagation isn't linear**: AI disrupting research activities doesn't equal disrupting value. Applications come from theory (not individual proofs). Problem-solving skills come from practice (independent of who's better). Aesthetic joy comes from personal participation (irreplaceable).
-- **Teaching is math's safest position**: Education is rate-limited by motivation, not clarity. As long as students want to learn and teachers are passionate, this环节 is unaffected by AI — and it's math's largest funding source.
+- **Teaching is math's safest position**: Education is rate-limited by motivation, not clarity. As long as students want to learn and teachers are passionate, this stage is unaffected by AI — and it's math's largest funding source.
 - **"Position is overrated, velocity is not"**: At any snapshot, AI's capability looks "not there yet." But look at the speed of change over four years — from couldn't add numbers to solving IMO problems to producing frontier proofs — and the trend matters more than the current position.
 - **"Proof is data"**: Machine-generated proofs should be treated as data, not as final products. Someone needs to understand the ideas in those proofs, extract the elements of simplicity, and weave them into theory. That person deserves academic credit — possibly more than the proof itself.
 

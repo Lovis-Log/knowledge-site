@@ -69,7 +69,7 @@ sources:
 | 段号范围 | 作用 | 一句话要点 | 事实 / 评论 |
 | --- | --- | --- | --- |
 | [1]–[4] | 引入 | 年度评估显示九条行星边界中七条被突破，且程度为历年最高 | 事实 |
-| [5]–[7] | 展开 | 60 位科学家参与，主笔称风险上升、容错空间缩小；作者称仍有能力扭转 | 事实 + 评论（两位研究者判断） |
+| [5]–[7] | 展开 | 60 位科学家参与，主笔称风险上升、容错空间缩小；报告合著者 Rockström 认为仍有能力扭转 | 事实 + 评论（两位研究者判断） |
 | [8]–[9] | 展开 | 边界的概念：一万年稳定环境支撑文明；如今被排放与土地开垦破坏 | 事实 |
 | [10]–[11] | 展开 | 森林与海洋的缓冲能力可能被高估，亚马逊或逼近「临界点」 | 事实 + 评论（报告判断） |
 | [12]–[13] | 展开 | 报告发布紧接一系列极端天气：巴基斯坦洪水、欧洲热浪与山火 | 事实 |
@@ -133,7 +133,7 @@ sources:
 
 **主干**：主句 `Only two of the assessed areas ... have shown improvement`；although 从句作让步。
 
-**层次与易错点**：两个破折号之间的内容（此处用逗号）是 areas 的同位语，说明是哪两项；although 从句里又套了 which 引导的非限定从句修饰 aerosols。易错点：同位语被逗号隔开，容易把 stratospheric ozone depletion 误读成主句主语的一部分；only two 与 although 连用，形成「略有改善，但仍有问题」的双重限定。
+**层次与易错点**：两个逗号之间的内容是 areas 的同位语，说明是哪两项；although 从句里又套了 which 引导的非限定从句修饰 aerosols。易错点：同位语被逗号隔开，容易把 stratospheric ozone depletion 误读成主句主语的一部分；only two 与 although 连用，形成「略有改善，但仍有问题」的双重限定。
 
 **逻辑关系**：让步——即便有改善，也不代表问题解决。
 
@@ -167,7 +167,7 @@ sources:
 
 - **事实**：行星边界评估自 2009 年开始，今年是九条边界中七条同时越界，且程度为历年最高（[2]）。这是报道的核心数据。
 - **事实**：分析由波茨坦气候影响研究所主持，60 位科学家参与（[5]）。这是该结论在科学界的来源与规模。
-- **事实**：报告在纽约气候周开幕之际发布，主办方称参会者超过 10 万人，规模为历届最大（[16][17]）。这说明议题热度与政策行动之间存在落差。
+- **事实**：报告在纽约气候周开幕之际发布，主办方预计参会者将超过 10 万人，并称规模有望创历届之最（[16][17]）。这说明议题热度与政策行动之间存在落差。
 - **观点（Helen Clarkson）**：她认为今年出现了前所未见的「绿色噤声」，许多企业到场却不显眼（[19]）。这是主办方观察，不是统计结论。
 - **事实**：报告发布前一年内，巴基斯坦发生特大洪水，欧洲出现创纪录高温与野火，美国经历最热夏天，西藏—尼泊尔边境发生灾难性冰川洪水（[13]）。报道用这组事件说明「边界越界」并非抽象数据。
 
@@ -183,7 +183,7 @@ sources:
 - 主体二：能源、土地利用与工业排放超出个人能控制的范围，需要政策与基础设施。
 - 结论：个人负责可行范围内的选择，政府负责制定规则与投资公共系统。
 
-示范段（83 词）：
+示范段（70 词）：
 
 > Individuals can reduce their own emissions and, just as importantly, signal that change is expected. Yet the pressures described in scientific assessments come mainly from energy systems, land use and industrial production, none of which an individual can alter alone. A household that insulates its home still depends on how electricity is generated. Governments therefore carry the larger responsibility, while individuals decide how quickly public demand makes action politically possible.
 
@@ -207,7 +207,7 @@ sources:
 4. 亚马逊雨林的例子说明了什么风险？
    定位：[11]
    依据："could reach a tipping point where it becomes a savannah"
-   答案：说明关键生态系统可能越过临界点并发生不可逆转变，进而影响气候稳定、粮食与水安全以及人类健康。
+   答案：说明关键生态系统可能越过临界点，面临不可逆转变的风险，进而影响气候稳定、粮食与水安全以及人类健康。
 
 5. 报道结尾揭示的矛盾是什么？
    定位：[17]–[19]
@@ -225,7 +225,7 @@ sources:
 > - how it affects local people
 > and explain what could be done about it.
 
-2 分钟提纲（56 词）：`I would talk about air quality in my city. It has worsened over the past decade as traffic and construction have grown. It affects children and older people most, especially in winter. I think the fix is mainly structural — cleaner public transport and stricter limits on dust from building sites — rather than asking people to change alone.`
+2 分钟提纲（57 词）：`I would talk about air quality in my city. It has worsened over the past decade as traffic and construction have grown. It affects children and older people most, especially in winter. I think the fix is mainly structural — cleaner public transport and stricter limits on dust from building sites — rather than asking people to change alone.`
 
 **Part 3**
 

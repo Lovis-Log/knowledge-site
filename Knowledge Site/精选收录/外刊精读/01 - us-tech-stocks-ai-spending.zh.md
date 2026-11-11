@@ -108,9 +108,9 @@ sources:
 | 12% / 1.4% | Alphabet 周四、周五两日跌幅 | 两天各跌一次，不是一次性累计 | [2] |
 | 8000 亿美元 | 五家公司 2026 年合计承诺支出 | 承诺总额，不等于已经花出 | [5] |
 | 2050 亿美元 | Alphabet 本年度投资支出上限 | "up to" 是上限，不是确定数字 | [7] |
-| 1300 亿美元 | 英特尔周五蒸发的市值 | 市值减少不等于等额现金流出 | [8] |
+| 逾 1300 亿美元 | 英特尔周五蒸发的市值 | 市值减少不等于等额现金流出 | [8] |
 | 2200 亿美元 | Amazon 本年度承诺支出 | 与 8000 亿是整体与个别的关系 | [14] |
-| 2.8% / 7.8% | 纳斯达克 10 月跌幅与过去一年涨幅 | 两个时间尺度，不能互相替代 | [28] |
+| 2.8% / 7.8% | 纳斯达克当日收盘跌幅与过去一年涨幅 | 两个时间尺度，不能互相替代 | [28] |
 
 阅读提醒：报道讨论的是「泡沫会不会破」的担忧，不是「泡沫已破」的结论；几家公司的下跌原因各不相同，不要把个别公司的业绩问题读成全行业事实。
 
@@ -155,7 +155,7 @@ sources:
 
 **主干**：`said` 后接一个宾语从句，从句内有两个并列谓语 `did not expect to...` 与 `forecast...`，共用主语 the firm。
 
-**层次与易错点**：宾语从句第一层是 `did not expect` + 宾语 `to bring in more cash than it spent this year`，其中 `than it spent` 是比较从句；第二层是与 `did not expect` 并列的 `forecast lower-than-expected revenue for its fourth quarter`。易错点：`and forecast` 只与 `did not expect` 并列，不被否定词管辖；若把 forecast 读进否定范围，会译成「公司不预期下调收入预期」，意思正好相反。
+**层次与易错点**：宾语从句第一层是 `did not expect` + 宾语 `to bring in more cash than it spent this year`，其中 `than it spent` 是比较从句；第二层是与 `did not expect` 并列的 `forecast lower-than-expected revenue for its fourth quarter`。易错点：`and forecast` 只与 `did not expect` 并列，不被否定词管辖；若把 forecast 读进否定范围，会译成「公司没有预测第四季度营收会低于预期」，意思正好相反。
 
 **逻辑关系**：两个谓语由 and 并列，共同说明同一次表态，不是因果或转折。
 
@@ -233,7 +233,7 @@ sources:
 2. 为什么单日跌幅不能说明这些公司一年来的表现？
    定位：[27]–[28]
    依据："it is up 7.8% over the last year"
-   答案：报道同时给出单月与年度两个尺度。纳斯达克 10 月下跌，但过去一年仍上涨，短期波动不能代表长期趋势。
+   答案：报道同时给出单日与年度两个尺度。纳斯达克当日收跌 2.8%，但过去一年仍上涨，短期波动不能代表长期趋势。
 
 3. 报道用什么说明投资者态度的变化？
    定位：[24]–[26]
@@ -261,7 +261,7 @@ sources:
 > - what surprised you
 > and explain why it matters to you.
 
-2 分钟提纲（52 词）：`I read a BBC piece about tech shares falling as AI spending nears a trillion dollars. What surprised me was that even firms promising to spend more were punished. It shows markets now judge spending by returns, not ambition. It matters because AI costs reach ordinary people through prices and jobs.`
+2 分钟提纲（51 词）：`I read a BBC piece about tech shares falling as AI spending nears a trillion dollars. What surprised me was that even firms promising to spend more were punished. It shows markets now judge spending by returns, not ambition. It matters because AI costs reach ordinary people through prices and jobs.`
 
 **Part 3**
 

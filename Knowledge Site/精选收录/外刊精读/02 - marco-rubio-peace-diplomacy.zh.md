@@ -71,7 +71,7 @@ sources:
 | **loom** | [2] "a Republican rout in November's midterm elections looms" | （坏事）逼近；主语多为危机、失败、选举 | 写作 | *A funding gap looms for the project.* 该项目面临资金缺口。 |
 | **flatly reject** | [2] "Israel this week flatly rejected his latest Gaza peace proposals" | 断然拒绝；flatly 表示不留余地 | 写作 | *The union flatly rejected the offer.* 工会断然拒绝了这一提议。 |
 | **grow increasingly brazen** | [2] "Russia's attacks on Nato allies grow increasingly brazen" | 越来越肆无忌惮；brazen 含贬义 | 写作 | *Scams targeting the elderly have grown increasingly brazen.* 针对老年人的骗局越来越肆无忌惮。 |
-| **step forward** | [3] "So step forward Marco Rubio" | 字面「上前一步」，此处是反讽式点名登场 | 仅新闻评论 | 正式写作改用 *turn to*：*This is where local governments must act.* 这正是地方政府必须行动之处。 |
+| **step forward** | [3] "So step forward Marco Rubio" | 字面「上前一步」，此处是反讽式点名登场 | 仅新闻评论 | 正式写作改用 *turn to*：*This is where we must turn to local governments.* 这正是必须转向地方政府之处。 |
 | **take-it-or-leave-it** | [5] "impose take-it-or-leave-it 'solutions'" | 不容讨价还价；复合形容词放在名词前 | 写作 | *The offer was take-it-or-leave-it.* 这个提议没有商量余地。 |
 | **sound a death knell** | [6] "It sounded a death knell for diplomacy." | 敲响丧钟，喻宣告终结 | 仅新闻评论 | 写作改用 *mark the end of*：*The ruling may mark the end of the practice.* 该裁决可能标志这一做法终结。 |
 | **smack of** | [7] "Rubio's arm's length approach smacks of calculation" | 带有某种意味，多指负面；后接名词 | 写作 | *The decision smacks of panic.* 这个决定透出慌乱。 |
@@ -120,7 +120,7 @@ sources:
 
 **逻辑关系**：转折 + 虚拟愿望——讽刺之处在于他有能力，却没有做。
 
-**参考译文**：卢比奥这一困局的讽刺之处（或者说悲剧之处）在于：他本有能力做成了不起的事——只要他肯公开站出来、承担自己的立场。
+**参考译文**：卢比奥这一困局的讽刺之处（或者说悲剧之处）在于：他本有能力做成了不起的事——可惜他偏偏不肯公开站出来、承担自己的立场。
 
 **写作迁移**：*The tragedy of the scheme is it could have worked, if only the funding had arrived on time.* 该方案的悲剧在于它本可以奏效，只要资金按时到位。
 
@@ -151,7 +151,7 @@ sources:
 ## 背景补充
 
 - **事实**：文中提到以色列拒绝美国主导的「15 点加沙和平方案」（[2]），特朗普此前刚宣称取得「历史性突破」。这是评论的论据之一，用于说明美方调解受挫。
-- **事实**：卢比奥 2026 年 2 月在慕尼黑安全会议发言，谈「西方帝国的衰落」并批评欧洲面临「文明抹除」（[6]）。该讲话是作者判断其外交观的核心证据。
+- **事实**：卢比奥 2026 年 2 月在慕尼黑安全会议发言，谈「西方帝国的衰落」并警告欧洲面临「文明抹除」（[6]）。该讲话是作者判断其外交观的核心证据。
 - **观点（Manuel Roig-Franzia）**：这位传记作者认为，卢比奥立场反复源于童年「需要归属、要站在赢的一方」的心理（[8]）。这是他人判断，不是已证实的事实。
 - **观点（Simon Tisdall）**：作者认为卢比奥的危险不在于激进，而在于「看上去、听上去都讲道理」，因此更容易获得信任（[11]）。
 
@@ -181,7 +181,7 @@ sources:
 2. 作者如何概括卢比奥的外交方式？
    定位：[5]
    依据："he projects brute US power to impose take-it-or-leave-it 'solutions'"
-   答案：以实力施压，逼迫对方接受不容谈判的方案，作者称之为「现代形式的帝国主义」，目标是「政权顺从」而非更迭。
+   答案：以实力施压，逼迫对方接受不容谈判的方案，作者称之为「现代形式的帝国主义」；在伊朗，作者称其政策是「政权顺从」而非更迭。
 
 3. 为什么作者说他危险？
    定位：[11]
@@ -209,7 +209,7 @@ sources:
 > - what interested you about it
 > and explain why you think it matters.
 
-2 分钟提纲（55 词）：`I read a Guardian column about a US secretary of state who had the chance to broker peace but chose pressure instead. What interested me was how the writer argued — not by insulting him, but by showing his contradictions. It matters because it shows how diplomatic language can hide hard power.`
+2 分钟提纲（51 词）：`I read a Guardian column about a US secretary of state who had the chance to broker peace but chose pressure instead. What interested me was how the writer argued — not by insulting him, but by showing his contradictions. It matters because it shows how diplomatic language can hide hard power.`
 
 **Part 3**
 
