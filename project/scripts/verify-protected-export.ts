@@ -17,8 +17,8 @@ async function files(directory: string): Promise<string[]> {
 }
 const books = getAllBooks();
 const paths = await files("out");
-// Reading HTML and route payloads are served only after Worker authorization.
-const privatePage = /^(?:books|categories|library|search)\/.*\.(?:html|txt)$/;
+// These pages, including the about-page changelog, require Worker authorization.
+const privatePage = /^(?:books|categories|library|search|about)\/.*\.(?:html|txt)$/;
 const texts = await Promise.all(
   paths
     .filter(
