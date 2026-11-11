@@ -56,18 +56,25 @@ This chapter covers the groundwork for storing and deciding; repetition comes ne
 
 ### Indentation is syntax
 
-Python groups code with indentation. Other languages use braces to mark a block; Python uses four spaces. Wrong indentation either raises an error or silently changes the logic.
+Python groups code with indentation. Other languages use braces to mark a block; Python has no such marker, so it reads the leading whitespace of each line to decide which level that line belongs to. Wrong indentation either raises an error or silently changes the logic.
 
 ```python
 if True:
     print("four spaces of indentation")
 ```
 
+Two different things get compressed into the single sentence "Python uses four spaces" — keep them apart:
+
+- **The indentation itself is syntax.** Statements at the same level within a block must share the same indentation, or Python raises `IndentationError`. Get the level wrong and a statement attaches to the wrong block: the program still runs, it just does something else.
+- **"Four spaces per level" is PEP 8's recommendation, not a rule of the language.** Two spaces, three spaces — the interpreter accepts them, as long as statements at the same level within a block are indented consistently; different blocks can even use different widths, which runs but nobody wants to read. Four is the value the community settled on: depth is easy to count at a glance, and it does not display at different widths in someone else's editor the way a tab does.
+
+Tabs work too. `TabError` is not about mixing tabs and spaces as such, but about mixing that makes indentation depend on how many spaces a tab stands for: one line in a block indented with a tab and another with spaces is exactly that case. A file that uses tabs throughout is fine.
+
 Colon, newline, indent — that shape defines every block in Python: `if`, `for`, `def`, `class`. The editor fills the indentation in, but you should know it is doing so.
 
 ### PEP 8: readability conventions
 
-PEP 8 is the official style guide. It changes no behaviour, only readability: four spaces rather than tabs, lines of at most 79 characters, lowercase names with underscores (snake_case), spaces around operators.
+PEP 8 is the official style guide. It changes no behaviour, only readability: four spaces per indent level rather than tabs (the default from the previous section), lines of at most 79 characters, lowercase names with underscores (snake_case), spaces around operators.
 
 Violating it is not an error, but it marks the code as a beginner's. A later chapter uses Ruff to check and format automatically.
 
@@ -118,9 +125,11 @@ first_name = "Alice"
 user_age = 25
 
 # invalid
-# 2age = 30      -> SyntaxError
-# user-age = 30  -> parsed as subtraction
+# 2age = 30
+# user-age = 30
 ```
+
+The two invalid lines fail for different reasons. `2age` starts with a digit, so it cannot be a variable name. Python reports `SyntaxError: invalid decimal literal`. `user-age` is read as a subtraction, `user - age = 30`, and a subtraction cannot be an assignment target, hence `cannot assign to expression here`.
 
 Style (soft): lowercase with underscores, snake_case. `firstName` runs fine but is not idiomatic Python.
 
@@ -408,7 +417,7 @@ Two independent `if`s would both fire when both conditions hold, which is usuall
 ## Takeaways
 
 - Programs combine four actions: store, decide, repeat, calculate.
-- Indentation is syntax; PEP 8 is style and never raises an error.
+- Indentation builds the blocks (syntax); four spaces per level is a PEP 8 convention (style), and ignoring it only makes the code harder to read.
 - Read errors in three steps: which line, what error, exact position.
 - `=` assigns, `==` compares; names use snake_case.
 - Basic types: `int`, `float`, `str`, `bool`; booleans come from comparisons.
@@ -420,7 +429,7 @@ Two independent `if`s would both fire when both conditions hold, which is usuall
 
 **1. Why does a wrong indentation break Python, when in other languages it is only formatting?**
 
-Reference answer: Python has no braces to delimit blocks; indentation itself expresses nesting. After a colon, the interpreter uses indentation to decide which lines belong to the block. Inconsistent indentation raises `IndentationError`; a wrong level can attach a statement to a different block, so the program runs but does something else. Indentation is therefore part of the syntax, not optional formatting.
+Reference answer: Python has no braces to delimit blocks; indentation itself expresses nesting. After a colon, the interpreter uses indentation to decide which lines belong to the block. Inconsistent indentation raises `IndentationError`; a wrong level can attach a statement to a different block, so the program runs but does something else. Indentation is therefore part of the syntax, not optional formatting. How many spaces per level is a separate, stylistic question: the syntax only asks that statements at the same level within a block are indented consistently, and four spaces is the value PEP 8 recommends.
 
 **2. Write a condition for "allowed to drive": at least 16, has a licence, and is not drunk. Explain why `== True` is unnecessary.**
 

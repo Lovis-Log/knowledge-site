@@ -86,18 +86,18 @@ sources:
 
 ## 文章脉络
 
-报道从一位求职者的经历切入：四年投递数千个岗位、一次面试都没有。由此展开三条线索——多起诉Meta、IBM、Eightfold 的官司，算法偏见的实验证据，以及各地刚开始建立的审计与告知规则。
+报道从一位求职者的经历切入：四年投递数千个岗位、一次面试都没有。由此展开三条线索——针对 Meta、IBM、Eightfold 的多起官司，算法偏见的实验证据，以及各地刚刚起步的监管规则。
 
-| 段号范围 | 作用 | 一句话要点 | 事实 / 评论 |
+| 段号范围 | 作用 | 一句话要点 | 性质与出处 |
 | --- | --- | --- | --- |
-| [1]–[3] | 引入 | 求职者起诉 Eightfold，另有针对 Meta、IBM 的类似诉讼 | 事实 |
-| [4]–[5] | 展开 | 企业以「客观」为名用 AI 筛人，却没有法律要求告知 | 事实 + 评论（研究者认为缺乏告知） |
-| [6]–[7] | 展开 | 去年 90% 雇主使用某种自动化；Eightfold 用数据给候选人打 0–5 分 | 事实 |
-| [8]–[12] | 展开 | 求职者应像查信用报告一样看到自己的「档案」；涉事公司否认指控 | 评论（律师主张）+ 事实（公司回应） |
-| [13]–[16] | 展开 | 专家认为 AI 会复制甚至放大人类偏见，亚马逊与口音打分是例证 | 事实 + 评论 |
-| [17]–[19] | 展开 | 实验显示模型会凭空给虚构群体贴标签，且越新的模型偏见越强 | 事实 + 评论（研究者称意外） |
-| [20]–[22] | 展开 | 「算法黑名单」与「算法单一化」：一次否决可能跨公司跟随 | 评论（研究者判断） |
-| [23]–[28] | 收束 | 更负责的用法是 AI 只收集信息、由人决定；纽约等地立法要求审计与告知 | 事实 |
+| [1]–[3] | 引入 | 求职者起诉 Eightfold，另有针对 Meta、IBM 的类似诉讼 | 报道事实（[1]）+ 诉讼指控（[2][3]，[2] 注明出自原告律师） |
+| [4]–[5] | 展开 | 企业以「客观」为名用 AI 筛人，却没有法律要求告知 | 记者陈述（[4]）+ 学者评论（[5] Ajunwa） |
+| [6]–[7] | 展开 | 去年 90% 雇主使用某种自动化；Eightfold 用数据给候选人打 0–5 分 | 第三方报告（[6] 世界经济论坛）+ 公司自述与记者描述（[7]） |
+| [8]–[12] | 展开 | 求职者应像查信用报告一样看到自己的「档案」；公司随后回应 | 律师主张（[8][9]）+ 企业回应（[11][12]） |
+| [13]–[16] | 展开 | 专家认为 AI 会复制甚至放大人类偏见，亚马逊与口音打分是例证 | 学者评论（[13][14][16]）+ 个案与研究（[15]） |
+| [17]–[19] | 展开 | 实验显示模型会给虚构群体贴标签；在这项模拟任务中，所比较的较新模型表现出更明显的岗位分层 | 研究发现（[17][18]）+ 研究者评论（[19]） |
+| [20]–[22] | 展开 | 「算法黑名单」与「算法单一化」：一次否决可能跨公司跟随 | 研究者判断（[20][21]）+ 企业未置评（[22]） |
+| [23]–[28] | 收束 | 更负责的用法是 AI 只收集信息、由人决定；纽约要求审计与告知，伊利诺伊与科罗拉多禁止歧视性使用 | 企业自述（[23]–[25]）+ 法规事实（[26]）+ 律师主张（[27][28]） |
 
 文中出现过两类容易被混为一谈的百分比与刻度，对照如下：
 
@@ -109,7 +109,14 @@ sources:
 | 约 10% | Incredible Health 由人工复核的 AI 面试比例 | 抽查比例，不是偏见检出率 | [25] |
 | 2023 年 | 纽约市要求年度偏见审计的法律生效时间 | 生效年份，不是诉讼年份 | [26] |
 
-阅读提醒：报道没有断言这些系统「确实」歧视了具体个人——除已认定的事实外，多数说法来自原告律师、研究者与公司回应三方，注意区分。
+阅读提醒：这篇报道里的话分四类，读的时候要分开，不要把它们混成一种「报道说」。
+
+- **诉讼指控**（[2][3]）：指控具体公司做了什么，报道将这些说法归于原告方。[2] 末尾专门加了 according to Kistler's legal team，[3] 用 alleges／allegedly。
+- **律师主张**（[8][9][27][28]）：Dempsey 与 Yang 关于「应当像信用报告一样透明」的诉求，说的是制度应当如何，不是指认某家公司做了什么。
+- **企业回应**（[11][12][22]）：Eightfold 与 IBM 明确否认，Meta 未回应；「未回应」不等于否认。
+- **研究发现**（[15][17][18]）：来自 Ajunwa 为写书所做的研究和 Bai 参与的实验，支持「AI 会复制或放大偏见」这一判断，但不构成对本案的裁决。
+
+报道本身没有断言哪家公司的系统「确实」歧视了某个具体的人。
 
 ## 地道表达
 
@@ -170,7 +177,7 @@ sources:
 
 **逻辑关系**：让步 + 转折强调——人类也会偏见，但 AI 的幅度更大。
 
-**参考译文**：人类招聘经理也可能不公平——比如选了和自己同一个兄弟会的人——但「（在 AI 那里）偏见的程度甚至更强」，研究招聘偏见的芝加哥大学助理教授白雪春子说。
+**参考译文**：人类招聘经理也可能不公平——比如选了和自己同一个兄弟会的人——但「（在 AI 那里）偏见的程度甚至更强」，研究招聘偏见的芝加哥大学助理教授白雪纯子说。
 
 **写作迁移**：*While paper records can be lost – a fire destroyed the archive in 1998, for instance – "digital loss is far more permanent," says the archivist.* 纸质记录也可能丢失——例如 1998 年一场火烧毁了档案——但「数字形式的丢失要持久得多」，这位档案管理员说。
 
@@ -190,7 +197,7 @@ sources:
 
 ## 术语与行业黑话
 
-- **bias audit**｜本文含义：对招聘系统是否产生歧视性结果的定期审查｜使用背景：纽约等地的法规要求每年进行，是最早落地的算法问责形式｜近词辨析：与 financial audit 不同，bias audit 关注群体间结果差异，不涉及账目｜可否迁移到雅思：可（科技监管类话题）。
+- **bias audit**｜本文含义：对招聘系统是否产生歧视性结果的定期审查｜使用背景：纽约市 2023 年生效的法律要求每年进行，是最早落地的算法问责形式｜近词辨析：与 financial audit 不同，bias audit 关注群体间结果差异，不涉及账目｜可否迁移到雅思：可（科技监管类话题）。
 - **black box**｜本文含义：输入与输出可见、内部逻辑不透明的系统｜使用背景：机器学习与治理讨论的常用比喻，强调不可解释性｜近词辨析：black box 指不透明，algorithm 指算法本身，二者不等同｜可否迁移到雅思：可（需解释）。
 - **algorithmic blackballing**｜本文含义：被算法系统标记后反复淘汰｜使用背景：由 blackball（投票否决某人入会）引申，报道用来形容跨公司的连锁排除｜近词辨析：与 rejected（单次被拒）不同，强调系统性且持续｜可否迁移到雅思：不可，属报道用语。
 - **algorithmic monoculture**｜本文含义：大量机构依赖同一批基础模型，导致风险同质化｜使用背景：借自农业的 monoculture（单一作物），指系统缺乏多样性｜近词辨析：与 standardization 不同，monoculture 强调共同失效的风险｜可否迁移到雅思：可（科技与社会风险）。
@@ -200,9 +207,12 @@ sources:
 ## 背景补充
 
 - **事实**：去年 90% 的雇主在招聘中使用某种形式的自动化（[6]），从筛选学历到 AI 电话初面都有。这个比例是理解「为什么一场官司会影响很多人」的前提。
-- **事实**：纽约市 2023 年生效的法律要求年度偏见审计与提前告知；伊利诺伊与科罗拉多也有类似规定（[26]）。各地规则适用范围不同，正是报道所说「漏洞」的来源。
+- **事实**：纽约市 2023 年生效的法律要求使用自动化招聘系统的雇主做年度偏见审计，并提前告知候选人；但它只覆盖「实质性地协助」或取代决策的软件，人在流程中参与的情形因此留了口子（[26]）。
+- **事实**：伊利诺伊与科罗拉多的近期法律管的是另一件事——禁止雇主使用会导致非法歧视的 AI 工具，不是审计或告知要求（[26]）。三地规则不能合并成一句「各地都要求审计与告知」。
 - **事实**：亚马逊曾因训练数据反映男性高绩效者而降低女性简历排序，发现问题后停用（[15]）。这是「偏见来自历史数据」的具体例证。
-- **观点（研究者）**：Ajunwa 与 Bai 都认为 AI 会复制甚至放大人类偏见，且模型越新偏见越强（[14][18]）。这是研究结论，不是已被监管机构确认的事实。
+- **研究发现**：Ajunwa 为写《量化工人》所做的研究里，AI 因听不懂南方口音，在语音面试中给这类求职者打分偏低（[15]）；Bai 参与的实验里，模型对虚构群体 Tufa、Aima、Reku、Weki 作出与资历无关的推断（[17]）。两项都是研究结果，不是监管机构的认定。
+- **研究口径**：[18] 说 AI 的偏见「强于」人类招聘决定。人类基线来自较早的人类实验——同一套「依次招聘」的模拟任务，此前已由人类被试做过（报道的原话是「她去年考察的人类招聘决定」）。把它读成同一次实验里的并排对照，会高估这条结论的强度。
+- **观点（研究者）**：[14] Ajunwa 称研究显示系统会复制人类管理者的偏见；[16] Bai 称 AI 的偏见幅度比人更大。后者是比较性判断，报道没有给出具体数值。
 
 ## 雅思迁移
 
@@ -216,7 +226,7 @@ sources:
 - 主体二：但训练数据带有历史偏见，且链条不透明，候选人难以申诉。
 - 结论：应当把 AI 定位为信息收集工具，决策与问责留在人身上，并配套审计与告知。
 
-示范段（84 词）：
+示范段（80 词）：
 
 > Using AI to shortlist candidates can save time, especially for employers who receive thousands of applications. The problem arises when algorithms decide rather than assist. Because these systems learn from past hiring, they can reproduce old patterns of exclusion, and applicants may never know why they were rejected. A reasonable compromise is to let AI gather and organise information while humans make the final judgement, supported by regular audits and clear notice to candidates about how their data is used.
 
@@ -243,9 +253,9 @@ sources:
    答案：一旦被跨公司使用的算法系统标记，系统会延续此前的负面判断，使求职者在多家公司反复被淘汰。
 
 5. 报道给出哪些可行的改进方向？
-   定位：[23]–[26]
+   定位：[23]–[28]
    依据："hiring managers shouldn't allow AI to make decisions"
-   答案：AI 只收集信息、由人做决定；定期人工复核与年度偏见审计；提前告知候选人并允许其查看算法档案。
+   答案：[23]–[25] 主张 AI 只收集信息、由人决定，并对 AI 面试做人工抽查；[26] 纽约市要求年度偏见审计与提前告知（只覆盖实质协助决策的软件），伊利诺伊与科罗拉多则禁止导致非法歧视的 AI 工具；[27][28] 律师进一步主张让候选人看到自己的算法档案——最后一条目前是主张，不是现行规定。
 
 ## 口语延伸
 
@@ -258,7 +268,7 @@ sources:
 > - who it affects
 > and explain why it worries you.
 
-2 分钟提纲（57 词）：`I would talk about AI tools used to screen job applications. Companies use them to rank candidates quickly, often without saying so. They affect anyone applying for work, especially people whose backgrounds look unusual to the system. It worries me because a rejection can follow you across employers and you never learn the reason.`
+2 分钟提纲（54 词）：`I would talk about AI tools used to screen job applications. Companies use them to rank candidates quickly, often without saying so. They affect anyone applying for work, especially people whose backgrounds look unusual to the system. It worries me because a rejection can follow you across employers and you never learn the reason.`
 
 **Part 3**
 

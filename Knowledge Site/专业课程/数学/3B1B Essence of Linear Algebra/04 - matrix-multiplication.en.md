@@ -22,7 +22,7 @@ Yes — and that matrix is the "product" of the two.
 
 So the definition of matrix multiplication is not an arbitrary rule of arithmetic; it is the translation of **composition**. Once that is clear, two properties usually memorized become obvious:
 
-- **It is not commutative**: rotate-then-shear differs from shear-then-rotate;
+- **It is not commutative**: for square matrices of the same order, swapping the order may change the result — rotate-then-shear and shear-then-rotate do not agree;
 - **It is associative**: $(AB)C = A(BC)$, because both sides merely say "do $C$, then $B$, then $A$."
 
 ## Timeline
@@ -43,6 +43,16 @@ So the definition of matrix multiplication is not an arbitrary rule of arithmeti
 
 Suppose you first rotate the plane 90 degrees counterclockwise, then shear it. The two actions in sequence produce **another linear transformation** — neither the rotation nor the shear.
 
+Both actions have matrices of their own. As in the previous chapter, the columns record where the basis vectors land:
+
+$$
+R=\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix},
+\qquad
+S=\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}.
+$$
+
+The second column of $S$, $(1,1)$, reads "the shear pushes $\hat{\jmath}$ to $(1,1)$"; the first column, $(1,0)$, says $\hat{\imath}$ stays put.
+
 ![Three grids: the original with î, ĵ, v; after a 90° rotation î→(0,1), ĵ→(−1,0), v→(−1,1); after the shear î→(1,1), ĵ→(−1,0), v→(0,1)](/images/la04-composition-en.svg)
 
 *Figure: the two columns of the composite are simply where the basis vectors land after both steps.*
@@ -50,7 +60,7 @@ Suppose you first rotate the plane 90 degrees counterclockwise, then shear it. T
 How do you find its matrix? The same way as always: **follow the two basis vectors**.
 
 - $\hat{\imath}$ is rotated to $(0,1)$, then sheared to $(1,1)$. So the first column is $(1,1)$;
-- $\hat{\jmath}$ is rotated to $(-1,0)$, then sheared to $(-1,0)$. So the second column is $(-1,0)$.
+- $\hat{\jmath}$ is rotated to $(-1,0)$, then sheared to $(-1,0)$ — the shear pushes horizontally only, so points already on the x-axis stay put. So the second column is $(-1,0)$.
 
 Hence the composition matrix is
 
@@ -76,7 +86,7 @@ $$
 \vec{v} \;\mapsto\; C\,\vec{v}.
 $$
 
-Since this holds for every $\vec{v}$, it is natural to call $C$ the **product** of $S$ and $R$:
+This holds for every $\vec{v}$; take $\vec{v}=\hat{\imath}$ and then $\vec{v}=\hat{\jmath}$, and column by column $C$ matches what "first $R$, then $S$" produces. So it is natural to call $C$ the **product** of $S$ and $R$:
 
 $$
 C = SR.
@@ -90,7 +100,7 @@ In $SR$, **the right factor $R$ acts first**, then the left one $S$.
 
 This matches function notation: in $f(g(x))$, $g$ runs first. Since matrices play the role of functions and sit to the left of the vector, composition inevitably reads right to left.
 
-Grant's joke: good news for Hebrew readers, bad news for the rest of us.
+Grant's joke: Hebrew runs right to left, so this is good news for Hebrew readers and bad news for the rest of us.
 
 ## How to compute it
 
@@ -137,26 +147,34 @@ Compress the procedure into one sentence:
 
 > Each column of the product is the **left matrix times the corresponding column of the right matrix**.
 
-Why? Because the $k$-th column of the right matrix is where the $k$-th basis vector first lands, and the left matrix carries it to its final home.
+Why? Follow the $k$-th basis vector $\hat{e}_k$ once. Call the left matrix $A$ and the right one $B$:
 
-This is far more memorable than "multiply rows by columns and add," because it says **why** the arithmetic goes that way.
+$$
+\hat{e}_k \;\xrightarrow{\;B\;}\; B\hat{e}_k \;\xrightarrow{\;A\;}\; A\,(B\hat{e}_k).
+$$
+
+The first landing spot, $B\hat{e}_k$, is by definition column $k$ of $B$; applying $A$ to that vector gives the final spot; and the final spot, by definition, is arranged into column $k$ of $AB$. Two landings and one arrangement — that is one column of the product.
+
+The row-by-column mnemonic is derived from this column rule as well: the $i$-th entry of column $k$ of the product is row $i$ of the left matrix dotted with column $k$ of the right one. Understand it by columns and there is nothing to memorise — the rule can be rebuilt on demand, and it tells you **why** the arithmetic goes that way.
 
 ## Order cannot be swapped
 
 A natural question: does swapping the two matrices change the result?
 
-It does. Try shear and rotation.
+Not necessarily. **For square matrices of the same order, swapping the order may change the result** — some pairs agree, some do not. Use the same pair, $S$ and $R$.
 
-- **Shear, then rotate**: $\hat{\imath}$ ends at $(0,1)$ and $\hat{\jmath}$ at $(-1,1)$ — the two end up close together;
-- **Rotate, then shear**: $\hat{\imath}$ ends at $(1,1)$ and $\hat{\jmath}$ at $(-1,0)$ — clearly further apart.
+- **Shear, then rotate** ($RS$): $\hat{\imath}$ ends at $(0,1)$ and $\hat{\jmath}$ at $(-1,1)$ — the two columns are 45° apart;
+- **Rotate, then shear** ($SR$): $\hat{\imath}$ ends at $(1,1)$ and $\hat{\jmath}$ at $(-1,0)$ — 135° apart.
 
-The difference is visible at a glance. So
+The gap between 45° and 135° is visible at a glance: one pair sits close together, the other has swung wide apart. So for these two matrices,
 
 $$
 SR \neq RS.
 $$
 
-Note that this judgment **requires no matrix multiplication at all**. Just imagine where the two basis vectors go. That is the payoff of seeing matrices as transformations.
+The logic here is worth pausing on. The claim being refuted is "matrix multiplication is commutative," which asserts that $AB=BA$ for **every** pair of square matrices of the same order. A universal claim falls to a single counterexample, and $S$ with $R$ is one. Conversely, a pair that happens to commute shows only that this pair is special; it tells you nothing about the rule.
+
+Note, incidentally, that this judgment **requires no matrix multiplication at all**. Just imagine where the two basis vectors go. That is the payoff of seeing matrices as transformations.
 
 ## Why associativity is obvious
 
@@ -183,7 +201,7 @@ Grant notes that this feels like cheating but is an honest proof — and a bette
 - The columns of the composition are the final landing spots of the two basis vectors after both maps.
 - The product $AB$ is defined by "first $B$, then $A$," hence the right-to-left reading.
 - To compute: each column of the product is the left matrix times the corresponding column of the right matrix.
-- Matrix multiplication is not commutative, because order changes the effect; this can be judged geometrically.
+- For square matrices of the same order, swapping the order may change the result (multiplication is not commutative); one concrete counterexample (shear and rotation) is enough to refute the claim that it holds for all matrices.
 - It is associative, because parentheses do not alter the order of the three transformations.
 - Reading multiplication as composition turns its properties from things to prove into things that are evident.
 
@@ -199,7 +217,7 @@ Answer: the $k$-th column of the right matrix is where the $k$-th basis vector l
 
 **3. Without computing, how can you tell whether $AB$ and $BA$ agree?**
 
-Answer: picture the two matrices as transformations and track the two basis vectors' final landing spots in your head. If both orders give the same two columns, the products agree; otherwise they differ. For "shear then rotate" versus "rotate then shear," $\hat{\imath}$ lands at $(0,1)$ in one case and $(1,1)$ in the other, which settles it immediately — faster than expanding numbers, and far more explanatory.
+Answer: picture the two matrices as transformations and track the two basis vectors' final landing spots in your head. If both orders give the same two columns, the products agree; otherwise they differ. For "shear then rotate" versus "rotate then shear," $\hat{\imath}$ lands at $(0,1)$ in one case and $(1,1)$ in the other, which settles it immediately — faster than expanding numbers, and far more explanatory. Note which way this shortcut runs: one differing example is enough to show that commutativity does not hold in general, while a pair whose columns happen to match shows only that this pair commutes.
 
 **4. Why is associativity "obvious" from the transformation view?**
 
