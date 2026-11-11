@@ -80,7 +80,7 @@ $$
 
 This is the crucial step. Take $x=3$ and $dx=0.01$: the two strips contribute $2 \cdot 3 \cdot 0.01 = 0.06$, the corner square contributes $0.0001$. The first is 600 times the second.
 
-The smaller $dx$ is, the wider that ratio. The reason is that $dx^2$ is a fraction $dx$ of $dx$ — it vanishes as $dx \to 0$, and vanishes faster. So after dividing by $dx$:
+As $dx$ approaches zero, the square term $dx^2$ shrinks faster than the strip terms, which are proportional to $dx$. Dividing by $dx$ leaves $dx$ from the square term, so its contribution tends to zero:
 
 $$
 \frac{dF}{dx} = 2x + dx \;\longrightarrow\; 2x .

@@ -61,12 +61,13 @@ from pydantic import BaseModel
 # ModuleNotFoundError: No module named 'pydantic'
 ```
 
-这个错误只有两种常见成因：
+可以从这几个常见原因排查：
 
 1. 包确实没装；
-2. 包装到了别的环境——最常见的是终端没有激活 `.venv`，于是包进了全局 Python。
+2. 包装到了别的环境——最常见的是终端没有激活 `.venv`，于是包进了全局 Python；
+3. 把发行包名当成了导入名：`pip install pillow` 之后要写 `import PIL`，`python-dotenv` 对应 `import dotenv`，`opencv-python` 对应 `import cv2`。
 
-排查顺序：先看终端提示符是否有 `(.venv)`；再看 VS Code 右下角的解释器是否指向 `.venv`；若刚创建环境，关掉旧终端重开。
+先核对运行脚本的 Python 解释器是否来自项目的 `.venv`，再用同一个解释器执行 `python -m pip show <包名>`。如果包已经装在该环境中，查包的文档确认导入名。
 
 ### 安装指定版本
 
@@ -283,7 +284,7 @@ print(df.dtypes)
 ## 本章结论
 
 - `pip install` 装包，`import ... as ...` 导入并起别名（pandas 约定为 `pd`）。
-- `ModuleNotFoundError` 要么没装，要么装错了环境；先检查 `(.venv)` 与解释器。
+- `ModuleNotFoundError` 表示 Python 没找到要导入的模块。先核对解释器，再检查包是否装在该环境里、导入名是否正确。
 - 用 `==` 锁定版本；`requirements.txt` 让环境可复现，`pip freeze` 从现有环境导出。
 - API 调用是固定五步：构造 URL、发请求、查状态码、解析 JSON、取字段。
 - `response.json()` 得到字典，按嵌套层级用键取值。

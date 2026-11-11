@@ -70,7 +70,7 @@ $$
 \pi(r+dr)^2 - \pi r^2 = 2\pi r\,dr + \pi (dr)^2 .
 $$
 
-The approximation drops $\pi (dr)^2$. At $dr = 0.1$ that term is $0.0314$, about half a percent of $2\pi r\,dr$; at $dr = 0.01$ it falls to about five hundredths of a percent. The error is not merely small — **it shrinks faster than $dr$ itself**, since it is second order in $dr$. That is the technical reason the whole scheme works.
+The approximation drops $\pi (dr)^2$. At $r=3$ with $dr = 0.1$ that term is $0.0314$, about $1.7\%$ of $2\pi r\,dr$; at $dr = 0.01$ it falls to $0.17\%$. The error is not merely small — **its size shrinks like $dr^2$, faster than $dr$ itself**. That is the technical reason the whole scheme works.
 
 ## Standing the rings upright
 

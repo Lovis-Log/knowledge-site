@@ -61,12 +61,13 @@ from pydantic import BaseModel
 # ModuleNotFoundError: No module named 'pydantic'
 ```
 
-There are only two common causes:
+Start with these common causes:
 
 1. the package is not installed;
-2. it went into a different environment — most often the terminal was not inside `.venv`, so it landed in the global Python.
+2. it went into a different environment — most often the terminal was not inside `.venv`, so it landed in the global Python;
+3. the distribution name was used in place of the import name: Pillow is imported as `PIL`, `python-dotenv` as `dotenv`, and `opencv-python` as `cv2`.
 
-Check in this order: does the prompt show `(.venv)`; does the interpreter shown in the VS Code status bar point into `.venv`; if the environment was just created, close the old terminal and open a new one.
+First check that the interpreter running the script comes from the project’s `.venv`. Use that same interpreter to run `python -m pip show <package>`. If the package is installed there, check its documentation for the import name.
 
 ### Pinning a version
 
@@ -283,7 +284,7 @@ At this point the data is ready to plot (the next chapter continues).
 ## Takeaways
 
 - `pip install` adds packages; `import ... as ...` binds them (pandas conventionally as `pd`).
-- `ModuleNotFoundError` means either not installed or installed into the wrong environment — check `(.venv)` and the interpreter first.
+- `ModuleNotFoundError` means Python could not find a module it tried to import. Check the interpreter, whether the package is installed in its environment, and which import name it provides.
 - Pin versions with `==`; `requirements.txt` makes an environment reproducible, and `pip freeze` exports the current one.
 - An API call is five fixed steps: build the URL, send, check status, parse JSON, extract fields.
 - `response.json()` yields a dictionary; index it level by level.

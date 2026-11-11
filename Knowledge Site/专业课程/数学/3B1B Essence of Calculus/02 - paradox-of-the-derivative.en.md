@@ -86,9 +86,9 @@ For a specific $dt$, $ds/dt$ is the slope of a line through two distinct points 
 
 So the honest-to-goodness mathematical derivative is not the slope between two nearby points. It is **the slope of the tangent at a single point**.
 
-![The curve t³ at t=2 with its secant and tangent: on the left, dt=0.5 gives a secant of slope 15.25, visibly steeper than the tangent; on the right the window is only 0.05 wide, the secant's slope is 12.06, and it nearly coincides with the tangent of slope 12](/images/02-paradox-of-the-derivative-secant-en.svg)
+![The curve t³ at t=2 with its secant and tangent: three panels take dt=0.5, 0.25, 0.05, giving secant slopes of 15.25, 13.56, and 12.30 against a fixed tangent slope of 12](/images/02-paradox-of-the-derivative-secant-en.svg)
 
-*Figure: the same "let the points close in" move — a visibly tilted secant on the full graph, an almost-coincident one when zoomed in. The limit is the tangent's slope.*
+*Figure: the same "let the points close in" move, with the secant swinging toward the tangent — the smaller dt, the closer the slope to 12. The limit is the tangent's slope.*
 
 ### Three ways to misread this
 

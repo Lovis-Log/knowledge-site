@@ -180,7 +180,7 @@ The diagonal entries are the cosine series, the off-diagonal ones the sine serie
 
 **Two completely different lines of reasoning deliver the same matrix**: grinding through the series, and observing that velocity perpendicular to position forces circular motion. The agreement is both reassuring and striking — the two modes of thought could hardly be more different.
 
-It also explains the opening example: $A=\begin{bmatrix}0&-\pi\\\pi&0\end{bmatrix}$ is the rotation matrix times $\pi$, a 180-degree turn, which is multiplication by $-1$.
+The matrix $A$ in the opening example equals $\pi M$. Setting $t=\pi$ in $e^{Mt}$ gives $e^A=-I$, a 180-degree turn.
 
 ## Isomorphic to Euler's formula
 
@@ -251,7 +251,7 @@ So it does satisfy the equation. (Convergence is the detail swept under the rug,
 - $e^{Mt}$ acts on an initial vector to give the solution of $\dot{\mathbf x}=M\mathbf x$: $\mathbf x(t)=e^{Mt}\mathbf x_0$.
 - The Romeo and Juliet system corresponds to a 90-degree rotation; its solution is a rotation matrix and its trajectories are circles.
 - Computing that exponential from the series yields the cosine-and-sine rotation matrix, matching the geometric argument.
-- $e^{A\pi}=-I$ is the matrix analogue of $e^{i\pi}=-1$.
+- For $A=\pi M$, $e^A=-I$, the matrix analogue of $e^{i\pi}=-1$.
 - In general, exponentiating "a 90-degree rotation in some plane" times time generates all rotations in that plane.
 - Vector fields make it visual: attach $M\mathbf v$ at each point, and $e^{Mt}$ flows every initial condition forward by $t$.
 - A symmetric matrix gives a saddle: stretching along one direction, squeezing along the other.

@@ -192,7 +192,7 @@ print(my_list)          # ['Dave', 25, True]
 my_list.append("New York")   # 追加到末尾
 my_list.insert(1, "engineer")  # 插入到索引 1
 my_list.remove("Dave")       # 删除第一个匹配值
-print(my_list)          # [25, 'engineer', 'New York']
+print(my_list)          # ['engineer', 25, True, 'New York']
 ```
 
 常用方法还有 `len()`、`sort()`、`reverse()`、`count()`。作者提醒：这些方法不必背，知道「列表能做什么」即可，需要时查文档。
@@ -267,10 +267,10 @@ point[0] = 10
 ```python
 scores = [90, 85, 90, 85, 70]
 unique_scores = set(scores)
-print(unique_scores)  # {90, 85, 70}
+print(unique_scores)  # {90, 85, 70}（实际顺序可能不同）
 
 fruits = {"apple", "banana", "orange", "banana"}
-print(fruits)  # {'apple', 'banana', 'orange'}
+print(fruits)  # {'apple', 'banana', 'orange'}（实际顺序可能不同）
 ```
 
 注意空集合必须写 `set()`，`{}` 会被解释成空字典。

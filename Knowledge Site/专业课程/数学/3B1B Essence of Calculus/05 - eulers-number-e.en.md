@@ -72,11 +72,11 @@ $$
 
 a difference with step size 1. A derivative requires the step to shrink to zero.
 
-Over that day the population goes from 8 to 16, and its growth rate is not constant across those 24 hours: near 8 at the start, near 16 at the end. Using 8 for the whole day is just sampling the left endpoint.
+Over that day the mass goes from 8 to 16, and the growth rate is not constant across those 24 hours: at the start of the day it sits below 8, by the end above it. The number 8 is only the **average** rate over the interval — and it happens to equal the mass at the start, which is exactly what makes "the rate equals the mass" so tempting.
 
-Shorten the step — half a day, an hour, a second, a billionth of a second — and the rate settles on a value between 8 and 16, specifically a little above 8.
+Shorten the step — half a day, an hour, a second, a billionth of a second — and the average rate falls, settling at $0.6931 \times 8 \approx 5.54$, clearly **below** 8. The rate itself is rising throughout that day, so the day-long average of 8 is pulled up by the later part of the interval.
 
-So "the derivative equals itself" mistook "step size 1" for "step size approaching 0." It returns 8, a systematic underestimate.
+So "the derivative equals itself" mistook "step size 1" for "step size approaching 0." It returns 8, a systematic overestimate.
 
 ## Shrinking the day to $dt$
 
@@ -246,7 +246,7 @@ In other words, $2^t$ and $e^{(\ln 2)t}$ describe the same curve and are fully e
 
 **1. Why is the reasoning "2^t doubles every day, so its derivative is itself" wrong?**
 
-Answer: it computes the difference quotient with step size 1, $(2^{t+1}-2^t)/1 = 2^t$, whereas a derivative takes the step to zero. Across a whole day the growth rate runs from about $2^t$ to about $2^{t+1}$; using the left endpoint for the entire interval is a crude approximation. Shrinking the step stabilizes the ratio at $0.6931 \times 2^t$, somewhat smaller than the function itself.
+Answer: it computes the difference quotient with step size 1, $(2^{t+1}-2^t)/1 = 2^t$, whereas a derivative takes the step to zero. That $2^t$ is the average growth rate over the whole day; since the instantaneous rate rises throughout the interval, the average sits above the value at the start. Shrinking the step stabilizes the ratio at $0.6931 \times 2^t$, somewhat smaller than the function itself.
 
 **2. What role does $a^{t+dt}=a^t \cdot a^{dt}$ play in the derivation?**
 

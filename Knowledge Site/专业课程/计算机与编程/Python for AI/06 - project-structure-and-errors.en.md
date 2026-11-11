@@ -204,12 +204,12 @@ Different exceptions can be handled separately:
 
 ```python
 try:
-    with open("data/sales.csv") as f:
+    with open("data/sales.csv", encoding="utf-8") as f:
         content = f.read()
 except FileNotFoundError:
     print("data file is missing")
-except ValueError:
-    print("data has the wrong format")
+except UnicodeDecodeError:
+    print("wrong encoding — check whether the file is UTF-8")
 ```
 
 You can also add `else` (runs when nothing failed) and `finally` (always runs, typically for closing connections or cleaning up):

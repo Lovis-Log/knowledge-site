@@ -192,7 +192,7 @@ print(my_list)                 # ['Dave', 25, True]
 my_list.append("New York")     # append to the end
 my_list.insert(1, "engineer")  # insert at index 1
 my_list.remove("Dave")         # remove first matching value
-print(my_list)                 # [25, 'engineer', 'New York']
+print(my_list)                 # ['engineer', 25, True, 'New York']
 ```
 
 Other methods include `sort()`, `reverse()` and `count()`. The instructor's advice: do not memorise them; know what a list can do and look up the rest.
@@ -267,10 +267,10 @@ Sets remove duplicates automatically and make membership tests fast:
 ```python
 scores = [90, 85, 90, 85, 70]
 unique_scores = set(scores)
-print(unique_scores)  # {90, 85, 70}
+print(unique_scores)  # {90, 85, 70} (the actual order may differ)
 
 fruits = {"apple", "banana", "orange", "banana"}
-print(fruits)  # {'apple', 'banana', 'orange'}
+print(fruits)  # {'apple', 'banana', 'orange'} (the actual order may differ)
 ```
 
 An empty set must be `set()`; `{}` is an empty dictionary.

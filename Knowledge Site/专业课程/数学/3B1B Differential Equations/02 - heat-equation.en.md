@@ -135,21 +135,21 @@ $$
 \frac{dT_2}{dt}\propto \frac{1}{2}\left(\Delta_1+\Delta_2\right).
 $$
 
-The perspective has shifted: instead of "neighbours' average versus itself", it is now a combination of two first differences. Subtract one from the other:
+The perspective has shifted: instead of "neighbours' average versus itself", it is now a combination of two first differences. Add them:
 
 $$
-\Delta_1-\Delta_2 = (T_1-T_2)-(T_3-T_2) = T_1-2T_2+T_3,
+\Delta_1+\Delta_2 = (T_1-T_2)+(T_3-T_2) = T_1-2T_2+T_3,
 $$
 
 which is exactly twice "neighbours' average minus itself". This quantity is the **second difference**, written $\Delta\Delta T$.
 
 Sanity checks:
 
-- If the two gaps are equal, $T_1+T_3=2T_2$ and $T_2$ does not tend to change;
+- When the second difference is zero, $T_1+T_3=2T_2$: $T_2$ equals the neighbours' average and does not tend to change;
 - If the second difference is positive, the neighbours average hotter and $T_2$ rises;
 - If it is negative, they average cooler and $T_2$ falls.
 
-In other words, the second difference is a compact way of saying "how far this point sits from its neighbours' average", carrying an extra factor of $\frac12$ that does not matter, since the equation is written with an unspecified proportionality constant anyway.
+In other words, the second difference is a compact way of saying "how far this point sits from its neighbours' average", differing only by a constant factor of 2 — which does not matter, since the equation is written with an unspecified proportionality constant anyway.
 
 ### From second difference to second derivative
 

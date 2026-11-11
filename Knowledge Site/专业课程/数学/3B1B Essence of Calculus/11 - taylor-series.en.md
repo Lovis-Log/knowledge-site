@@ -119,7 +119,7 @@ $$
 \cos x \approx 1 - \frac{x^2}{2} .
 $$
 
-Check: $\cos 0.1 = 0.995004\ldots$, while $1 - 0.005 = 0.995$. The error is on the order of one part in a hundred thousand.
+Check: $\cos 0.1 = 0.995004\ldots$, while $1 - 0.005 = 0.995$. The error is about $4 \times 10^{-6}$, coming from the discarded $x^4/24$ term.
 
 ### Three degrees of freedom, three jobs
 

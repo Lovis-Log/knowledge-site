@@ -81,7 +81,7 @@ The recurring prop is a complex plane whose horizontal axis is the real part of 
 
 At $s=2i$ the velocity is the position rotated 90 degrees and stretched to length 2 — twice the rotation rate.
 
-At $s=-0.5+i$ the exponential splits: one factor handles decay, the other rotation. It can also be read geometrically: moving $1$ to $s$ takes a rotation plus a stretch, and that same combination is the constant relation between velocity and position. Since velocity is always rotated by more than 90 degrees relative to position and is shorter, the trajectory can only spiral inward.
+At $s=-0.5+i$ the exponential splits: one factor handles decay, the other rotation. It can also be read geometrically: moving $1$ to $s$ takes a rotation plus a stretch, and that same combination is the constant relation between velocity and position. The decisive point is that the rotation exceeds 90 degrees, so velocity always carries a component pointing back toward the origin — the radius can only shrink, and the trajectory spirals inward.
 
 Engineers call this picture the $s$-plane: each point encodes the behaviour of one exponential.
 

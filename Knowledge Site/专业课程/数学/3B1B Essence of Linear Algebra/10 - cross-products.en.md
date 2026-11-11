@@ -116,7 +116,7 @@ Let $v$ have length 2 pointing along positive $z$, i.e. $(0,0,2)$, and $w$ have 
 
 They are perpendicular and equal in length, so they span a square of side 2 with area 4. The cross product therefore has length 4.
 
-Right-hand rule: forefinger up along $z$, middle finger right along $y$, thumb points along negative $x$. Hence
+Point your right index finger along the first vector $v$ (positive $z$) and your middle finger along the second vector $w$ (positive $y$). Your thumb points along negative $x$. Hence
 
 $$
 v \times w = -4\hat{\imath}.

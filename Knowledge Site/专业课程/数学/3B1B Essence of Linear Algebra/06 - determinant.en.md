@@ -65,7 +65,7 @@ The shear distorts the shape without changing its area.
 
 ![Left: the unit square spanned by î and ĵ, area 1; right: the parallelogram spanned by the columns (3,0) and (1,2), base 3 and height 2, area 6 — exactly the determinant](/images/la06-determinant-en.svg)
 
-*Figure: the area goes from 1 to 6, and that 6 is the determinant — it reports how much space was stretched.*
+*Figure: the right panel uses a second example. Replacing the second column $(0,2)$ with $(1,2)$ leaves the base at 3 and the height at 2, so the area still scales by a factor of 6.*
 
 ## Why one square speaks for everything
 

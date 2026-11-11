@@ -157,7 +157,7 @@ The function $x^2$ carries a value from the top line to the middle, and $\sin$ c
 
 ### Passing the nudge down
 
-Start at $x = 1.5$. Nudge the top point by $dx$; the middle point moves to $x^2 + d(x^2)$ — call that intermediate change $dh$.
+Start at $x = 3$, the position shown in the figure. Nudge the top point by $dx$; the middle point moves to $x^2 + d(x^2)$ — call that intermediate change $dh$.
 
 Here is the crucial move: **give the intermediate quantity a name.** Call $x^2$ by the name $h$. Then the bottom value is $\sin h$, and its change is $d\sin h$.
 

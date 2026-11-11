@@ -55,10 +55,6 @@ Limits make those questions disappear: instead of defining "infinitesimal," ask 
 
 Recall the derivative. Given $f(x)$, find its derivative at, say, $x=2$:
 
-![Left: with ε=1 the output band runs from 3 to 5 and the input window is about 1.73 to 2.24; right: with ε=0.4 the band narrows and the input window shrinks to 1.90 to 2.10](/images/07-epsilon-delta-en.svg)
-
-*Figure: ε is the output tolerance and δ the input radius that guarantees it; smaller ε forces smaller δ.*
-
 1. Nudge the input, call it $dx$;
 2. Look at the change in output, $df = f(2+dx) - f(2)$;
 3. Form the ratio $df/dx$ — the slope of the secant between two points on the graph.
@@ -118,11 +114,17 @@ matching the $3\cdot 2^2 = 12$ computed in the previous lecture.
 
 ## ε-δ: making "approach" precise
 
+Take $f(x)=x^2$ near $x=2$. If the output must stay between 3 and 5, the dashed lines mark $\sqrt{3}$ and $\sqrt{5}$, about 1.73 and 2.24. Tightening the output band to $4\pm0.4$ moves those boundaries to about 1.90 and 2.10. The definition uses an input window centred at 2, so choose a radius that fits on both sides. For example, $\delta=0.23$ works for $\varepsilon=1$, and $\delta=0.09$ works for $\varepsilon=0.4$.
+
+![Left: with ε=1 the output band runs from 3 to 5 and the input window is about 1.73 to 2.24; right: with ε=0.4 the band narrows and the input window shrinks to 1.90 to 2.10](/images/07-epsilon-delta-en.svg)
+
+*Figure: the dashed lines mark the input boundaries for each output band. A δ window centred at 2 must fit between those boundaries.*
+
 Suppose someone objects: "what precisely do you mean by *approach*?"
 
 Start with an operational description:
 
-- Take an input interval around 0 (excluding 0 itself);
+- Take an input interval around $a$ (excluding $a$ itself);
 - Look at all corresponding outputs — they form an output interval;
 - The tighter the input interval, the tighter the output interval, and **its width can be made as small as you like**.
 

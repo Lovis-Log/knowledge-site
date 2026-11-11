@@ -149,7 +149,7 @@ $$
 
 All three have diagonal entries summing to 0, so the eigenvalue mean is 0 and the formula collapses to $\pm\sqrt{-p}$.
 
-Their determinants are all $-1$ (the last two need a little complex arithmetic). So the eigenvalues are
+Their determinants are all $-1$ (the $\sigma_y$ one takes a little complex arithmetic: $0\cdot0-(-i)(i)=-1$). So the eigenvalues are
 
 $$
 \pm\sqrt{0 - (-1)} = \pm 1 .

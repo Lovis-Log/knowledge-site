@@ -246,7 +246,7 @@ Reference answer: the derivative of $e^{at}$ is $ae^{at}$, whose transform is $a
 
 **5. Why does the dependence of the steady amplitude on the two frequencies matter?**
 
-Reference answer: in the limit of small damping the steady coefficient behaves like a factor proportional to $1/(\omega_0^2-\omega^2)$. As the driving frequency approaches the natural frequency the denominator shrinks and the amplitude grows sharply — resonance. In engineering, if an external excitation such as wind, earthquakes, or footsteps approaches a structure's natural frequency, the response can far exceed expectations; the Tacoma Narrows collapse is the standard cautionary example. Design therefore keeps natural frequencies away from likely excitation frequencies, or adds damping to cap the peak.
+Reference answer: in the limit of small damping the steady coefficient behaves like a factor proportional to $1/(\omega_0^2-\omega^2)$. As the driving frequency approaches the natural frequency the denominator shrinks and the amplitude grows sharply — resonance. In engineering, if an external excitation such as wind, earthquakes, or footsteps approaches a structure's natural frequency, the response can far exceed expectations, so design keeps natural frequencies away from likely excitation frequencies or adds damping to cap the peak. The 1940 Tacoma Narrows collapse is often cited here, but later analysis attributes it mainly to aeroelastic flutter — a self-excited oscillation — rather than simple resonance with the wind; it illustrates a related instability, not a direct consequence of this formula.
 
 ## How it connects
 

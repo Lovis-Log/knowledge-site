@@ -294,7 +294,7 @@ Terminology:
 - **module**: a `.py` file;
 - **package**: a folder containing modules;
 - **function**: a specific tool inside a module;
-- **class**: a blueprint for building objects (covered later).
+- **class**: a blueprint for building objects (chapter 7).
 
 A useful image: a module is a toolbox, a package is a garage of toolboxes, a function is a hammer in a box, and a class is a blueprint for making tools.
 

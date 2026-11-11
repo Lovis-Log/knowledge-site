@@ -204,12 +204,12 @@ print("this line still runs")
 
 ```python
 try:
-    with open("data/sales.csv") as f:
+    with open("data/sales.csv", encoding="utf-8") as f:
         content = f.read()
 except FileNotFoundError:
     print("data file is missing")
-except ValueError:
-    print("data has the wrong format")
+except UnicodeDecodeError:
+    print("wrong encoding — check whether the file is UTF-8")
 ```
 
 还能加 `else`（没有异常时执行）与 `finally`（无论成功失败都执行，常用于关闭连接、清理临时文件）：

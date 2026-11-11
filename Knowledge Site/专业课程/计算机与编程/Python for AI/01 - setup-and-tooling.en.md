@@ -119,10 +119,10 @@ The bottom-right corner shows the current interpreter, e.g. `3.13.5`. Click it t
 
 ### Running
 
-Three equivalent ways:
+Three ways to run a file:
 
 1. The play button in the top-right corner;
-2. `Ctrl+F5` by default (`Cmd+F5` on macOS), rebindable to `Ctrl/Cmd+Enter`;
+2. Choose Run Without Debugging from the Run menu (`Ctrl+F5` by default on Windows). This uses VS Code’s launch configuration;
 3. A command typed in the terminal.
 
 Behind the play button is an ordinary terminal command, roughly:
