@@ -176,7 +176,7 @@ Conversations are neither truncated nor split. Each is assigned to the pack whos
 
 ### Expert routing in mixture-of-experts models
 
-Fine-tuning a MoE on narrow agent data causes a few experts to absorb most tokens. MAI reports that load balancing during the supervised stage is about a thousand times harder than during RL, with a drop rate of 15.
+Fine-tuning a MoE on narrow agent data causes a few experts to absorb most tokens. MAI reports that load balancing during the supervised stage is about a thousand times harder than during RL, in the setup discussed. The speaker also cites a drop-rate figure of 15 without giving its units in the transcript.
 
 ## Training loss is not evaluation
 

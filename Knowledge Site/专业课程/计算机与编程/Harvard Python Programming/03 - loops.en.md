@@ -202,6 +202,8 @@ while True:
     break
 ```
 
+Note that the boundary moved: this version only rejects negatives, so typing `0` reaches `break` and `meow(0)` prints nothing at all (confirmed: `range(0)` is empty and the program simply ends). If the intent is "must be positive", the test has to be `if n <= 0: continue`.
+
 ### Wrapping it in functions
 
 ```python

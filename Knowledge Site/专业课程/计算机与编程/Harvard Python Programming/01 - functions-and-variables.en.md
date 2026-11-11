@@ -287,15 +287,15 @@ Typing `1.2` and `3.4` gives `4.6`.
 `round` rounds, with an optional second argument for digits:
 
 ```python
-z = round(x + y)          # 4.6 → 5
-z = round(x / y, 2)       # 2/3 → 0.67
+z = round(x + y)          # 1.2 + 3.4 = 4.6 → 5
+z = round(x / y, 2)       # 1.2 / 3.4 ≈ 0.3529 → 0.35
 ```
 
 f-strings can format directly:
 
 ```python
-print(f"{z:,}")     # 1000 → 1,000
-print(f"{z:.2f}")   # 0.666... → 0.67
+print(f"{z:,}")     # with z = 1000 this prints 1,000
+print(f"{z:.2f}")   # with z = 0.666… this prints 0.67
 ```
 
 `:,` inserts thousands separators; `:.2f` keeps two decimals. These format specifiers are not worth memorising — look them up when needed.

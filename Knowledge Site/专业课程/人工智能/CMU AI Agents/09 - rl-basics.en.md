@@ -22,7 +22,7 @@ sources:
 
 ## A toy task that runs through the lecture
 
-**Number Search**: the environment holds an integer from 1 to 16 and the agent gets four guesses. After each guess the environment says "higher", "lower", or "correct". Correct earns reward 1; running out of guesses earns 0.
+**Number Search**: the environment holds an integer from 1 to 16 and the agent gets four guesses. After each guess the environment says "too high", "too low", or "correct". Correct earns reward 1; running out of guesses earns 0.
 
 The optimal first guess is 8, because it halves the candidate set — the same logic as an opening guess in Wordle. Starting at 4 can still succeed by following feedback; starting at 16, or counting up from 1, is likely to time out.
 
@@ -65,7 +65,7 @@ That is not the same objective as making the task succeed.
 ### 1. Task mismatch
 
 - Tasks usually have several valid paths: 8 is the best first guess, but 4 is workable. A demonstration records only one.
-- Worse, **every action that was not demonstrated is treated as equally bad**. After "higher", guessing 7 and guessing 15 are both wrong, but one is close and the other wildly off. The SFT loss cannot see the difference.
+- Worse, **every action that was not demonstrated is treated as equally bad**. After "too high", guessing 7 and guessing 15 are both wrong, but one is close and the other wildly off. The SFT loss cannot see the difference.
 
 ### 2. Data mismatch
 
@@ -81,7 +81,7 @@ RL addresses all three: it optimizes the task return directly, can learn from fa
 
 - Policy $\pi_\theta$: the action distribution parameterized by the language model.
 - Task instance: the hidden number, invisible to the agent.
-- Observation: what the environment returns ("higher").
+- Observation: what the environment returns ("too high").
 - Action: the next guess.
 - Reward: 1 on success, 0 on timeout.
 
@@ -176,7 +176,7 @@ It measures how much better an action is than the policy's average behavior.
 
 ### A concrete advantage example
 
-After guessing 8 ("higher") and 12 ("lower"), the answer is 9, 10, or 11.
+After guessing 8 ("too low") and 12 ("too high"), the answer is 9, 10, or 11.
 
 - Guess 11: if wrong, only one guess and two candidates remain. Advantage is low.
 - Guess 10: correct or not, the range still narrows. Advantage is high.

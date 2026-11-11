@@ -62,11 +62,13 @@ int max(int a, int b) { return a > b ? a : b; }
 int max(int a, int b) { return a > b ? a : b; }   // 错误：签名相同
 ```
 
-编译器会直接拒绝：
+编译器会直接拒绝，但它报的是「重复定义」而不是「返回类型」：
 
 ```
-cannot overload function distinguished by the return type alone
+error: redefinition of 'int max(int, int)'
 ```
+
+想试出「返回类型」那条消息，得把第二行改成不同的返回类型——`double max(int, int)`——此时 gcc 说 `ambiguating new declaration of 'double max(int, int)'`，MSVC 的措辞才是 `cannot overload functions distinguished by return type alone`。三句话指向同一条规则：返回类型不参与区分。
 
 第 14 章已经说过：**签名 = 名字 + 参数列表，不含返回类型**。所以下面几种改法里，只有改参数列表是合法的：
 

@@ -237,7 +237,7 @@ T add(T a, T b) { return a + b; }
 ```
 
 - `add(6, 7)`：`int` 是整型，通过；
-- `add(11.1, 1.9)`：`double` 不满足 `std::integral`，编译错误，信息是 `use of function 'add' with unsatisfied constraints`。
+- `add(11.1, 1.9)`：`double` 不满足 `std::integral`，编译失败。报错文字随编译器版本变化：课程当年的 gcc 给的是 `use of function 'add' with unsatisfied constraints`，实测 gcc 16.1.0 改成先报 `no matching function for call to 'add(double, double)'`，再把候选模板与 `requires integral<T>` 列在下面。两种措辞都能一眼看出「约束没满足」。
 
 常用内置 concepts：`std::integral`、`std::floating_point`、`std::same_as`、`std::convertible_to`。
 
@@ -329,7 +329,7 @@ requires std::integral<T> && TinyTypeStrict<T>
 T add(T a, T b);
 ```
 
-`||` 表示「满足其一」，`&&` 表示「两个都要」。`long long` 是整型但不满足 `TinyType`（8 字节），正好用来验证 `&&`。
+`||` 表示「满足其一」，`&&` 表示「两个都要」。验证 `&&` 用的是后半边的 `TinyTypeStrict`：`long long` 是整型，但 8 字节不满足 `sizeof(T) < 4`，所以被判掉（如果只写 `TinyType`，它反而会通过，因为那一版不检查真假）。
 
 ### concepts 与 `auto` 变量
 

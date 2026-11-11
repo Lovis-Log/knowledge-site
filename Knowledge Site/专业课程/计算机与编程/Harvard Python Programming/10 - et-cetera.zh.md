@@ -84,6 +84,8 @@ def withdraw(n):
 UnboundLocalError: cannot access local variable 'balance' where it is not associated with a value
 ```
 
+（这是 Python 3.11 起的措辞，实测 3.13 相同；课程录制时的 3.10 及更早版本写作 `local variable 'balance' referenced before assignment`，同一种错误。）
+
 原因：函数里只要出现对 `balance` 的**赋值**，Python 就把这个名字当作局部变量；于是 `balance += n` 里的读取发生在赋值之前，读的是一个尚未存在的局部变量。
 
 读取全局变量没问题，写入才需要声明：

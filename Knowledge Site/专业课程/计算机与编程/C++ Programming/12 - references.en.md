@@ -80,8 +80,10 @@ This line does **not** make `ref_double_value` refer to `other_value`. It assign
 C++ has no syntax for rebinding a reference after initialisation. The only opportunity is the declaration itself, **which is also why a reference must be initialised**: a reference declared without one could never be bound to anything and would be useless. The compiler refuses outright:
 
 ```text
-error: reference variable 'ref' requires an initializer
+error: 'ref' declared as reference but not initialized
 ```
+
+(That is g++ 16.1.0's wording; clang writes `declaration of reference variable 'ref' requires an initializer`. Same complaint, different sentence.)
 
 A pointer has no such restriction:
 
@@ -159,7 +161,7 @@ In one sentence: **prefer references, and fall back to pointers only when you ne
 - Assigning to a reference changes the referenced object's value, not the binding.
 - A pointer can be rebound and can be null, but you must separate the address from the value.
 - `const T&` forbids modification through the reference without requiring the object to be `const`.
-- A reference is equivalent to `const T* const`; `const T& const` does not exist.
+- `T&` corresponds to `T* const`: the binding cannot change, but the referred object stays writable. Only `const T&` corresponds to `const T* const`. `const T& const` does not exist.
 
 ## Comprehension check
 

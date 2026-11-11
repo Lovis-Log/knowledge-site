@@ -156,7 +156,7 @@ Careful: `^` outside brackets means "start of string", but inside brackets it me
 Listing every allowed character is tedious, so a hyphen expresses a range:
 
 ```python
-r"^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\.[a-zA-Z0-9_]+\.edu$"
+r"^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\.edu$"
 ```
 
 The usual shorthand is shorter:
@@ -170,10 +170,10 @@ The usual shorthand is shorter:
 So:
 
 ```python
-r"^\w+@\w+\.\w+\.edu$"
+r"^\w+@\w+\.edu$"
 ```
 
-`\w` excludes the dot, so `first.last@gmail.com` is rejected — a reminder that **shorthand is convenience, not a standard**. Real email addresses allow characters defined by RFC, far beyond `\w`.
+`\w` excludes the dot, so an address such as `first.last@harvard.edu` is rejected — the username segment cannot match `\w+`. A reminder that **shorthand is convenience, not a standard**. Real email addresses allow characters defined by RFC, far beyond `\w`.
 
 ### Case
 
@@ -302,7 +302,7 @@ if matches := re.search(
 - `([a-z0-9_]+)` captures the handle, restricted to letters, digits and underscore (Twitter's actual rule);
 - `/?$` tolerates one trailing slash.
 
-This is where the lecture runs into the group-numbering bug: with a capturing `(www\.)?`, that group becomes number 1 and the handle becomes number 2, so `group(1)` yields `www.` or an empty string. Switching to `(?:...)` restores the expected numbering.
+This is where the lecture runs into the group-numbering bug: with a capturing `(www\.)?`, that group becomes number 1 and the handle becomes number 2, so `group(1)` yields `www.` — or `None` when the URL has no `www.`, since a group that did not participate in the match returns `None`, not an empty string (measured on Python 3.13). Switching to `(?:...)` restores the expected numbering.
 
 `re.match` and `re.fullmatch` are variants of `re.search`: `match` anchors at the start automatically (no `^` needed), and `fullmatch` also requires the end (no `$` needed). With `fullmatch`, both anchors can be dropped.
 
@@ -354,7 +354,7 @@ Reference answer: `\w` equals `[a-zA-Z0-9_]` — letters, digits and underscore 
 
 **5. In `^https?://(?:www\.)?twitter\.com/([a-z0-9_]+)$`, why is `www` wrapped in `(?:...)` rather than `(...)`? What goes wrong with ordinary parentheses?**
 
-Reference answer: Ordinary parentheses create a capture group and consume a group number. Then `(www\.)?` becomes group 1 and the handle `([a-z0-9_]+)` becomes group 2, so `group(1)` returns `www.` or an empty string instead of the username, and the program prints the wrong thing. `(?:...)` is a **non-capturing group**: it still groups `www\.` so `?` can apply to the whole thing, but it takes no number, leaving the handle in group 1. The lecture demonstrates exactly this mistake and then fixes it.
+Reference answer: Ordinary parentheses create a capture group and consume a group number. Then `(www\.)?` becomes group 1 and the handle `([a-z0-9_]+)` becomes group 2, so `group(1)` returns `www.` — or `None` when there is no `www.` (a non-participating optional group returns `None`, not an empty string) — instead of the username, and the program prints the wrong thing. `(?:...)` is a **non-capturing group**: it still groups `www\.` so `?` can apply to the whole thing, but it takes no number, leaving the handle in group 1. The lecture demonstrates exactly this mistake and then fixes it.
 
 **6. Why does `name.split(", ")` fail on "Last,First", and how does the regex version avoid it?**
 

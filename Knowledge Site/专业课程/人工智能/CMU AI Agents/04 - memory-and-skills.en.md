@@ -106,7 +106,7 @@ A library of skills cannot all live in the context. Loading happens in three lay
 2. **Body**: read through a tool call once the model judges the skill relevant.
 3. **Resources**: scripts, references, and assets, loaded only when used.
 
-The lecture notes that one state-of-the-art agent carries about 3,000 tokens of skill descriptions in its system prompt. Skills are not free; enough of them crowd out working context.
+The lecture notes that one state-of-the-art agent (the Hermes agent, as the lecturer names it) carries about 3,000 tokens of skill descriptions in its system prompt. Skills are not free; enough of them crowd out working context.
 
 ### Too many skills make things worse
 
@@ -250,7 +250,7 @@ Reference answer: **Portability** — a note on "how to search on this site" is 
 
 **2. What are the three layers of progressive disclosure, and why must the first be short?**
 
-Reference answer: Layer one is the **metadata** (`name` and `description`), resident in the system prompt; layer two is the `SKILL.md` **body**, read by tool call once the model judges it relevant; layer three is **resources** (scripts, reference docs, templates), loaded only when used. The first layer must be short because it travels in every request: the lecture notes that one advanced agent carries about 3,000 tokens of skill descriptions, so a large library crowds the context and dilutes attention. The description must also be short and precise, since it determines *when* the model thinks to use the skill.
+Reference answer: Layer one is the **metadata** (`name` and `description`), resident in the system prompt; layer two is the `SKILL.md` **body**, read by tool call once the model judges it relevant; layer three is **resources** (scripts, reference docs, templates), loaded only when used. The first layer must be short because it travels in every request: the Hermes agent mentioned in the lecture carries about 3,000 tokens of skill descriptions, so a large library crowds the context and dilutes attention. The description must also be short and precise, since it determines *when* the model thinks to use the skill.
 
 **3. Why does a skill written only from a task description perform poorly?**
 

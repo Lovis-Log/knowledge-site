@@ -60,8 +60,10 @@ print("hello, world)
 ```
 
 ```text
-SyntaxError: unterminated string literal
+SyntaxError: unterminated string literal (detected at line 1)
 ```
+
+（这是 Python 3.13 的报错示例。Python 3.10 改进了定位，未闭合的字符串会指向起始位置。读这条消息时先检查引号有没有配对。）
 
 `unterminated` 是「没有终止」，`literal` 是「你直接写出来的字面量」。翻译过来就是：你开了一个字符串，却没把它关上。
 
@@ -259,6 +261,8 @@ else:
 ```
 
 两种都合理。课程的说法是：Python 的惯性偏向 EAFP，但先检查也完全可行，关键是知道自己在选哪一种。
+
+顺带提醒：`isnumeric()` 与 `int()` 的接受范围并不相同。实测 Python 3.13，`"-3".isnumeric()` 是 `False`（负数会被拒），而 `"²".isnumeric()` 是 `True` 但 `int("²")` 照样抛 `ValueError`。所以 LBYL 版本的边界和 `try` 版本不完全重合，写之前要先想清楚「什么算合法输入」。
 
 ## 本章结论
 

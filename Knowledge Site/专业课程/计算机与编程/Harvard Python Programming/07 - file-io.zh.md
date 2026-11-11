@@ -169,10 +169,9 @@ with open("names.txt") as file:
 
 现在每个学生除了名字还有学院。直接混写会变成「有的行是名字、有的行是学院」，无法区分。约定是：**同一行放同一个学生的多个字段，用逗号分隔**，这就是 CSV（comma-separated values）。
 
-`students.csv`：
+`students.csv`（这一步先不加表头，表头留到用 `DictReader` 时再补）：
 
 ```
-name,house
 Hermione,Gryffindor
 Harry,Gryffindor
 Ron,Gryffindor

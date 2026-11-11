@@ -130,12 +130,12 @@ $$
 w = \frac{\pi_\theta(a \mid h)}{\mu(a \mid h)}
 $$
 
-For a single step this is fine. But an agent trajectory may contain tens of thousands of tokens, and multiplying per-step ratios compounds quickly. CTPO measures the variance of the log importance weight and finds it grows roughly as $\sqrt{n}$; a long trajectory is enough to make the weight enormous.
+Multiplying token-level ratios is equivalent to adding their logarithms. In its Qwen3-4B experiment, CTPO observed that the standard deviation of the cumulative log-ratio grew approximately as $\sqrt{n}$. The derivation assumes independent token log-ratios with equal variance, which makes the variance proportional to $n$. As the distribution spreads, some trajectories can receive very large weights.
 
 ### Three engineering responses
 
 1. **Use only the current token's ratio** (PPO/GRPO). Technically incorrect because it ignores history, but good enough as a measure of how surprising the current action is.
-2. **Multiply all historical ratios and normalize by sequence length** (GSPO). Keeps the full information while bringing the scale back down.
+2. **Use the sequence-level ratio with length normalization (GSPO).** This controls the scale, but the normalized ratio differs from the exact full-sequence importance weight.
 3. **Clip the ratio directly** (CISPO and similar).
 
 Every variant needs clipping. The lecture shows a real experiment where a batch reached a maximum importance weight of roughly 1,400. Multiplying a gradient by that is enough to destroy a training run.
@@ -237,7 +237,7 @@ Reference answer: $A_t=\delta_t+\lambda\delta_{t+1}+\lambda^2\delta_{t+2}+\cdots
 
 **3. Why does a direct product of importance weights explode over a 50k-token trajectory, and how do PPO and GSPO each handle it?**
 
-Reference answer: A single-step weight $w=\pi_\theta(a\mid h)/\mu(a\mid h)$ is harmless, but multiplying ratios over 50k tokens makes the log-weight variance grow roughly like $\sqrt{n}$ (as measured in CTPO), so the magnitude runs away; the lecture cites a real asynchronous batch whose maximum importance weight was about 1400, enough for one gradient update to destroy training. PPO/GRPO use only the current token's ratio — strictly incorrect because history ratios are ignored, but "good enough" to reflect how surprising the current action is. GSPO multiplies all history ratios and normalizes by sequence length, keeping the full information while bringing the magnitude back to an acceptable range. Either way, clipping is mandatory.
+Reference answer: Products of token ratios can make trajectory weights highly variable. CTPO observed roughly $\sqrt{n}$ growth in the standard deviation of the cumulative log-ratio; with independent, equal-variance terms, the variance grows linearly. PPO/GRPO’s token ratios omit the correction for prefix distribution mismatch. GSPO normalizes the sequence ratio by length to control its scale, changing the exact full-sequence importance weight. The methods discussed here also use clipping to limit updates.
 
 **4. Why does an all-pass GRPO group produce no gradient, and which metric would you monitor?**
 

@@ -229,6 +229,8 @@ protected:
 Shape* p = new Shape();  // same error
 ```
 
+gcc words it differently: measured with g++ 16.1.0, `-std=c++20`, the message is `error: cannot declare variable 'p' to be of abstract type 'Shape'`, followed by a `note` listing the functions that are still pure — which is exactly the list of what you have not implemented yet.
+
 2. Every derived class **must implement all pure virtual functions**, otherwise it is abstract too:
 
 ```cpp
@@ -274,7 +276,7 @@ Yes, but only outside the class, and the class remains abstract:
 double Shape::perimeter() const { return 0; }   // legal; derived classes must still override
 ```
 
-The common mistake is writing the body inside the class: `virtual double perimeter() const = 0 { return 0; }` reports `pure specifier on function definition`, because `= 0` means "no implementation here".
+The common mistake is writing the body inside the class: `virtual double perimeter() const = 0 { return 0; }` reports `pure specifier on function definition` (clang wording; gcc says `error: pure-specifier on function-definition`), because `= 0` means "no implementation here".
 
 ## Interfaces: abstract classes of pure virtual functions
 

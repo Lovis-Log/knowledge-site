@@ -71,7 +71,7 @@ Hello you are 24 years old
 after call:  23 at 0x...dec
 ```
 
-The address printed inside the function is `0x...dc0`, the one outside is `0x...dec` — two different memory locations. `++age` modifies the copy, which dies on return.
+The lecture also prints `&age` inside the function, giving `0x...dc0` against `0x...dec` outside — two different memory locations. `++age` modifies the copy, which dies on return.
 
 > **Why value is the default**: for small fundamental types such as `int` and `double` the copy is essentially free, and the function cannot accidentally modify the caller's data. The default is the safe choice.
 

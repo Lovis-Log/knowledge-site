@@ -84,6 +84,8 @@ Running it gives
 UnboundLocalError: cannot access local variable 'balance' where it is not associated with a value
 ```
 
+(This is the wording since Python 3.11, unchanged in 3.13 where it was measured; Python 3.10, the version current when the lecture was recorded, and earlier said `local variable 'balance' referenced before assignment` — the same error.)
+
 The rule: if a **name is assigned anywhere** in a function body, Python treats that name as local throughout the function. In `balance += n`, the read happens before the assignment, so it reads a local variable that does not exist yet.
 
 Reading a global is fine; writing requires a declaration:

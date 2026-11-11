@@ -37,7 +37,7 @@ The course splits that into two tools: something to write code in (an editor or 
 | 1:03:59 | Linux: VS Code and build configuration |
 | 1:22:42 | macOS: Homebrew, Xcode command line tools, clang |
 | 1:28:06 | macOS: VS Code and configuration |
-| 1:35:20 | Three online compilers: onebox, Kodiru, Compiler Explorer |
+| 1:35:20 | Three online compilers: onebox, Coliru, Compiler Explorer |
 | 1:42:57 | First C++ program: include, main, cout, endl, return |
 
 ## The two required tools
@@ -103,7 +103,9 @@ int main() {
 }
 ```
 
-The code deliberately uses the C++20 **three-way comparison operator** `<=>`. Ordinary syntax might compile under an older standard by accident; this cannot. If the compiler is not in C++20 mode, the file fails to build. The program prints `0`, because `10 <=> 20` means "less than", so `> 0` is false.
+The code deliberately uses the C++20 **three-way comparison operator** `<=>`. Ordinary syntax might compile under an older standard by accident; this cannot. If the compiler is not in C++20 mode, the file fails to build.
+
+Reading the result takes one extra fact: `<=>` does not return an integer. It returns a comparison category from `<compare>` — here `std::strong_ordering` — whose three values `less`, `equal` and `greater` are defined to compare less than, equal to and greater than the literal `0`. Comparing the result with `0` therefore asks "is the left operand smaller, equal or larger?". Here `10 <=> 20` yields `less`, `less > 0` is false, so `result` is `false`, and `cout` prints a `bool` as `0`/`1` — the screen shows `0`.
 
 > **Supplement:** `std::strong_ordering` is declared in `<compare>`. Most implementations pull it in through `<iostream>`, but the robust version adds `#include <compare>`; the course omits it to keep the test minimal.
 
@@ -165,7 +167,7 @@ sudo apt-get install gcc-10 g++-10 gdb
 sudo apt-get install clang-12
 ```
 
-Distribution repositories usually lag behind the newest gcc; Homebrew is the shortcut to a current release. Install VS Code from the `.deb` package, add the same C/C++ extension, and point the `tasks.json` command at `/usr/bin/g++`.
+The version numbers above are examples from the recording. Check which GCC and Clang releases your Ubuntu version provides. If you already use Homebrew on Linux, it can also provide GCC. Point the VS Code build task at the compiler you intend to use; Homebrew’s compiler may have a different path from the system compiler.
 
 On macOS, run `xcode-select --install` first — it provides Apple's clang — then Homebrew for newer gcc and LLVM:
 
@@ -181,7 +183,7 @@ The lecturer has no Mac and describes this section rather than filming it. The p
 For a machine you cannot install tools on, or for sending someone a reproducible snippet, online compilers are enough:
 
 - **onebox**: IDE-like, several gcc/clang versions, shareable links.
-- **Kodiru**: g++ only, minimal, click Compile and run.
+- **Coliru**: g++ only, minimal, click Compile and run.
 - **Compiler Explorer**: built for reading generated assembly, but it also runs your program; the widest compiler list, including MSVC.
 
 All three share one trap: **you must pass the standard flag yourself**. Leave out `-std=c++20` and the `<=>` test fails — that is the missing flag, not a broken program.

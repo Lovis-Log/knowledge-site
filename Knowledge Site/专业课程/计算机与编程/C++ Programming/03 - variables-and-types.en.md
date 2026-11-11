@@ -128,7 +128,7 @@ int y (2.9);    // compiles, silently truncates to 2
 int z = 2.9;    // compiles, silently truncates to 2
 ```
 
-In C++20, stuffing a floating-point value into an `int` with braces is an error. That is exactly the value of braced initialisation: **it turns "quietly loses data" into "does not compile"**. Functional and assignment forms silently drop the fraction, 2.9 becomes 2, and the program runs on with a wrong value.
+Putting a floating-point value into an `int` is narrowing, and **braced initialisation has made narrowing a compile error since C++11** — this is not a C++20 novelty. That is exactly the value of the braced form: **it turns "quietly loses data" into "does not compile"**. Functional and assignment forms silently drop the fraction, 2.9 becomes 2, and the program runs on with a wrong value.
 
 ### sizeof
 
@@ -156,8 +156,13 @@ Modifiers change signedness or width. **They apply only to integer types**, neve
 int a = 1;              // signed by default; negatives allowed
 signed int b = -300;    // explicit
 unsigned int c = 4;     // non-negative only
-unsigned int d = -5;    // compile error
+unsigned int d = -5;    // compiles: 4294967291 on a 32-bit unsigned int
+unsigned int e {-5};    // braced form is the error: narrowing conversion
 ```
+
+Keep the language rule separate from intuition: **an unsigned value is the mathematical value reduced modulo $2^n$**, so `-5` is not rejected — on the 32-bit unsigned int used here, it becomes $2^{32}-5=4294967291$. Assignment and functional initialisation follow that rule and compile without complaint. Only braced initialisation adds a narrowing check that rejects a negative value for an unsigned type.
+
+Measured (g++ 16.1.0, `-std=c++20`): `unsigned int d = -5;` compiles cleanly and `std::cout << d` prints `4294967291`; `unsigned int d {-5};` fails with `error: narrowing conversion of '-5' from 'int' to 'unsigned int' [-Wnarrowing]`. This wrap-around is why `for (unsigned i = n; i >= 0; --i)` never terminates.
 
 Both occupy the same 4 bytes; the difference is interpretation. Signed treats the top bit as a sign bit, unsigned uses all 32 bits for magnitude. Hence:
 

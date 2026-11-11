@@ -61,7 +61,7 @@ Its main difference from Claude Code and Codex is being **model-agnostic**: swit
 - Code generation work started in 2016, but until 2023 it was mostly completion or single-function generation, not agents.
 - SWE-bench appeared in 2023; early best results were around 5%.
 - In March 2024, Devin's demo drew enormous attention but was not open source.
-- The next day, the Qwen team called for a reproduction. The repository reached ten thousand stars in a day. The instructor built a working prototype over three evenings; that became OpenDevin, later OpenHands.
+- The next day, the Qwen team called for a reproduction. The repository, which held nothing but a README, reached ten thousand stars almost immediately. The instructor built a working prototype in a single evening — he opened the Claude 3 chat interface and asked for something that looked like the Devin screenshot — finishing about three days after Devin launched. That became OpenDevin, later OpenHands.
 - For most of 2024 agents did not actually work well. Around November, Claude Sonnet 3.5 and then 3.7 made coding agents genuinely usable.
 - 2025 was the year coding capability improved rapidly; 2026 is more about **deployment and interfaces**: longer runs, parallel tasks, visualization, repeatable workflows, credentials, verification.
 

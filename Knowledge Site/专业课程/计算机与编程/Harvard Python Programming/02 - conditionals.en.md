@@ -332,7 +332,9 @@ Reference answer:
 90 <= score <= 100
 ```
 
-They are equivalent. The chained form evaluates `90 <= score` and `score <= 100`, and is true when both hold. It is shorter and reads more naturally. The chain is essentially syntactic sugar over the `and` version, not two independent statements executed in sequence.
+They give the same result. The chained form evaluates `90 <= score` and `score <= 100` and is true when both hold. It is shorter and reads more naturally.
+
+The chain evaluates the middle expression once. If the first comparison is false, both forms short-circuit before calling `h()`. If it is true, `f() < g() < h()` reuses the first result of `g()`, while `f() < g() and g() < h()` calls `g()` again. That can change the result when the call has side effects.
 
 **4. Give three implementations of `is_even`, and say which is the most Pythonic and why.**
 

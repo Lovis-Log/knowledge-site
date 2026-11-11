@@ -202,7 +202,7 @@ Training typically uses contrastive learning: each query has a positive document
 
 Standard embedding models are optimized for a human typing one query, but an agent has a rich history: the original task, earlier queries, what it read, and its current reasoning.
 
-The speaker's **AgentIO** passes **the current reasoning text together with the query** into the retrieval model and trains briefly on that format. Results:
+**AgentIR**, a paper the speaker co-authored, passes **the current reasoning text together with the query** into the retrieval model and trains briefly on that format. Results:
 
 - Adding reasoning to the query alone helps.
 - Training a reasoning-aware embedding model helps more.
@@ -246,7 +246,7 @@ Reference answer: A fixed rubric only encodes the distinctions known at the star
 
 **5. Why does feeding the whole trajectory to an embedding model hurt retrieval?**
 
-Reference answer: AgentIO's comparisons show that prepending the current reasoning text to the query helps, training a reasoning-aware embedding model helps more (a 4B model beat an 8B baseline while making fewer search calls), but feeding the entire trajectory makes things worse. The reason is length: the original task, all previous queries and all retrieved results dilute the signal of the current query and exceed what the embedding model handles well. The most effective input is only the reasoning step immediately preceding the current query, encoded together with the query.
+Reference answer: AgentIR's comparisons show that prepending the current reasoning text to the query helps, training a reasoning-aware embedding model helps more (a 4B model beat an 8B baseline while making fewer search calls), but feeding the entire trajectory makes things worse. The reason is length: the original task, all previous queries and all retrieved results dilute the signal of the current query and exceed what the embedding model handles well. Among the input variants compared in the paper, the best used the reasoning immediately before the search together with the query.
 
 ## How this connects to the course
 

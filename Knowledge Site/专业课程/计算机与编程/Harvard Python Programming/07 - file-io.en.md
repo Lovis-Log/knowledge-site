@@ -167,10 +167,9 @@ with open("names.txt") as file:
 
 Each student now has a name and a house. Mixing them on separate lines makes the file ambiguous — some lines are names, some are houses. The convention is to put one student's fields on one line, separated by commas: CSV (comma-separated values).
 
-`students.csv`:
+`students.csv` (no header yet — the header arrives with `DictReader` later):
 
 ```
-name,house
 Hermione,Gryffindor
 Harry,Gryffindor
 Ron,Gryffindor

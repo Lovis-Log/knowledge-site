@@ -73,7 +73,26 @@ That is encapsulation in its simplest form: the class uses its own data freely, 
 
 ### Member variables cannot be references
 
-A member may be a value or a pointer, never a reference. A reference must be bound to an object when it is created, but at the point where members are declared there is no object yet. Classes constantly rely on "declare now, assign later"; references cannot do that.
+The lecture says a member "cannot be a reference". **As a language rule that is not true**: reference members are legal, they are just constrained and therefore rare. The real rules are three:
+
+1. Bind the reference at initialization. The constructor below uses a member-initializer; a default member initializer can also supply the binding where appropriate. Assignment in the constructor body is too late.
+2. Once bound it cannot be rebound, so the usual "declare now, fill in later" pattern is unavailable.
+3. The implicitly generated copy-assignment operator is **deleted**, because it cannot rebind a reference.
+
+```cpp
+struct Link {
+    int& r;
+    Link(int& v) : r{v} {}     // binding happens here, nowhere else
+};
+
+int main() {
+    int a{1}, b{2};
+    Link x{a}, y{b};
+    x = y;    // error: use of deleted function 'Link& Link::operator=(const Link&)'
+}
+```
+
+(Measured with g++ 16.1.0, `-std=c++20`: the assignment line reports `use of deleted function`; everything before it compiles.) So "cannot be a reference" is best read as engineering advice: when you want reference semantics, use a pointer member, or just store a value.
 
 ## Constructors: how objects come into being
 
@@ -401,7 +420,7 @@ The caller then uses `.`: `d.set_name("Fluffy").set_breed("Shepherd");`. The onl
 ## Chapter summary
 
 - `class` members are private by default; `struct` members are public.
-- Members may be values or pointers, never references.
+- Members may be values or pointers; a reference member is legal but must be bound at initialization, cannot be rebound, and deletes copy assignment — so it is rare in practice.
 - Constructors have no return type and the class's name; declaring any constructor suppresses the implicit default, so use `= default` when you need it.
 - Setters and getters must be public; getters are `const` and return copies by value.
 - Multi-file layout: declarations plus include guards in the header, definitions in the `.cpp`, linked by `::`.

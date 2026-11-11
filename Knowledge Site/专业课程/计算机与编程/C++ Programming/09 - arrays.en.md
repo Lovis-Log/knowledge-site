@@ -109,7 +109,7 @@ Values can be supplied at declaration:
 double salaries[5] {12.7, 7.5, 13.2, 8.1, 9.3};
 ```
 
-The number of values must match the size; too many gives `too many initializer values`.
+The list **cannot be longer** than the array; too many values is a compile error. gcc 16.1.0 says `error: too many initializers for 'double [2]'`, other compilers say `too many initializer values` — the wording varies, the meaning does not. Giving fewer is allowed; the rule follows.
 
 When only some values are given, **the rest are initialised to zero**:
 

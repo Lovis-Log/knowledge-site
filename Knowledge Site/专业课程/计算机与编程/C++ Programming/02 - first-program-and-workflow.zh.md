@@ -268,7 +268,7 @@ int main() {
 
 **4. `cin >> name` 输入 `Daniel Gakwaya` 之后，`name` 里是什么？接下来的 `cin >> age` 会得到什么？**
 
-参考答案：`name` 只得到 `Daniel`，因为 `>>` 以空白字符为分隔，遇到空格就停止。缓冲区里还留着 ` Gakwaya\n`，接下来的 `cin >> age` 试图把 `Gakwaya` 解析成整数，解析失败，`age` 保持原值（C++11 起失败时会被置为 0），后续的输入也会失效。正确做法是用 `std::getline(std::cin, name)` 读取整行。
+参考答案：`name` 只读到 `Daniel`，空格后面的 `Gakwaya` 还留在输入流里。接下来 `cin >> age` 尝试把 `Gakwaya` 解析成整数；这个非数字输入会把 `age` 写成 0，并设置 `failbit`。这个结果针对本例：若流在提取开始时已失败，或跳过空白时就遇到 EOF，变量可能保持原值。姓名要保留空格，可先用 `std::getline(std::cin, name)` 读整行。
 
 **5. 未初始化的 `int c;` 为什么可能含有"垃圾值"？这和内存模型有什么关系？**
 

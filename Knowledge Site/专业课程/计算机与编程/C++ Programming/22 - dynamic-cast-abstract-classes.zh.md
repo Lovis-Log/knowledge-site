@@ -225,9 +225,11 @@ protected:
 1. `Shape` 成为**抽象类**，不能创建对象：
 
 ```cpp
-// Shape s;              // 编译错误：object of abstract class type is not allowed
+// Shape s;              // 编译错误：MSVC 说 object of abstract class type is not allowed
 Shape* p = new Shape();  // 同样错误
 ```
+
+gcc 的措辞不同，实测 g++ 16.1.0、`-std=c++20` 报 `error: cannot declare variable 'p' to be of abstract type 'Shape'`，并附一条 `note` 列出仍为纯虚的那些函数——这条 note 正好告诉你还缺哪几个实现。
 
 2. 派生类**必须实现全部纯虚函数**，否则它自己也是抽象类：
 
@@ -274,7 +276,7 @@ for (const auto& s : shapes) {
 double Shape::perimeter() const { return 0; }   // 允许，但派生类仍须覆盖
 ```
 
-更常见的误解是把实现写进类内：`virtual double perimeter() const = 0 { return 0; }` 会报 `pure specifier on function definition`。`= 0` 的语义就是「此处不给实现」。
+更常见的误解是把实现写进类内：`virtual double perimeter() const = 0 { return 0; }` 会报 `pure specifier on function definition`（clang 措辞；gcc 写作 `error: pure-specifier on function-definition`）。`= 0` 的语义就是「此处不给实现」。
 
 ## 接口：只有纯虚函数的抽象类
 

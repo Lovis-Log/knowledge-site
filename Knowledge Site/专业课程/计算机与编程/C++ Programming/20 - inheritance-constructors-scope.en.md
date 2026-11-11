@@ -1,7 +1,7 @@
 ---
 slug: "20-inheritance-constructors-scope"
 title: "Construction, Copying and Name Hiding under Inheritance"
-summary: "Reviving members hidden by private inheritance with using declarations; derived objects are constructed in layers from base to most derived, and custom constructors forward arguments through initialiser lists; copy constructors should slice with Base(source) to reuse the base version; base constructors can be inherited but only initialise the base part; destruction runs in reverse; same-named members hide the base version and need Parent:: to reach it."
+summary: "Reviving members hidden by private inheritance with using declarations; derived objects are constructed in layers from base to most derived, and custom constructors forward arguments through initialiser lists; derived copy constructors can reuse the base copy constructor by passing the source object; base constructors can be inherited but only initialise the base part; destruction runs in reverse; same-named members hide the base version and need Parent:: to reach it."
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [software-engineering]
@@ -38,7 +38,7 @@ The last question leads straight to static binding and sets up the virtual funct
 | 24:57 | Custom constructors: call the base constructor in the initialiser list |
 | 25:18 | Two wrong approaches: assignment in the body, base members in the initialiser list |
 | 25:26 | Copy construction and inheritance: what member-wise copy does not solve |
-| 25:31 | The correct form `Person(source)`: slice, then reuse the base copy constructor |
+| 25:31 | The correct form `Person(source)`: copy from the base subobject |
 | 25:52 | `using Person::Person`; copy constructors are not inherited |
 | 26:05 | Destruction order is the reverse of construction |
 | 26:12 | Name hiding and explicit `Parent::` calls |
@@ -197,13 +197,15 @@ Engineer::Engineer(const Engineer& source)
       m_contract_count{source.m_contract_count} {}
 ```
 
-This compiles (using a getter for the private address), but it builds a **temporary Person object** and copies from it, and it bypasses the Person copy constructor entirely — duplicating the copy logic.
+This compiles (using a getter for the private address), but it re-reads every member and copies it again into the base subobject — an extra string copy when `get_address()` returns by value — and it bypasses the Person copy constructor entirely, duplicating the copy logic.
 
-**Option three: pass the whole derived object and let the compiler slice.**
+One clarification: no temporary Person is created. `Person{...}` in a mem-initialiser directly initialises the base subobject; it is not "build a temporary, then copy". Measured with g++ 16.1.0, `-std=c++20`: printing from each of Person's three constructors shows a single three-argument construction when an Engineer is copied this way, with the copy constructor never called. The cost is duplicated logic and per-member copying, not a temporary.
+
+**Option three: pass the whole derived object and let the base copy constructor read its subobject.**
 
 ```cpp
 Engineer::Engineer(const Engineer& source)
-    : Person{source},                       // slice: take only the Person layer
+    : Person{source},                       // copy the Person subobject of source
       m_contract_count{source.m_contract_count} {}
 ```
 
@@ -213,7 +215,7 @@ The same pattern for three levels:
 
 ```cpp
 CivilEngineer::CivilEngineer(const CivilEngineer& source)
-    : Engineer{source},                     // slice to Engineer, reuse its copy constructor
+    : Engineer{source},                     // copy the Engineer subobject of source
       m_speciality{source.m_speciality} {}
 ```
 
@@ -336,7 +338,7 @@ Making the call follow the actual object needs virtual functions and dynamic bin
 - Construction order is base → intermediate → derived; without an explicit choice the base default constructor runs.
 - Custom constructors call the base constructor in the initialiser list and forward arguments layer by layer.
 - An initialiser list can only initialise members of the current class; base members are the base constructor's job.
-- A derived copy constructor should use `Base{source}` to slice and reuse the base copy constructor.
+- A derived copy constructor should use `Base{source}` to call the base copy constructor.
 - `using Base::Base` inherits base constructors, but only initialises the base part and does not inherit copy construction.
 - Destruction is the reverse of construction.
 - Same-named members hide base versions; use `Parent::` to reach them, and remember that hiding covers all overloads.
@@ -362,7 +364,7 @@ Reference answer: The two failures differ. Assignment in the body fails because 
 
 **5. Why is `Engineer::Engineer(const Engineer& source) : Person{source}, ...` considered optimal? How does it differ essentially from `Person{source.m_full_name, ...}`?**
 
-Reference answer: `Person{source}` passes the whole Engineer object to a `const Person&` parameter, and the compiler slices out the Person subobject, which matches Person's copy constructor exactly. The base copy logic is reused and no temporary is created. The other form calls Person's ordinary three-argument constructor: it must read three members, build a temporary Person and copy from it, and it re-implements the copy logic. If Person's copy behaviour changes later, that version will not follow.
+Reference answer: `Person{source}` passes the whole Engineer object to a `const Person&` parameter, and that reference binds to the Person subobject, so Person’s copy constructor runs. The base copy logic is reused without re-copying members one by one. The other form calls Person's ordinary three-argument constructor: it creates no temporary Person (a mem-initialiser constructs the base subobject directly), but it reads three members and copies them into the base again, and it re-implements the copy logic. If Person's copy behaviour changes later, that version will not follow.
 
 **6. When a derived class has a member named like a base member, which one does `m_var` mean inside the derived member function, and how do you reach the other?**
 

@@ -147,7 +147,7 @@ Person::Person(std::string name, int age)
 }
 ```
 
-若在 `main.cpp` 里再写一遍 `int Person::s_person_count{8};`，链接器会报两条错误：`multiple definition of Person::s_person_count` 和构造函数的重复定义。**成员函数的定义同样受 ODR 约束，只能出现一次**（写在类体内的成员函数默认是 inline，这是另一条例外，后面章节再展开）。
+课件把 `person.cpp` 的内容整段复制到 `main.cpp` 做对照：静态成员定义与构造函数都出现了两次，链接器于是报两条错误——`multiple definition of Person::s_person_count` 和 `multiple definition of Person::Person(...)`。只复制静态成员那一行，就只会看到第一条。**成员函数的定义同样受 ODR 约束，只能出现一次**（写在类体内的成员函数默认是 inline，这是另一条例外，后面章节再展开）。
 
 ## 函数：语法与术语
 
@@ -252,8 +252,10 @@ int max(int a, int b) {     // 定义可以放在后面
 删掉定义、只留声明，编译阶段仍然通过，因为编译器只需要签名就能生成调用代码；但链接阶段找不到函数体：
 
 ```
-undefined reference to `max()'
+undefined reference to `max(int, int)'
 ```
+
+gcc 的这条消息会带上参数类型，所以同名重载还能区分是哪一个没找到。
 
 在 MSVC 下对应 `unresolved external symbol`。**看到 `undefined reference` 就该想到：链接器在找定义，没找到。**
 

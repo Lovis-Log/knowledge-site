@@ -171,7 +171,9 @@ The array owns a writable copy; the pointer points at a read-only literal. **Rea
 
 ### Virtual memory
 
-The memory a running program sees is not physical RAM but a **virtual address space** defined by the operating system. On a 64-bit system every process believes it owns the range $0$ to $2^{64}$.
+The memory a running program sees is not physical RAM but a **virtual address space** defined by the operating system. On a 64-bit system every process behaves as if it owns one large contiguous range.
+
+> **Supplement:** a 64-bit pointer representation does not determine how much virtual address space a process can use. The processor’s addressing mode and the operating system determine the range. Whether a particular address can be accessed also depends on its mapping, access permissions and the object’s lifetime.
 
 The reason is isolation: if every program used physical memory directly, a few hundred processes would exhaust it, and one process could freely read or write another's data. Virtual memory lets each process believe it owns the whole space, while the operating system allocates physical pages on demand.
 

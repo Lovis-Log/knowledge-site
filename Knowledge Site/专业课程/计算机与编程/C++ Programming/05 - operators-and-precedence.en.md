@@ -219,7 +219,12 @@ Remove them:
 std::cout << "number1 < number2: " << number1 < number2 << std::endl;
 ```
 
-This does not compile. By the ladder above, `<<` binds tighter than `<`, so the compiler first evaluates `(std::cout << ... << number1)` and then tries to compare that result with `number2` — but `std::ostream` has no `<` against an integer, hence the error.
+This does not compile. By the ladder above, `<<` binds tighter than `<`, so the expression does not mean "compare, then print". It groups as `(std::cout << ... << number1) < (number2 << std::endl)` — the right operand of `<` becomes `number2 << std::endl`, i.e. an `int` used to insert the manipulator `std::endl`, and the error surfaces there first. Drop the trailing `<< std::endl` and you get the more familiar diagnostic: the stream object has no `<` against an integer.
+
+Measured with g++ 16.1.0, `-std=c++20`:
+
+- the line exactly as written: `error: invalid operands of types 'int' and '<unresolved overloaded function type>' to binary 'operator<<'`;
+- without the trailing `<< std::endl`: `error: no match for 'operator<' (operand types are 'std::basic_ostream<char>' and 'int')`.
 
 With `(number1 < number2)` the comparison is evaluated first into a `bool`, which `cout` can print.
 

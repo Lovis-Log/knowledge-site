@@ -37,7 +37,7 @@ sources:
 | 1:03:59 | Linux 安装 VS Code 并配置构建任务 |
 | 1:22:42 | macOS：Homebrew、Xcode 命令行工具、clang |
 | 1:28:06 | macOS 安装 VS Code 并配置 |
-| 1:35:20 | 三个在线编译器：onebox、Kodiru、Compiler Explorer |
+| 1:35:20 | 三个在线编译器：onebox、Coliru、Compiler Explorer |
 | 1:42:57 | 第一个 C++ 程序：include、main、cout、endl、return |
 
 ## 两个必需的工具
@@ -103,7 +103,9 @@ int main() {
 }
 ```
 
-这里故意用了 C++20 的**三路比较运算符** `<=>`。它比普通语法更能暴露问题：如果编译器没有按 C++20 模式编译，这段代码会直接报错。程序输出 `0`，因为 `10 <=> 20` 表示"小于"，`> 0` 为假。
+这里故意用了 C++20 的**三路比较运算符** `<=>`。它比普通语法更能暴露问题：如果编译器没有按 C++20 模式编译，这段代码会直接报错。
+
+读懂结果需要知道 `<=>` 返回的不是整数，而是 `<compare>` 里定义的一个比较类别（这里是 `std::strong_ordering`）。该类别的三个取值 `less`、`equal`、`greater` 被规定为分别小于、等于、大于字面量 `0`，所以把它和 `0` 比大小就等于问「左操作数比右操作数小、相等还是大」。这里 `10 <=> 20` 得到 `less`，`less > 0` 为假，`result` 是 `false`；`cout` 打印 `bool` 时输出 `0`/`1`，于是屏幕上出现 `0`。
 
 > **补充：** `std::strong_ordering` 类型正式定义在 `<compare>` 头文件中。多数实现在包含 `<iostream>` 时也会间接引入，但更稳妥的写法是额外加上 `#include <compare>`。课程为了让测试代码保持最短，省略了它。
 
@@ -165,7 +167,7 @@ sudo apt-get install gcc-10 g++-10 gdb
 sudo apt-get install clang-12
 ```
 
-apt 仓库里的 gcc 往往落后于最新版；想要最新版本可以用 Homebrew 安装。VS Code 下载 `.deb` 后用 `sudo dpkg -i` 安装，C/C++ 扩展与 Windows 上相同，`tasks.json` 里的路径改成 `/usr/bin/g++` 即可。
+课件里的版本号是录制时的示例。先查看你的 Ubuntu 版本提供的 GCC 和 Clang；已有 Linux Homebrew 环境时，也可以安装它提供的 GCC。用实际要调用的编译器路径配置 VS Code 的 `tasks.json`，系统安装和 Homebrew 安装的路径可能不同。
 
 macOS 上先执行 `xcode-select --install` 安装 Xcode 命令行工具（它带 Apple 版 clang），再用 Homebrew 安装更新版本的 gcc 与 LLVM：
 
@@ -181,7 +183,7 @@ brew install llvm
 不想在本机装工具链、或想快速把代码发给别人复现问题时，可以用在线编译器：
 
 - **onebox**：界面像 IDE，可切换多个 gcc/clang 版本，支持分享链接。
-- **Kodiru**：只提供 g++，功能简单，点 Compile 即可运行。
+- **Coliru**：只提供 g++，功能简单，点 Compile 即可运行。
 - **Compiler Explorer**：主打查看生成的汇编代码，也能运行程序；编译器种类最多，包括 MSVC。
 
 三者共同的注意点：**必须自己传对标准参数**。在 Compiler Explorer 里如果漏了 `-std=c++20`，`<=>` 那段代码就会被判为错误，这不是代码的问题。

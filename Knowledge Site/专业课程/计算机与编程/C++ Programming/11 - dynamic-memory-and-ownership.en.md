@@ -63,12 +63,10 @@ The pointer was never assigned, so it holds whatever bytes were left on the stac
 ```cpp
 int* p_number1 {new int {67}};
 delete p_number1;
-*p_number1 = 55;     // undefined: the memory has been returned
+p_number1 = nullptr;
 ```
 
-`delete` returns the memory but **does not clear the pointer**. The pointer still holds the old address, which no longer belongs to you.
-
-There is a counter-intuitive effect: the program **sometimes** appears to work and prints 67, because nothing has reused that memory yet. That is not a guarantee — the lecture runs it several times with unstable results. **"It didn't crash this time" is not evidence of correctness.**
+`delete` ends the object’s lifetime and releases its storage. It does not clear the pointer variable. Reading or writing the freed object through it is undefined behaviour, so there is no output to rely on. Setting this variable to null clears this copy only; other aliases must also stop being used.
 
 ### Case three: several pointers to one allocation
 
@@ -77,7 +75,7 @@ int* p_number3 {new int {83}};
 int* p_number4 {p_number3};   // both point at the same address
 
 delete p_number3;             // memory returned
-std::cout << *p_number4;      // reads freed memory
+p_number4 = nullptr;          // clear this known alias
 ```
 
 Both pointers refer to the same heap block. Once one of them deletes it, the other becomes dangling immediately.

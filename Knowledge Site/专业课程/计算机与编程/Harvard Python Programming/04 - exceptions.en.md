@@ -60,8 +60,10 @@ print("hello, world)
 ```
 
 ```text
-SyntaxError: unterminated string literal
+SyntaxError: unterminated string literal (detected at line 1)
 ```
+
+(This example is from Python 3.13. Python 3.10 improved the location of this diagnostic, pointing to the start of the unclosed string. Check whether the quotes match.)
 
 "Unterminated" means you started something and never stopped it; a "literal" is something you typed directly rather than a variable. In plain terms: you opened a string and never closed it.
 
@@ -259,6 +261,8 @@ else:
 ```
 
 Both are reasonable. Python's inertia is toward EAFP, but checking first works perfectly well; the important part is knowing which style you chose.
+
+One caveat: `isnumeric()` and `int()` do not accept the same inputs. Measured on Python 3.13, `"-3".isnumeric()` is `False` (negatives are rejected), while `"²".isnumeric()` is `True` yet `int("²")` still raises `ValueError`. The LBYL version's boundary is therefore not identical to the `try` version — decide what counts as valid input before writing either.
 
 ## Chapter summary
 

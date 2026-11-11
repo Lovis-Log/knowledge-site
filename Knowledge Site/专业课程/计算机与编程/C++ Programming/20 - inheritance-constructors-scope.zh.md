@@ -1,7 +1,7 @@
 ---
 slug: "20-inheritance-constructors-scope"
 title: "继承中的构造、拷贝与名称遮蔽"
-summary: "用 using 复活被 private 继承遮蔽的成员；派生对象按基类到派生类的顺序分层构造，自定义构造通过初始化列表向基类转发参数；拷贝构造要用切片写法复用基类版本；基类构造函数可用 using 继承但只初始化基类部分；析构顺序与构造相反；同名成员会遮蔽基类版本，需要 Parent:: 显式指定。"
+summary: "用 using 复活被 private 继承遮蔽的成员；派生对象按基类到派生类的顺序分层构造，自定义构造通过初始化列表向基类转发参数；派生类拷贝构造可从源对象的基类子对象复用基类拷贝构造；基类构造函数可用 using 继承但只初始化基类部分；析构顺序与构造相反；同名成员会遮蔽基类版本，需要 Parent:: 显式指定。"
 updatedAt: 2026-11-01
 content_type: video-course
 categories: [software-engineering]
@@ -38,7 +38,7 @@ sources:
 | 24:57 | 自定义构造：初始化列表调用基类构造，转发参数 |
 | 25:18 | 两种错误写法：构造体内赋值、初始化列表直接写基类成员 |
 | 25:26 | 拷贝构造与继承：默认逐成员拷贝的问题 |
-| 25:31 | 正确写法 `Person(source)`：切片后复用基类拷贝构造 |
+| 25:31 | 正确写法 `Person(source)`：从源对象的基类子对象复用基类拷贝构造 |
 | 25:52 | `using Person::Person` 继承基类构造函数；拷贝构造不继承 |
 | 26:05 | 析构顺序：与构造严格相反 |
 | 26:12 | 同名成员遮蔽与 `Parent::` 显式调用 |
@@ -197,13 +197,15 @@ Engineer::Engineer(const Engineer& source)
       m_contract_count{source.m_contract_count} {}
 ```
 
-能编译（如果通过 getter 拿 private 数据），但有两个代价：先构造一个**临时的 Person 对象**，再从它拷贝到基类部分；而且完全绕开了刚刚辛苦写好的 Person 拷贝构造，等于重复实现了一遍拷贝逻辑。
+能编译（如果通过 getter 拿 private 数据），代价有两个：一是把每个成员读出来再往基类子对象里复制一遍（`get_address()` 按值返回时还多一次字符串拷贝），二是完全绕开了刚刚辛苦写好的 Person 拷贝构造，等于重复实现了一遍拷贝逻辑。
 
-**写法三：直接传整个派生对象，让编译器切片。**
+**需要澄清一点**：这里并不会产生临时的 Person 对象。初始化列表里的 `Person{...}` 是直接初始化基类子对象，不是「先构造临时对象再拷贝」。实测 g++ 16.1.0、`-std=c++20`：给 Person 的三个构造函数各加一句打印，用这种写法拷贝一个 Engineer，只看到一次三参数构造，没有拷贝构造被调用。它的缺点在于逻辑重复与逐成员再拷贝，而不是临时对象。
+
+**写法三：直接传整个派生对象，让基类拷贝构造函数读取基类子对象。**
 
 ```cpp
 Engineer::Engineer(const Engineer& source)
-    : Person{source},                       // 切片：只取 Person 那一层
+    : Person{source},                       // 从 source 的 Person 子对象拷贝
       m_contract_count{source.m_contract_count} {}
 ```
 
@@ -213,7 +215,7 @@ Engineer::Engineer(const Engineer& source)
 
 ```cpp
 CivilEngineer::CivilEngineer(const CivilEngineer& source)
-    : Engineer{source},                     // 切片到 Engineer 层，复用其拷贝构造
+    : Engineer{source},                     // 从 source 的 Engineer 子对象拷贝
       m_speciality{source.m_speciality} {}
 ```
 
@@ -336,7 +338,7 @@ p->draw();   // 输出 Shape draw
 - 派生对象构造顺序：基类 → 中间层 → 派生类；未指定时调用基类默认构造。
 - 自定义构造用初始化列表调用基类构造，把参数逐层转发。
 - 初始化列表只能初始化本类成员，基类成员必须由基类构造处理。
-- 派生类拷贝构造用 `Base{source}` 切片，复用基类拷贝构造，避免临时对象与重复代码。
+- 派生类拷贝构造用 `Base{source}` 复用基类拷贝构造，避免逐成员再拷贝与重复代码。
 - `using Base::Base` 可继承基类构造函数，但只初始化基类部分，且不继承拷贝构造。
 - 析构顺序与构造相反。
 - 同名成员会遮蔽基类版本，用 `Parent::` 显式指定；遮蔽会隐藏同名函数的全部重载。
@@ -362,7 +364,7 @@ p->draw();   // 输出 Shape draw
 
 **5. 为什么 `Engineer::Engineer(const Engineer& source) : Person{source}, ...` 被称为最优写法？它与 `Person{source.m_full_name, ...}` 有什么本质区别？**
 
-参考答案：`Person{source}` 把整个 Engineer 对象传给 `const Person&` 形参，编译器截取其中的 Person 子对象（切片），正好调用 Person 的拷贝构造函数。这样复用了基类已经写好的拷贝逻辑，不产生临时对象。另一种写法调用的是 Person 的**普通三参数构造**，需要先读三个成员、构造一个临时 Person，再拷贝到基类部分；既多了一次临时对象，又把拷贝逻辑重复实现了一遍。一旦 Person 的拷贝逻辑以后修改，这种写法不会自动同步。
+参考答案：`Person{source}` 把整个 Engineer 对象传给 `const Person&` 形参，这个引用绑定到 source 的 Person 子对象，从而调用 Person 的拷贝构造函数。这样复用了基类已经写好的拷贝逻辑，也不产生额外的逐成员复制。另一种写法调用的是 Person 的**普通三参数构造**：它不产生临时 Person（初始化列表直接构造基类子对象），但需要把三个成员逐个读出来、再往基类子对象里复制一遍，而且把拷贝逻辑重复实现了一遍。一旦 Person 的拷贝逻辑以后修改，这种写法不会自动同步。
 
 **6. 派生类与基类有同名成员变量时，在派生类成员函数里写 `m_var` 指的是哪一个？怎样访问另一个？**
 

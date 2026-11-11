@@ -336,7 +336,7 @@ goodbye, world
 hello, David
 ```
 
-前三行是 `sayings.py` 被导入时产生的——`import` 会**从头到尾执行整个文件**，包括最后那行 `main()`。
+前两行是 `sayings.py` 被导入时产生的——`import` 会**从头到尾执行整个文件**，包括最后那行 `main()`；第三行才是 `say.py` 自己调用的 `hello(sys.argv[1])`。
 
 ### 用 __main__ 保护入口
 

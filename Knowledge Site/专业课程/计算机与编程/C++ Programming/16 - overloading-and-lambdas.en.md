@@ -62,11 +62,13 @@ int max(int a, int b) { return a > b ? a : b; }
 int max(int a, int b) { return a > b ? a : b; }   // error: identical signature
 ```
 
-The compiler refuses outright:
+The compiler refuses outright, but what it reports is a redefinition, not a return-type complaint:
 
 ```
-cannot overload function distinguished by the return type alone
+error: redefinition of 'int max(int, int)'
 ```
+
+To provoke the return-type message, give the second line a different return type — `double max(int, int)`. gcc then says `ambiguating new declaration of 'double max(int, int)'`, while MSVC phrases it as `cannot overload functions distinguished by return type alone`. Three sentences, one rule: the return type does not distinguish overloads.
 
 Chapter 14 established this: **a signature is the name plus the parameter list, excluding the return type**. Of the possible changes, only parameter-list changes are legal:
 

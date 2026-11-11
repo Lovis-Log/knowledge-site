@@ -181,7 +181,7 @@ Moving on
 
 Two things to remember:
 
-1. **Compare with `==`, not `=`.** `if (tool = pen)` assigns, the assigned value is non-zero, and the condition is always true; compilers usually only warn. This is one of the most common beginner bugs.
+1. **Compare with `==`, not `=`.** `if (tool = pen)` assigns, the assigned value is non-zero, and the condition is always true. The standard permits this, so at default settings g++ builds it without a word — measured with g++ 16.1.0, `-std=c++20`, no warning flags: no diagnostic, and the program takes the branch. Only `-Wall` produces `suggest parentheses around assignment used as truth value`. This is one of the most common beginner bugs.
 2. **Only one branch of the chain runs.** After it runs, control jumps to the end of the chain, and `Moving on` still executes.
 
 An `else if` chain is semantically equivalent to a nested `if/else` staircase, but the flat form avoids repeated indentation and suits many mutually exclusive conditions.

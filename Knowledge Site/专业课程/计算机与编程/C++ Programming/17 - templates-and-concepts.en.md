@@ -237,7 +237,7 @@ T add(T a, T b) { return a + b; }
 ```
 
 - `add(6, 7)`: `int` is integral, accepted;
-- `add(11.1, 1.9)`: `double` fails `std::integral`, compile error reading `use of function 'add' with unsatisfied constraints`.
+- `add(11.1, 1.9)`: `double` fails `std::integral` and does not compile. The wording depends on the compiler version: the gcc of the course's era said `use of function 'add' with unsatisfied constraints`, while gcc 16.1.0 now opens with `no matching function for call to 'add(double, double)'` and lists the candidate template with `requires integral<T>` underneath. Either way the cause is visible.
 
 Common built-ins: `std::integral`, `std::floating_point`, `std::same_as`, `std::convertible_to`.
 
@@ -328,7 +328,7 @@ requires std::integral<T> && TinyTypeStrict<T>
 T add(T a, T b);
 ```
 
-`||` means either, `&&` means both. `long long` is integral but fails `TinyType` (8 bytes), which is exactly how the `&&` case is demonstrated.
+`||` means either, `&&` means both. The `&&` case is demonstrated with `TinyTypeStrict` on the right: `long long` is integral but at 8 bytes fails `sizeof(T) < 4`, so it is rejected. (With plain `TinyType` it would pass, because that version never checks the value.)
 
 ### Concepts and `auto` variables
 

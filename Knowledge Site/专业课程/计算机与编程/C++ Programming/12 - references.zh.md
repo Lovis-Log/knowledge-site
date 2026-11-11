@@ -80,8 +80,10 @@ ref_double_value = other_value;   // 这是赋值，不是改绑！
 C++ 没有语法可以在初始化之后让引用改绑。唯一的机会就是声明的那一刻，**这也解释了为什么引用必须初始化**：如果允许声明时不初始化，这个引用将永远无法绑定到任何对象，毫无用处。编译器直接拒绝：
 
 ```text
-error: reference variable 'ref' requires an initializer
+error: 'ref' declared as reference but not initialized
 ```
+
+（这是 g++ 16.1.0 的措辞；clang 写作 `declaration of reference variable 'ref' requires an initializer`。两家说的是同一件事。）
 
 指针没有这个限制：
 
@@ -159,7 +161,7 @@ const int* const p_age {&age};
 - 对引用赋值只修改被引用对象的值，不会改变绑定关系。
 - 指针可以改绑、可以为空，但使用时要区分地址与值。
 - `const T&` 禁止通过引用修改对象，但不要求对象本身是 `const`。
-- 引用等价于 `const T* const`；不存在 `const T& const`。
+- `T&` 相当于 `T* const`：绑定不能再改，但通过它仍可写被引用的对象；`const T&` 才相当于 `const T* const`。不存在 `const T& const`。
 
 ## 理解检验
 

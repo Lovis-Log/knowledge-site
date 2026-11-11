@@ -52,7 +52,7 @@ The through-line is that **each layer absorbs bookkeeping the layer below makes 
 | 13:21:39 | `strlen` versus `sizeof` |
 | 13:24:17 | Pointers can be repointed; array names cannot |
 | 13:30:17 | The `strchr` loop, step by step |
-| 13:36:46 | A counterexample: advancing the original pointer loops 25 times |
+| 13:36:46 | A counterexample: advancing the original pointer explodes the iteration count |
 | 13:39:25 | Pulling a filename out of a path with `strrchr` |
 | 13:42:30 | `strcat`: concatenation |
 | 13:45:40 | `strncat`: concatenate only n characters |
@@ -218,10 +218,10 @@ while ((result = std::strchr(message, 't')) != nullptr) {
     ++message;          // problem: moves one character instead of jumping to the match
     ++iterations;
 }
-// loops 25 times instead of 2
+// for this string: 36 iterations, because the last lowercase 't' sits at index 35
 ```
 
-The reason: each iteration searches from the start of the pointer passed in, and `++message` only shifts the start by one character, so the match is never skipped. The fix is to feed the returned pointer back in, or let a separate pointer walk forward. Declaring the original as `const char* const` makes the mistake a compile error:
+The reason: each iteration searches from the start of the pointer passed in, and `++message` only shifts the start by one character, so the match is never skipped. The iteration count is therefore **the index of the last match plus one** — 36 here — not the number of matches, which is 3 (`not`, `do not`, `try`). The fix is to feed the returned pointer back in, or let a separate pointer walk forward. Declaring the original as `const char* const` makes the mistake a compile error:
 
 ```cpp
 const char* const message{"..."};
@@ -322,7 +322,7 @@ Reference answer: `strlen(s)` is 5 (counts up to but excludes `'\0'`); `sizeof(s
 
 **3. In the `strchr` loop, why does the lecture use a separate `result` pointer instead of advancing the original string pointer?**
 
-Reference answer: `strchr` always searches from the pointer it is given. `++message` merely shifts the search start by one character; it never jumps past the match, so the next search rescans almost the whole string and the loop runs once per character (25 times). Assigning the return value back — `result = strchr(result, target)` — makes the next search begin after the match while leaving the original pointer intact. Declaring the original as `const char* const` turns such accidental modification into a compile error.
+Reference answer: `strchr` always searches from the pointer it is given. `++message` merely shifts the search start by one character; it never jumps past the match, so the next search rescans almost the whole string. The loop therefore runs "index of the last match plus one" times — 36 for this string, against 3 actual matches. Assign the match returned by `strchr(result, target)` to `result` and then increment `result`, so the next search starts after the match while leaving the original pointer intact. Declaring the original as `const char* const` turns such accidental modification into a compile error.
 
 **4. Why is the following dangerous, and how would you fix it?**
 

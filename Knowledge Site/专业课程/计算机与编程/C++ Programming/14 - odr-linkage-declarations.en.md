@@ -147,7 +147,7 @@ Person::Person(std::string name, int age)
 }
 ```
 
-Adding `int Person::s_person_count{8};` in `main.cpp` as well produces two linker errors: `multiple definition of Person::s_person_count` and a duplicate constructor. **Member function definitions are bound by the ODR too** — one definition per program. (Defining a member function inside the class body makes it implicitly inline, an exception covered in later chapters.)
+The lecture copies all of `person.cpp` into `main.cpp` to see what happens: both the static member definition and the constructor now exist twice, so the linker reports two errors — `multiple definition of Person::s_person_count` and `multiple definition of Person::Person(...)`. Copy only the static member line and you see just the first. **Member function definitions are bound by the ODR too** — one definition per program. (Defining a member function inside the class body makes it implicitly inline, an exception covered in later chapters.)
 
 ## Functions: syntax and vocabulary
 
@@ -252,8 +252,10 @@ int max(int a, int b) {     // the definition may come later
 Delete the definition and keep the declaration, and compilation still succeeds because the compiler only needs the signature to emit the call. Linking then fails:
 
 ```
-undefined reference to `max()'
+undefined reference to `max(int, int)'
 ```
+
+gcc includes the parameter types in that message, so overloads can still be told apart.
 
 MSVC phrases it as `unresolved external symbol`. **`undefined reference` means the linker went looking for a definition and did not find one.**
 

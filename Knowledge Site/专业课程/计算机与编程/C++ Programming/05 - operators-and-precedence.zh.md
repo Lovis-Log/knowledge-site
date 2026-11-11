@@ -219,7 +219,12 @@ std::cout << "number1 != number2: " << (number1 != number2) << std::endl; // tru
 std::cout << "number1 < number2: " << number1 < number2 << std::endl;
 ```
 
-这段**编译不过**。原因在上一节的优先级表：`<<` 的优先级高于 `<`，编译器会先算 `(std::cout << ... << number1)`，再拿它的结果去和 `number2` 比较——而 `std::cout` 没有定义 `<`，于是报错。
+这段**编译不过**。原因在上一节的优先级表：`<<` 的优先级高于 `<`，所以它不会"先比较、再输出"，而是按 `(std::cout << ... << number1) < (number2 << std::endl)` 分组——比较的右操作数变成了 `number2 << std::endl`，等于拿一个 `int` 去插入流操纵器 `std::endl`，错误先在这里爆出来。把结尾的 `<< std::endl` 去掉，才会看到那个更典型的报错：流对象没有和整数比较的 `<`。
+
+实测 g++ 16.1.0，`-std=c++20`：
+
+- 保留书里的原句：`error: invalid operands of types 'int' and '<unresolved overloaded function type>' to binary 'operator<<'`；
+- 去掉结尾的 `<< std::endl`：`error: no match for 'operator<' (operand types are 'std::basic_ostream<char>' and 'int')`。
 
 加括号 `(number1 < number2)` 先把比较算成一个 `bool`，再交给 `cout` 输出。
 
