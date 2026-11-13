@@ -1095,7 +1095,7 @@ test("legacy image-generation-workflows favorites resolve under the merged book"
   const id = (await user("alias_favorite_reader"))!.id;
   await db.batch([
     db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,'image-generation-workflows','')").bind(id),
-    db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,'image-generation-workflows','chapter-one')").bind(id),
+    db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,'image-generation-workflows','01-image-prompting')").bind(id),
   ]);
   const listed = await (await device.call("/api/favorites")).json() as {
     items: { book: string; chapter: string; href: string | null }[];
@@ -1106,12 +1106,12 @@ test("legacy image-generation-workflows favorites resolve under the merged book"
   assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND book='image-generation-workflows'")
     .bind(id).first<{ n: number }>())!.n, 2);
   // Both the old and canonical query paths see legacy-only rows.
-  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=chapter-one")).json(), { saved: true });
-  assert.deepEqual(await (await device.call("/api/favorites/status?book=agent-engineering&chapter=chapter-one")).json(), { saved: true });
-  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "chapter-one", saved: true })).status, 200);
-  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=chapter-one")).json(), { saved: true });
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=01-image-prompting")).json(), { saved: true });
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=agent-engineering&chapter=01-image-prompting")).json(), { saved: true });
+  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "01-image-prompting", saved: true })).status, 200);
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=01-image-prompting")).json(), { saved: true });
   // Explicit unsave from the canonical page clears the legacy row too.
-  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "chapter-one", saved: false })).status, 200);
-  assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND chapter='chapter-one'")
+  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "01-image-prompting", saved: false })).status, 200);
+  assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND chapter='01-image-prompting'")
     .bind(id).first<{ n: number }>())!.n, 0);
 });
