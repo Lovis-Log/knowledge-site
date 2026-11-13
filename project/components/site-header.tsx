@@ -33,7 +33,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link href="/" className="brand" aria-describedby="brand-description">
+        <a href="/library/" className="brand" aria-describedby="brand-description">
           <img
             className="brand__mark"
             src="/brand/lovismind-mark.png"
@@ -43,7 +43,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           />
           <span className="brand__word">{site.name}</span>
           <span id="brand-description" role="tooltip" className="brand__tip"><UiText zh="Lovis 的个人知识库" en="Lovis’s personal knowledge vault" /></span>
-        </Link>
+        </a>
         <HeaderBreadcrumb crumbs={crumbs} />
         <nav className="site-nav" {...uiLabel("主导航")}>
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (

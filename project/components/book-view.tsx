@@ -32,9 +32,11 @@ export default function BookView({ slug }: { slug: string }) {
       )}
       <header className="book-header">
         <BookCover book={book} size="sm" priority />
-        <div className="book-header__body">
+        <div className="book-header__heading">
           {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
           <h1 className="book-title"><UiText {...bookTitle(book)} /></h1>
+        </div>
+        <div className="book-header__body">
           <p className="book-lede">
             <UiText
               zh={book.longDescription ?? book.description}
@@ -74,10 +76,10 @@ export default function BookView({ slug }: { slug: string }) {
               )}
             </ul>
           )}
-          <p className="book-meta">
-            <UiCount count={book.chapters.length} kind="chapters" />
-          </p>
-          <FavoriteButton book={book.slug} />
+          <div className="book-header__actions">
+            <p className="book-meta"><UiCount count={book.chapters.length} kind="chapters" /></p>
+            <FavoriteButton book={book.slug} />
+          </div>
         </div>
       </header>
 

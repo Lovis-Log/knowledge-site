@@ -33,7 +33,7 @@ function ClipboardButton({ value }: { value: string }) {
     }
   }
 
-  return <span className="copy-control">
+  return <span className="copy-control" data-copy-state={status || 'idle'}>
     <button type="button" onClick={() => void copy()}>
       {status === "copied" ? <UiText zh="复制成功" en="Copied" /> : <UiText zh="复制" en="Copy" />}
     </button>

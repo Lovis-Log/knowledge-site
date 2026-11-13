@@ -20,7 +20,7 @@ export function BookCursor() {
     function hide() { visible = false; element!.dataset.visible = 'false'; element!.dataset.pressed = 'false'; }
     function move(event: PointerEvent) {
       targetX = event.clientX; targetY = event.clientY;
-      const link = event.target instanceof Element ? event.target.closest('.book-card a') : null;
+      const link = event.target instanceof Element ? event.target.closest('.book-card__cover, .continue__link') : null;
       if (!enabled.matches || event.pointerType !== 'mouse' || !link || !root!.contains(link)) { hide(); return; }
       if (!visible) { x = targetX; y = targetY; visible = true; }
       element!.dataset.visible = 'true';
@@ -29,7 +29,7 @@ export function BookCursor() {
     function press() { if (visible) element!.dataset.pressed = 'true'; }
     function release() { element!.dataset.pressed = 'false'; }
     function scroll() {
-      const link = document.elementFromPoint(targetX, targetY)?.closest('.book-card a');
+      const link = document.elementFromPoint(targetX, targetY)?.closest('.book-card__cover, .continue__link');
       if (!enabled.matches || !link || !root!.contains(link)) { hide(); return; }
       if (!visible) { x = targetX; y = targetY; visible = true; }
       element!.dataset.visible = 'true';
@@ -57,6 +57,6 @@ export function BookCursor() {
     };
   }, []);
   return <div ref={cursor} className="book-cursor" aria-hidden="true" data-visible="false">
-    <span className="book-cursor__ring"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7"><path d="M6 18 18 6M6 6h12v12" /></svg></span>
+    <span className="book-cursor__ring" />
   </div>;
 }
