@@ -22,7 +22,11 @@ function loadModule(relativePath) {
   }).outputText;
   const module = { exports: {} };
   modules.set(relativePath, module);
-  const resolve = (specifier) => specifier.startsWith("@/") ? loadModule(specifier.slice(2)) : require(specifier);
+  const resolve = (specifier) => specifier.startsWith("@/")
+    ? loadModule(specifier.slice(2))
+    : specifier.startsWith(".")
+      ? loadModule(path.posix.join(path.posix.dirname(relativePath), specifier))
+      : require(specifier);
   new Function("require", "module", "exports", compiled)(resolve, module, module.exports);
   return module.exports;
 }
