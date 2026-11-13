@@ -500,13 +500,13 @@
   transform: translateY(-3px);
 }
 
-.buttonSolid {
+.landing .buttonSolid {
   background: var(--lm-navy);
   color: #fff;
   box-shadow: 0 10px 28px rgba(33, 59, 82, 0.12);
 }
 
-.buttonSolid:hover {
+.landing .buttonSolid:hover {
   background: #273d5a;
   box-shadow: 0 17px 30px rgba(33, 59, 82, 0.17);
 }

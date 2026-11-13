@@ -1,5 +1,29 @@
 [
   {
+    "date": "2026-11-13",
+    "features": [
+      {
+        "zh": "书封新增英文标题、更多配色和实体细节；封面下方书名随界面语言切换，手机横滑可浏览全部书籍。",
+        "en": "Refined book materials and colors, English cover titles, localized book names below covers, and complete mobile shelves."
+      },
+      {
+        "zh": "书库内搜索支持候选；投稿独立到顶部导航，表单简化为文字和可选链接。",
+        "en": "Search suggestions in the library; a dedicated submission page with a text field and an optional link."
+      },
+      {
+        "zh": "留言支持回复；注册可选择邀请码或申请；支持支付宝和私密捎信；关于页补充技术架构。",
+        "en": "Guestbook replies, invite-or-application registration, Alipay, private notes and a technical architecture overview."
+      }
+    ],
+    "content": [
+      {
+        "title": "合并《AI Agent 工程与技能设计》和《产品与设计》为《AI 工程与设计》，取消 AI Era 子分类 / Merged AI engineering and product design into AI Engineering & Design, with a flat AI Era bookshelf",
+        "href": "/books/agent-engineering/",
+        "kind": "整理 / Reorganized"
+      }
+    ]
+  },
+  {
     "date": "2026-11-11",
     "features": [],
     "content": [

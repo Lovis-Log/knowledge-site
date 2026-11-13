@@ -6,9 +6,9 @@ import { hashPassword } from '../password';
 async function fixture(enabled = true) {
     const mf = new Miniflare(convertV4MiniflareOptions({ modules: true, scriptPath: 'out/_worker.js', compatibilityDate: '2026-11-04', compatibilityFlags: ['nodejs_compat'], d1Databases: { DB: 'features' }, bindings: enabled ? { ACCOUNT_CHANGE_PASSWORD_ENABLED: '1', ACCOUNT_DELETE_ENABLED: '1' } : {}, serviceBindings: { ASSETS: () => new Response('PAGE') } }));
     const db = await mf.getD1Database('DB');
-    for (const file of ['0001_auth.sql', '0002_content.sql', '0003_reader_interactions.sql', '0004_recoverable_invites.sql', '0005_submissions.sql']) {
+    for (const file of ['0001_auth.sql', '0002_content.sql', '0003_reader_interactions.sql', '0004_recoverable_invites.sql', '0005_submissions.sql', '0006_community_replies.sql']) {
         const sql = await readFile('backend/migrations/' + file, 'utf8');
-        for (const stmt of sql.split(/;(?=\s*(?:CREATE|PRAGMA|$))/))
+        for (const stmt of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|$))/))
             if (stmt.trim())
                 await db.prepare(stmt).run();
     }
@@ -58,6 +58,97 @@ test('private submissions: idempotency, access, moderation, withdrawal and limit
         await f.db.batch(Array.from({length:5},()=>f.db.prepare("INSERT INTO submissions(user_id,request_id,title,message) VALUES('other',?,'Pending','fixture')").bind(crypto.randomUUID())));
         const blocked=await f.o.call('/api/submissions',{...payload,requestId:crypto.randomUUID()});assert.equal(blocked.status,429);assert.equal((await blocked.json() as {code:string}).code,'PENDING_LIMIT');
 
+    }
+    finally {
+        await f.mf.dispose();
+    }
+});
+test('guestbook replies attach to the root, record the target and guard hidden threads', async () => {
+    const f = await fixture();
+    try {
+        const publish = (c: { call: (path: string, data?: unknown) => Promise<Response> }, message: string, parentId?: number) =>
+            c.call('/api/guestbook', { action: 'publish', message, ...(parentId === undefined ? {} : { parentId }) });
+        const rootResponse = await publish(f.r, 'Root message');
+        assert.equal(rootResponse.status, 201);
+        const root = (await rootResponse.json() as { item: { id: number; parentId: number | null; replyTo: string } }).item;
+        assert.equal(root.parentId, null);
+        assert.equal(root.replyTo, '');
+        const replyResponse = await publish(f.o, 'First reply', root.id);
+        assert.equal(replyResponse.status, 201);
+        const reply = (await replyResponse.json() as { item: { id: number; parentId: number | null; replyTo: string } }).item;
+        assert.equal(reply.parentId, root.id);
+        assert.equal(reply.replyTo, 'reader');
+        const nestedResponse = await publish(f.a, 'Reply to the reply', reply.id);
+        assert.equal(nestedResponse.status, 201);
+        const nested = (await nestedResponse.json() as { item: { id: number; parentId: number | null; replyTo: string } }).item;
+        assert.equal(nested.parentId, root.id);
+        assert.equal(nested.replyTo, 'other');
+        const board = await (await f.r.call('/api/guestbook')).json() as {
+            items: { id: number; replies: { id: number; message: string; parentId: number; replyTo: string }[] }[];
+        };
+        const thread = board.items.find((item) => item.id === root.id)!;
+        assert.deepEqual(thread.replies.map((item) => item.message), ['First reply', 'Reply to the reply']);
+        assert.ok(thread.replies.every((item) => item.parentId === root.id));
+        assert.equal(thread.replies[1].replyTo, 'other');
+        // Replying to a hidden reply or a visible child of a hidden root must fail.
+        assert.equal((await f.a.call('/api/admin/guestbook', { action: 'hide', id: nested.id })).status, 200);
+        assert.equal((await publish(f.r, 'to hidden reply', nested.id)).status, 404);
+        assert.equal((await f.a.call('/api/admin/guestbook', { action: 'hide', id: root.id })).status, 200);
+        assert.equal((await publish(f.o, 'to child of hidden root', reply.id)).status, 404);
+        assert.equal((await publish(f.r, 'to hidden root', root.id)).status, 404);
+        const publicBoard = await (await f.r.call('/api/guestbook')).json() as { items: { id: number }[] };
+        assert.ok(!publicBoard.items.some((item) => item.id === root.id));
+        assert.ok((await (await f.a.call('/api/admin/guestbook')).json() as { items: { id: number }[] }).items.some((item) => item.id === root.id));
+        assert.equal((await f.a.call('/api/admin/guestbook', { action: 'restore', id: nested.id })).status, 200);
+        assert.equal((await f.a.call('/api/admin/guestbook', { action: 'restore', id: root.id })).status, 200);
+        // Nonexistent targets fail; owner deletion and root cascade keep old rules.
+        assert.equal((await publish(f.r, 'to nowhere', 999999)).status, 404);
+        assert.equal((await f.o.call('/api/guestbook', { action: 'delete', id: reply.id })).status, 200);
+        assert.equal((await f.r.call('/api/guestbook', { action: 'delete', id: root.id })).status, 200);
+        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM guestbook_entries WHERE parent_id=?').bind(root.id).first<{ n: number }>())!.n, 0);
+        // Legacy rows created without the new columns still list as roots.
+        await f.db.prepare("INSERT INTO guestbook_entries(user_id,message) VALUES('reader','legacy row')").run();
+        const legacy = await (await f.r.call('/api/guestbook')).json() as {
+            items: { message: string; parentId: number | null; replyTo: string; replies: unknown[] }[];
+        };
+        const old = legacy.items.find((item) => item.message === 'legacy row')!;
+        assert.equal(old.parentId, null);
+        assert.equal(old.replyTo, '');
+        assert.deepEqual(old.replies, []);
+    }
+    finally {
+        await f.mf.dispose();
+    }
+});
+test('donation notes stay private, carry a server title and source marker, and ignore client titles', async () => {
+    const f = await fixture();
+    try {
+        const payload = { requestId: crypto.randomUUID(), message: '想推荐一本关于记忆的书。', url: '', source: 'donation' };
+        const created = await f.r.call('/api/submissions', payload);
+        assert.equal(created.status, 201);
+        const id = (await created.json() as { id: number }).id;
+        const row = await f.db.prepare('SELECT title,source,message FROM submissions WHERE id=?').bind(id).first<{
+            title: string; source: string; message: string;
+        }>();
+        assert.equal(row!.source, 'donation');
+        assert.equal(row!.title, '打赏捎信 · 想推荐一本关于记忆的书。');
+        assert.equal((await f.r.call('/api/submissions', payload)).status, 200);
+        const mine = await (await f.r.call('/api/submissions')).json() as { items: { id: number; source: string }[] };
+        assert.equal(mine.items[0].source, 'donation');
+        assert.equal((await (await f.o.call('/api/submissions')).json() as { items: unknown[] }).items.length, 0);
+        assert.ok((await (await f.a.call('/api/admin/submissions')).json() as { items: { id: number; source: string }[] })
+            .items.some((item) => item.id === id && item.source === 'donation'));
+        // Link-only submissions derive their title from the URL; client titles are ignored.
+        const linked = await f.o.call('/api/submissions', {
+            requestId: crypto.randomUUID(), message: '', url: 'https://example.com/notes/memory', title: 'FAKE TITLE', source: '',
+        });
+        assert.equal(linked.status, 201);
+        const linkRow = await f.db.prepare('SELECT title,source FROM submissions WHERE id=?')
+            .bind((await linked.json() as { id: number }).id).first<{ title: string; source: string }>();
+        assert.equal(linkRow!.title, 'example.com/notes/memory');
+        assert.equal(linkRow!.source, '');
+        assert.equal((await f.o.call('/api/submissions', { requestId: crypto.randomUUID(), message: 'x', url: '', source: 'other' })).status, 400);
+        assert.equal((await f.o.call('/api/submissions', { requestId: crypto.randomUUID(), message: '', url: '', source: 'donation' })).status, 400);
     }
     finally {
         await f.mf.dispose();

@@ -8,6 +8,7 @@ import { ChapterList } from "@/components/chapter-list";
 import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
+import { bookTitle } from "@/lib/book-titles";
 
 export default function BookView({ slug }: { slug: string }) {
   const { getBook, getLibrarySections, taxonomyEnglish, bookEnglish } =
@@ -33,7 +34,7 @@ export default function BookView({ slug }: { slug: string }) {
         <BookCover book={book} size="sm" priority />
         <div className="book-header__body">
           {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
-          <h1 className="book-title">{book.title}</h1>
+          <h1 className="book-title"><UiText {...bookTitle(book)} /></h1>
           <p className="book-lede">
             <UiText
               zh={book.longDescription ?? book.description}

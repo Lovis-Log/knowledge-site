@@ -30,7 +30,7 @@ const texts = await Promise.all(
     .map(async (path) => ({ path, text: await readFile(path, "utf8") })),
 );
 for (const book of books) {
-  const needles = [book.title, bookEnglish[book.slug]?.longDescription].filter(
+  const needles = [book.title, ...Object.values(book.displayTitle ?? {}), bookEnglish[book.slug]?.longDescription].filter(
     (value): value is string => Boolean(value && value.length > 8),
   );
   for (const chapter of book.chapters) {
@@ -63,6 +63,7 @@ for (const book of books) {
 for (const route of [
   "index.html",
   "library/index.html",
+  "submissions/index.html",
   "login/index.html",
   "register/index.html",
   "reset-password/index.html",

@@ -1,16 +1,27 @@
 {
   "sections": [
     {
-      "slug": "ai-era",
-      "name": "AI Era",
-      "description": "整理关于大模型原理、智能体工程与 AI 编程创作的学习材料，涵盖模型理解、工具使用、上下文管理、知识库整理和图像生成等主题。结合讲座、文章与实操教程，记录具体方法、应用场景和使用中的局限，附上原始来源，方便学习、查阅与实践。",
-      "featuredBooks": ["agent-engineering", "llm-principles", "vibe-coding", "llm-knowledge-base"]
-    },
-    {
       "slug": "courses",
       "name": "专业课程",
       "description": "按课程整理数学、计算机与人工智能的学习笔记，涵盖线性代数、实分析、离散数学、程序设计和智能体等内容。沿着课程进度梳理概念、推导、证明与代码示例，配合理解检验和原始资料，方便从头学习、复习重点，也为后续研究与项目实践积累基础。",
-      "featuredBooks": ["mit-linear-algebra", "cmu-ai-agents", "cpp-programming-course", "cs50-python"]
+      "featuredBooks": [
+        "mit-linear-algebra",
+        "cmu-ai-agents",
+        "cpp-programming-course",
+        "cs50-python"
+      ]
+    },
+    {
+      "slug": "ai-era",
+      "name": "AI Era",
+      "description": "整理关于大模型原理、智能体工程与 AI 编程创作的学习材料，涵盖模型理解、工具使用、上下文管理、知识库整理和图像生成等主题。结合讲座、文章与实操教程，记录具体方法、应用场景和使用中的局限，附上原始来源，方便学习、查阅与实践。",
+      "featuredBooks": [
+        "agent-engineering",
+        "llm-principles",
+        "vibe-coding",
+        "llm-knowledge-base"
+      ],
+      "groupByCategory": false
     },
     {
       "slug": "curated",
@@ -21,16 +32,10 @@
   ],
   "categories": [
     {
-      "slug": "ai-principles-applications",
+      "slug": "ai-era",
       "section": "ai-era",
-      "name": "AI 原理与应用",
-      "description": "大模型原理、智能体工程与 AI 知识管理实践"
-    },
-    {
-      "slug": "ai-coding",
-      "section": "ai-era",
-      "name": "AI 编程与创作",
-      "description": "用 AI 交付软件、生成图像与整理创作工作流"
+      "name": "AI Era",
+      "description": "AI 原理、工程与设计实践"
     },
     {
       "slug": "mathematics",

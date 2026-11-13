@@ -1,48 +1,274 @@
 "use client";
-import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { api } from '@/lib/api';
-import { UiText } from './ui-text';
+
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { api } from "@/lib/api";
+import { UiText } from "./ui-text";
+import { uiPlaceholder } from "@/lib/ui-language";
+import { PageEntry } from "./page-entry";
+import styles from "./submissions.module.css";
+
 type Item = {
-    id: number;
-    title: string;
-    summary: string;
-    message: string;
-    url: string;
-    status: string;
-    note: string;
+  id: number;
+  title: string;
+  summary: string;
+  message: string;
+  url: string;
+  status: string;
+  note: string;
+  source: string;
+  created_at: number;
 };
 type Board = {
-    items: Item[];
-    next: number | null;
-    canModerate: boolean;
+  items: Item[];
+  next: number | null;
+  canModerate: boolean;
 };
-const names: Record<string, string> = { pending: '待处理 / Pending', adopted: '已采用 / Adopted', declined: '未采用 / Not adopted' };
+const statuses: Record<string, [string, string]> = {
+  pending: ["待处理", "Pending"],
+  adopted: ["已采用", "Adopted"],
+  declined: ["未采用", "Not adopted"],
+};
+
 export function Submissions() {
-    const [board, setBoard] = useState<Board | null>(null), [admin, setAdmin] = useState(false), [pages, setPages] = useState<number[]>([]), [revision, setRevision] = useState(0), [busy, setBusy] = useState(false), [error, setError] = useState('');
-    const lock = useRef(false), requestId = useRef(''), form = useRef<HTMLFormElement>(null);
-    const before = pages.at(-1), endpoint = admin ? '/api/admin/submissions' : '/api/submissions';
-    useEffect(() => { let live = true; setBoard(null); api<Board>(endpoint + (before ? '?before=' + before : '')).then(b => { if (live)
-        setBoard(b); }).catch(e => { if (live)
-        setError(e.message); }); return () => { live = false; }; }, [endpoint, before, revision]);
-    async function act(endpoint: string, data: unknown, done?: () => void) { if (lock.current)
-        return; lock.current = true; setBusy(true); setError(''); try {
-        await api(endpoint, 'POST', data);
-        done?.();
-        setPages([]);
-        setRevision(n => n + 1);
+  const [board, setBoard] = useState<Board | null>(null);
+  const [admin, setAdmin] = useState(false);
+  const [pages, setPages] = useState<number[]>([]);
+  const [revision, setRevision] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState(false);
+  const [message, setMessage] = useState("");
+  const [url, setUrl] = useState("");
+  const lock = useRef(false);
+  const requestId = useRef("");
+  const form = useRef<HTMLFormElement>(null);
+
+  const before = pages.at(-1);
+  const endpoint = admin ? "/api/admin/submissions" : "/api/submissions";
+
+  useEffect(() => {
+    let live = true;
+    setLoading(true);
+    setBoard(null);
+    api<Board>(endpoint + (before ? "?before=" + before : ""))
+      .then((value) => { if (live) { setBoard(value); setError(""); } })
+      .catch((caught: Error) => { if (live) setError(caught.message); })
+      .finally(() => { if (live) setLoading(false); });
+    return () => { live = false; };
+  }, [endpoint, before, revision]);
+
+  async function act(path: string, data: unknown, done?: () => void) {
+    if (lock.current) return;
+    lock.current = true;
+    setBusy(true);
+    setError("");
+    setNotice(false);
+    try {
+      await api(path, "POST", data);
+      done?.();
+      setPages([]);
+      setRevision((value) => value + 1);
+    } catch (caught) {
+      setError((caught as Error).message);
+    } finally {
+      lock.current = false;
+      setBusy(false);
     }
-    catch (e) {
-        setError((e as Error).message);
+  }
+
+  function edit(value: string, update: (next: string) => void) {
+    update(value);
+    requestId.current = "";
+    setNotice(false);
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (lock.current) return;
+    const body = message.trim();
+    const link = url.trim();
+    if (!body && !link) {
+      setError("请填写正文或链接 / Add text or a link");
+      return;
     }
-    finally {
-        lock.current = false;
-        setBusy(false);
-    } }
-    function submit(e: FormEvent<HTMLFormElement>) { e.preventDefault(); const data = Object.fromEntries(new FormData(e.currentTarget)); requestId.current ||= crypto.randomUUID(); void act('/api/submissions', { ...data, requestId: requestId.current }, () => { form.current?.reset(); requestId.current = ''; }); }
-    return <section className="feature-page"><h2><UiText zh="投稿" en="Submissions"/></h2><p><UiText zh="投稿仅本人和管理员可见。已采用表示决定使用素材，不会自动发布；管理员将另行整理与复核。" en="Only you and administrators can view your submissions. Adoption is a decision to use material, not automatic publication."/></p>
- <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ''; }}><fieldset disabled={busy}><legend>提交文字或链接 / Submit text or a link</legend><label>标题 / Title<input name="title" required maxLength={100}/></label><label>简介 / Summary<textarea name="summary" maxLength={300}/></label><label>正文 / Text<textarea name="message" maxLength={2000}/></label><label>来源链接 / Source URL<input name="url" type="url" maxLength={2048}/></label><p>正文与链接至少填一项；每天最多 3 次，最多 5 条待处理。 / Add text or a URL. Three submissions daily, five pending maximum.</p><button type="submit">{busy ? '提交中 / Submitting' : '提交投稿 / Submit'}</button></fieldset></form>
- {board?.canModerate && <button disabled={busy} onClick={() => { setAdmin(!admin); setPages([]); }}>{admin ? '我的投稿 / My submissions' : '审核全部投稿 / Review all'}</button>}
- {error && <p role="alert">{error} <button onClick={() => setRevision(n => n + 1)}>重试 / Retry</button></p>}{!board ? <p role="status">加载中 / Loading…</p> : <><ul className="reader-items">{board.items.map(i => <li className="reader-item" key={i.id}><h3>{i.title}</h3><p>{names[i.status]}</p><p className="submission-text">{i.summary}</p><p className="submission-text">{i.message}</p>{i.url && <a href={i.url} target="_blank" rel="noopener noreferrer">{i.url}</a>}{i.note && <p className="submission-text">处理说明 / Review note: {i.note}</p>}{admin ? <form onSubmit={e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.currentTarget)); void act('/api/admin/submissions', { id: i.id, ...d }); }}><select name="status" defaultValue={i.status}>{Object.entries(names).map(([v, n]) => <option key={v} value={v}>{n}</option>)}</select><label>处理说明 / Note<textarea name="note" defaultValue={i.note} maxLength={300}/></label><button disabled={busy}>保存 / Save</button></form> : i.status !== 'adopted' && <button disabled={busy} onClick={() => { if (confirm('撤回此投稿？ / Withdraw submission?'))
-        void act('/api/submissions', { action: 'withdraw', id: i.id }); }}>撤回 / Withdraw</button>}</li>)}</ul>{!board.items.length && <p>暂无投稿 / No submissions</p>}<button disabled={busy || !pages.length} onClick={() => setPages(p => p.slice(0, -1))}>上一页 / Previous</button><button disabled={busy || !board.next} onClick={() => setPages(p => [...p, board.next!])}>下一页 / Next</button></>}
- </section>;
+    lock.current = true;
+    setBusy(true);
+    setError("");
+    setNotice(false);
+    requestId.current ||= crypto.randomUUID();
+    try {
+      await api("/api/submissions", "POST", {
+        message: body,
+        url: link,
+        requestId: requestId.current,
+      });
+      requestId.current = "";
+      form.current?.reset();
+      setMessage("");
+      setUrl("");
+      setNotice(true);
+      setPages([]);
+      setRevision((value) => value + 1);
+    } catch (caught) {
+      setError((caught as Error).message);
+    } finally {
+      lock.current = false;
+      setBusy(false);
+    }
+  }
+
+  return (
+    <PageEntry className={`shell reader-interactions ${styles.page}`}>
+      <header className={styles.header}>
+        <p className={styles.eyebrow}>LOVISMIND / SUBMISSIONS</p>
+        <h1 className={styles.title}><UiText zh="投稿" en="Submissions" /></h1>
+        <p className={styles.lede}><UiText
+          zh="留下想分享的文字或链接。投稿仅你和管理员可见；已采用表示决定使用素材，不会自动发布，管理员会另行整理与复核。"
+          en="Leave a note or a link you would like to share. Only you and administrators can see submissions. Adoption means the material will be used, not published automatically; an administrator will review it separately."
+        /></p>
+      </header>
+
+      <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ""; setNotice(false); }} className={styles.form} noValidate>
+        <div className={styles.formHead}>
+          <span className={styles.envelope} aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+          </span>
+          <div className={styles.formIntro}>
+            <h2><UiText zh="留下一段文字或一个链接" en="Leave a note or a link" /></h2>
+          </div>
+        </div>
+        <label className={styles.field} htmlFor="submission-message">
+          <span className={styles.label}>
+            <UiText zh="正文" en="Text" />
+            <span className={styles.optional}><UiText zh="可选" en="Optional" /></span>
+          </span>
+          <textarea id="submission-message" name="message" rows={5} maxLength={2000} disabled={busy}
+            {...uiPlaceholder("想分享的内容、推荐理由，或希望补充的资料……", "Something worth sharing, why you recommend it, or material we could add…")}
+            value={message} onChange={(event) => edit(event.target.value, setMessage)} />
+        </label>
+        <label className={styles.field} htmlFor="submission-url">
+          <span className={styles.label}>
+            <UiText zh="来源链接" en="Source link" />
+            <span className={styles.optional}><UiText zh="可选" en="Optional" /></span>
+          </span>
+          <input id="submission-url" name="url" type="url" inputMode="url" maxLength={2048} disabled={busy}
+            placeholder="https://" value={url} onChange={(event) => edit(event.target.value, setUrl)} />
+        </label>
+        <div className={styles.footer}>
+          <p className={styles.hint}><UiText
+            zh="正文与链接至少填一项。每天最多 3 次，最多保留 5 条待处理投稿。"
+            en="Add text or a link. Three submissions per day, five pending at most."
+          /></p>
+          <button className={styles.submit} type="submit" disabled={busy || (!message.trim() && !url.trim())}>
+            {busy
+              ? <UiText zh="提交中…" en="Sending…" />
+              : <UiText zh="提交投稿" en="Send submission" />}
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m5 12 14 0m-5-5 5 5-5 5" />
+            </svg>
+          </button>
+        </div>
+      </form>
+      {notice && <p className={styles.notice} role="status"><UiText
+        zh="已收到投稿，仅你和管理员可见。"
+        en="Submission received. Only you and administrators can see it."
+      /></p>}
+      {error && <p className={styles.error} role="alert">{error}{" "}
+        <button type="button" className={styles.inlineAction} onClick={() => { setError(""); setRevision((value) => value + 1); }}>
+          <UiText zh="重试" en="Retry" />
+        </button>
+      </p>}
+
+      <section className={styles.listSection} aria-labelledby="submission-list-title">
+        <div className={styles.listHeader}>
+          <h2 id="submission-list-title"><UiText zh={admin ? "全部投稿" : "我的投稿"} en={admin ? "All submissions" : "My submissions"} /></h2>
+          {board?.canModerate && (
+            <button type="button" className={styles.toggle} disabled={busy}
+              aria-pressed={admin}
+              onClick={() => { setAdmin(!admin); setPages([]); }}>
+              {admin
+                ? <UiText zh="查看我的投稿" en="My submissions" />
+                : <UiText zh="审核全部投稿" en="Review all" />}
+            </button>
+          )}
+        </div>
+        {loading && !board
+          ? <p className={styles.loading} role="status"><UiText zh="正在加载投稿…" en="Loading submissions…" /></p>
+          : board && <>
+            {board.items.length === 0 && <p className={styles.empty}><UiText zh="暂无投稿" en="No submissions yet" /></p>}
+            <ul className={styles.list}>
+              {board.items.map((item) => (
+                <li className={styles.item} key={item.id}>
+                  <div className={styles.itemTop}>
+                    <h3>{item.title}</h3>
+                    <span className={styles.status} data-status={item.status}>
+                      <UiText zh={statuses[item.status]?.[0] ?? "待处理"} en={statuses[item.status]?.[1] ?? "Pending"} />
+                    </span>
+                  </div>
+                  <div className={styles.itemMeta}>
+                    {item.source === "donation" && (
+                      <span className={styles.sourceBadge}><UiText zh="来自打赏入口" en="From the donation entry" /></span>
+                    )}
+                    <time dateTime={new Date(item.created_at * 1000).toISOString()}>
+                      {new Date(item.created_at * 1000).toLocaleString()}
+                    </time>
+                  </div>
+                  {item.summary && <p className={styles.body}>{item.summary}</p>}
+                  {item.message && <p className={styles.body}>{item.message}</p>}
+                  {item.url && <a className={styles.link} href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>}
+                  {item.note && <p className={styles.note}><UiText zh="处理说明" en="Review note" />: {item.note}</p>}
+                  {admin ? (
+                    <form className={styles.review} onSubmit={(event) => {
+                      event.preventDefault();
+                      const data = Object.fromEntries(new FormData(event.currentTarget));
+                      void act("/api/admin/submissions", { id: item.id, ...data });
+                    }}>
+                      <label>
+                        <UiText zh="状态" en="Status" />
+                        <select name="status" defaultValue={item.status} disabled={busy}>
+                          {Object.keys(statuses).map((value) => (
+                            <option key={value} value={value}>{statuses[value][0]} / {statuses[value][1]}</option>
+                          ))}
+                        </select>
+                      </label>
+                      <label>
+                        <UiText zh="处理说明" en="Review note" />
+                        <textarea name="note" defaultValue={item.note} maxLength={300} rows={2} disabled={busy} />
+                      </label>
+                      <button type="submit" className={styles.inlineAction} disabled={busy}>
+                        <UiText zh="保存" en="Save" />
+                      </button>
+                    </form>
+                  ) : item.status !== "adopted" && (
+                    <div className={styles.actions}>
+                      <button type="button" className={styles.inlineAction} disabled={busy}
+                        onClick={() => {
+                          if (window.confirm("撤回此投稿？ / Withdraw this submission?"))
+                            void act("/api/submissions", { action: "withdraw", id: item.id });
+                        }}>
+                        <UiText zh="撤回" en="Withdraw" />
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <div className={styles.pager}>
+              <button type="button" className={styles.inlineAction} disabled={busy || pages.length === 0}
+                onClick={() => setPages((value) => value.slice(0, -1))}>
+                <UiText zh="上一页" en="Previous" />
+              </button>
+              <button type="button" className={styles.inlineAction} disabled={busy || board.next === null}
+                onClick={() => setPages((value) => [...value, board.next!])}>
+                <UiText zh="下一页" en="Next" />
+              </button>
+            </div>
+          </>}
+      </section>
+    </PageEntry>
+  );
 }

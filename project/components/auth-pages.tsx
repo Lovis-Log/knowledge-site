@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { api, ApiError, safeNext } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { PasswordInput } from "./password-input";
+import accessStyles from "./register-choice.module.css";
 import {
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
@@ -22,6 +23,7 @@ const statuses: Record<string, [string, string]> = {
 export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
   const [busy, setBusy] = useState(false),
     [entering, setEntering] = useState(false),
+    [access, setAccess] = useState<"" | "invite" | "apply">(""),
     [error, setError] = useState(""),
     [status, setStatus] = useState(""),
     [done, setDone] = useState("");
@@ -35,10 +37,24 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
+    const values = Object.fromEntries(new FormData(event.currentTarget));
+    if (mode === "register") {
+      if (!access) {
+        setError("请选择是否有邀请码。 / Choose whether you have an invite code.");
+        return;
+      }
+      if (access === "invite" && !String(values.inviteCode ?? "").trim()) {
+        setError("请输入邀请码。 / Enter your invite code.");
+        return;
+      }
+      if (access === "apply" && !String(values.reason ?? "").trim()) {
+        setError("请填写申请理由。 / Describe why you are applying.");
+        return;
+      }
+    }
     setBusy(true);
     setError("");
     setStatus("");
-    const values = Object.fromEntries(new FormData(event.currentTarget));
     let leaving = false;
     try {
       if (mode === "login") {
@@ -52,7 +68,14 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
         const result = await api<{ status: string }>(
           "/api/auth/register",
           "POST",
-          values,
+          {
+            username: values.username,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+            ...(access === "invite"
+              ? { inviteCode: values.inviteCode }
+              : { reason: values.reason }),
+          },
         );
         setDone(result.status);
       } else {
@@ -88,14 +111,14 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
           <UiText
             zh={
               mode === "register"
-                ? "无需邮箱或手机号。有效邀请码可直接通过，否则由管理员审核。"
+                ? "无需邮箱或手机号。使用邀请码可直接通过，或提交申请由管理员审核。"
                 : mode === "login"
                   ? "登录后，继续你的阅读。"
                   : "请使用管理员核实身份后提供的短期凭据。"
             }
             en={
               mode === "register"
-                ? "No email or phone required. A valid invite grants access immediately; otherwise an administrator reviews your application."
+                ? "No email or phone required. Use an invite code for immediate access, or apply for administrator review."
                 : mode === "login"
                   ? "Sign in to continue reading."
                   : "Use the short-lived credential provided by your administrator."
@@ -189,23 +212,75 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
             )}
             {mode === "register" && (
               <>
-                <label>
-                  <UiText zh="申请理由" en="Reason for applying" />
-                  <textarea name="reason" required maxLength={2000} rows={4} />
-                </label>
-                <label>
-                  <UiText zh="邀请码（可选）" en="Invite code (optional)" />
-                  <input
-                    name="inviteCode"
-                    maxLength={128}
-                    autoComplete="off"
-                    spellCheck={false}
-                  />
-                </label>
+                <fieldset className={accessStyles.group}>
+                  <legend className={accessStyles.legend}>
+                    <UiText zh="注册方式" en="Registration type" />
+                  </legend>
+                  <div className={accessStyles.options}>
+                    <label className={accessStyles.option}>
+                      <input
+                        type="radio"
+                        name="accessMode"
+                        value="invite"
+                        checked={access === "invite"}
+                        onChange={() => { setAccess("invite"); setError(""); }}
+                      />
+                      <span className={accessStyles.marker} aria-hidden="true" />
+                      <span className={accessStyles.copy}>
+                        <strong><UiText zh="我有邀请码" en="I have an invite code" /></strong>
+                        <small><UiText zh="填写邀请码，验证后直接通过。" en="Enter it for immediate access." /></small>
+                      </span>
+                    </label>
+                    <label className={accessStyles.option}>
+                      <input
+                        type="radio"
+                        name="accessMode"
+                        value="apply"
+                        checked={access === "apply"}
+                        onChange={() => { setAccess("apply"); setError(""); }}
+                      />
+                      <span className={accessStyles.marker} aria-hidden="true" />
+                      <span className={accessStyles.copy}>
+                        <strong><UiText zh="我没有邀请码" en="I have no invite code" /></strong>
+                        <small><UiText zh="填写申请理由，由管理员审核。" en="Apply and an administrator will review." /></small>
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+                {access === "invite" && (
+                  <label>
+                    <UiText zh="邀请码" en="Invite code" />
+                    <input
+                      name="inviteCode"
+                      required
+                      maxLength={128}
+                      autoComplete="off"
+                      spellCheck={false}
+                    />
+                  </label>
+                )}
+                {access === "apply" && (
+                  <label>
+                    <UiText zh="申请理由" en="Reason for applying" />
+                    <textarea name="reason" required maxLength={2000} rows={4} />
+                  </label>
+                )}
                 <p className="form-hint">
                   <UiText
-                    zh="邀请码不可用时，可清空此项申请人工审核。"
-                    en="If your invite is unavailable, clear it to apply for manual review."
+                    zh={
+                      access === "invite"
+                        ? "邀请码无效时，可改选“我没有邀请码”提交人工审核。"
+                        : access === "apply"
+                          ? "请简要说明希望阅读的内容与用途。"
+                          : "请选择一种注册方式。"
+                    }
+                    en={
+                      access === "invite"
+                        ? "If your code is unavailable, choose “I have no invite code” to apply for review."
+                        : access === "apply"
+                          ? "Briefly describe what you hope to read and why."
+                          : "Choose one registration path."
+                    }
                   />
                 </p>
               </>

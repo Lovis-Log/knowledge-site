@@ -48,7 +48,10 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
-          <Link href="/search/" prefetch={false}><UiText zh="搜索" en="Search" /></Link>
+          <Link href="/submissions/" prefetch={false} className="site-nav__submission">
+            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
+            <UiText zh="投稿" en="Submit" />
+          </Link>
           <AccountMenu />
           {site.nav.filter((item) => item.href === "/about/").map((item) => (
             <NavLink key={item.href} item={item} />

@@ -1,6 +1,7 @@
 import type { Book } from "@/content/types";
 import type { LibrarySection } from "@/content";
 import { pickVersion } from "@/lib/language";
+import { bookTitle } from "./book-titles";
 
 export type Crumb = { label: string; labelEn?: string; href: string };
 
@@ -44,7 +45,8 @@ export function buildBreadcrumbs(
           ]
         : []),
     ];
-    const bookCrumb = { label: book.title, href: `/books/${book.slug}/` };
+    const display = bookTitle(book);
+    const bookCrumb = { label: display.zh, labelEn: display.en, href: `/books/${book.slug}/` };
     map[`/books/${book.slug}`] = [...parentCrumbs, bookCrumb];
 
     for (const chapter of book.chapters) {

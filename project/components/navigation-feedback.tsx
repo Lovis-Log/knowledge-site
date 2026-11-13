@@ -77,7 +77,7 @@ export function NavigationFeedback() {
       setSlow(false);
       setPending(complete);
     }
-    const hasPageEntry = ["/about/", "/guestbook/", "/library/"].includes(pathname);
+    const hasPageEntry = ["/about/", "/guestbook/", "/library/", "/submissions/"].includes(pathname);
     if (!hasPageEntry && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const animation = document.querySelector("#main")?.animate([{ opacity: 0.86 }, { opacity: 1 }], { duration: 180, easing: "ease-out" });
       return () => animation?.cancel();

@@ -1,13 +1,13 @@
 {
-  "image-generation-workflows/01-image-prompting": {
+  "agent-engineering/01-image-prompting": {
     "title": "图像提示与编辑：把需求写成可验收的规格",
     "hash": "d8ff8908885ee9ca3d8edcebda0378dff12a732902a1e23da37a1d57195c2b3d"
   },
-  "image-generation-workflows/02-transparent-assets": {
+  "agent-engineering/02-transparent-assets": {
     "title": "透明素材：生成真 alpha 通道，再验证与复用",
     "hash": "54ac2361d08f4486b24a5e0cfc9bc66ebf16b58d36b608d733e14abad7453c3f"
   },
-  "image-generation-workflows/03-new-full-stack-designer": {
+  "agent-engineering/03-new-full-stack-designer": {
     "title": "全栈设计师：原型比文档更快说服人",
     "hash": "36aeb87b44daf8147694cad3c80f41c43f7566028ae354129d87b8ed606677df"
   },

@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Book } from "@/content/types";
+import { bookTitle } from "@/lib/book-titles";
 
 function CoverArt({ slug }: { slug: string }) {
   if (slug === "cmu-ai-agents") {
     return (
       <svg className="book-cover__art" viewBox="0 0 300 400" aria-hidden="true" focusable="false">
         <g
-          stroke="var(--cover-ink)"
+          stroke="var(--cover-art-ink)"
           strokeWidth="1.4"
           strokeLinecap="round"
           opacity="0.7"
@@ -25,17 +26,17 @@ function CoverArt({ slug }: { slug: string }) {
           [85, 188],
         ].map(([cx, cy]) => (
           <g key={`${cx}-${cy}`}>
-            <circle cx={cx} cy={cy} r="10" fill="var(--cover-accent)" opacity="0.28" />
-            <circle cx={cx} cy={cy} r="5" fill="var(--cover-accent)" />
+            <circle cx={cx} cy={cy} r="10" fill="var(--cover-art-accent)" opacity="0.28" />
+            <circle cx={cx} cy={cy} r="5" fill="var(--cover-art-accent)" />
           </g>
         ))}
-        <g fill="var(--cover-ink)">
+        <g fill="var(--cover-art-ink)">
           <path d="M146 78l10 6-10 6z" />
           <path d="M209 132l6 10 6-10z" />
           <path d="M154 182l-10 6 10 6z" />
           <path d="M79 142l6-10 6 10z" />
         </g>
-        <g stroke="var(--cover-ink)" strokeWidth="1" opacity="0.25">
+        <g stroke="var(--cover-art-ink)" strokeWidth="1" opacity="0.25">
           <path d="M118 110h64" strokeDasharray="3 6" />
           <path d="M118 162h64" strokeDasharray="3 6" />
         </g>
@@ -50,21 +51,21 @@ function CoverArt({ slug }: { slug: string }) {
     return (
       <svg className="book-cover__art" viewBox="0 0 300 400" aria-hidden="true" focusable="false">
         {dots.map(([cx, cy]) => (
-          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="3.6" fill="var(--cover-ink)" opacity="0.5" />
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="3.6" fill="var(--cover-art-ink)" opacity="0.5" />
         ))}
         <path
           d="M178 214L268 154L288 74L198 134Z"
-          fill="var(--cover-accent)"
+          fill="var(--cover-art-accent)"
           fillOpacity="0.22"
-          stroke="var(--cover-accent)"
+          stroke="var(--cover-art-accent)"
           strokeWidth="1.6"
           strokeLinejoin="round"
         />
-        <g stroke="var(--cover-accent)" strokeWidth="1.4" strokeLinecap="round" opacity="0.85">
+        <g stroke="var(--cover-art-accent)" strokeWidth="1.4" strokeLinecap="round" opacity="0.85">
           <path d="M178 214l110-80" strokeDasharray="4 5" />
           <path d="M178 214l10-140" strokeDasharray="4 5" />
         </g>
-        <g fill="var(--cover-accent)">
+        <g fill="var(--cover-art-accent)">
           <path d="M178 214l10 6-2-12z" />
           <path d="M178 214l-8 8 12-1z" />
         </g>
@@ -82,23 +83,23 @@ function CoverArt({ slug }: { slug: string }) {
           height="142"
           rx="10"
           fill="none"
-          stroke="var(--cover-ink)"
+          stroke="var(--cover-art-ink)"
           strokeWidth="1.6"
           opacity="0.75"
         />
-        <g fill="var(--cover-ink)" opacity="0.55">
+        <g fill="var(--cover-art-ink)" opacity="0.55">
           <circle cx="68" cy="74" r="2.6" />
           <circle cx="78" cy="74" r="2.6" />
           <circle cx="88" cy="74" r="2.6" />
         </g>
-        <g stroke="var(--cover-ink)" strokeWidth="3" strokeLinecap="round" opacity="0.45">
+        <g stroke="var(--cover-art-ink)" strokeWidth="3" strokeLinecap="round" opacity="0.45">
           <path d="M70 102h74" />
           <path d="M82 120h96" />
           <path d="M82 138h52" />
         </g>
-        <rect x="146" y="130" width="9" height="16" rx="2" fill="var(--cover-accent)" />
+        <rect x="146" y="130" width="9" height="16" rx="2" fill="var(--cover-art-accent)" />
         <g
-          stroke="var(--cover-accent)"
+          stroke="var(--cover-art-accent)"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -118,18 +119,18 @@ function CoverArt({ slug }: { slug: string }) {
       <path
         d="M78 96h64a20 20 0 0 1 20 20v120a16 16 0 0 0-16-16H78z"
         fill="none"
-        stroke="var(--cover-ink)"
+        stroke="var(--cover-art-ink)"
         strokeWidth="1.6"
         opacity="0.7"
       />
       <path
         d="M222 96h-64a20 20 0 0 0-20 20v120a16 16 0 0 1 16-16h68z"
         fill="none"
-        stroke="var(--cover-ink)"
+        stroke="var(--cover-art-ink)"
         strokeWidth="1.6"
         opacity="0.7"
       />
-      <circle cx="150" cy="150" r="6" fill="var(--cover-accent)" />
+      <circle cx="150" cy="150" r="6" fill="var(--cover-art-accent)" />
     </svg>
   );
 }
@@ -168,16 +169,14 @@ const thumbSources = new Set([
 export function BookCover({
   book,
   size = "md",
-  heading = false,
   priority = false,
 }: {
   book: Book;
   size?: "sm" | "md";
-  /** 首页卡片里用 h2 承载书名，书本页已有 h1 时保持 span */
-  heading?: boolean;
   priority?: boolean;
 }) {
-  const Title = heading ? "h2" : "span";
+  const english = bookTitle(book).en;
+  const long = english.length > 24;
   const src = book.coverImage || COVER_ART[book.slug];
   const [failed, setFailed] = useState<string | null>(null);
   const image = useRef<HTMLImageElement>(null);
@@ -191,26 +190,40 @@ export function BookCover({
 
   return (
     <div className={`book-cover book-cover--${size}`} data-book={book.slug}>
-      <div className="book-cover__type">
-        <Title className={`book-cover__title${book.title.length > 22 ? " book-cover__title--long" : ""}`}>{book.title}</Title>
-      </div>
-      {src && failed !== src ? (
-        <img
-          ref={image}
-          className="book-cover__img"
-          src={thumbs ? thumbnail(240) : src}
-          srcSet={thumbs ? `${thumbnail(240)} 240w, ${thumbnail(480)} 480w` : undefined}
-          sizes={thumbs ? (size === "sm" ? "120px" : "(max-width: 767px) 160px, 220px") : undefined}
-          alt=""
-          decoding="async"
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : undefined}
-          onError={() => setFailed(src)}
-        />
-      ) : (
-        <CoverArt slug={book.slug} />
-      )}
-      <span className="book-cover__imprint">LovisMind · 阅读与思考</span>
+      <span className="book-cover__type">
+        <span
+          className={`book-cover__title${long ? " book-cover__title--long" : ""}`}
+          lang="en"
+        >
+          {english}
+        </span>
+      </span>
+      <span className="book-cover__plate">
+        {src && failed !== src ? (
+          <img
+            ref={image}
+            className="book-cover__img"
+            src={thumbs ? thumbnail(240) : src}
+            srcSet={thumbs ? `${thumbnail(240)} 240w, ${thumbnail(480)} 480w` : undefined}
+            sizes={thumbs ? (size === "sm" ? "120px" : "(max-width: 767px) 45vw, 260px") : undefined}
+            alt=""
+            decoding="async"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
+            onError={() => setFailed(src)}
+          />
+        ) : (
+          <CoverArt slug={book.slug} />
+        )}
+      </span>
+      <span className="book-cover__imprint">
+        <span className="book-cover__imprint-full" lang="en">
+          Lovismind · Press
+        </span>
+        <span className="book-cover__imprint-short" lang="en">
+          Lovismind
+        </span>
+      </span>
     </div>
   );
 }

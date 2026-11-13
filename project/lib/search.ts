@@ -3,6 +3,7 @@ import { canonicalTag, tagAliases } from './tag-aliases';
 export type SearchEntry = {
     book: string;
     bookTitle: string;
+    bookTitles?: { zh: string; en: string };
     chapter: string;
     category: string;
     titles: string[];

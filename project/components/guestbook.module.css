@@ -1,0 +1,74 @@
+.thread {
+  display: block;
+}
+
+.replies {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.85rem 0 0;
+  padding: 0 0 0 1rem;
+  border-left: 2px solid var(--rule);
+  list-style: none;
+}
+
+.reply {
+  min-width: 0;
+}
+
+.replyTarget {
+  margin: 0 0 0.2rem;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.replyBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-block: 1rem 0.55rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+.replyBannerText {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.replyBannerAction {
+  flex: 0 0 auto;
+  padding: 0.28rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.replyBannerAction:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.replyBannerAction:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+@media (max-width: 700px) {
+  .replies {
+    padding-left: 0.7rem;
+  }
+
+  .replyBanner {
+    flex-wrap: wrap;
+  }
+}

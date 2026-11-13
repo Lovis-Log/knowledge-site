@@ -8,6 +8,7 @@ import { startNavigation } from "../navigation-feedback";
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password-policy";
 import { uiLabel } from "@/lib/ui-language";
 import styles from "./landing.module.css";
+import accessStyles from "../register-choice.module.css";
 
 export type AuthView = "login" | "register";
 
@@ -31,6 +32,7 @@ export function AuthModal({
   onClose: () => void;
 }) {
   const [mode, setMode] = useState<AuthView>(view);
+  const [access, setAccess] = useState<"" | "invite" | "apply">("");
   const [done, setDone] = useState<"" | "pending" | "approved">("");
   const [accountStatus, setAccountStatus] = useState("");
   const [error, setError] = useState("");
@@ -88,6 +90,7 @@ export function AuthModal({
 
   function go(next: AuthView) {
     setMode(next);
+    setAccess("");
     setError("");
     setAccountStatus("");
     setDone("");
@@ -116,7 +119,15 @@ export function AuthModal({
         setError("两次输入的密码不一致。 / Passwords do not match.");
         return;
       }
-      if (!values.reason?.trim()) {
+      if (!access) {
+        setError("请选择是否有邀请码。 / Choose whether you have an invite code.");
+        return;
+      }
+      if (access === "invite" && !values.inviteCode?.trim()) {
+        setError("请输入邀请码。 / Enter your invite code.");
+        return;
+      }
+      if (access === "apply" && !values.reason?.trim()) {
         setError("请填写申请理由。 / Please describe why you are applying.");
         return;
       }
@@ -142,8 +153,9 @@ export function AuthModal({
         username: values.username,
         password: values.password,
         confirmPassword: values.confirmPassword,
-        reason: values.reason,
-        inviteCode: values.inviteCode ?? "",
+        ...(access === "invite"
+          ? { inviteCode: values.inviteCode }
+          : { reason: values.reason }),
       });
       setDone(result.status === "approved" ? "approved" : "pending");
     } catch (caught) {
@@ -299,12 +311,12 @@ export function AuthModal({
                   zh={
                     mode === "login"
                       ? "登录后进入属于你的知识空间。"
-                      : "填写有效邀请码即可自动通过，留空则进入人工审核。"
+                      : "使用邀请码直接通过，或提交申请由管理员审核。"
                   }
                   en={
                     mode === "login"
                       ? "Enter your credentials to access the knowledge vault."
-                      : "Use an invitation code for instant access, or leave it blank to request approval."
+                      : "Use an invite code for immediate access, or apply for administrator review."
                   }
                 />
               </p>
@@ -370,7 +382,22 @@ export function AuthModal({
                         placeholder="Repeat your password"
                       />
                     </div>
-                    <div className={styles.field}>
+                    <fieldset className={accessStyles.group} disabled={busy}>
+                      <legend className={accessStyles.legend}><UiText zh="你有邀请码吗？" en="Do you have an invite code?" /></legend>
+                      <div className={accessStyles.options}>
+                        <label className={accessStyles.option}>
+                          <input type="radio" name="accessMode" value="invite" checked={access === 'invite'} onChange={() => { setAccess('invite'); setError(''); }} />
+                          <span className={accessStyles.marker} aria-hidden="true" />
+                          <span className={accessStyles.copy}><strong><UiText zh="我有邀请码" en="I have an invite code" /></strong></span>
+                        </label>
+                        <label className={accessStyles.option}>
+                          <input type="radio" name="accessMode" value="apply" checked={access === 'apply'} onChange={() => { setAccess('apply'); setError(''); }} />
+                          <span className={accessStyles.marker} aria-hidden="true" />
+                          <span className={accessStyles.copy}><strong><UiText zh="我没有邀请码" en="I have no invite code" /></strong></span>
+                        </label>
+                      </div>
+                    </fieldset>
+                    {access === 'apply' && <div className={styles.field}>
                       <label htmlFor="lm-reason">
                         <UiText zh="申请理由" en="Reason for applying" />
                       </label>
@@ -380,27 +407,28 @@ export function AuthModal({
                         required
                         maxLength={2000}
                       />
-                    </div>
-                    <div className={styles.field}>
+                    </div>}
+                    {access === 'invite' && <div className={styles.field}>
                       <label htmlFor="lm-invite">
                         <UiText
-                          zh="邀请码（选填）"
-                          en="Invitation code (optional)"
+                          zh="邀请码"
+                          en="Invitation code"
                         />
                       </label>
                       <input
                         id="lm-invite"
                         name="inviteCode"
+                        required
                         maxLength={128}
                         autoComplete="off"
                         spellCheck={false}
                         placeholder="LOVIS-XXXX"
                       />
-                    </div>
+                    </div>}
                     <p className={styles.micro}>
                       <UiText
-                        zh="没有邀请码？留空即可提交人工审核。"
-                        en="No invitation? Leave this blank to request manual review."
+                        zh={access === 'invite' ? '填写邀请码即可验证，无需申请理由。' : '没有邀请码可提交申请，由管理员审核。'}
+                        en={access === 'invite' ? 'Use your invite code; no application reason needed.' : 'Apply without a code for administrator review.'}
                       />
                     </p>
                   </>

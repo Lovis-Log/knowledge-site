@@ -1,0 +1,23 @@
+// Server-side presentation metadata. Send through the protected catalog only.
+export const bookDisplayTitles: Record<string, { zh: string; en: string }> = {
+  'agent-engineering': { zh: 'AI 工程与设计', en: 'AI Engineering & Design' },
+  'llm-principles': { zh: '大模型原理与使用', en: 'Large Language Models: Principles & Practice' },
+  'llm-knowledge-base': { zh: 'AI/LLM 工作流', en: 'AI/LLM Workflow' },
+  'vibe-coding': { zh: 'Vibe Coding 教程', en: 'Vibe Coding Tutorials' },
+  'image-generation-workflows': { zh: '产品与设计', en: 'Product & Design' },
+  'cmu-ai-agents': { zh: 'CMU AI 智能体', en: 'CMU AI Agents' },
+  'mit-linear-algebra': { zh: 'MIT 线性代数', en: 'MIT Linear Algebra' },
+  'mit-real-analysis': { zh: 'MIT 实分析', en: 'MIT Real Analysis' },
+  'mit-discrete-applied-mathematics': { zh: 'MIT 离散应用数学', en: 'MIT Discrete Applied Mathematics' },
+  'mit-game-theory': { zh: 'MIT 博弈论', en: 'MIT Game Theory' },
+  '3b1b-essence-of-calculus': { zh: '3B1B 微积分的本质', en: '3B1B Essence of Calculus' },
+  '3b1b-essence-of-linear-algebra': { zh: '3B1B 线性代数的本质', en: '3B1B Essence of Linear Algebra' },
+  '3b1b-differential-equations': { zh: '3B1B 微分方程', en: '3B1B Differential Equations' },
+  'cpp-programming-course': { zh: 'C++ 程序设计', en: 'C++ Programming' },
+  'cs50-python': { zh: '哈佛 Python 程序设计', en: 'Harvard Python Programming' },
+  'python-for-ai': { zh: '面向 AI 的 Python', en: 'Python for AI' },
+  'english-news-reading': { zh: '外刊精读', en: 'English Close Reading' },
+  'society-and-reasoning': { zh: '社会与思辨', en: 'Society & Critical Thinking' },
+  'personal-selection': { zh: '个人精选', en: 'Personal Selections' },
+  'finance-and-business': { zh: '金融财经', en: 'Finance & Business' },
+};

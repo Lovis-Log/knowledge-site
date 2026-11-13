@@ -1,0 +1,14 @@
+.donate-modal { overflow-y: auto; align-items: start; padding-block: max(24px, 6vh); }
+.donate-modal__panel { max-height: calc(100dvh - 48px); overflow-y: auto; }
+.donate-modal__qr img { max-height: 42dvh; width: auto; max-width: 100%; height: auto; object-fit: contain; margin-inline: auto; }
+.donate-methods { display: flex; justify-content: center; gap: 8px; margin-bottom: 14px; }
+.donate-methods button, .donate-note-toggle, .donate-note button { font: inherit; font-weight: 700; padding: 10px 16px; border: 1px solid var(--rule); border-radius: 9px; cursor: pointer; background: var(--paper); color: var(--ink); }
+.donate-methods button[aria-pressed="true"] { background: var(--ink); color: white; }
+.donate-note-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; }
+.donate-note { margin-top: 16px; text-align: left; }
+.donate-note label { display: block; font-weight: 700; margin-bottom: 8px; }
+.donate-note textarea { width: 100%; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); border-radius: 10px; padding: 12px; font: inherit; resize: vertical; }
+.donate-note p { font-size: 13px; line-height: 1.7; }
+.donate-note button { background: var(--ink); color: white; }
+.donate-note button:disabled { opacity: .55; cursor: default; }
+.site-nav__submission { display: inline-flex; align-items: center; gap: 6px; }

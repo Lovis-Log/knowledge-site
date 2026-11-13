@@ -2,6 +2,9 @@
 
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
+import { api } from "@/lib/api";
+import { ReaderLink as Link } from "./navigation-feedback";
+import './donate-enhancements.css';
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -10,20 +13,36 @@ export function DonateButton() {
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [showQr, setShowQr] = useState(false);
+  const [method, setMethod] = useState<'wechat' | 'alipay'>('wechat');
+  const [showNote, setShowNote] = useState(false);
+  const [note, setNote] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+  const [sent, setSent] = useState(false);
+  const sending = useRef(false);
+  const requestId = useRef('');
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => setMounted(true), []);
 
   const close = useCallback(() => {
     setOpen(false);
     setShowQr(false);
+    setShowNote(false);
   }, []);
 
   useEffect(() => {
     if (!open) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
+      if (event.key === 'Tab') {
+        const controls = Array.from(panelRef.current?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), [tabindex="0"]') ?? []).filter(element => element.getClientRects().length > 0);
+        const first = controls[0], last = controls.at(-1);
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      }
     };
     document.addEventListener("keydown", onKey);
     const previousOverflow = document.body.style.overflow;
@@ -76,6 +95,7 @@ export function DonateButton() {
               }}
             >
               <div
+                ref={panelRef}
                 className="donate-modal__panel"
                 role="dialog"
                 aria-modal="true"
@@ -114,18 +134,43 @@ export function DonateButton() {
                 </button>
 
                 <div id="donate-qr" className="donate-modal__qr" hidden={!showQr}>
+                  <div className="donate-methods" role="group" {...uiLabel('支付方式', 'Payment method')}>
+                    <button type="button" aria-pressed={method === 'wechat'} onClick={() => setMethod('wechat')}><UiText zh="微信" en="WeChat Pay" /></button>
+                    <button type="button" aria-pressed={method === 'alipay'} onClick={() => setMethod('alipay')}><UiText zh="支付宝" en="Alipay" /></button>
+                  </div>
                   <img
-                    src="/images/wechat-pay.png"
-                    alt="微信支付收款码"
-                    data-ui-alt-zh="微信支付收款码"
-                    data-ui-alt-en="WeChat Pay QR code"
+                    src={method === 'wechat' ? '/images/wechat-pay.png' : '/images/alipay.jpg'}
+                    alt={method === 'wechat' ? '微信支付收款码 / WeChat Pay QR code' : '支付宝收款码 / Alipay QR code'}
                     width={876}
                     height={985}
                   />
                   <p className="donate-modal__qr-note">
-                    <UiText zh="打开微信扫一扫" />
+                    {method === 'wechat' ? <UiText zh="打开微信扫一扫" en="Scan with WeChat Pay" /> : <UiText zh="打开支付宝扫一扫" en="Scan with Alipay" />}
                   </p>
                 </div>
+                <button className="donate-note-toggle" type="button" aria-expanded={showNote} aria-controls="donate-note" onClick={() => setShowNote(value => !value)}>
+                  <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
+                  <UiText zh="捎信（可选）" en="Send a note (optional)" />
+                </button>
+                {showNote && <form id="donate-note" className="donate-note" onSubmit={async event => {
+                  event.preventDefault();
+                  if (sending.current || !note.trim()) return;
+                  sending.current = true; setBusy(true); setError('');
+                  requestId.current ||= crypto.randomUUID();
+                  try {
+                    await api('/api/submissions', 'POST', { message: note, url: '', source: 'donation', requestId: requestId.current });
+                    setSent(true); setNote(''); requestId.current = '';
+                  } catch (caught) { setError((caught as Error).message); }
+                  finally { sending.current = false; setBusy(false); }
+                }}>
+                  <label htmlFor="donate-note-text"><UiText zh="写给站长" en="A note for the author" /></label>
+                  <textarea id="donate-note-text" rows={3} maxLength={2000} required value={note} disabled={busy}
+                    onChange={event => { setNote(event.target.value); setSent(false); requestId.current = ''; }} />
+                  <p><UiText zh="仅你和管理员可见；无需打赏也可以捎信。需登录后发送。" en="Only you and administrators can read this. No donation required. Sign in to send." /></p>
+                  <button type="submit" disabled={busy || !note.trim()}>{busy ? <UiText zh="发送中…" en="Sending…" /> : <UiText zh="发送私密捎信" en="Send private note" />}</button>
+                  {sent && <p role="status"><UiText zh="捎信已送达，谢谢你。" en="Your note has been delivered. Thank you." /></p>}
+                  {error && <p role="alert">{error} <Link href="/login/" onClick={close}><UiText zh="登录" en="Sign in" /></Link></p>}
+                </form>}
               </div>
             </div>,
             document.body,

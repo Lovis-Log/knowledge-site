@@ -26,8 +26,8 @@ export default function AboutPage() {
       <div className="prose prose--page"><AboutTabs entries={updates}>
         <h2><UiText zh="这里有什么" /></h2>
         <p>
-          <UiText zh="书库分为 AI Era、专业课程和精选收录，包含大模型原理、智能体工程、AI 编程实践、数学与计算机课程，以及文章、视频和访谈等材料。内容按课程或主题整理成书；你可以沿着目录学习，也可以从感兴趣的一篇开始。"
-            en="The library has three sections: AI Era, Courses, and Curated. They cover large language models, agent engineering, AI-assisted programming, mathematics and computer science, alongside articles, videos, and interviews. Materials are organized into books by course or topic. Follow a table of contents or start with an article that interests you." />
+          <UiText zh="书库分为专业课程、AI Era 和精选收录，包含大模型原理、智能体工程、AI 编程实践、数学与计算机课程，以及文章、视频和访谈等材料。内容按课程或主题整理成书；你可以沿着目录学习，也可以从感兴趣的一篇开始。"
+            en="The library has three sections: Courses, AI Era, and Curated. They cover large language models, agent engineering, AI-assisted programming, mathematics and computer science, alongside articles, videos, and interviews. Materials are organized into books by course or topic. Follow a table of contents or start with an article that interests you." />
         </p>
 
         <h2><UiText zh="关于这些笔记" /></h2>
@@ -45,6 +45,14 @@ export default function AboutPage() {
           <li><UiText zh="阅读与交流：可调整正文字号，按章节提供的版本切换阅读语言或查看原文与精读内容。留言板用于分享心得、提出建议和反馈问题，也支持删除自己的留言。"
             en="Adjust text size and, where available, switch reading languages or view original material alongside notes. The guestbook is a place to share ideas, suggest improvements, and report issues. You can delete your own messages." /></li>
         </ul>
+
+        <h2><UiText zh="技术架构" en="Technical architecture" /></h2>
+        <p><UiText zh="内容以 Markdown 保存在 Obsidian 知识库中，书籍与章节由 frontmatter 描述，构建时统一解析为目录与阅读数据。界面使用 Next.js App Router、React 和 TypeScript，静态导出后由 Cloudflare Pages 托管。"
+          en="Content lives as Markdown in an Obsidian vault. Frontmatter describes books and chapters, which are parsed into the catalog and reading data at build time. The interface uses Next.js App Router, React and TypeScript, statically exported and hosted on Cloudflare Pages." /></p>
+        <p><UiText zh="Cloudflare Worker 负责页面访问控制与 API；Cloudflare D1 保存账号、会话、邀请码、收藏、留言和私密投稿，以及按版本存储的阅读内容。受保护页面和数据均经过服务端权限校验，阅读正文不会作为公开静态资源分发。"
+          en="A Cloudflare Worker controls page access and serves the API. Cloudflare D1 stores accounts, sessions, invites, favorites, messages, private submissions and versioned reading content. Protected pages and data pass server-side authorization; reading text is excluded from public static assets." /></p>
+        <p><UiText zh="正文渲染使用 React Markdown，配合 GFM、KaTeX 和代码高亮展示表格、公式与示例。搜索在当前浏览器中匹配目录元数据；阅读进度、界面语言和字号等偏好保存在本地。源码通过 Git 管理，并经 GitHub 与 Cloudflare Pages 的发布流程更新；页面、Worker 和内容版本保持对应。"
+          en="React Markdown, GFM, KaTeX and syntax highlighting render tables, equations and code. Search matches catalog metadata in the browser; reading progress, interface language and text preferences stay local. Git tracks the source, and the GitHub–Cloudflare Pages release process keeps pages, the Worker and the content version aligned." /></p>
 
         <h2><UiText zh="账号与隐私" en="Accounts & privacy" /></h2>
         <p><UiText zh="我们重视账号隐私，并按使用需要处理账号信息。目前注册不要求邮箱或手机号，阅读权限通过邀请码或管理员审核获得。密码以加盐哈希形式保存，不存储明文密码；登录状态通过受保护的 Cookie 维持。"

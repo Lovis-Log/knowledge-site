@@ -107,9 +107,9 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
-    for (const statement of sql.split(/;(?=\s*(?:CREATE|PRAGMA|$))/)) {
+    for (const statement of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
     }
   }
@@ -362,6 +362,7 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/images/vault-preview/ai-shelf.webp",
     "/images/vault-preview/linear-algebra.webp",
     "/images/vault-preview/mobile.webp",
+    "/images/alipay.jpg",
   ])
     assert.equal((await c.call(path)).status, 200, path);
   for (const path of [
@@ -379,6 +380,8 @@ test("anonymous website, payloads, attachments and content API enforce the publi
     "/about/index.html",
     "/about/index.txt",
     "/guestbook/",
+    "/submissions/",
+    "/submissions/index.html",
     "/favorites/",
     "/admin/users/",
   ])
@@ -393,6 +396,20 @@ test("anonymous website, payloads, attachments and content API enforce the publi
   const legacyAccount = await c.call("/account/");
   assert.equal(legacyAccount.status, 308);
   assert.equal(legacyAccount.headers.get("Location"), "/library/");
+});
+
+test("merged image-generation-workflows book redirects authenticated readers", async () => {
+  for (const [from, to] of [
+    ["/books/image-generation-workflows/", "/books/agent-engineering/"],
+    ["/books/image-generation-workflows/chapter-one/", "/books/agent-engineering/chapter-one/"],
+    ["/books/image-generation-workflows/index.html", "/books/agent-engineering/index.html"],
+    ["/books/image-generation-workflows/index.txt", "/books/agent-engineering/index.txt"],
+  ] as const) {
+    const response = await admin.call(from);
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get("Location"), to);
+  }
+  assert.equal((await client().call("/books/image-generation-workflows/")).status, 401);
 });
 
 test("admin account totals include every status independently of the filter", async () => {
@@ -414,7 +431,7 @@ test("admin account totals include every status independently of the filter", as
 
 test("static segment prefetch aliases resolve only after the original route is authorized", async () => {
   const anonymous = client();
-  for (const route of ["about", "guestbook", "library"]) {
+  for (const route of ["about", "guestbook", "library", "submissions"]) {
     const alias = `/${route}/__next.${route}.__PAGE__.txt`;
     assert.equal((await anonymous.call(alias)).status, 401);
     const response = await admin.call(alias + "?_rsc=qa");
@@ -473,6 +490,30 @@ test("manual applications are pending, privileged fields ignored, status disclos
   assert.equal((await c.call("/api/content/catalog")).status, 401);
   assert.equal((await c.call("/api/guestbook")).status, 401);
   assert.equal((await c.call("/api/favorites")).status, 401);
+});
+test("registration accepts an invite alone but never neither invite nor reason", async () => {
+  const c = client();
+  const base = { username: "reasonless_reader", password, confirmPassword: password, nickname: "No reason" };
+  const missing = await c.call("/api/auth/register", "POST", base);
+  assert.equal(missing.status, 400);
+  assert.equal(((await missing.json()) as { code: string }).code, "REASON_REQUIRED");
+  assert.equal(await user("reasonless_reader"), null);
+  const blank = await c.call("/api/auth/register", "POST", { ...base, reason: "   " });
+  assert.equal(blank.status, 400);
+  assert.equal(await user("reasonless_reader"), null);
+  const code = await invite();
+  const invited = await c.call("/api/auth/register", "POST", { ...base, inviteCode: code.code });
+  assert.equal(invited.status, 201);
+  assert.deepEqual(await invited.json(), { status: "approved" });
+  const row = await db.prepare("SELECT reason,status FROM users WHERE username='reasonless_reader'")
+    .first<{ reason: string; status: string }>();
+  assert.equal(row?.status, "approved");
+  assert.equal(row?.reason, "");
+  const pending = await client().call("/api/auth/register", "POST", {
+    ...base, username: "manual_reason_reader", reason: "我想系统阅读这些笔记。",
+  });
+  assert.equal(pending.status, 201);
+  assert.deepEqual(await pending.json(), { status: "pending" });
 });
 test("approval grants reading, ordinary users cannot administer, logout revokes session and cookies are secure", async () => {
   assert.equal((await review("manual_reader", "approve")).status, 200);
@@ -1045,4 +1086,32 @@ test("favorites are account scoped, idempotent and removable after content is un
   assert.equal((await save({ book: "removed-book", saved: false })).status, 200);
   assert.equal((await save({ book, saved: false })).status, 200);
   assert.deepEqual(await (await deviceB.call("/api/favorites/status?book=" + book)).json(), { saved: false });
+});
+test("legacy image-generation-workflows favorites resolve under the merged book", async () => {
+  const access = await invite();
+  const device = client();
+  assert.equal((await device.call("/api/auth/register", "POST", registration("alias_favorite_reader", access.code))).status, 201);
+  assert.equal((await device.call("/api/auth/login", "POST", { username: "alias_favorite_reader", password })).status, 200);
+  const id = (await user("alias_favorite_reader"))!.id;
+  await db.batch([
+    db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,'image-generation-workflows','')").bind(id),
+    db.prepare("INSERT INTO favorites(user_id,book,chapter) VALUES(?,'image-generation-workflows','chapter-one')").bind(id),
+  ]);
+  const listed = await (await device.call("/api/favorites")).json() as {
+    items: { book: string; chapter: string; href: string | null }[];
+  };
+  const merged = listed.items.filter((item) => item.book === "agent-engineering");
+  assert.equal(merged.length, 2);
+  assert.ok(merged.every((item) => item.href?.startsWith("/books/agent-engineering/")));
+  assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND book='image-generation-workflows'")
+    .bind(id).first<{ n: number }>())!.n, 2);
+  // Both the old and canonical query paths see legacy-only rows.
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=chapter-one")).json(), { saved: true });
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=agent-engineering&chapter=chapter-one")).json(), { saved: true });
+  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "chapter-one", saved: true })).status, 200);
+  assert.deepEqual(await (await device.call("/api/favorites/status?book=image-generation-workflows&chapter=chapter-one")).json(), { saved: true });
+  // Explicit unsave from the canonical page clears the legacy row too.
+  assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "chapter-one", saved: false })).status, 200);
+  assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND chapter='chapter-one'")
+    .bind(id).first<{ n: number }>())!.n, 0);
 });

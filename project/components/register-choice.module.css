@@ -1,0 +1,123 @@
+.group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.legend {
+  margin: 0 0 0.55rem;
+  padding: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.group .option {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.62rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+.group .option:hover {
+  border-color: var(--accent);
+}
+
+.group .option:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.group .option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.marker {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.12rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--page-sheet);
+  color: var(--surface);
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.option:has(input:checked) .marker {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.marker::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--surface);
+  opacity: 0;
+}
+
+.option:has(input:checked) .marker::after {
+  opacity: 1;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+  min-width: 0;
+}
+
+.copy strong {
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.copy small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 560px) {
+  .options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .group .option {
+    transition: none;
+  }
+}

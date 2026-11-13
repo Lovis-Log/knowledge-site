@@ -39,6 +39,8 @@ export interface Book {
   slug: string;
   title: string;
   subtitle?: string;
+  /** Localized presentation titles, delivered only with the protected catalog. */
+  displayTitle?: { zh: string; en: string };
   /** 卡片上的一句话简介 */
   description: string;
   /** 书本详情页的详细简介；缺省时回退到 description */

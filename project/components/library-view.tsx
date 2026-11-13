@@ -12,6 +12,7 @@ import {
 import { useContent } from "@/content/client";
 import { site } from "@/lib/site";
 import { PageEntry } from "@/components/page-entry";
+import { LibrarySearch } from "@/components/library-search";
 
 export default function LibraryView() {
   const { getLibrarySections, getAllChapterRefs, taxonomyEnglish } =
@@ -46,7 +47,7 @@ export default function LibraryView() {
         </PageEntry>
       </section>
 
-      <p><Link href="/search/" prefetch={false}><UiText zh="搜索笔记 →" en="Search notes →" /></Link></p>
+      <LibrarySearch />
       <ContinueReading items={continueItems} />
 
       <div className="library">
@@ -98,7 +99,10 @@ export default function LibraryView() {
               </div>
             </PageEntry>
             <BookShelf headingId={`section-${section.slug}`}>
-              {section.preview.slice(0, 4).map((book, index) => (
+              {[
+                ...section.preview,
+                ...section.books.filter(book => !section.preview.some(item => item.slug === book.slug)),
+              ].map((book, index) => (
                 <BookCard key={book.slug} book={book} index={index} priority={sectionIndex === 0 && index < 2} />
               ))}
             </BookShelf>

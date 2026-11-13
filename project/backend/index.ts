@@ -215,8 +215,33 @@ async function content(db: DB, key: string) {
 type FavoriteTitle = { zh: string; en: string };
 declare const FAVORITE_TITLES: Record<string, FavoriteTitle>;
 
+const BOOK_ALIASES: Record<string, string> = {
+  "image-generation-workflows": "agent-engineering",
+};
+
+function canonicalBook(book: string) {
+  return BOOK_ALIASES[book] ?? book;
+}
+
+/** Every stored book key that should be read or cleared for a canonical book. */
+function favoriteBookKeys(book: string) {
+  const canonical = canonicalBook(book);
+  return [canonical, ...Object.keys(BOOK_ALIASES).filter((legacy) => BOOK_ALIASES[legacy] === canonical)];
+}
+
 function favoritePath(book: string, chapter: string) {
   return `/books/${book}/${chapter ? chapter + "/" : ""}`;
+}
+
+function legacyBookRedirect(path: string) {
+  const from = "/books/image-generation-workflows";
+  if (path !== from && !path.startsWith(from + "/")) return null;
+  const rest = path.slice(from.length).replace(/^\/+/, "");
+  if (!rest) return "/books/agent-engineering/";
+  const target = "/books/agent-engineering/" + rest;
+  // Directory routes keep the export's trailing slash; file-like suffixes
+  // (index.html, index.txt, prefetch payloads) stay untouched.
+  return /\.[a-z0-9]+$/i.test(rest) ? target : target + "/";
 }
 
 function favoriteTarget(book: unknown, chapter: unknown) {
@@ -236,22 +261,36 @@ async function favoritesApi(request: Request, db: DB, path: string) {
     const { results } = await db.prepare(
       "SELECT book,chapter FROM favorites WHERE user_id=? ORDER BY created_at DESC,rowid DESC",
     ).bind(user.id).all<{ book: string; chapter: string }>();
-    return json({ items: results.map((item) => {
-      const href = favoritePath(item.book, item.chapter);
-      const title = FAVORITE_TITLES[href] ?? null;
-      return { ...item, href: title ? href : null, title };
-    }) });
+    const seen = new Set<string>();
+    const items: { book: string; chapter: string; href: string | null; title: FavoriteTitle | null }[] = [];
+    for (const item of results) {
+      const book = canonicalBook(item.book);
+      const key = book + "\u0000" + item.chapter;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      // Prefer the canonical route; fall back to the legacy route so a
+      // favorite whose chapter was not carried over stays reachable.
+      const canonicalHref = favoritePath(book, item.chapter);
+      const legacyHref = favoritePath(item.book, item.chapter);
+      const href = FAVORITE_TITLES[canonicalHref]
+        ? canonicalHref
+        : FAVORITE_TITLES[legacyHref] ? legacyHref : null;
+      items.push({ book, chapter: item.chapter, href, title: href ? FAVORITE_TITLES[href] : null });
+    }
+    return json({ items });
   }
   if (method === "GET" && path === "/api/favorites/status") {
     const { book, chapter } = favoriteTarget(query.get("book"), query.get("chapter") ?? "");
+    const books = favoriteBookKeys(book);
     const found = await db.prepare(
-      "SELECT 1 FROM favorites WHERE user_id=? AND book=? AND chapter=?",
-    ).bind(user.id, book, chapter).first();
+      `SELECT 1 FROM favorites WHERE user_id=? AND book IN (${books.map(() => "?").join(",")}) AND chapter=?`,
+    ).bind(user.id, ...books, chapter).first();
     return json({ saved: Boolean(found) });
   }
   if (method === "POST" && path === "/api/favorites") {
     const data = await body(request);
-    const { book, chapter } = favoriteTarget(data.book, data.chapter ?? "");
+    const { book: requested, chapter } = favoriteTarget(data.book, data.chapter ?? "");
+    const book = canonicalBook(requested);
     if (typeof data.saved !== "boolean")
       fail(400, "INVALID_STATE", "收藏状态无效 / Invalid favorite state");
     if (data.saved) {
@@ -261,14 +300,37 @@ async function favoritesApi(request: Request, db: DB, path: string) {
         "INSERT INTO favorites(user_id,book,chapter) VALUES(?,?,?) ON CONFLICT DO NOTHING",
       ).bind(user.id, book, chapter).run();
     } else {
-      await db.prepare("DELETE FROM favorites WHERE user_id=? AND book=? AND chapter=?")
-        .bind(user.id, book, chapter).run();
+      // Removing a favorite also clears the pre-merge row when present.
+      const books = favoriteBookKeys(requested);
+      await db.prepare(
+        `DELETE FROM favorites WHERE user_id=? AND book IN (${books.map(() => "?").join(",")}) AND chapter=?`,
+      ).bind(user.id, ...books, chapter).run();
     }
     return json({ saved: data.saved });
   }
   return fail(404, "NOT_FOUND", "接口不存在 / Endpoint not found");
 }
 
+type GuestbookRow = {
+  id: number; user_id: string; message: string; created_at: number; nickname: string;
+  parent_id: number | null; reply_to_nickname: string;
+};
+type GuestbookItem = {
+  id: number; message: string; created_at: number; nickname: string; own: boolean;
+  parentId: number | null; replyTo: string; replies: GuestbookItem[];
+};
+function guestbookItem(row: GuestbookRow, viewerId: string): GuestbookItem {
+  return {
+    id: row.id,
+    message: row.message,
+    created_at: row.created_at,
+    nickname: row.nickname,
+    own: row.user_id === viewerId,
+    parentId: row.parent_id,
+    replyTo: row.reply_to_nickname,
+    replies: [],
+  };
+}
 async function guestbookApi(request: Request, db: DB, path: string) {
   const moderation = path === "/api/admin/guestbook";
   const user = await requireUser(request, db, moderation);
@@ -277,31 +339,67 @@ async function guestbookApi(request: Request, db: DB, path: string) {
     const before = Number(new URL(request.url).searchParams.get("before") ?? Number.MAX_SAFE_INTEGER);
     if (!Number.isSafeInteger(before) || before < 1)
       fail(400, "INVALID_CURSOR", "分页参数无效 / Invalid page cursor");
+    // Public pages list roots newest-first; hidden-site moderation lists every
+    // hidden entry flat, so a hidden reply stays actionable on its own.
     const { results } = await db.prepare(
-      "SELECT g.id,g.user_id,g.message,g.created_at,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=? AND g.id<? ORDER BY g.id DESC LIMIT 21",
-    ).bind(moderation ? 1 : 0, before).all<{
-      id: number; user_id: string; message: string; created_at: number; nickname: string;
-    }>();
-    const items = results.slice(0, 20).map(({ user_id, ...item }) => ({
-      ...item, own: user_id === user.id,
-    }));
+      moderation
+        ? "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=1 AND g.id<? ORDER BY g.id DESC LIMIT 21"
+        : "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IS NULL AND g.hidden=0 AND g.id<? ORDER BY g.id DESC LIMIT 21",
+    ).bind(before).all<GuestbookRow>();
+    const items = results.slice(0, 20).map((row) => guestbookItem(row, user.id));
+    if (!moderation && items.length) {
+      const placeholders = items.map(() => "?").join(",");
+      const { results: replies } = await db.prepare(
+        `SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IN (${placeholders}) AND g.hidden=0 ORDER BY g.id ASC`,
+      ).bind(...items.map((item) => item.id)).all<GuestbookRow>();
+      const threads = new Map(items.map((item) => [item.id, item]));
+      for (const row of replies)
+        threads.get(row.parent_id!)?.replies.push(guestbookItem(row, user.id));
+    }
     return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === "admin" });
   }
   if (method === "POST") {
     const data = await body(request);
     if (path === "/api/guestbook" && data.action === "publish") {
       const message = text(data, "message", 1, 1000);
+      // Replies always attach to the thread root. Replying to a reply records
+      // that reply's author as the visible target, keeping one level of depth.
+      let parentId: number | null = null, replyTo = "";
+      if (data.parentId !== undefined && data.parentId !== null) {
+        const targetId = data.parentId;
+        if (typeof targetId !== "number" || !Number.isSafeInteger(targetId) || targetId < 1)
+          fail(400, "INVALID_PARENT", "回复目标无效 / Invalid reply target");
+        const target = await db.prepare(
+          "SELECT g.id,g.parent_id,g.hidden,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.id=?",
+        ).bind(targetId).first<{
+          id: number; parent_id: number | null; hidden: number; nickname: string;
+        }>();
+        if (!target || target.hidden)
+          fail(404, "NOT_FOUND", "留言不存在或已隐藏 / Message unavailable");
+        const rootId = target.parent_id ?? target.id;
+        if (rootId !== target.id) {
+          const root = await db.prepare("SELECT hidden FROM guestbook_entries WHERE id=?")
+            .bind(rootId).first<{ hidden: number }>();
+          if (!root || root.hidden)
+            fail(404, "NOT_FOUND", "留言不存在或已隐藏 / Message unavailable");
+        }
+        parentId = rootId;
+        replyTo = target.nickname;
+      }
       await limit(db, `guestbook:v2:${user.id}`, 20, 60, {
         code: "GUESTBOOK_RATE_LIMITED",
         message: "留言发送较频繁，请稍后再试 / Posting too frequently; please try again shortly",
       });
       const createdAt = now();
       const entry = await db.prepare(
-        "INSERT INTO guestbook_entries(user_id,message,created_at) VALUES(?,?,?) RETURNING id",
-      ).bind(user.id, message, createdAt).first<{ id: number }>();
+        "INSERT INTO guestbook_entries(user_id,message,parent_id,reply_to_nickname,created_at) VALUES(?,?,?,?,?) RETURNING id",
+      ).bind(user.id, message, parentId, replyTo, createdAt).first<{ id: number }>();
       if (!entry) fail(500, "SAVE_FAILED", "留言保存失败 / Could not save message");
       return json({
-        item: { id: entry.id, message, created_at: createdAt, nickname: user.nickname, own: true },
+        item: {
+          id: entry.id, message, created_at: createdAt, nickname: user.nickname, own: true,
+          parentId, replyTo, replies: [],
+        } satisfies GuestbookItem,
       }, 201);
     }
     const id = data.id;
@@ -324,6 +422,25 @@ async function guestbookApi(request: Request, db: DB, path: string) {
 }
 
 
+function submissionTitle(message: string, url: string, source: string) {
+    let base = message.split(/\r?\n/).map((line) => line.trim()).find(Boolean) ?? '';
+    if (!base && url) {
+        try {
+            const path = decodeURIComponent(new URL(url).pathname).replace(/\/+$/, '');
+            base = new URL(url).hostname + (path && path !== '/' ? path : '');
+        }
+        catch {
+            base = url;
+        }
+    }
+    base = (base || '投稿 / Submission').slice(0, 100);
+    if (source === 'donation') {
+        const prefix = '打赏捎信 · ';
+        base = (base.startsWith(prefix) ? base : prefix + base).slice(0, 100);
+    }
+    return base;
+}
+
 async function submissionsApi(request: Request, db: DB, path: string) {
     const admin = path === '/api/admin/submissions', user = await requireUser(request, db, admin);
     if (request.method === 'GET') {
@@ -331,7 +448,7 @@ async function submissionsApi(request: Request, db: DB, path: string) {
         if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status))
             fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
         const where = admin ? "id<? AND (?='' OR status=?)" : "user_id=? AND id<?";
-        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
+        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,source,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
         const { results } = await (admin ? query.bind(before, status, status) : query.bind(user.id, before)).all();
         const items = results.slice(0, 20);
         return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === 'admin' });
@@ -361,7 +478,12 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     const old = await db.prepare('SELECT id FROM submissions WHERE user_id=? AND request_id=?').bind(user.id, requestId).first();
     if (old)
         return json({ ok: true, id: old.id });
-    const title = text(data, 'title', 1, 100), summary = text(data, 'summary', 0, 300), message = text(data, 'message', 0, 2000), url = text(data, 'url', 0, 2048);
+    const summary = text(data, 'summary', 0, 300), message = text(data, 'message', 0, 2000), url = text(data, 'url', 0, 2048);
+    // `source` is a server-side marker only. No payment state is checked or
+    // stored; the donation dialog merely chooses the note's provenance label.
+    const source = data.source === undefined || data.source === '' ? '' : data.source;
+    if (source !== '' && source !== 'donation')
+        fail(400, 'INVALID_SOURCE', '来源无效 / Invalid source');
     if (!message && !url)
         fail(400, 'EMPTY_SUBMISSION', '请填写正文或链接 / Add text or a link');
     if (url) {
@@ -373,9 +495,11 @@ async function submissionsApi(request: Request, db: DB, path: string) {
             fail(400, 'INVALID_URL', '仅支持 HTTP/HTTPS 链接 / HTTP(S) links only');
         }
     }
+    // Titles are derived here so callers cannot inject a misleading label.
+    const title = submissionTitle(message, url, source);
     await limit(db, `submission-user:${user.id}`, 3, 86400);
     await limit(db, `submission-ip:${request.headers.get('CF-Connecting-IP') ?? 'local'}`, 20, 86400);
-    const row = await db.prepare("INSERT OR IGNORE INTO submissions(user_id,request_id,title,summary,message,url) SELECT ?,?,?,?,?,? WHERE (SELECT count(*) FROM submissions WHERE user_id=? AND status='pending')<5 RETURNING id").bind(user.id, requestId, title, summary, message, url, user.id).first();
+    const row = await db.prepare("INSERT OR IGNORE INTO submissions(user_id,request_id,title,summary,message,url,source) SELECT ?,?,?,?,?,?,? WHERE (SELECT count(*) FROM submissions WHERE user_id=? AND status='pending')<5 RETURNING id").bind(user.id, requestId, title, summary, message, url, source, user.id).first();
     if (!row) {
         const prior = await db.prepare('SELECT id FROM submissions WHERE user_id=? AND request_id=?').bind(user.id, requestId).first();
         if (prior)
@@ -452,9 +576,17 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
         (typeof data.nickname === "string"
           ? text(data, "nickname", 0, 64)
           : "") || username,
-      reason = text(data, "reason", 1, 2000);
-    const code =
-      data.inviteCode === undefined ? "" : text(data, "inviteCode", 0, 128);
+      code =
+        data.inviteCode === undefined ? "" : text(data, "inviteCode", 0, 128),
+      reason = data.reason === undefined ? "" : text(data, "reason", 0, 2000);
+    // The form offers two explicit paths. A blank invite is only an application
+    // when it carries a reason; neither value must not pass as either path.
+    if (!code && !reason)
+      fail(
+        400,
+        "REASON_REQUIRED",
+        "没有邀请码时请填写申请理由 / Describe why you are applying when you have no invite",
+      );
     // Skip the expensive KDF for a name that is already taken. The UNIQUE
     // constraint below remains authoritative for concurrent registrations.
     const taken = await db
@@ -878,7 +1010,10 @@ export default {
       )
         return json({ code: "INVALID_PATH" }, 400);
       // The allowlist contains only data-free shells, framework code and decorative assets.
-      const publicPath =
+      // The submissions page and its prefetch payloads are member-only. Keep
+      // this negative guard so widening the public allowlist can never expose it.
+      const memberOnlyPath = path === "/submissions" || path.startsWith("/submissions/");
+      const publicPath = !memberOnlyPath && (
         [
           "/",
           "/index.html",
@@ -910,13 +1045,15 @@ export default {
           "/images/vault-preview/mobile.jpg",
           "/images/vault-preview/mobile.webp",
           "/images/wechat-pay.png",
+          "/images/alipay.jpg",
         ].includes(path) ||
         path === "/index.txt" ||
         path.startsWith("/__next.") ||
         path.startsWith("/__next/") ||
         /^\/(login|register|reset-password)\/(index\.txt|__next[./].*\.txt)$/.test(
           path,
-        );
+        )
+      );
       if (!env.DB) {
         if (publicPath) return fetchAsset(request, env, path);
         return json(
@@ -952,6 +1089,11 @@ export default {
           });
         return json({ code: "UNAUTHENTICATED" }, 401);
       }
+      // The image-generation-workflows book was merged into agent-engineering.
+      // Authenticated readers keep stable links while old bookmarks resolve.
+      const movedBook = legacyBookRedirect(path);
+      if (movedBook)
+        return new Response(null, { status: 308, headers: { Location: movedBook, "Cache-Control": "no-store" } });
       if (path.startsWith("/admin") && user.role !== "admin")
         return json({ code: "FORBIDDEN" }, 403);
       const response = await fetchAsset(request, env, path);

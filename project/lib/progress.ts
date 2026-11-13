@@ -17,7 +17,8 @@ export function readProgress(): ProgressMap {
     const map: ProgressMap = {};
     for (const [key, value] of Object.entries(parsed as Record<string, unknown>)) {
       if (typeof value === "number" && Number.isFinite(value)) {
-        map[key] = Math.min(100, Math.max(0, value));
+        const canonical = key.replace(/^image-generation-workflows\//, 'agent-engineering/');
+        map[canonical] = Math.max(map[canonical] ?? 0, Math.min(100, Math.max(0, value)));
       }
     }
     return map;
@@ -43,7 +44,7 @@ export function readLastRead(): LastRead | null {
     const parsed = JSON.parse(raw) as Partial<LastRead>;
     if (typeof parsed.book !== "string" || typeof parsed.chapter !== "string") return null;
     return {
-      book: parsed.book,
+      book: parsed.book === 'image-generation-workflows' ? 'agent-engineering' : parsed.book,
       chapter: parsed.chapter,
       updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : "",
     };

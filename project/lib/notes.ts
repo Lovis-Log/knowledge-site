@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { bookDisplayTitles } from "@/lib/book-title-translations";
 import type {
   Book,
   BookLink,
@@ -406,6 +407,7 @@ function loadBook(bookDir: string, folder: string): Book | null {
   return {
     slug: String(bookMeta.slug ?? slugify(folder)),
     title: String(bookMeta.title ?? folder),
+    displayTitle: bookDisplayTitles[String(bookMeta.slug ?? slugify(folder))],
     subtitle: bookMeta.subtitle ? String(bookMeta.subtitle) : undefined,
     description: bookMeta.description ? String(bookMeta.description) : "",
     longDescription: bookMeta.longDescription ? String(bookMeta.longDescription) : undefined,
