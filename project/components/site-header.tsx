@@ -33,7 +33,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <Link href="/" className="brand">
+        <Link href="/" className="brand" aria-describedby="brand-description">
           <img
             className="brand__mark"
             src="/brand/lovismind-mark.png"
@@ -42,13 +42,14 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
             height={30}
           />
           <span className="brand__word">{site.name}</span>
+          <span id="brand-description" role="tooltip" className="brand__tip"><UiText zh="Lovis 的个人知识库" en="Lovis’s personal knowledge vault" /></span>
         </Link>
         <HeaderBreadcrumb crumbs={crumbs} />
         <nav className="site-nav" {...uiLabel("主导航")}>
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
-          <Link href="/submissions/" prefetch={false} className="site-nav__submission">
+          <Link href="/submissions/" prefetch={false} className="site-nav__submission" {...uiLabel('投稿', 'Submit')}>
             <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
             <UiText zh="投稿" en="Submit" />
           </Link>

@@ -39,7 +39,7 @@ function ClipboardButton({ value }: { value: string }) {
     </button>
     <span role="status" className={status === "error" ? "copy-control__error" : "reader-sr-only"}>
       {status === "copied" && <UiText zh="复制成功" en="Copied successfully" />}
-      {status === "error" && <UiText zh="复制失败，请选中邀请码或凭据手动复制。" en="Copy failed. Select the code or credential and copy it manually." />}
+      {status === "error" && <UiText zh="复制失败，请选中文字手动复制。" en="Copy failed. Select the text and copy it manually." />}
     </span>
   </span>;
 }

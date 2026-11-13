@@ -5,6 +5,7 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { PageEntry } from "@/components/page-entry";
 import { site } from "@/lib/site";
 import { UiText, UiPair } from "@/components/ui-text";
+import { CopyButton } from "@/components/copy-button";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -72,7 +73,7 @@ export default function AboutPage() {
           <UiText zh="发现网站 Bug、内容问题，或想分享学习心得，欢迎到" en="To report a website bug or content issue, or share something you learned, visit the " />
           <Link href="/guestbook/" prefetch={false}><UiText zh="留言板" en="guestbook" /></Link>
           <UiText zh="交流。也可以通过邮件联系我：" en=". You can also reach me by email: " />
-          <span className="about__email">aspiration653@gmail.com</span><UiText zh="。" en="." />
+          <span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /><UiText zh="。" en="." />
         </p>
         <p>
           <UiPair zh={<>本网站的界面设计受到 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a> 启发。网站源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a>。</>}

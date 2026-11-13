@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "highlight.js/styles/github.css";
 import "./globals.css";
+import "./reader-refinements.css";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";

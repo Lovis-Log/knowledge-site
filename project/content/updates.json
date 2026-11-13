@@ -3,6 +3,18 @@
     "date": "2026-11-13",
     "features": [
       {
+        "zh": "书库首页直达分类、搜索和书架；搜索固定显示五项候选，支持列表内滚动，出处以标签展示。",
+        "en": "A compact library entrance with five visible, scrollable search suggestions and framed source labels."
+      },
+      {
+        "zh": "选书新增跟随鼠标的圆环与点击动效；手机导航仅保留投稿图标，书架滚动取消吸附。",
+        "en": "An animated book cursor, an icon-only mobile submission link, and free-scrolling mobile shelves."
+      },
+      {
+        "zh": "收藏移到阅读工具右侧，邮箱支持一键复制；品牌与打赏提示使用统一纸面样式，捎信在展开支付方式后出现。",
+        "en": "Favorites sit beside reading controls; email can be copied; brand and support tooltips use the paper style, and private notes appear after payment options."
+      },
+      {
         "zh": "书封新增英文标题、更多配色和实体细节；封面下方书名随界面语言切换，手机横滑可浏览全部书籍。",
         "en": "Refined book materials and colors, English cover titles, localized book names below covers, and complete mobile shelves."
       },
@@ -16,6 +28,11 @@
       }
     ],
     "content": [
+      {
+        "title": "专业课程的「计算机与编程」「人工智能」合并为「计算机科学」 / Computing and AI courses are now grouped under Computer Science",
+        "href": "/categories/courses/",
+        "kind": "整理 / Reorganized"
+      },
       {
         "title": "合并《AI Agent 工程与技能设计》和《产品与设计》为《AI 工程与设计》，取消 AI Era 子分类 / Merged AI engineering and product design into AI Engineering & Design, with a flat AI Era bookshelf",
         "href": "/books/agent-engineering/",

@@ -44,16 +44,10 @@
       "description": "线性代数、微积分、概率与证明，以及博弈论与策略互动"
     },
     {
-      "slug": "software-engineering",
+      "slug": "computer-science",
       "section": "courses",
-      "name": "计算机与编程",
-      "description": "编程语言、计算机基础与工程方法"
-    },
-    {
-      "slug": "ai-courses",
-      "section": "courses",
-      "name": "人工智能",
-      "description": "智能体、工具使用、记忆、规划与评测的系统课程"
+      "name": "计算机科学",
+      "description": "编程语言、计算机基础、软件工程与人工智能课程"
     },
     {
       "slug": "curated",

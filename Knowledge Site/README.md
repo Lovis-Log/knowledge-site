@@ -25,12 +25,11 @@ Knowledge Site/
 │  │  ├─ MIT Real Analysis/
 │  │  ├─ MIT Discrete Applied Mathematics/
 │  │  └─ MIT Linear Algebra/
-│  ├─ 计算机与编程/
+│  ├─ 计算机科学/
 │  │  ├─ C++ Programming/
 │  │  ├─ Harvard Python Programming/
-│  │  └─ Python for AI/
-│  └─ 人工智能/
-│     └─ CMU AI Agents/
+│  │  ├─ Python for AI/
+│  │  └─ CMU AI Agents/
 └─ 精选收录/
    ├─ 外刊精读/
    ├─ 社会与思辨/

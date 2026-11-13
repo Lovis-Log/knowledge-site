@@ -5,8 +5,7 @@ export const taxonomyEnglish: Record<string, { name: string; description: string
   "ai-principles-applications": { name: "AI Principles & Applications", description: "Language models, agent engineering and AI-assisted knowledge management" },
   "ai-coding": { name: "AI Coding & Creation", description: "Software development, image generation and creative workflows with AI" },
   "mathematics": { name: "Mathematics", description: "Linear algebra, calculus, probability and proofs" },
-  "software-engineering": { name: "Computing & Programming", description: "Programming languages, computing fundamentals and software engineering" },
-  "ai-courses": { name: "Artificial Intelligence", description: "Courses on agents, tool use, memory, planning and evaluation" },
+  "computer-science": { name: "Computer Science", description: "Programming languages, computing fundamentals, software engineering and AI courses" },
 };
 
 export const bookEnglish: Record<string, { description: string; longDescription: string }> = {

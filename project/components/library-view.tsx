@@ -10,9 +10,9 @@ import {
   type ContinueItem,
 } from "@/components/continue-reading";
 import { useContent } from "@/content/client";
-import { site } from "@/lib/site";
 import { PageEntry } from "@/components/page-entry";
 import { LibrarySearch } from "@/components/library-search";
+import { BookCursor } from "@/components/book-cursor";
 
 export default function LibraryView() {
   const { getLibrarySections, getAllChapterRefs, taxonomyEnglish } =
@@ -27,25 +27,9 @@ export default function LibraryView() {
 
   return (
     <div className="shell library-page">
-      <section className="hero">
-        <div
-          className="hero__scene"
-          role="img"
-          {...uiLabel("暖阳下的书与干花")}
-        />
-        <PageEntry className="hero__body" stagger>
-          <p className="eyebrow" data-entry-item>
-            <UiText zh="个人知识库" en="Personal Knowledge Vault" />
-          </p>
-          <h1 className="hero__title" data-entry-item>{site.name}</h1>
-          <p className="hero__tagline" data-entry-item>
-            <span className="hero__tagline-en">{site.intro.en}</span>
-            <span className="hero__tagline-zh">{site.intro.zh}</span>
-          </p>
-          <div className="hero__rule" aria-hidden="true" />
-          <LibraryNav />
-        </PageEntry>
-      </section>
+      <h1 className="reader-sr-only"><UiText zh="书库" en="Library" /></h1>
+      <BookCursor />
+      <LibraryNav />
 
       <LibrarySearch />
       <ContinueReading items={continueItems} />

@@ -121,8 +121,10 @@ export default function ChapterView({
               })}
             </div>
           )}
-          <ReadingToolbar langs={langs} hasTranslation={hasTranslation} />
-          <FavoriteButton book={book.slug} chapter={chapter.slug} />
+          <div className="chapter-controls">
+            <ReadingToolbar langs={langs} hasTranslation={hasTranslation} />
+            <FavoriteButton book={book.slug} chapter={chapter.slug} />
+          </div>
         </header>
 
         <details className="toc-inline">
