@@ -10,6 +10,9 @@
   --paper-raised: var(--page-sheet);
   --hover: #f2ece1;
   --pill: #efe9dc;
+  --action-bg: #e6ddcd;
+  --action-hover: #d9cbb4;
+  --action-border: #bdac8d;
   --cover-bg: #f2e8d9;
 
   --ink: #1b2b45;
@@ -3038,9 +3041,9 @@ html.lm-modal-open {
 .reader-interactions > section { margin-block: 2rem; }
 .reader-action {
   padding: .45rem .8rem;
-  border: 1px solid currentColor;
+  border: 1px solid var(--action-border);
   border-radius: .45rem;
-  background: transparent;
+  background: var(--action-bg);
   color: inherit;
   font: inherit;
   cursor: pointer;
@@ -3294,7 +3297,27 @@ html.lm-modal-open {
 @media(max-width:480px){.account-settings__identity{gap:12px;flex-wrap:wrap}.account-settings__identity strong{flex:1}.account-settings__identity .account-settings__rename{font-size:.8rem}}
 .account-settings input:focus-visible,.account-settings button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .account-settings button{min-height:44px;margin-left:0}
-.account-settings__danger button{color:#a32c38;border-color:currentColor}
+.account-settings__danger button[type=submit],.account-settings button.account-settings__delete-trigger{color:#922e38;border-color:#c79997;background:#f0dedb}
 .account-pop a,.account-pop button{display:flex;align-items:center;gap:10px}
 .account-pop a>svg,.account-pop button>svg{width:18px;height:18px;flex:none}
 .account-pop a,.account-pop button,.account-settings__section h2,.reader-interactions h2{font-family:var(--serif)}
+
+/* Filled secondary actions remain distinct from their paper surfaces. */
+.feature-page button,.copy-control button,.admin-shell button:not(.auth-button){background:var(--action-bg);border-color:var(--action-border)}
+.reader-action,.feature-page button,.copy-control button,.admin-shell button:not(.auth-button){box-shadow:inset 0 1px 0 #ffffff85,0 2px 4px #1b2b4509}
+.feature-tabs a:not([aria-current=page]){background:var(--action-bg);border-color:var(--action-border)}
+@media(hover:hover){
+  .reader-action:not(.guestbook-form__submit):hover:not(:disabled),.feature-page button:hover:not(:disabled),.admin-shell button:not(.auth-button):hover:not(:disabled){background:var(--action-hover);border-color:var(--accent)}
+}
+.account-settings__security-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--rule);margin-top:32px;padding-top:24px}
+.account-settings__security-controls button{margin:0}
+.account-settings__security-controls button[aria-expanded=true]{box-shadow:inset 0 -2px 0 currentColor;background:var(--action-hover)}
+.account-settings__panel{margin-top:20px;padding-top:8px;border-top:0}
+.about-tools{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;margin:20px 0}
+.about-tools .feature-tabs{margin:0}
+.site-uptime{display:inline-flex;align-items:baseline;gap:8px;margin-left:auto;color:var(--muted);font:500 .8rem/1.5 var(--sans);white-space:nowrap}
+.site-uptime__number{display:inline-flex;align-self:center;font:600 1.35rem/1 var(--serif);font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+.site-uptime__digit{display:inline-block;overflow:hidden;height:1em;width:.7em;text-align:center}
+.site-uptime__reel{display:flex;flex-direction:column;transform:translateY(calc(var(--reel-steps) * -1em))}
+.site-uptime__reel>span{display:block;flex:none;height:1em;line-height:1}
+@media(max-width:480px){.about-tools{gap:14px}.site-uptime{gap:5px;font-size:.72rem}.site-uptime__number{font-size:1.1rem}}

@@ -3,8 +3,8 @@
     "date": "2026-11-14",
     "features": [
       {
-        "zh": "账号设置支持改密、注销和修改用户名，使用首字母头像；精简账号菜单与表单，统一衬线标题、图标和输入反馈。",
-        "en": "Password changes, account deletion and username updates with initial avatars; simplified account navigation and forms, shared serif headings, icons and input feedback."
+        "zh": "账号设置支持改密、注销和修改用户名，操作按需展开；统一图标、衬线标题与按钮层次，精简留言操作；关于页新增运行天数滚动计数。",
+        "en": "Expandable account controls, consistent icons and serif headings, clearer action buttons and compact guestbook controls; an animated site uptime counter on the About page."
       }
     ],
     "content": []

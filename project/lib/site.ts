@@ -1,5 +1,6 @@
 export const site = {
   name: "LovisMind",
+  launchedAt: "2026-10-31T00:00:00+08:00",
   title: "LovisMind · 个人知识笔记",
   description:
     "把课程学习整理成可以按顺序读下去的书：一课一书，一章一篇，正文之外保留来源。",

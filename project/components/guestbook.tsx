@@ -172,7 +172,7 @@ export function GuestbookView() {
           <time dateTime={date.toISOString()}>{date.toLocaleString()}</time>
         </div>
         <p className="guestbook-message">{entry.message}</p>
-        <div className="guestbook-actions">
+        <div className={`guestbook-actions ${styles.entryActions}`}>
           {!hidden && (
             <button className="reader-action" type="button" disabled={blocked}
               onClick={() => setReplyingTo(entry)}>

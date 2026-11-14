@@ -2,6 +2,22 @@
   display: block;
 }
 
+.entryActions:global(.guestbook-actions) {
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.entryActions button {
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+@media (pointer: coarse) {
+  .entryActions button { min-height: 44px; }
+}
+
 .replies {
   display: grid;
   gap: 0.7rem;
