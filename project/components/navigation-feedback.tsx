@@ -8,6 +8,25 @@ import { UiText } from "./ui-text";
 const navigationEvent = "lovismind:navigate";
 type Navigation = { href: string; resetScroll?: boolean; fullDocument?: boolean };
 type Pending = Navigation & { phase: "pending" | "complete" };
+type AnchorDocument = { getElementById(id: string): { scrollIntoView(): void } | null };
+
+// Hash values come from links and may be malformed; a bad escape must not break navigation.
+export function anchorIdFromHash(hash: string) {
+  if (!hash.startsWith("#") || hash.length < 2) return null;
+  try {
+    return decodeURIComponent(hash.slice(1)) || null;
+  } catch {
+    return null;
+  }
+}
+
+export function scrollToAnchor(hash: string, document: AnchorDocument) {
+  const id = anchorIdFromHash(hash);
+  const element = id ? document.getElementById(id) : null;
+  if (!element) return false;
+  element.scrollIntoView();
+  return true;
+}
 
 export function startNavigation(href: string, options: Omit<Navigation, "href"> = {}) {
   window.dispatchEvent(new CustomEvent<Navigation>(navigationEvent, { detail: { href, ...options } }));
@@ -21,7 +40,7 @@ export function ReaderLink({ href, onNavigate, scroll, ...props }: Omit<Componen
     const target = new URL(href, location.href);
     if (target.origin !== location.origin) return;
     if (target.pathname.replace(/\/$/, "") === location.pathname.replace(/\/$/, "")) {
-      if (target.hash && scroll !== false) document.getElementById(decodeURIComponent(target.hash.slice(1)))?.scrollIntoView();
+      if (target.hash && scroll !== false) scrollToAnchor(target.hash, document);
       return;
     }
     startNavigation(target.pathname + target.search + target.hash, { resetScroll: scroll !== false });
@@ -68,14 +87,21 @@ export function NavigationFeedback() {
     const changed = previous.current !== pathname;
     previous.current = pathname;
     const navigation = current.current;
-    if (changed && navigation && new URL(navigation.href, location.origin).pathname.replace(/\/$/, "") === pathname.replace(/\/$/, "")) {
-      // Run before article effects restore reading progress. Preserve anchors
-      // and let the browser handle back/forward restoration.
-      if (navigation.resetScroll && !location.hash) window.scrollTo({ top: 0, behavior: "instant" });
-      const complete: Pending = { ...navigation, phase: "complete" };
-      current.current = complete;
-      setSlow(false);
-      setPending(complete);
+    if (changed && navigation) {
+      const destination = new URL(navigation.href, location.origin);
+      if (destination.pathname.replace(/\/$/, "") === pathname.replace(/\/$/, "")) {
+        // The destination route has committed, so its headings are in the DOM.
+        // Run before article effects restore reading progress, preserve anchors,
+        // and let the browser handle back/forward restoration.
+        if (navigation.resetScroll) {
+          if (destination.hash) scrollToAnchor(destination.hash, document);
+          else if (!location.hash) window.scrollTo({ top: 0, behavior: "instant" });
+        }
+        const complete: Pending = { ...navigation, phase: "complete" };
+        current.current = complete;
+        setSlow(false);
+        setPending(complete);
+      }
     }
     const hasPageEntry = ["/about/", "/guestbook/", "/library/", "/submissions/"].includes(pathname);
     if (!hasPageEntry && !matchMedia("(prefers-reduced-motion: reduce)").matches) {

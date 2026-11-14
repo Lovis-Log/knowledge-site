@@ -39,7 +39,8 @@ export function TableOfContents({ items }: { items: TocItem[] }) {
     window.addEventListener("resize", onScroll);
 
     const observer = new MutationObserver(onScroll);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang"] });
+    // Switching the translation view hides one set of headings and reveals another.
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view"] });
 
     return () => {
       window.removeEventListener("scroll", onScroll);

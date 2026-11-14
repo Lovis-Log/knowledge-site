@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { api } from "@/lib/api";
+import { errorMessage, isAuthError, SessionRecovery } from "./session-recovery";
 import { UiText } from "./ui-text";
 import { uiPlaceholder } from "@/lib/ui-language";
 import { PageEntry } from "./page-entry";
@@ -31,6 +32,26 @@ const statuses: Record<string, [string, string]> = {
   declined: ["未采用", "Not adopted"],
 };
 
+export type SubmissionFailure = {
+  kind: "load" | "submit" | "action";
+  message: string;
+  authExpired: boolean;
+  retry?: { path: string; data: unknown };
+};
+
+export function submissionFailure(
+  kind: SubmissionFailure["kind"],
+  error: unknown,
+  retry?: SubmissionFailure["retry"],
+): SubmissionFailure {
+  return { kind, message: errorMessage(error), authExpired: isAuthError(error), retry };
+}
+
+/** Retries reuse the original idempotency key; editing the draft starts a new one. */
+export function nextSubmissionRequestId(current: string, make: () => string) {
+  return current || make();
+}
+
 export function Submissions() {
   const [board, setBoard] = useState<Board | null>(null);
   const [admin, setAdmin] = useState(false);
@@ -38,7 +59,8 @@ export function Submissions() {
   const [revision, setRevision] = useState(0);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<SubmissionFailure | null>(null);
+  const authBlocked = Boolean(error?.authExpired);
   const [notice, setNotice] = useState(false);
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
@@ -54,25 +76,29 @@ export function Submissions() {
     setLoading(true);
     setBoard(null);
     api<Board>(endpoint + (before ? "?before=" + before : ""))
-      .then((value) => { if (live) { setBoard(value); setError(""); } })
-      .catch((caught: Error) => { if (live) setError(caught.message); })
+      .then((value) => {
+        if (!live) return;
+        setBoard(value);
+        setError((current) => (current?.kind === "load" ? null : current));
+      })
+      .catch((caught: unknown) => { if (live) setError(submissionFailure("load", caught)); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };
   }, [endpoint, before, revision]);
 
-  async function act(path: string, data: unknown, done?: () => void) {
+  async function act(path: string, data: unknown) {
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
-    setError("");
+    setError(null);
     setNotice(false);
     try {
       await api(path, "POST", data);
-      done?.();
       setPages([]);
       setRevision((value) => value + 1);
-    } catch (caught) {
-      setError((caught as Error).message);
+    } catch (caught: unknown) {
+      // Keep the exact write so retrying repeats it instead of only refreshing the list.
+      setError(submissionFailure("action", caught, { path, data }));
     } finally {
       lock.current = false;
       setBusy(false);
@@ -85,39 +111,53 @@ export function Submissions() {
     setNotice(false);
   }
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function send() {
     if (lock.current) return;
     const body = message.trim();
     const link = url.trim();
     if (!body && !link) {
-      setError("请填写正文或链接 / Add text or a link");
+      setError({ kind: "submit", message: "请填写正文或链接 / Add text or a link", authExpired: false });
       return;
     }
     lock.current = true;
     setBusy(true);
-    setError("");
+    setError(null);
     setNotice(false);
-    requestId.current ||= crypto.randomUUID();
+    requestId.current = nextSubmissionRequestId(requestId.current, () => crypto.randomUUID());
+    const id = requestId.current;
     try {
       await api("/api/submissions", "POST", {
         message: body,
         url: link,
-        requestId: requestId.current,
+        requestId: id,
       });
-      requestId.current = "";
+      if (requestId.current === id) requestId.current = "";
       form.current?.reset();
       setMessage("");
       setUrl("");
       setNotice(true);
       setPages([]);
       setRevision((value) => value + 1);
-    } catch (caught) {
-      setError((caught as Error).message);
+    } catch (caught: unknown) {
+      // The request id survives so a retry is idempotent; edits invalidate it above.
+      setError(submissionFailure("submit", caught));
     } finally {
       lock.current = false;
       setBusy(false);
     }
+  }
+
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    void send();
+  }
+
+  function retryError() {
+    if (!error) return;
+    if (error.kind === "submit") { void send(); return; }
+    if (error.kind === "action" && error.retry) { void act(error.retry.path, error.retry.data); return; }
+    setError(null);
+    setRevision((value) => value + 1);
   }
 
   return (
@@ -150,7 +190,7 @@ export function Submissions() {
             placeholder="https://" value={url} onChange={(event) => edit(event.target.value, setUrl)} />
         </label>
         <div className={styles.footer}>
-          <button className={styles.submit} type="submit" disabled={busy || (!message.trim() && !url.trim())}>
+          <button className={styles.submit} type="submit" disabled={busy || authBlocked || (!message.trim() && !url.trim())}>
             {busy
               ? <UiText zh="提交中…" en="Sending…" />
               : <UiText zh="提交投稿" en="Send submission" />}
@@ -164,11 +204,16 @@ export function Submissions() {
         zh="已收到投稿，仅你和管理员可见。"
         en="Submission received. Only you and administrators can see it."
       /></p>}
-      {error && <p className={styles.error} role="alert">{error}{" "}
-        <button type="button" className={styles.inlineAction} onClick={() => { setError(""); setRevision((value) => value + 1); }}>
-          <UiText zh="重试" en="Retry" />
-        </button>
-      </p>}
+      {error && (error.authExpired
+        ? <SessionRecovery error={error.message} onRetry={retryError} />
+        : <p className={styles.error} role="alert">{error.message}{" "}
+          <button type="button" className={styles.inlineAction} onClick={retryError}>
+            <UiText
+              zh={error.kind === "submit" ? "重新提交" : error.kind === "action" ? "重试操作" : "重试加载"}
+              en={error.kind === "submit" ? "Resend submission" : error.kind === "action" ? "Retry action" : "Retry loading"}
+            />
+          </button>
+        </p>)}
 
       <section className={styles.listSection} aria-labelledby="submission-list-title">
         <div className={styles.listHeader}>

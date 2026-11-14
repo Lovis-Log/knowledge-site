@@ -5,6 +5,7 @@ import { AccountAvatar } from "./account-avatar";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
+import { errorMessage, isAuthError, isNotFoundError, SessionRecovery } from "./session-recovery";
 import { UiText, UiPair } from "./ui-text";
 import { uiLabel, uiPlaceholder } from "@/lib/ui-language";
 import { PageEntry } from "./page-entry";
@@ -21,6 +22,8 @@ type Entry = {
   replies?: Entry[];
 };
 type Board = { items: Entry[]; next: number | null; canModerate: boolean };
+type ErrorState = { message: string; kind: "load" | "publish" | "action"; authExpired: boolean };
+export type ReplyDraft = { targetId: number | null; missing: boolean };
 
 function withEntryRemoved(board: Board, id: number): Board {
   return {
@@ -34,6 +37,20 @@ function withEntryRemoved(board: Board, id: number): Board {
   };
 }
 
+/** A deleted reply target stays selected so the draft and the reason remain visible. */
+export function replyDraftAfterError(draft: ReplyDraft, targetExists: boolean, error: unknown): ReplyDraft {
+  if (draft.targetId === null || !targetExists) return draft;
+  return isNotFoundError(error) ? { ...draft, missing: true } : draft;
+}
+
+export function replyDraftAfterCancel(): ReplyDraft {
+  return { targetId: null, missing: false };
+}
+
+export function canSubmitReply(draft: ReplyDraft, message: string) {
+  return !draft.missing && Boolean(message.trim());
+}
+
 export function GuestbookView() {
   const [board, setBoard] = useState<Board | null>(null);
   const [canModerate, setCanModerate] = useState(false);
@@ -42,6 +59,7 @@ export function GuestbookView() {
   const [revision, refresh] = useState(0);
   const [message, setMessage] = useState("");
   const [replyingTo, setReplyingTo] = useState<Entry | null>(null);
+  const [targetMissing, setTargetMissing] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
   const [username, setUsername] = useState('');
   const dialog = useRef<HTMLDialogElement>(null);
@@ -83,13 +101,22 @@ export function GuestbookView() {
   function openComposer(target: Entry | null) {
     opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setReplyingTo(target);
-    setError('');
+    setTargetMissing(false);
+    setError(null);
     setComposerOpen(true);
   }
   function closeComposer() {
     if (writing.current) return;
     setComposerOpen(false);
     setReplyingTo(null);
+    setTargetMissing(false);
+    setError((current) => (current?.kind === "publish" ? null : current));
+  }
+  function cancelReply() {
+    const draft = replyDraftAfterCancel();
+    setReplyingTo(null);
+    setTargetMissing(draft.missing);
+    setError((current) => (current?.kind === "publish" ? null : current));
   }
   useLayoutEffect(() => {
     const input = composing.current;
@@ -98,7 +125,9 @@ export function GuestbookView() {
     input.style.height = (input.scrollHeight + input.offsetHeight - input.clientHeight) + "px";
   }, [message, hidden, composerOpen]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<ErrorState | null>(null);
+  const authBlocked = Boolean(error?.authExpired);
+  const replyDraft: ReplyDraft = { targetId: replyingTo?.id ?? null, missing: targetMissing };
   const before = pages.at(-1);
   const endpoint = hidden ? "/api/admin/guestbook" : "/api/guestbook";
 
@@ -109,10 +138,12 @@ export function GuestbookView() {
         if (active) {
           setBoard(value);
           setCanModerate(value.canModerate);
-          setReplyingTo(null);
+          setError((current) => (current?.kind === "load" ? null : current));
         }
       })
-      .catch((caught: Error) => { if (active) setError(caught.message); })
+      .catch((caught: unknown) => {
+        if (active) setError({ message: errorMessage(caught), kind: "load", authExpired: isAuthError(caught) });
+      })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, [endpoint, before, revision]);
@@ -120,15 +151,23 @@ export function GuestbookView() {
   function reload(clear = false) {
     if (clear) setBoard(null);
     setLoading(true);
-    setError("");
+    setError((current) => (current?.kind === "load" ? null : current));
     refresh((value) => value + 1);
   }
 
+  function retryError() {
+    const current = error;
+    if (!current) return;
+    setError(null);
+    if (current.kind === "publish" && composerOpen && message.trim() && !targetMissing) void act("publish");
+    else reload();
+  }
+
   async function act(action: "publish" | "delete" | "hide" | "restore", id?: number) {
-    if (writing.current || loading || (action === "publish" && cooling)) return;
+    if (writing.current || loading || (action === "publish" && (cooling || targetMissing))) return;
     writing.current = true;
     setBusy(action);
-    setError("");
+    setError(null);
     try {
       const moderation = action === "hide" || action === "restore";
       if (action === "publish") {
@@ -140,6 +179,7 @@ export function GuestbookView() {
         });
         setMessage("");
         setReplyingTo(null);
+        setTargetMissing(false);
         setComposerOpen(false);
         if (target) {
           // Replies attach to the root the reader was looking at.
@@ -167,18 +207,30 @@ export function GuestbookView() {
         await api(moderation ? "/api/admin/guestbook" : "/api/guestbook", "POST", { action, id });
         setBoard((current) => current && withEntryRemoved(current, id!));
         setReplyingTo((current) => (current?.id === id ? null : current));
+        setTargetMissing((current) => (replyingTo?.id === id ? false : current));
         reload();
       }
-    } catch (caught) {
+    } catch (caught: unknown) {
       if (action === "publish" && caught instanceof ApiError && caught.code === "GUESTBOOK_RATE_LIMITED") {
         const seconds = caught.retryAfter ?? 60;
         cooldownUntil.current = Date.now() + seconds * 1000;
         setCooldown(seconds);
-      } else {
-        setError((caught as Error).message);
-        if (action === "publish" && caught instanceof ApiError && caught.code === "NOT_FOUND")
-          reload();
+        return;
       }
+      const targetGone = action === "publish" && Boolean(replyingTo) && isNotFoundError(caught);
+      const draft = replyDraftAfterError(
+        { targetId: replyingTo?.id ?? null, missing: targetMissing },
+        Boolean(replyingTo),
+        caught,
+      );
+      setTargetMissing(draft.missing);
+      setError({
+        kind: action === "publish" ? "publish" : "action",
+        authExpired: isAuthError(caught),
+        message: targetGone
+          ? "这条留言已被删除，无法继续回复。草稿和回复对象已保留；提交已停用，请取消回复或重新选择要回复的留言。 / This message was deleted, so the reply cannot be posted. Your draft and reply target have been kept; posting is disabled until you cancel the reply or choose another message."
+          : errorMessage(caught),
+      });
     } finally {
       writing.current = false;
       setBusy(null);
@@ -282,11 +334,18 @@ export function GuestbookView() {
             )}
             value={message} readOnly={busy === "publish"} onChange={(event) => setMessage(event.target.value)} />
           <span id="guestbook-limit" className={styles.counter}>{message.length} / 1000</span></div>
-          {composerOpen && error && <p role="alert" className={styles.error}>{error}</p>}
+          {composerOpen && error && (error.authExpired
+            ? <SessionRecovery error={error.message} onRetry={retryError} />
+            : <div role="alert" className={styles.error}>
+              <p style={{ margin: 0 }}>{error.message}</p>
+              {targetMissing && <button type="button" className="reader-action" disabled={busy === "publish"} onClick={cancelReply}>
+                <UiText zh="取消回复，保留草稿" en="Cancel reply and keep draft" />
+              </button>}
+            </div>)}
           {cooling && <p role="status" className={styles.error}><UiText zh={`请在 ${cooldown} 秒后重试，草稿已保留。`} en={`Try again in ${cooldown} seconds. Your draft has been kept.`} /></p>}
           <div className={styles.composerActions}>
             <button type="button" className="reader-action" disabled={busy === 'publish'} onClick={closeComposer}><UiText zh="取消" en="Cancel" /></button>
-            <button className={styles.publish} type="submit" disabled={blocked || cooling || !message.trim()}>
+            <button className={styles.publish} type="submit" disabled={blocked || cooling || authBlocked || !canSubmitReply(replyDraft, message)}>
               {busy === "publish"
                 ? <UiText zh={replyingTo ? "回复中…" : "发布中…"} en={replyingTo ? "Replying…" : "Posting…"} />
                 : <UiText zh={replyingTo ? "发布回复" : "发布留言"} en={replyingTo ? "Post reply" : "Post message"} />}
@@ -300,9 +359,13 @@ export function GuestbookView() {
         en={`Please wait ${cooldown} seconds before posting again. Your draft has been kept.`}
       /></p>}
       {busy && <span className="reader-sr-only" role="status"><UiText zh="正在提交…" en="Submitting…" /></span>}
-      {!composerOpen && error && <p role="alert">{error}{" "}
-        <button type="button" className="reader-action" disabled={blocked} onClick={() => reload()}><UiText zh="刷新留言" en="Refresh messages" /></button>
-      </p>}
+      {!composerOpen && error && (error.authExpired
+        ? <SessionRecovery error={error.message} onRetry={retryError} />
+        : <p role="alert">{error.message}{" "}
+          <button type="button" className="reader-action" disabled={blocked} onClick={retryError}>
+            <UiText zh={error.kind === "action" ? "重试" : "刷新留言"} en={error.kind === "action" ? "Retry" : "Refresh messages"} />
+          </button>
+        </p>)}
       {loading && !board ? <RocketLoader /> :
         board && <>
           {board.items.length === 0 && <p><UiText zh="暂无留言" en="No messages yet" /></p>}
