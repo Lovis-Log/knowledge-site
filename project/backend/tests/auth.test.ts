@@ -746,6 +746,17 @@ test("invite collisions retry at most five times and do not overwrite existing c
   assert.equal(calls, 5);
   assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await hashInviteCode("KKKKK2", keys)).first<{ count: number }>())?.count, 1);
   assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await digest("KKKKK2")).first<{ count: number }>())?.count, 0);
+  // SHA and HMAC represent the same public code: never issue it twice across versions.
+  await db.prepare("INSERT INTO invites(id,code_hash,expires_at,max_uses,created_by,created_at) VALUES('legacy-collision',?,unixepoch()+3600,1,'admin-id',unixepoch())")
+    .bind(await digest("KKKKK4")).run();
+  calls = 0;
+  const crossVersion = await storeInvite(db, params, keys, () => ++calls === 1 ? "KKKKK4" : "KKKKK5");
+  assert.equal(crossVersion.code, "KKKKK5");
+  assert.equal(calls, 2);
+  assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await hashInviteCode("KKKKK4", keys)).first<{ count: number }>())?.count, 0);
+  calls = 0;
+  await assert.rejects(storeInvite(db, params, keys, () => { calls++; return "KKKKK4"; }), /INVITE_GENERATION_BUSY/);
+  assert.equal(calls, 5);
 });
 
 test("concurrent case-insensitive username collisions consume only the successful invite use", async () => {

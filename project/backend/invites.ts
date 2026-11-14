@@ -134,13 +134,14 @@ export async function storeInvite(
   for (let attempt = 0; attempt < 5; attempt++) {
     const code = createCode();
     const id = crypto.randomUUID();
-    const [hash, ciphertext] = await Promise.all([
+    const [hash, ciphertext, legacyHash] = await Promise.all([
       hashInviteCode(code, keys),
       encryptInvite(code, id, keys.encryption),
+      digest(normalizeInviteCode(code)),
     ]);
     const inserted = await db.prepare(
-      "INSERT INTO invites(id,code_hash,code_ciphertext,expires_at,max_uses,created_by,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(code_hash) DO NOTHING RETURNING id",
-    ).bind(id, hash, ciphertext, params.expiresAt, params.maxUses, params.adminId, params.createdAt).first<{ id: string }>();
+      "INSERT INTO invites(id,code_hash,code_ciphertext,expires_at,max_uses,created_by,created_at) SELECT ?,?,?,?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM invites WHERE code_hash=?) ON CONFLICT(code_hash) DO NOTHING RETURNING id",
+    ).bind(id, hash, ciphertext, params.expiresAt, params.maxUses, params.adminId, params.createdAt, legacyHash).first<{ id: string }>();
     if (inserted) return { id, code };
   }
   throw new InviteStorageError("INVITE_GENERATION_BUSY");
