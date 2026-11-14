@@ -1,11 +1,12 @@
 "use client";
 import { PageHeading } from "./page-heading";
 import { RocketLoader } from "./rocket-loader";
+import { AccountAvatar } from "./account-avatar";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
-import { UiText } from "./ui-text";
-import { uiPlaceholder } from "@/lib/ui-language";
+import { UiText, UiPair } from "./ui-text";
+import { uiLabel, uiPlaceholder } from "@/lib/ui-language";
 import { PageEntry } from "./page-entry";
 import styles from "./guestbook.module.css";
 
@@ -41,6 +42,10 @@ export function GuestbookView() {
   const [revision, refresh] = useState(0);
   const [message, setMessage] = useState("");
   const [replyingTo, setReplyingTo] = useState<Entry | null>(null);
+  const [composerOpen, setComposerOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const dialog = useRef<HTMLDialogElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [cooldown, setCooldown] = useState(0);
   const cooldownUntil = useRef(0);
@@ -55,15 +60,43 @@ export function GuestbookView() {
   }, [cooling]);
   const writing = useRef(false);
   const composing = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    let live = true;
+    api<{ user: { username: string } | null }>('/api/auth/me')
+      .then(({ user }) => { if (live && user) setUsername(user.username); }).catch(() => { /* Publishing still verifies the session. */ });
+    return () => { live = false; };
+  }, []);
+  useEffect(() => {
+    if (!composerOpen) return;
+    const panel = dialog.current;
+    if (!panel) return;
+    panel.showModal();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    composing.current?.focus();
+    return () => {
+      panel.close();
+      document.body.style.overflow = previousOverflow;
+      opener.current?.focus({ preventScroll: true });
+    };
+  }, [composerOpen]);
+  function openComposer(target: Entry | null) {
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    setReplyingTo(target);
+    setError('');
+    setComposerOpen(true);
+  }
+  function closeComposer() {
+    if (writing.current) return;
+    setComposerOpen(false);
+    setReplyingTo(null);
+  }
   useLayoutEffect(() => {
     const input = composing.current;
-    if (!input || CSS.supports("field-sizing", "content")) return;
+    if (!composerOpen || !input || CSS.supports("field-sizing", "content")) return;
     input.style.height = "auto";
     input.style.height = (input.scrollHeight + input.offsetHeight - input.clientHeight) + "px";
-  }, [message, hidden]);
-  useEffect(() => {
-    if (replyingTo) composing.current?.focus();
-  }, [replyingTo]);
+  }, [message, hidden, composerOpen]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const before = pages.at(-1);
@@ -107,6 +140,7 @@ export function GuestbookView() {
         });
         setMessage("");
         setReplyingTo(null);
+        setComposerOpen(false);
         if (target) {
           // Replies attach to the root the reader was looking at.
           setBoard((current) => {
@@ -168,15 +202,18 @@ export function GuestbookView() {
             <UiText zh={`回复 @${entry.replyTo}`} en={`Reply to @${entry.replyTo}`} />
           </p>
         )}
-        <div className="guestbook-byline">
-          <strong>{entry.nickname}</strong>
-          <time dateTime={date.toISOString()}>{date.toLocaleString()}</time>
+        <div className={styles.entryHeader}>
+          <AccountAvatar username={entry.nickname} />
+          <div className="guestbook-byline">
+            <strong>{entry.nickname}</strong>
+            <time dateTime={date.toISOString()}>{date.toLocaleString()}</time>
+          </div>
         </div>
-        <p className="guestbook-message">{entry.message}</p>
+        <p className={`guestbook-message ${styles.entryMessage}`}>{entry.message}</p>
         <div className={`guestbook-actions ${styles.entryActions}`}>
           {!hidden && (
             <button className="reader-action" type="button" disabled={blocked}
-              onClick={() => setReplyingTo(entry)}>
+              onClick={() => openComposer(entry)}>
               <UiText zh="回复" en="Reply" />
             </button>
           )}
@@ -201,43 +238,55 @@ export function GuestbookView() {
 
   return (
     <PageEntry className="shell reader-interactions guestbook-page">
-      <PageHeading kind="guestbook" zh="留言板" en="Guestbook" />
+      <div className={styles.header}>
+        <PageHeading kind="guestbook" zh="留言板" en="Guestbook" />
+        {!hidden && <button type="button" className={styles.writeButton} disabled={blocked} onClick={() => openComposer(null)}>
+          <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="m15 4 5 5M4 20l5-1L21 7l-5-5L4 14v6Z" /></svg>
+          <UiText zh="写留言" en="Write a message" />
+        </button>}
+      </div>
       <p id="guestbook-description" className="guestbook-description"><UiText
-        zh="这里可以畅所欲言：反馈网站 Bug 和内容问题，分享阅读心得，或聊聊你的想法。遇到问题时，附上相关书名、文章或操作步骤，会更方便排查。"
-        en="Feel free to report website bugs or content issues, share your reading experiences, or simply leave a thought. If something goes wrong, include the relevant book, article, or steps so we can look into it."
+        zh="留下阅读心得、内容建议，或使用网站时遇到的问题。"
+        en="Share a reading experience, suggest an improvement, or tell us what went wrong."
       /></p>
       {canModerate && <button className="reader-action" type="button" disabled={blocked}
         aria-pressed={hidden} onClick={() => { setHidden(!hidden); setPages([]); setReplyingTo(null); reload(true); }}>
         {hidden ? <UiText zh="返回公开留言" en="Show visible messages" /> :
           <UiText zh="查看已隐藏留言" en="Show hidden messages" />}
       </button>}
-      {!hidden && <>
-        {replyingTo && (
-          <div className={styles.replyBanner} role="status">
-            <span className={styles.replyBannerText}>
-              <UiText zh={`正在回复 @${replyingTo.nickname}`} en={`Replying to @${replyingTo.nickname}`} />
-            </span>
-            <button type="button" className={styles.replyBannerAction} disabled={blocked}
-              onClick={() => setReplyingTo(null)}>
-              <UiText zh="取消回复" en="Cancel reply" />
-            </button>
+      <dialog ref={dialog} className={styles.composer} aria-labelledby="guestbook-compose-title"
+        onCancel={event => { event.preventDefault(); closeComposer(); }}
+        onClick={event => {
+          if (event.target !== event.currentTarget) return;
+          const rect = event.currentTarget.getBoundingClientRect();
+          if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeComposer();
+        }}>
+        <header className={styles.composerHeader}>
+          <div><h2 id="guestbook-compose-title"><UiText zh={replyingTo ? '写下你的回复' : '写下你的留言'} en={replyingTo ? 'Write your reply' : 'Leave a message'} /></h2>
+            <p className={styles.identity}><AccountAvatar username={username || '?'} /><UiPair zh={<>以 <strong>{username || '当前账号'}</strong> 身份发布</>} en={<>Posting as <strong>{username || 'your account'}</strong></>} /></p>
           </div>
-        )}
-        <form onSubmit={publish} className="guestbook-form">
-          <label className={replyingTo ? "guestbook-form__label" : "reader-sr-only"} htmlFor="guestbook-message">
+          <button type="button" className={styles.close} disabled={busy === 'publish'} onClick={closeComposer} {...uiLabel('关闭留言窗口', 'Close message dialog')}>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="m6 6 12 12M18 6 6 18" /></svg>
+          </button>
+        </header>
+        <form onSubmit={publish} className={styles.composerForm}>
+          <label className={replyingTo ? styles.replyTarget : 'reader-sr-only'} htmlFor="guestbook-message">
             {replyingTo
               ? <UiText zh={`回复 @${replyingTo.nickname}`} en={`Reply to @${replyingTo.nickname}`} />
               : <UiText zh="写下你的想法" en="Leave a thought" />}
           </label>
-          <textarea ref={composing} id="guestbook-message" aria-describedby="guestbook-description guestbook-limit" rows={2} required maxLength={1000}
+          <div className={styles.inputArea}><textarea ref={composing} id="guestbook-message" aria-describedby="guestbook-limit" rows={5} required maxLength={1000}
             {...uiPlaceholder(
-              replyingTo ? "写下你的回复……" : "阅读心得、内容建议，或使用时遇到的问题，都可以写在这里……",
-              replyingTo ? "Write your reply…" : "Share a reading experience, suggest an improvement, or tell us what went wrong…",
+              replyingTo ? "写下你的回复……" : "写下你想说的话……",
+              replyingTo ? "Write your reply…" : "Write what’s on your mind…",
             )}
             value={message} readOnly={busy === "publish"} onChange={(event) => setMessage(event.target.value)} />
-          <div className="guestbook-form__footer">
-            <span id="guestbook-limit" className="guestbook-form__count"><span>{message.length}</span> / 1000 <UiText zh="字" en="characters" /></span>
-            <button className="reader-action guestbook-form__submit" type="submit" disabled={blocked || cooling || !message.trim()}>
+          <span id="guestbook-limit" className={styles.counter}>{message.length} / 1000</span></div>
+          {composerOpen && error && <p role="alert" className={styles.error}>{error}</p>}
+          {cooling && <p role="status" className={styles.error}><UiText zh={`请在 ${cooldown} 秒后重试，草稿已保留。`} en={`Try again in ${cooldown} seconds. Your draft has been kept.`} /></p>}
+          <div className={styles.composerActions}>
+            <button type="button" className="reader-action" disabled={busy === 'publish'} onClick={closeComposer}><UiText zh="取消" en="Cancel" /></button>
+            <button className={styles.publish} type="submit" disabled={blocked || cooling || !message.trim()}>
               {busy === "publish"
                 ? <UiText zh={replyingTo ? "回复中…" : "发布中…"} en={replyingTo ? "Replying…" : "Posting…"} />
                 : <UiText zh={replyingTo ? "发布回复" : "发布留言"} en={replyingTo ? "Post reply" : "Post message"} />}
@@ -245,13 +294,13 @@ export function GuestbookView() {
             </button>
           </div>
         </form>
-      </>}
-      {cooling && <p className="guestbook-cooldown" role="status"><UiText
+      </dialog>
+      {!composerOpen && cooling && <p className="guestbook-cooldown" role="status"><UiText
         zh={`留言发送较频繁，请在 ${cooldown} 秒后重试。草稿已保留。`}
         en={`Please wait ${cooldown} seconds before posting again. Your draft has been kept.`}
       /></p>}
       {busy && <span className="reader-sr-only" role="status"><UiText zh="正在提交…" en="Submitting…" /></span>}
-      {error && <p role="alert">{error}{" "}
+      {!composerOpen && error && <p role="alert">{error}{" "}
         <button type="button" className="reader-action" disabled={blocked} onClick={() => reload()}><UiText zh="刷新留言" en="Refresh messages" /></button>
       </p>}
       {loading && !board ? <RocketLoader /> :

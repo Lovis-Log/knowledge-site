@@ -1,0 +1,22 @@
+.log { margin-top: 32px; }
+.log .heading h2 { margin: 0; padding: 0; border: 0; font: 700 1.7rem/1.3 var(--serif); }
+.heading p { margin-top: 8px; color: var(--muted); font-size: .85rem; }
+.heading strong { color: var(--accent-ink); font-variant-numeric: tabular-nums; }
+.log .timeline { margin: 32px 0 0; padding: 0 0 0 28px; border-left: 1px solid var(--line-strong); list-style: none; }
+.log .release { position: relative; margin: 0; padding: 0 0 32px; }
+.release::before { content: ''; position: absolute; left: -33px; top: 9px; width: 9px; height: 9px; border: 2px solid var(--accent); border-radius: 50%; background: var(--paper); }
+.release:first-child::before { background: var(--gold); box-shadow: 0 0 0 4px var(--accent-soft); }
+.meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-bottom: 14px; }
+.log .meta h3 { margin: 0; font: 700 1.25rem/1.4 var(--serif); font-variant-numeric: tabular-nums; }
+.meta time { font-size: .8rem; color: var(--muted); }
+.current { padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font: 600 .7rem/1.6 var(--sans); }
+.card { min-width: 0; padding: 20px 24px; border: 1px solid var(--line-strong); border-radius: 16px; background: var(--page-sheet); box-shadow: var(--lift-1); transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease); }
+.log .card ul { margin: 0; padding-left: 1.15em; }
+.log .card ul + ul { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.log .card li { margin: .45em 0; font-size: .9em; }
+.card li::marker { color: var(--accent); }
+.card:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft), var(--lift-1); }
+.kind { color: var(--muted); font-size: .85em; }
+@media (hover: hover) { .card:hover { border-color: var(--action-border); box-shadow: var(--lift-2, var(--lift-1)); } }
+@media (max-width: 600px) { .log .timeline { padding-left: 20px; } .release::before { left: -25px; } .card { padding: 14px 16px; } .meta { gap: 8px 10px; } }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }

@@ -23,26 +23,21 @@ export default function AboutPage() {
         en={`${site.name} is Lovis’s personal knowledge base for coursework, AI experiments, and reading worth keeping.`} /></p>
     </header>
     <div className="prose prose--page"><AboutTabs entries={updates}>
-      <h2><UiText zh="内容与来源" en="Notes & sources" /></h2>
-      <p><UiText
-        zh="内容分为专业课程、AI Era 和精选收录，按课程或主题整理成书。笔记保留来源链接，并随学习持续修订；部分内容由 AI 辅助整理，引用或使用代码前请核对原始资料。"
-        en="Courses, AI Era, and Curated collect material into books by course or topic. Notes retain source links and evolve as I learn. Some use AI assistance; check the original material before citing a claim or using code." /></p>
+      <p><UiPair
+        zh={<><strong>这里收录专业课程、AI Era 和精选内容，</strong>按课程或主题整理成书。笔记保留来源链接，并随学习持续修订；部分内容由 AI 辅助整理，引用或使用代码前请核对原始资料。</>}
+        en={<><strong>Courses, AI Era, and Curated</strong> collect material into books by course or topic. Notes retain source links and evolve as I learn. Some use AI assistance; check the original material before citing a claim or using code.</>} /></p>
 
-      <h2><UiText zh="阅读与交流" en="Reading & discussion" /></h2>
-      <p><UiText
-        zh="你可以搜索书籍与章节、收藏内容、调整阅读字号，并在可用时切换中英文。欢迎在留言板分享心得、提出建议或反馈问题。"
-        en="Search books and chapters, save favorites, adjust text size, and switch languages where available. Use the guestbook to share ideas, suggest improvements, or report problems." /></p>
+      <p><UiPair
+        zh={<><strong>搜索、收藏、调整字号，</strong>也可以在可用时切换中英文。欢迎在留言板分享心得、提出建议或反馈问题。</>}
+        en={<><strong>Search, save favorites, and adjust text size,</strong> with language switching where available. Use the guestbook to share ideas, suggest improvements, or report problems.</>} /></p>
 
-      <h2><UiText zh="账号与隐私" en="Accounts & privacy" /></h2>
-      <p><UiText
-        zh="注册不要求邮箱或手机号，阅读权限通过邀请码或管理员审核获得。密码以加盐哈希保存；收藏归个人账号，投稿仅本人和管理员可见，留言向站内读者公开。注销会删除账号及个人数据，已独立发布的笔记保留。"
-        en="Registration needs no email or phone number. An invite or administrator approval grants reading access. Passwords are stored as salted hashes. Favorites belong to your account; submissions are private to you and administrators, while guestbook posts are visible to readers. Deletion removes your account and personal data; independently published notes remain." /></p>
+      <p><UiPair
+        zh={<><strong>注册不要求邮箱或手机号，</strong>阅读权限通过邀请码或管理员审核获得。密码以加盐哈希保存；收藏归个人账号，投稿仅本人和管理员可见，留言向站内读者公开。注销会删除账号及个人数据，已独立发布的笔记保留。</>}
+        en={<><strong>Registration needs no email or phone number.</strong> An invite or administrator approval grants reading access. Passwords are stored as salted hashes. Favorites belong to your account; submissions are private to you and administrators, while guestbook posts are visible to readers. Deletion removes your account and personal data; independently published notes remain.</>} /></p>
 
-      <h2><UiText zh="技术架构" en="Built with" /></h2>
       <ul className="about-tech">{['Next.js', 'React', 'TypeScript', 'Cloudflare Pages', 'Cloudflare Workers', 'Cloudflare D1'].map(technology => <li key={technology}>{technology}</li>)}</ul>
 
-      <h2><UiText zh="联系与致谢" en="Contact & credits" /></h2>
-      <p><UiText zh="邮箱联系站主：" en="Email the site owner: " /><span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
+      <p><strong><UiText zh="邮箱联系站主：" en="Email the site owner: " /></strong><span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
       <p><UiPair
         zh={<>界面灵感来自 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a>。源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>。</>}
         en={<>Interface inspired by <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil’s book ↗</a>. Source on <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>.</>} /></p>
