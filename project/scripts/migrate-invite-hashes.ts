@@ -60,7 +60,7 @@ async function main() {
   if (!secret)
     throw new Error("Provide --key-file=<path> or set INVITE_CODE_ENCRYPTION_KEY; the key is never printed.");
 
-  async function query(sql: string) {
+  async function query(sql: string, write = false) {
     await mkdir(".backend-build", { recursive: true });
     const id = randomUUID();
     const file = `.backend-build/invite-hash-${id}.sql`;
@@ -73,8 +73,10 @@ async function main() {
         "execute",
         "DB",
         remote ? "--remote" : "--local",
-        "--file",
-        file,
+        // Remote --file uses D1's bulk importer and returns a summary rather
+        // than SELECT rows. Only writes (containing hashes) need a SQL file.
+        write ? "--file" : "--command",
+        write ? file : sql,
         "--json",
       ];
       if (remote) args.push("--env", environment!);
@@ -89,7 +91,19 @@ async function main() {
       });
       if (result.status !== 0)
         throw new Error("Database operation failed; credential-bearing output suppressed.");
-      return JSON.parse(result.stdout) as {
+      // Remote file imports print upload progress even with --json. Keep all
+      // output private and parse only the final JSON envelope.
+      const start = result.stdout.search(/^\s*\[/m);
+      let parsed: unknown;
+      try {
+        if (start < 0) throw new Error();
+        parsed = JSON.parse(result.stdout.slice(start));
+      } catch {
+        throw new Error("Database returned an unreadable result; output suppressed.");
+      }
+      if (!Array.isArray(parsed) || parsed.some((item) => !item || item.success === false))
+        throw new Error("Database did not confirm success; output suppressed.");
+      return parsed as {
         results?: Record<string, unknown>[];
         meta?: { changes?: number };
       }[];
@@ -163,11 +177,17 @@ async function main() {
     // whether the guard matched without relying on wrangler's change counts.
     const result = await query(
       `UPDATE invites SET code_hash=${quote(item.newHash)} WHERE id=${quote(item.id)} AND code_hash=${quote(item.oldHash)} RETURNING id;`,
+      true,
     );
-    if (result[0]?.results?.length !== 1)
+    // Local execute returns RETURNING rows; remote bulk import reports changes.
+    const changes = remote ? result[0]?.meta?.changes : result[0]?.results?.length;
+    if (changes !== 1)
       throw new Error(
         "An invite changed during migration; the check is safe to re-run.",
       );
+    const verified = await query(`SELECT code_hash FROM invites WHERE id=${quote(item.id)};`);
+    if (verified[0]?.results?.[0]?.code_hash !== item.newHash)
+      throw new Error("The migrated invite could not be verified; the check is safe to re-run.");
     migrated++;
   }
   console.log(`Migrated ${migrated} invite hash(es). Re-run without --apply to confirm.`);
