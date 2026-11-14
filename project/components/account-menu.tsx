@@ -4,6 +4,7 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useRef, useState } from "react";
 import { UiText } from "@/components/ui-text";
 import { AccountIcon } from "@/components/account-icon";
+import { AccountAvatar } from "@/components/account-avatar";
 import { api } from "@/lib/api";
 import { uiLabel } from "@/lib/ui-language";
 
@@ -26,6 +27,12 @@ export function AccountMenu() {
   const signingOut = useRef(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const refresh = () => setAttempt(value => value + 1);
+    window.addEventListener('account:updated', refresh);
+    return () => window.removeEventListener('account:updated', refresh);
+  }, []);
 
   useEffect(() => {
     let live = true;
@@ -98,7 +105,7 @@ export function AccountMenu() {
           onClick={() => setOpen((current) => !current)}
           {...uiLabel("账号", "Account")}
         >
-          <AccountIcon />
+          {user ? <AccountAvatar username={user.username} /> : <AccountIcon />}
           <span className="site-nav__account-label"><UiText zh="账号" en="Account" /></span>
         </button>
         {open && !ready && (

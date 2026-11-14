@@ -509,15 +509,16 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     return json({ ok: true, id: row.id }, 201);
 }
 async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
-    const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED === '1', deleteAccount: env.ACCOUNT_DELETE_ENABLED === '1' };
+    const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED !== '0', deleteAccount: env.ACCOUNT_DELETE_ENABLED !== '0' };
     const user = await requireUser(request, db);
     if (request.method === 'GET' && path === '/api/account/settings')
-        return json({ features, username: user.username, role: user.role });
+        return json({ features, username: user.username, nickname: user.nickname, role: user.role });
+    const profile = path === '/api/account/profile';
     const deleting = path === '/api/account/delete';
-    if (request.method !== 'POST' || !['/api/account/delete', '/api/account/password'].includes(path))
+    if (request.method !== 'POST' || !['/api/account/delete', '/api/account/password', '/api/account/profile'].includes(path))
         fail(404, 'NOT_FOUND', '接口不存在 / Not found');
-    if (!(deleting ? features.deleteAccount : features.changePassword))
-        fail(503, 'FEATURE_UNAVAILABLE', '此功能尚未通过免费额度验证，请联系管理员 / Feature awaiting CPU validation; contact the administrator');
+    if (!profile && !(deleting ? features.deleteAccount : features.changePassword))
+        fail(503, 'FEATURE_UNAVAILABLE', '此功能暂时不可用，请稍后重试 / Feature temporarily unavailable; please try again later');
     if (deleting && user.role === 'admin')
         fail(403, 'ADMIN_DELETE_FORBIDDEN', '管理员不能自助注销 / Administrators cannot delete themselves');
     await limit(db, `account:${user.id}`, 5, 3600);
@@ -529,6 +530,23 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         fail(409, 'MIGRATION_REQUIRED', '请先联系管理员迁移密码 / Password migration required');
     if (!await verifyPassword(text(data, 'currentPassword', 1, 128, false), current.password_hash))
         fail(400, 'INVALID_PASSWORD', '当前密码不正确 / Incorrect current password');
+    if (profile) {
+        const username = text(data, 'username', 3, 32);
+        if (!/^[a-z0-9_]+$/i.test(username))
+            fail(400, 'INVALID_USERNAME', '用户名仅限字母、数字和下划线 / Use letters, digits and underscores only');
+        const nickname = text(data, 'nickname', 1, 64);
+        try {
+            const result = await db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND nickname=? AND status='approved'")
+                .bind(username, nickname, user.id, current.password_hash, user.username, user.nickname).run();
+            if (!result.meta.changes)
+                fail(409, 'STALE_ACCOUNT', '账号已变化，请刷新后重试 / Account changed; refresh and try again');
+        } catch (error) {
+            if (error instanceof Error && error.message.includes('users.username'))
+                fail(409, 'USERNAME_TAKEN', '用户名已被使用 / Username already taken');
+            throw error;
+        }
+        return json({ ok: true, username, nickname });
+    }
     if (deleting) {
         if (data.username !== user.username)
             fail(400, 'CONFIRMATION_REQUIRED', '请准确输入用户名 / Enter your username exactly');

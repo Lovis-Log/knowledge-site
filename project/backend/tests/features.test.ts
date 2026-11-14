@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import { hashPassword } from '../password';
-async function fixture(enabled = true) {
-    const mf = new Miniflare(convertV4MiniflareOptions({ modules: true, scriptPath: 'out/_worker.js', compatibilityDate: '2026-11-04', compatibilityFlags: ['nodejs_compat'], d1Databases: { DB: 'features' }, bindings: enabled ? { ACCOUNT_CHANGE_PASSWORD_ENABLED: '1', ACCOUNT_DELETE_ENABLED: '1' } : {}, serviceBindings: { ASSETS: () => new Response('PAGE') } }));
+async function fixture(enabled?: boolean) {
+    const mf = new Miniflare(convertV4MiniflareOptions({ modules: true, scriptPath: 'out/_worker.js', compatibilityDate: '2026-11-04', compatibilityFlags: ['nodejs_compat'], d1Databases: { DB: 'features' }, bindings: enabled === undefined ? {} : { ACCOUNT_CHANGE_PASSWORD_ENABLED: enabled ? '1' : '0', ACCOUNT_DELETE_ENABLED: enabled ? '1' : '0' }, serviceBindings: { ASSETS: () => new Response('PAGE') } }));
     const db = await mf.getD1Database('DB');
     for (const file of ['0001_auth.sql', '0002_content.sql', '0003_reader_interactions.sql', '0004_recoverable_invites.sql', '0005_submissions.sql', '0006_community_replies.sql']) {
         const sql = await readFile('backend/migrations/' + file, 'utf8');
@@ -203,4 +203,37 @@ test('deletion removes personal records, rolls back failures, protects admins an
     finally {
         await off.mf.dispose();
     }
+});
+
+test('profile changes verify credentials, enforce uniqueness and preserve identity and sessions', async () => {
+    const f = await fixture();
+    try {
+        const payload = { username: 'NewReader', nickname: '新名字', currentPassword: 'test123' };
+        await f.db.prepare("INSERT INTO favorites(user_id,book) VALUES('reader','sample')").run();
+        assert.equal((await f.r.call('/api/account/profile', { ...payload, currentPassword: 'wrong' })).status, 400);
+        assert.equal((await f.r.call('/api/account/profile', { ...payload, username: 'OTHER' })).status, 409);
+        assert.equal((await f.r.call('/api/account/profile', { ...payload, username: 'invalid-name' })).status, 400);
+        assert.equal((await f.r.call('/api/account/profile', { ...payload, nickname: ' ' })).status, 400);
+        assert.equal((await f.r.call('/api/account/profile', payload)).status, 200);
+        const account = await (await f.r.call('/api/auth/me')).json() as { user: { id: string; username: string; nickname: string } };
+        assert.deepEqual({ id: account.user.id, username: account.user.username, nickname: account.user.nickname }, { id: 'reader', username: 'NewReader', nickname: '新名字' });
+        assert.equal((await f.db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id='reader'").first<{ n: number }>())!.n, 1);
+        assert.equal((await f.r.call('/api/auth/login', { username: 'reader', password: 'test123' })).status, 401);
+        assert.equal((await f.r.call('/api/auth/login', { username: 'newreader', password: 'test123' })).status, 200);
+    } finally { await f.mf.dispose(); }
+});
+
+test('account mutation validation leaves credentials and personal records intact', async () => {
+    const f = await fixture();
+    try {
+        const settings = await (await f.r.call('/api/account/settings')).json() as { features: { changePassword: boolean; deleteAccount: boolean } };
+        assert.deepEqual(settings.features, { changePassword: true, deleteAccount: true });
+        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'new123', confirmPassword: 'different' })).status, 400);
+        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'short', confirmPassword: 'short' })).status, 400);
+        assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'wrong', username: 'reader' })).status, 400);
+        assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'test123', username: 'other' })).status, 400);
+        assert.equal((await f.r.call('/api/auth/me')).status, 200);
+        const csrf = await f.mf.dispatchFetch('https://features.test/api/account/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'Forged', nickname: 'Forged', currentPassword: 'test123' }) });
+        assert.equal(csrf.status, 403);
+    } finally { await f.mf.dispose(); }
 });

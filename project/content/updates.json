@@ -1,5 +1,15 @@
 [
   {
+    "date": "2026-11-14",
+    "features": [
+      {
+        "zh": "账号设置支持修改密码、永久注销、修改用户名和显示名称；登录后显示圆形首字母头像。",
+        "en": "Account settings now support password changes, account deletion, username and display name updates, with circular initial avatars after sign-in."
+      }
+    ],
+    "content": []
+  },
+  {
     "date": "2026-11-13",
     "features": [
       {

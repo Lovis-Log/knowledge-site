@@ -3272,3 +3272,16 @@ html.lm-modal-open {
 }
 
 .feature-page{padding-block:40px;max-width:900px}.feature-page label{display:block;margin:16px 0}.feature-page input,.feature-page textarea,.feature-page select{display:block;width:100%;max-width:700px;padding:10px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);font:inherit}.feature-page textarea{min-height:100px}.feature-page button,.feature-tabs a{cursor:pointer;padding:8px 14px;margin:4px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);font:inherit;border-radius:6px}.feature-tabs{display:flex;gap:12px;margin:20px 0}.feature-tabs [aria-current=page]{border-color:var(--accent);font-weight:700}.submission-text{white-space:pre-wrap;overflow-wrap:anywhere}.feature-page button:disabled{opacity:.5;cursor:default}
+
+/* Account identity and settings */
+.account-avatar{display:inline-flex;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border-radius:50%;color:#fff;font:600 15px/1 var(--font-sans, sans-serif);user-select:none}
+.account-avatar--large{width:64px;height:64px;font-size:30px}
+.account-settings{max-width:760px;padding-bottom:80px}
+.account-settings__identity{display:flex;align-items:center;gap:18px;margin:28px 0 16px}
+.account-settings__identity p{margin:4px 0 0;overflow-wrap:anywhere}
+.account-settings__section{border-top:1px solid var(--rule);margin-top:32px;padding-top:20px}
+.account-settings fieldset{border:0;padding:0;margin:0;min-width:0}
+.account-settings input{border-radius:6px;min-height:44px}
+.account-settings input:focus-visible,.account-settings button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.account-settings button{min-height:44px;margin-left:0}
+.account-settings__danger button{color:#a32c38;border-color:currentColor}
