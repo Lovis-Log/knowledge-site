@@ -5,6 +5,7 @@ import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { CopyButton } from "./copy-button";
+import { PageHeading } from "./page-heading";
 type User = {
   id: string;
   username: string;
@@ -208,12 +209,11 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
           <p className="eyebrow">
             LovisMind · <UiText zh="管理后台" en="Administration" />
           </p>
-          <h1>
-            <UiText
+          <PageHeading
+              kind="users"
               zh={mode === "users" ? "申请与用户" : "邀请码"}
               en={mode === "users" ? "Applications & users" : "Invites"}
-            />
-          </h1>
+          />
         </div>
         {mode === "invites" && <span className="badge">
           <UiText zh={`待审核 ${pending}`} en={`${pending} pending`} />

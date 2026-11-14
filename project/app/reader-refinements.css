@@ -54,6 +54,43 @@ html body .destination-title {
   font: 700 clamp(1.9rem, 4vw, 2.5rem)/1.3 var(--serif);
   letter-spacing: -.025em;
 }
+/* Administration shares the destination typography, including Windows CJK serif fallback. */
+.admin-shell { --serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", "Noto Serif SC", Georgia, serif; }
+.admin-shell :is(h2, h3) { font-family: var(--serif); }
+html body .admin-shell :is(input, select, textarea) {
+  box-sizing: border-box;
+  transition: translate 180ms var(--ease), border-color 180ms var(--ease), box-shadow 180ms var(--ease);
+}
+html body .admin-shell :is(input, select, textarea):focus {
+  translate: 0 -2px;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), var(--lift-1);
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  html body .admin-shell :is(input, select, textarea):hover:not(:disabled) {
+    translate: 0 -2px;
+    border-color: var(--accent);
+    box-shadow: var(--lift-1);
+  }
+  html body .admin-shell button:hover:not(:disabled) {
+    translate: 0 -2px;
+    box-shadow: 0 5px 14px #1b2b451a;
+  }
+}
+html body .admin-shell button:active:not(:disabled) {
+  translate: 0 0;
+  box-shadow: inset 0 1px 3px #1b2b4520;
+}
+html body .admin-shell button:disabled { translate: none; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) {
+  html body .admin-shell :is(button, input, select, textarea),
+  html body .admin-shell :is(button, input, select, textarea):is(:hover, :focus, :active) {
+    translate: none !important;
+    transition: none !important;
+  }
+}
 .destination-title__icon {
   display: grid; place-items: center; flex: 0 0 auto;
   width: 48px; height: 48px; border: 1px solid var(--line-strong);
