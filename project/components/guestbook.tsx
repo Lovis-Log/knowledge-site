@@ -228,7 +228,7 @@ export function GuestbookView() {
         kind: action === "publish" ? "publish" : "action",
         authExpired: isAuthError(caught),
         message: targetGone
-          ? "这条留言已被删除，无法继续回复。草稿和回复对象已保留；提交已停用，请取消回复或重新选择要回复的留言。 / This message was deleted, so the reply cannot be posted. Your draft and reply target have been kept; posting is disabled until you cancel the reply or choose another message."
+          ? "这条留言已不可用，无法继续回复。草稿和回复对象已保留；提交已停用，请取消回复或重新选择要回复的留言。 / This message is no longer available, so the reply cannot be posted. Your draft and reply target have been kept; posting is disabled until you cancel the reply or choose another message."
           : errorMessage(caught),
       });
     } finally {
@@ -363,7 +363,7 @@ export function GuestbookView() {
         ? <SessionRecovery error={error.message} onRetry={retryError} />
         : <p role="alert">{error.message}{" "}
           <button type="button" className="reader-action" disabled={blocked} onClick={retryError}>
-            <UiText zh={error.kind === "action" ? "重试" : "刷新留言"} en={error.kind === "action" ? "Retry" : "Refresh messages"} />
+            <UiText zh="刷新留言" en="Refresh messages" />
           </button>
         </p>)}
       {loading && !board ? <RocketLoader /> :
