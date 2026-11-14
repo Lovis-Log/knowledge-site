@@ -1,4 +1,5 @@
 "use client";
+import { PageHeading } from "./page-heading";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
@@ -199,7 +200,7 @@ export function GuestbookView() {
 
   return (
     <PageEntry className="shell reader-interactions guestbook-page">
-      <h1><UiText zh="留言板" en="Guestbook" /></h1>
+      <PageHeading kind="guestbook" zh="留言板" en="Guestbook" />
       <p id="guestbook-description" className="guestbook-description"><UiText
         zh="这里可以畅所欲言：反馈网站 Bug 和内容问题，分享阅读心得，或聊聊你的想法。遇到问题时，附上相关书名、文章或操作步骤，会更方便排查。"
         en="Feel free to report website bugs or content issues, share your reading experiences, or simply leave a thought. If something goes wrong, include the relevant book, article, or steps so we can look into it."
@@ -222,7 +223,7 @@ export function GuestbookView() {
           </div>
         )}
         <form onSubmit={publish} className="guestbook-form">
-          <label className="guestbook-form__label" htmlFor="guestbook-message">
+          <label className={replyingTo ? "guestbook-form__label" : "reader-sr-only"} htmlFor="guestbook-message">
             {replyingTo
               ? <UiText zh={`回复 @${replyingTo.nickname}`} en={`Reply to @${replyingTo.nickname}`} />
               : <UiText zh="写下你的想法" en="Leave a thought" />}

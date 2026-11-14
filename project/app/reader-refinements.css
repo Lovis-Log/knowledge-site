@@ -45,20 +45,82 @@
 .book-chapters { padding-top: 24px; }
 .chapter-header { padding-bottom: 16px; margin-bottom: 22px; }
 .book-card__cover { position: relative; }
-.book-cursor { position: fixed; left: 0; top: 0; z-index: 120; pointer-events: none; opacity: 0; transition: opacity 140ms ease; will-change: transform; }
-.book-cursor[data-visible="true"] { opacity: 1; }
-.book-cursor__ring { position: absolute; left: -14px; top: -14px; width: 28px; height: 28px; border: 1.5px solid var(--accent); border-radius: 50%; background: #c4a16a1c; box-shadow: 0 0 0 1px #fffdf938; transition: transform 180ms ease, background 180ms ease; }
-.book-cursor[data-pressed="true"] .book-cursor__ring { transform: scale(.76); background: #c4a16a50; }
+.site-header .site-nav :is(a, button) { font-weight: 650; }
+
+/* One heading scale and the same icon treatment for the three reading destinations. */
+html body .destination-title {
+  display: flex; align-items: center; gap: 16px;
+  margin: 0 0 16px; color: var(--ink);
+  font: 700 clamp(1.9rem, 4vw, 2.5rem)/1.3 var(--serif);
+  letter-spacing: -.025em;
+}
+.destination-title__icon {
+  display: grid; place-items: center; flex: 0 0 auto;
+  width: 48px; height: 48px; border: 1px solid var(--line-strong);
+  border-radius: 14px; background: var(--accent-soft); color: var(--accent-ink);
+  box-shadow: inset 0 1px 0 #ffffff80;
+}
+.guestbook-page { padding-block: clamp(30px, 5vw, 58px); }
+
+/* Use translate independently of existing transforms on covers, menus and icons. */
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary) {
+  transition: translate 180ms var(--ease), transform 180ms var(--ease),
+    background-color 180ms var(--ease), color 180ms var(--ease),
+    border-color 180ms var(--ease), box-shadow 180ms var(--ease), opacity 180ms var(--ease);
+}
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 4px;
+}
+.feature-tabs a[aria-current="page"] { background: var(--accent-soft); box-shadow: inset 0 -2px 0 var(--accent); }
+.guestbook-form, .submissions-page form {
+  transition: translate 200ms var(--ease), border-color 200ms var(--ease), box-shadow 200ms var(--ease), background-color 200ms var(--ease);
+}
+html body :is(.submissions-page, .guestbook-page) :is(textarea, input) {
+  transition: translate 180ms var(--ease), border-color 180ms var(--ease), box-shadow 180ms var(--ease), background-color 180ms var(--ease);
+}
+html body .submissions-page :is(textarea, input):focus-visible {
+  border-color: var(--accent); background: var(--page-sheet);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 5px 14px #1b2b450b;
+}
+.guestbook-form:focus-within, .submissions-page form:focus-within {
+  border-color: var(--accent); background: var(--page-sheet);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 26px #1b2b4512;
+}
+@media (hover: hover) and (pointer: fine) {
+  html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):hover {
+    translate: 0 -2px; box-shadow: 0 5px 14px #1b2b451a;
+  }
+  .feature-tabs a:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .guestbook-form:hover, .submissions-page form:hover {
+    translate: 0 -3px; border-color: var(--accent); box-shadow: 0 10px 26px #1b2b4512;
+  }
+  html body .submissions-page :is(textarea, input):not(:disabled):hover {
+    border-color: var(--accent); background: var(--page-sheet); box-shadow: 0 4px 12px #1b2b450b;
+  }
+}
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):active {
+  translate: 0 0; box-shadow: inset 0 1px 3px #1b2b4520;
+}
+@media (max-width: 767px) {
+  html body .destination-title { gap: 12px; }
+  .destination-title__icon { width: 40px; height: 40px; border-radius: 11px; }
+  .destination-title__icon svg { width: 24px; height: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body :is(button, input, textarea, summary, .feature-tabs a, .site-nav a, .library-nav a, .reader-action),
+  html body .guestbook-form, html body .submissions-page form { transition: none !important; translate: none !important; }
+  html body :is(button, input, summary, .feature-tabs a, .site-nav a, .library-nav a, .reader-action):hover,
+  html body .guestbook-form:hover, html body .submissions-page form:hover { translate: none !important; }
+}
+/* Native cursors cover every route, including category shelves and modal controls. */
 @media (hover: hover) and (pointer: fine) {
   html, body, html body * { cursor: url('/brand/cursor-arrow.svg') 4 3, auto; }
-  html body :is(a,button,summary,[role="button"],[role="option"]),
-  html body :is(a,button,summary,[role="button"],[role="option"]) * { cursor: url('/brand/cursor-link.svg') 4 3, pointer; }
-  html body :is(input,textarea,[contenteditable="true"]) { cursor: text; }
-  html body :is(button:disabled,input:disabled) { cursor: not-allowed; }
-}
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .library-page[data-book-cursor="ready"] :is(.book-card__cover,.continue__link),
-  .library-page[data-book-cursor="ready"] :is(.book-card__cover,.continue__link) * { cursor: none; }
+  html body :is(a,button,summary,select,label[for],[role="button"],[role="option"],input:is([type="button"],[type="submit"],[type="checkbox"],[type="radio"])),
+  html body :is(a,button,summary,[role="button"],[role="option"]) * { cursor: url('/brand/cursor-ring.svg') 16 16, pointer !important; }
+  html body :is(input,textarea,[contenteditable="true"],[contenteditable="true"] *) { cursor: url('/brand/cursor-text.svg') 12 16, text !important; }
+  html body input:is([type="button"],[type="submit"],[type="checkbox"],[type="radio"]) { cursor: url('/brand/cursor-ring.svg') 16 16, pointer !important; }
+  html body :is(button:disabled,input:disabled,textarea:disabled,select:disabled,[aria-disabled="true"]),
+  html body :is(button:disabled,[aria-disabled="true"]) * { cursor: not-allowed !important; }
 }
 @media (max-width: 767px) {
   .site-header .brand__tip, .site-header .donate__tip { display: none; }
@@ -101,10 +163,9 @@
   .chapter-controls .segmented__btn { padding-inline: 7px; }
 }
 @media (hover: none), (pointer: coarse) {
-  .book-cursor, .brand__tip, .site-header .donate__tip { display: none; }
+  .brand__tip, .site-header .donate__tip { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .book-cursor { display: none; }
   .brand__tip, .site-header .donate__tip { transition: none; }
   .about__email + .copy-control button, .library-search form { transition: none; animation: none !important; }
 }

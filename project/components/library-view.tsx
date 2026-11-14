@@ -12,7 +12,6 @@ import {
 import { useContent } from "@/content/client";
 import { PageEntry } from "@/components/page-entry";
 import { LibrarySearch } from "@/components/library-search";
-import { BookCursor } from "@/components/book-cursor";
 
 export default function LibraryView() {
   const { getLibrarySections, getAllChapterRefs, taxonomyEnglish } =
@@ -28,7 +27,6 @@ export default function LibraryView() {
   return (
     <div className="shell library-page">
       <h1 className="reader-sr-only"><UiText zh="书库" en="Library" /></h1>
-      <BookCursor />
       <LibraryNav />
 
       <LibrarySearch />

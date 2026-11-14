@@ -6,6 +6,7 @@ import { UiText } from "./ui-text";
 import { uiPlaceholder } from "@/lib/ui-language";
 import { PageEntry } from "./page-entry";
 import styles from "./submissions.module.css";
+import { PageHeading } from "./page-heading";
 
 type Item = {
   id: number;
@@ -119,10 +120,10 @@ export function Submissions() {
   }
 
   return (
-    <PageEntry className={`shell reader-interactions ${styles.page}`}>
+    <PageEntry className={`shell reader-interactions submissions-page ${styles.page}`}>
       <header className={styles.header}>
         <p className={styles.eyebrow}>LOVISMIND / SUBMISSIONS</p>
-        <h1 className={styles.title}><UiText zh="投稿" en="Submissions" /></h1>
+        <PageHeading kind="submissions" zh="投稿" en="Submissions" />
         <p className={styles.lede}><UiText
           zh="留下想分享的文字或链接。投稿仅你和管理员可见；已采用表示决定使用素材，不会自动发布，管理员会另行整理与复核。"
           en="Leave a note or a link you would like to share. Only you and administrators can see submissions. Adoption means the material will be used, not published automatically; an administrator will review it separately."
@@ -130,17 +131,6 @@ export function Submissions() {
       </header>
 
       <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ""; setNotice(false); }} className={styles.form} noValidate>
-        <div className={styles.formHead}>
-          <span className={styles.envelope} aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="m3 7 9 6 9-6" />
-            </svg>
-          </span>
-          <div className={styles.formIntro}>
-            <h2><UiText zh="留下一段文字或一个链接" en="Leave a note or a link" /></h2>
-          </div>
-        </div>
         <label className={styles.field} htmlFor="submission-message">
           <span className={styles.label}>
             <UiText zh="正文" en="Text" />

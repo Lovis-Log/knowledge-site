@@ -6,6 +6,7 @@ import { PageEntry } from "@/components/page-entry";
 import { site } from "@/lib/site";
 import { UiText, UiPair } from "@/components/ui-text";
 import { CopyButton } from "@/components/copy-button";
+import { PageHeading } from "@/components/page-heading";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -17,7 +18,7 @@ export default function AboutPage() {
     <PageEntry className="shell about">
       <header className="page-header">
         <p className="eyebrow"><UiText zh="关于" /></p>
-        <h1 className="page-title"><UiText zh="关于这个网站" /></h1>
+        <PageHeading kind="about" zh="关于这个网站" en="About this website" />
         <p className="page-lede">
           <UiText zh={`${site.name} 是我的个人知识库，记录课程学习、AI 工具实践，以及阅读中值得保留的内容。我把零散的资料和思考整理在这里，方便回顾、查找和继续探索，也分享给有相同兴趣的人。`}
             en={`${site.name} is my personal knowledge base for coursework, hands-on experiments with AI tools, and reading worth keeping. I bring these materials and thoughts together so I can revisit them, find what I need, and share them with people who have similar interests.`} />
@@ -73,7 +74,7 @@ export default function AboutPage() {
           <UiText zh="发现网站 Bug、内容问题，或想分享学习心得，欢迎到" en="To report a website bug or content issue, or share something you learned, visit the " />
           <Link href="/guestbook/" prefetch={false}><UiText zh="留言板" en="guestbook" /></Link>
           <UiText zh="交流。也可以通过邮件联系我：" en=". You can also reach me by email: " />
-          <span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /><UiText zh="。" en="." />
+          <span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" />
         </p>
         <p>
           <UiPair zh={<>本网站的界面设计受到 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a> 启发。网站源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a>。</>}
