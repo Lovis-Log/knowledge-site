@@ -39,12 +39,10 @@ export default function AboutPage() {
         en="Registration needs no email or phone number. An invite or administrator approval grants reading access. Passwords are stored as salted hashes. Favorites belong to your account; submissions are private to you and administrators, while guestbook posts are visible to readers. Deletion removes your account and personal data; independently published notes remain." /></p>
 
       <h2><UiText zh="技术架构" en="Built with" /></h2>
-      <p><UiText
-        zh="笔记以 Markdown 保存在 Obsidian 中，界面使用 Next.js、React 和 TypeScript，部署于 Cloudflare Pages；Worker 与 D1 负责访问控制和账号数据。"
-        en="Markdown notes live in Obsidian. Next.js, React, and TypeScript power the interface on Cloudflare Pages; a Worker and D1 handle access control and account data." /></p>
+      <ul className="about-tech">{['Next.js', 'React', 'TypeScript', 'Cloudflare Pages', 'Cloudflare Workers', 'Cloudflare D1'].map(technology => <li key={technology}>{technology}</li>)}</ul>
 
       <h2><UiText zh="联系与致谢" en="Contact & credits" /></h2>
-      <p><Link href="/guestbook/" prefetch={false}><UiText zh="留言板" en="Guestbook" /></Link>{" · "}<span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
+      <p><UiText zh="邮箱联系站主：" en="Email the site owner: " /><span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
       <p><UiPair
         zh={<>界面灵感来自 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a>。源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>。</>}
         en={<>Interface inspired by <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil’s book ↗</a>. Source on <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>.</>} /></p>

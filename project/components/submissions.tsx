@@ -7,6 +7,7 @@ import { uiPlaceholder } from "@/lib/ui-language";
 import { PageEntry } from "./page-entry";
 import styles from "./submissions.module.css";
 import { PageHeading } from "./page-heading";
+import { RocketLoader } from "./rocket-loader";
 
 type Item = {
   id: number;
@@ -183,7 +184,7 @@ export function Submissions() {
           )}
         </div>
         {loading && !board
-          ? <p className={styles.loading} role="status"><UiText zh="正在加载投稿…" en="Loading submissions…" /></p>
+          ? <div className={styles.loading}><RocketLoader /></div>
           : board && <>
             {board.items.length === 0 && <p className={styles.empty}><UiText zh="暂无投稿" en="No submissions yet" /></p>}
             <ul className={styles.list}>

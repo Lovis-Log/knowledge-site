@@ -1,5 +1,6 @@
 "use client";
 import { PageHeading } from "./page-heading";
+import { RocketLoader } from "./rocket-loader";
 
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
@@ -253,7 +254,7 @@ export function GuestbookView() {
       {error && <p role="alert">{error}{" "}
         <button type="button" className="reader-action" disabled={blocked} onClick={() => reload()}><UiText zh="刷新留言" en="Refresh messages" /></button>
       </p>}
-      {loading && !board ? <p role="status"><UiText zh="正在加载留言…" en="Loading messages…" /></p> :
+      {loading && !board ? <RocketLoader /> :
         board && <>
           {board.items.length === 0 && <p><UiText zh="暂无留言" en="No messages yet" /></p>}
           <ul className="reader-items">

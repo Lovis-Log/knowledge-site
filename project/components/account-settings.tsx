@@ -6,6 +6,7 @@ import { UiText } from '@/components/ui-text';
 import { AccountAvatar } from '@/components/account-avatar';
 import { PageHeading } from '@/components/page-heading';
 import { PasswordInput } from '@/components/password-input';
+import { RocketLoader } from '@/components/rocket-loader';
 
 type Settings = { username: string; role: string; features: { changePassword: boolean; deleteAccount: boolean } };
 type Action = 'profile' | 'password' | 'delete';
@@ -73,7 +74,7 @@ export function AccountSettings() {
   return <section className="shell feature-page account-settings">
     <PageHeading kind="settings" zh="账号设置" en="Account settings" />
     {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
-    {!settings ? error ? <button type="button" onClick={() => { setError(''); setAttempt(value => value + 1); }}><UiText zh="重新加载" en="Retry" /></button> : <p role="status"><UiText zh="加载中…" en="Loading…" /></p> : <>
+    {!settings ? error ? <button type="button" onClick={() => { setError(''); setAttempt(value => value + 1); }}><UiText zh="重新加载" en="Retry" /></button> : <RocketLoader /> : <>
       <div className="account-settings__identity"><AccountAvatar username={settings.username} large /><strong>{settings.username}</strong>
         <button ref={renameButton} type="button" className="account-settings__rename" disabled={busy !== null} aria-expanded={editing} aria-controls="account-rename" onClick={() => { setEditing(value => !value); setSecurityPanel(null); setError(''); setNotice(''); }}><UiText zh="修改用户名" en="Change username" /></button>
       </div>

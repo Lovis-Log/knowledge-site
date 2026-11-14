@@ -6,6 +6,7 @@ import { UiText } from "@/components/ui-text";
 import { AccountIcon } from "@/components/account-icon";
 import { AccountAvatar } from "@/components/account-avatar";
 import { DestinationIcon } from "@/components/page-heading";
+import { RocketLoader } from "@/components/rocket-loader";
 import { api } from "@/lib/api";
 import { uiLabel } from "@/lib/ui-language";
 
@@ -116,7 +117,7 @@ export function AccountMenu({ children }: { children?: ReactNode }) {
               <button type="button" onClick={() => { setLookupError(""); setAttempt((value) => value + 1); }}>
                 <UiText zh="重试" en="Retry" />
               </button>
-            </> : <p role="status"><UiText zh="正在读取账号…" en="Checking account…" /></p>}
+            </> : <RocketLoader compact />}
           </div>
         )}
         {open && ready && !user && (

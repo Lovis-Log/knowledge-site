@@ -1,4 +1,5 @@
 "use client";
+import { RocketLoader } from "./rocket-loader";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
@@ -306,9 +307,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
             </select>
           </label>
           {!loaded && !error && (
-            <p role="status">
-              <UiText zh="正在加载…" en="Loading…" />
-            </p>
+            <RocketLoader />
           )}
           <div className="admin-table-wrap">
             <table className="admin-table">

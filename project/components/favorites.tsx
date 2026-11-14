@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { PageHeading } from "./page-heading";
+import { RocketLoader } from "./rocket-loader";
 
 type Target = { book: string; chapter?: string };
 type Favorite = Required<Target> & {
@@ -102,7 +103,7 @@ export function FavoritesView() {
       {error && <p role="alert">{error}</p>}
       {!items && (error ?
         <button type="button" className="reader-action" onClick={() => { setError(""); retry(attempt + 1); }}><UiText zh="重试" en="Retry" /></button> :
-        <p role="status"><UiText zh="正在加载收藏…" en="Loading favorites…" /></p>)}
+        <RocketLoader />)}
       {items && [false, true].map((chapters) => {
         const entries = items.filter((item) => Boolean(item.chapter) === chapters);
         return (
