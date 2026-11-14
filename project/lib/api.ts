@@ -112,12 +112,13 @@ export function safeNext(value: string | null) {
     !value.startsWith("/") ||
     value.startsWith("//") ||
     value.includes("\\") ||
-    /[\r\n]/.test(value)
+    /[\u0000-\u0020\u007f]/.test(value)
   )
     return "/library/";
   const url = new URL(value, window.location.origin);
   return url.origin === window.location.origin &&
-    !["/login/", "/register/", "/reset-password/"].includes(url.pathname)
+    !url.pathname.startsWith("//") &&
+    !/^\/(?:login|register|reset-password)\/?$/.test(url.pathname)
     ? url.pathname + url.search + url.hash
     : "/library/";
 }

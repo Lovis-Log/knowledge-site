@@ -1,6 +1,26 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { api, ApiError } from "../../lib/api";
+import { api, ApiError, safeNext } from "../../lib/api";
+
+test("login destinations remain local after URL normalization and re-parsing", () => {
+  const previous = Object.getOwnPropertyDescriptor(globalThis, "window");
+  const origin = "https://lovismind.test";
+  Object.defineProperty(globalThis, "window", { configurable: true, value: { location: { origin } } });
+  try {
+    for (const value of [null, "", "https://evil.example", "//evil.example", "/..//evil.example", "/.//evil.example", "/%2e%2e//evil.example", "/\\evil.example", "/\t/evil.example", "/login", "/register/", "/reset-password/?next=/library/"]) {
+      assert.equal(safeNext(value), "/library/", String(value));
+      assert.equal(new URL(safeNext(value), origin).origin, origin);
+    }
+    for (const value of ["/library/", "/books/example/#chapters-heading", "/guestbook/?page=2", "/books/../library/"]) {
+      const result = safeNext(value);
+      assert.equal(new URL(result, origin).origin, origin);
+      assert.equal(result, new URL(value, origin).pathname + new URL(value, origin).search + new URL(value, origin).hash);
+    }
+  } finally {
+    if (previous) Object.defineProperty(globalThis, "window", previous);
+    else Reflect.deleteProperty(globalThis, "window");
+  }
+});
 
 test("Cloudflare JSON resource-limit responses receive a clear message", async () => {
   const original = globalThis.fetch;
