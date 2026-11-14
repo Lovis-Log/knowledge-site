@@ -6,7 +6,7 @@ import { digest, hashPassword } from "../password";
 import { scrypt } from "@noble/hashes/scrypt.js";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { randomBytes } from "node:crypto";
-import { decryptInvite, importInviteKey, storeInvite } from "../invites";
+import { decryptInvite, hashInviteCode, importInviteKey, importInviteKeys, storeInvite } from "../invites";
 
 const origin = "https://lovismind.test";
 const password = "Test password with sufficient length!";
@@ -687,12 +687,15 @@ test("duplicate usernames and failed inserts do not consume an invite", async ()
   assert.ok(!publicList.includes("code_ciphertext"));
 });
 
-test("six-character invites persist encrypted and accept lowercase without changing legacy tokens", async () => {
+test("six-character invites persist keyed hashes and accept legacy SHA short codes", async () => {
   const created = await invite(3);
   assert.match(created.code, /^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/);
   const stored = await db.prepare("SELECT code_hash,code_ciphertext FROM invites WHERE id=?")
     .bind(created.id).first<{ code_hash: string; code_ciphertext: string }>();
-  assert.equal(stored!.code_hash, await digest(created.code));
+  const keys = await importInviteKeys(inviteEncryptionKey);
+  assert.equal(stored!.code_hash, await hashInviteCode(created.code, keys));
+  assert.match(stored!.code_hash, /^hmac-sha256:v1:[a-f0-9]{64}$/);
+  assert.notEqual(stored!.code_hash, await digest(created.code));
   assert.ok(!stored!.code_ciphertext.includes(created.code));
   const key = await importInviteKey(inviteEncryptionKey);
   assert.equal(await decryptInvite(stored!.code_ciphertext, created.id, key), created.code);
@@ -705,6 +708,16 @@ test("six-character invites persist encrypted and accept lowercase without chang
     const data = await list.json() as { invites: { id: string; code: string | null }[] };
     assert.equal(data.invites.find((row) => row.id === created.id)?.code, created.code);
   }
+  // A short code created before keyed hashes keeps its keyless SHA-256 row and
+  // remains redeemable (lowercase included) until the backfill runs.
+  await db.prepare("INSERT INTO invites(id,code_hash,expires_at,max_uses,created_by,created_at) VALUES(?,?,unixepoch()+3600,2,'admin-id',unixepoch())")
+    .bind("legacy-short-invite", await digest("LEGACY")).run();
+  assert.equal((await client().call("/api/auth/register", "POST", registration("legacy_short_user", "legacy"))).status, 201);
+  assert.equal(
+    (await db.prepare("SELECT code_ciphertext FROM invites WHERE id='legacy-short-invite'")
+      .first<{ code_ciphertext: string | null }>())?.code_ciphertext,
+    null,
+  );
   const legacyCode = randomBytes(32).toString("hex");
   await db.prepare("INSERT INTO invites(id,code_hash,expires_at,max_uses,created_by,created_at) VALUES(?,?,unixepoch()+3600,2,'admin-id',unixepoch())")
     .bind("legacy-invite", await digest(legacyCode)).run();
@@ -721,17 +734,18 @@ test("six-character invites persist encrypted and accept lowercase without chang
 });
 
 test("invite collisions retry at most five times and do not overwrite existing codes", async () => {
-  const key = await importInviteKey(inviteEncryptionKey);
+  const keys = await importInviteKeys(inviteEncryptionKey);
   const params = { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "admin-id" };
-  await storeInvite(db, params, key, () => "KKKKK2");
+  await storeInvite(db, params, keys, () => "KKKKK2");
   let calls = 0;
-  const fresh = await storeInvite(db, params, key, () => ++calls < 3 ? "KKKKK2" : "KKKKK3");
+  const fresh = await storeInvite(db, params, keys, () => ++calls < 3 ? "KKKKK2" : "KKKKK3");
   assert.equal(calls, 3);
   assert.equal(fresh.code, "KKKKK3");
   calls = 0;
-  await assert.rejects(storeInvite(db, params, key, () => { calls++; return "KKKKK2"; }), /INVITE_GENERATION_BUSY/);
+  await assert.rejects(storeInvite(db, params, keys, () => { calls++; return "KKKKK2"; }), /INVITE_GENERATION_BUSY/);
   assert.equal(calls, 5);
-  assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await digest("KKKKK2")).first<{ count: number }>())?.count, 1);
+  assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await hashInviteCode("KKKKK2", keys)).first<{ count: number }>())?.count, 1);
+  assert.equal((await db.prepare("SELECT count(*) AS count FROM invites WHERE code_hash=?").bind(await digest("KKKKK2")).first<{ count: number }>())?.count, 0);
 });
 
 test("concurrent case-insensitive username collisions consume only the successful invite use", async () => {
@@ -874,6 +888,57 @@ test("one-use password reset revokes sessions, rejects old password and preserve
       })
     ).status,
     400,
+  );
+});
+test("disable revokes outstanding reset credentials and blocks redemption until re-enabled", async () => {
+  const access = await invite(),
+    reader = client(),
+    username = "disabled_reset_reader";
+  assert.equal((await reader.call("/api/auth/register", "POST", registration(username, access.code))).status, 201);
+  assert.equal((await reader.call("/api/auth/login", "POST", { username, password })).status, 200);
+  const account = (await user(username))!;
+  const issued = await admin.call(
+    `/api/admin/users/${account.id}/reset-credential`,
+    "POST",
+    { note: "Issued before disable" },
+  );
+  assert.equal(issued.status, 201);
+  const { token } = (await issued.json()) as { token: string };
+  assert.equal((await review(username, "disable")).status, 200);
+  assert.equal(
+    (await db.prepare("SELECT count(*) AS count FROM reset_tokens WHERE user_id=?")
+      .bind(account.id).first<{ count: number }>())?.count,
+    0,
+  );
+  const nextPassword = "654321";
+  const reset = (candidate: string) =>
+    reader.call("/api/auth/reset-password", "POST", {
+      token: candidate,
+      password: nextPassword,
+      confirmPassword: nextPassword,
+    });
+  assert.equal((await reset(token)).status, 400);
+  // Even a row that a concurrent disable did not remove is refused by the
+  // final atomic UPDATE while the account is disabled.
+  const survivor = randomBytes(32).toString("hex");
+  await db.prepare("INSERT INTO reset_tokens(token_hash,user_id,expires_at) VALUES(?,?,unixepoch()+900)")
+    .bind(await digest(survivor), account.id).run();
+  assert.equal((await reset(survivor)).status, 400);
+  await db.prepare("DELETE FROM reset_tokens WHERE user_id=?").bind(account.id).run();
+  assert.equal((await review(username, "enable")).status, 200);
+  // The credential issued before the disable was revoked, not merely suspended.
+  assert.equal((await reset(token)).status, 400);
+  const reissued = await admin.call(
+    `/api/admin/users/${account.id}/reset-credential`,
+    "POST",
+    { note: "Issued after re-enable" },
+  );
+  assert.equal(reissued.status, 201);
+  const fresh = ((await reissued.json()) as { token: string }).token;
+  assert.equal((await reset(fresh)).status, 200);
+  assert.equal(
+    (await client().call("/api/auth/login", "POST", { username, password: nextPassword })).status,
+    200,
   );
 });
 test("rejection blocks login, only authenticated admins can view reasons and initialize admins through deployment", async () => {

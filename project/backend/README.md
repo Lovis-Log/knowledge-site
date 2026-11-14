@@ -37,9 +37,9 @@ npm run benchmark:auth
 
 - `users`：保留输入大小写、唯一性与登录不区分大小写的用户名，版本化 scrypt 密码哈希、昵称、理由、角色、状态和审核版本。
 - `sessions`：256 位随机令牌的 SHA-256 哈希，七天过期。`__Host-` Cookie 使用 Secure、HttpOnly、SameSite=Lax；不会存入 localStorage。
-- `invites`：新邀请码为 6 位大写字母与数字（不分组，排除 0、1、I、O），接受小写输入。保存 SHA-256 哈希及 AES-256-GCM 加密副本；加密使用每条记录独立的 96 位随机 IV，并绑定管理编号作为附加认证数据。管理员可长期查看和复制，撤销或过期后仍可查看。旧 64 位邀请码仍有效，只有哈希的旧记录无法回显。插入用户的同一个数据库事务通过触发器验证邀请码并扣次数，失败回滚。
+- `invites`：新邀请码为 6 位大写字母与数字（不分组，排除 0、1、I、O），接受小写输入。新短码保存带版本前缀的 HMAC-SHA-256 哈希及 AES-256-GCM 加密副本；HMAC 密钥由 `INVITE_CODE_ENCRYPTION_KEY` 的同一密钥材料经 HKDF 独立派生，与 AES 用途隔离，不新增 Secret 或数据库字段。查找同时接受旧短码和旧 64 位长码的无密钥 SHA-256 哈希，因此回填前的旧短码仍可注册。加密使用每条记录独立的 96 位随机 IV，并绑定管理编号作为附加认证数据。管理员可长期查看和复制，撤销或过期后仍可查看。旧 64 位邀请码仍有效，只有哈希的旧记录无法回显。插入用户的同一个数据库事务通过触发器验证邀请码并扣次数，失败回滚。
 - `review_logs`：审核动作、操作者、内部备注。审核接口使用账号版本防止覆盖其他管理员的操作。
-- `reset_tokens`：一次性、十五分钟有效的重置凭据哈希；签发及兑换均撤销旧会话。核实身份和安全转交由管理员完成；不发送邮件、不改变审核状态。
+- `reset_tokens`：一次性、十五分钟有效的重置凭据哈希；签发及兑换均撤销旧会话。禁用账号时在同一数据库事务中撤销未兑换凭据，兑换的最终原子更新也拒绝 disabled 账号；pending/rejected 账号的既有重置策略不变。核实身份和安全转交由管理员完成；不发送邮件、不改变审核状态。
 - `rate_limits`：D1 原子固定窗口计数；注册、登录、邀请码及重置均有限额。
 - 留言发布单独采用每账号每分钟 20 条的窗口（`guestbook:v2:*`），替代旧的十分钟 5 条；其他接口的限额不变。达到限额返回 `GUESTBOOK_RATE_LIMITED` 与 `Retry-After` 秒数，前端保留草稿并显示倒计时，到期恢复发布。
 - `content_versions`、`content_entries`、`content_current`：按原 slug 导入完整内容和剥离正文的目录数据，导入完成后才激活版本。版本由标准化内容摘要确定；重复导入不会覆写已完成的版本。新 Worker 读取自身绑定版本，全局指针供历史部署兼容。
@@ -98,9 +98,33 @@ CSRF 调用示例：先 GET 获取 `{token}` 和 Cookie，再在同源修改请�
 
 新环境启用可回显邀请码前，先在目标数据库执行 `0004_recoverable_invites.sql` 迁移，并为目标 Pages 项目配置 `INVITE_CODE_ENCRYPTION_KEY` Secret，再发布应用。预览和生产使用各自独立密钥；不自动发布或修改云端密钥。该值为随机 32 字节的标准 Base64 编码，通过受控本地工具生成并安全输入，不放进命令参数、Wrangler 配置或 Git。
 
-本地将独立密钥写入已忽略的 `.dev.vars`：`INVITE_CODE_ENCRYPTION_KEY=<32 字节随机值的 Base64 编码>`，再运行 `npm run db:migrate`。数据库不存储明文，加密密钥必须备份并长期保留；随意替换或丢失会导致已有加密邀请码无法回显。密钥轮换需另做数据重加密，本次不实现轮换。缺少或无效密钥时，生成新码和读取加密记录明确返回 503，不影响已有邀请码注册或只有旧记录的列表读取。
+本地将独立密钥写入已忽略的 `.dev.vars`：`INVITE_CODE_ENCRYPTION_KEY=<32 字节随机值的 Base64 编码>`，再运行 `npm run db:migrate`。数据库不存储明文，加密密钥必须备份并长期保留；随意替换或丢失会导致已有加密邀请码无法回显。密钥轮换需另做数据重加密，本次不实现轮换。缺少或无效密钥时，生成新码和读取加密记录明确返回 503；注册仍可用旧短码和旧长码的无密钥 SHA-256 查找，但已回填的 HMAC 短码需要可用密钥，否则按无效邀请拒绝（fail closed）。只有旧记录的列表读取不因缺钥失败。
 
 管理列表仍通过原有管理员鉴权，前端仅在已鉴权页面读取明文，不存入浏览器持久存储。密码重置凭据继续仅本次展示，登录会话、CSRF 和重置令牌保持 256 位随机长度。短码生成使用唯一约束处理碰撞，最多尝试 5 次；原有注册和邀请码限流、次数、过期和撤销检查继续生效。
+
+新短码的查找哈希为 HMAC-SHA-256。HMAC 密钥不是 AES CryptoKey，也不是直接拿原始 Secret 当 HMAC 密钥：两者都从 `INVITE_CODE_ENCRYPTION_KEY` 的 32 字节材料导入，但 HMAC 子密钥经 HKDF-SHA-256 以固定用途标签派生。新哈希带 `hmac-sha256:v1:` 前缀，未新增数据库字段。旧短码和旧 64 位长码继续按原来的无密钥 SHA-256 查找，因此发布新 Worker 后、回填完成前旧短码仍能注册；回填后旧短码只剩 HMAC 哈希。
+
+### 旧短码哈希回填
+
+**发布顺序**：先把包含 HMAC 查找的新 Worker 发布到目标环境并确认生产部署成功，再对同一环境执行回填。不要在新 Worker 尚未上线时回填。旧 Worker 只计算无密钥 SHA-256，回填后无法识别这些短码；回滚到旧 Worker 会破坏短码注册。需要回滚时，应恢复支持 HMAC 的 Worker 版本，或撤销并重新签发受影响的短码；本工具不提供逆向回填，也没有数据库结构回滚。
+
+回填工具只处理仍有加密副本的短码。旧 64 位长码没有加密副本，保持 SHA-256 兼容；旧长码的 256 位随机量无法从哈希反推，保留该查找不降低实际安全性。若某条旧短码只有 SHA-256 哈希、没有可解密副本，则无法回填，继续走兼容查找；由于 6 位短码的 SHA-256 可被离线穷举，应尽快撤销并以新 Worker 重新签发。
+
+工具从 `project/` 运行，默认只检查、不写数据库；`--apply` 才执行更新。密钥从受控文件或环境读取，只在内存中使用，不打印密钥、明文邀请码或任何 SQL 哈希：
+
+```sh
+# 检查（只读）。密钥文件可以是只含 Base64 值的文件，或含 INVITE_CODE_ENCRYPTION_KEY=... 的 .dev.vars 格式
+npx tsx scripts/migrate-invite-hashes.ts --key-file=<受控密钥文件>
+
+# 本地 D1 演练
+npx tsx scripts/migrate-invite-hashes.ts --key-file=<受控密钥文件> --apply
+
+# 预览、生产：--remote 必须同时指定 --env
+npx tsx scripts/migrate-invite-hashes.ts --remote --env=preview --key-file=<受控密钥文件> --apply
+npx tsx scripts/migrate-invite-hashes.ts --remote --env=production --key-file=<受控密钥文件> --apply
+```
+
+也可用 `INVITE_CODE_ENCRYPTION_KEY` 环境变量代替 `--key-file`；命令参数不接受密钥本身，避免进入 shell 历史和进程列表。工具只读取 `invites` 的编号、旧哈希和密文，先在内存中解密并验证全部可恢复记录，任何一条失败都会在写入前中止。写入使用“编号 + 旧哈希”比较交换守卫并带 `RETURNING`，被并发修改的记录不会被覆盖；可安全重复执行，已回填的记录计为已迁移。临时 SQL 与日志只写入已忽略的 `.backend-build`，尽可能限制文件权限，并在 `finally` 中删除。先跑检查和预览，确认输出后再对生产 `--apply`。
 
 Cloudflare Secret 设置及本地文件规则见 [Pages bindings / Secrets](https://developers.cloudflare.com/pages/functions/bindings/#secrets)，加密 API 见 [Workers Web Crypto](https://developers.cloudflare.com/workers/runtime-apis/web-crypto/)。
 

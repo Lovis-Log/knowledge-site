@@ -4,7 +4,30 @@ import { randomBytes } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { Miniflare, convertV4MiniflareOptions } from "miniflare";
 import { digest } from "../password";
-import { importInviteKey, storeInvite } from "../invites";
+import {
+  hashInviteCode,
+  importInviteKeys,
+  inviteCodeHashes,
+  normalizeInviteCode,
+  storeInvite,
+} from "../invites";
+
+test("short invite lookup uses a keyed HMAC derived separately from the encryption key", async () => {
+  const secret = randomBytes(32).toString("base64");
+  const keys = await importInviteKeys(secret);
+  const normalized = normalizeInviteCode("abcdef");
+  const keyed = await hashInviteCode("abcdef", keys);
+  assert.equal(normalized, "ABCDEF");
+  assert.match(keyed, /^hmac-sha256:v1:[a-f0-9]{64}$/);
+  assert.notEqual(keyed, await digest(normalized));
+  assert.deepEqual(await inviteCodeHashes("abcdef", keys), [keyed, await digest(normalized)]);
+  assert.deepEqual(await inviteCodeHashes("abcdef", null), [await digest(normalized)]);
+  // Legacy 64-character codes never use the keyed short-code lookup.
+  const legacy = randomBytes(32).toString("hex");
+  assert.deepEqual(await inviteCodeHashes(legacy, keys), [await digest(legacy)]);
+  const other = await importInviteKeys(randomBytes(32).toString("base64"));
+  assert.notEqual(await hashInviteCode("abcdef", other), keyed);
+});
 
 async function fixture(secret?: string) {
   const mf = new Miniflare(convertV4MiniflareOptions({
@@ -40,8 +63,8 @@ for (const secret of [undefined, "invalid-key"]) {
       assert.equal(response.status, 503);
       assert.equal((await response.json() as { code: string }).code, "INVITE_KEY_UNAVAILABLE");
       assert.equal((await f.db.prepare("SELECT count(*) AS count FROM invites").first<{ count: number }>())?.count, 0);
-      const key = await importInviteKey(randomBytes(32).toString("base64"));
-      await storeInvite(f.db, { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "storage-admin" }, key);
+      const keys = await importInviteKeys(randomBytes(32).toString("base64"));
+      await storeInvite(f.db, { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "storage-admin" }, keys);
       assert.equal((await f.call("GET")).status, 503);
     } finally { await f.mf.dispose(); }
   });
@@ -51,7 +74,9 @@ test("tampered encrypted invite does not leak storage details", async () => {
   const secret = randomBytes(32).toString("base64");
   const f = await fixture(secret);
   try {
-    const created = await storeInvite(f.db, { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "storage-admin" }, await importInviteKey(secret));
+    const created = await storeInvite(f.db, { maxUses: 1, expiresAt: Math.floor(Date.now() / 1000) + 3600, createdAt: Math.floor(Date.now() / 1000), adminId: "storage-admin" }, await importInviteKeys(secret));
+    const stored = await f.db.prepare("SELECT code_hash FROM invites WHERE id=?").bind(created.id).first<{ code_hash: string }>();
+    assert.match(stored!.code_hash, /^hmac-sha256:v1:/);
     await f.db.prepare("UPDATE invites SET code_ciphertext='v1:invalid:invalid' WHERE id=?").bind(created.id).run();
     const response = await f.call("GET");
     assert.equal(response.status, 503);

@@ -7,7 +7,7 @@ import {
   needsPasswordUpgrade,
 } from "./password";
 import { isValidPassword } from "../lib/password-policy";
-import { decryptInvite, importInviteKey, InviteStorageError, normalizeInviteCode, storeInvite } from "./invites";
+import { decryptInvite, importInviteKey, importInviteKeys, importInviteKeysIfConfigured, InviteStorageError, inviteCodeHashes, isShortInviteCode, storeInvite } from "./invites";
 
 // Secrets are provisioned separately from Wrangler's generated resource bindings.
 type AppEnv = Env & { INVITE_CODE_ENCRYPTION_KEY?: string; ACCOUNT_CHANGE_PASSWORD_ENABLED?: string; ACCOUNT_DELETE_ENABLED?: string };
@@ -612,11 +612,18 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     let inviteId: string | null = null;
     if (code) {
       await limit(db, `invite:${ip}`, 10, 3600);
+      // Short codes may already carry the keyed HMAC hash; without a usable
+      // key only the historical SHA-256 hash is looked up, which fails closed
+      // for keyed rows but keeps un-backfilled codes working.
+      const keys = isShortInviteCode(code)
+        ? await importInviteKeysIfConfigured(env.INVITE_CODE_ENCRYPTION_KEY)
+        : null;
+      const hashes = await inviteCodeHashes(code, keys);
       const invite = await db
         .prepare(
-          "SELECT id FROM invites WHERE code_hash=? AND revoked=0 AND expires_at>? AND uses<max_uses",
+          `SELECT id FROM invites WHERE code_hash IN (${hashes.map(() => "?").join(",")}) AND revoked=0 AND expires_at>? AND uses<max_uses`,
         )
-        .bind(await digest(normalizeInviteCode(code)), now())
+        .bind(...hashes, now())
         .first<{ id: string }>();
       if (!invite)
         fail(
@@ -755,7 +762,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     const tokenHash = await digest(token);
     const valid = await db
       .prepare(
-        "SELECT user_id FROM reset_tokens WHERE token_hash=? AND used_at IS NULL AND expires_at>?",
+        "SELECT t.user_id FROM reset_tokens t JOIN users u ON u.id=t.user_id WHERE t.token_hash=? AND t.used_at IS NULL AND t.expires_at>? AND u.status!='disabled'",
       )
       .bind(tokenHash, now())
       .first();
@@ -770,7 +777,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     const results = await db.batch([
       db
         .prepare(
-          "UPDATE users SET password_hash=?,version=version+1 WHERE id=(SELECT user_id FROM reset_tokens WHERE token_hash=? AND used_at IS NULL AND expires_at>?)",
+          "UPDATE users SET password_hash=?,version=version+1 WHERE status!='disabled' AND id=(SELECT user_id FROM reset_tokens WHERE token_hash=? AND used_at IS NULL AND expires_at>?)",
         )
         .bind(hash, tokenHash, time),
       db
@@ -865,7 +872,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
           "INVALID_TRANSITION",
           "当前状态不支持此操作 / Invalid status transition",
         );
-      const result = await db.batch([
+      const statements = [
         db
           .prepare(
             "UPDATE users SET status=?,version=version+1 WHERE id=? AND version=? AND status=?",
@@ -876,7 +883,18 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
             "INSERT INTO review_logs(id,user_id,admin_id,action,note,created_at) SELECT ?,?,?,?,?,? WHERE changes()=1",
           )
           .bind(crypto.randomUUID(), user.id, admin.id, action, note, now()),
-      ]);
+      ];
+      if (transition.to === "disabled")
+        // Retire outstanding reset credentials in the same transaction as the
+        // status change, so a concurrent redemption cannot outlive a disable.
+        statements.push(
+          db
+            .prepare(
+              "DELETE FROM reset_tokens WHERE user_id=? AND EXISTS(SELECT 1 FROM users WHERE id=? AND status='disabled' AND version=?)",
+            )
+            .bind(user.id, user.id, user.version + 1),
+        );
+      const result = await db.batch(statements);
       if (!result[0].meta.changes)
         fail(
           409,
@@ -983,8 +1001,8 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
           "INVALID_INPUT",
           "次数须为 1–1000，有效期不超过一年 / Invalid invite limits",
         );
-      const key = await importInviteKey(env.INVITE_CODE_ENCRYPTION_KEY);
-      return json(await storeInvite(db, { maxUses, expiresAt, adminId: admin.id, createdAt: now() }, key), 201);
+      const keys = await importInviteKeys(env.INVITE_CODE_ENCRYPTION_KEY);
+      return json(await storeInvite(db, { maxUses, expiresAt, adminId: admin.id, createdAt: now() }, keys), 201);
     }
     const invite = path.match(/^\/api\/admin\/invites\/([^/]+)$/);
     if (method === "PATCH" && invite) {
