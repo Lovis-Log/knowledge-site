@@ -63,12 +63,12 @@ html body .destination-title {
 .guestbook-page { padding-block: clamp(30px, 5vw, 58px); }
 
 /* Use translate independently of existing transforms on covers, menus and icons. */
-html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary) {
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .reader-action, summary) {
   transition: translate 180ms var(--ease), transform 180ms var(--ease),
     background-color 180ms var(--ease), color 180ms var(--ease),
     border-color 180ms var(--ease), box-shadow 180ms var(--ease), opacity 180ms var(--ease);
 }
-html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):focus-visible {
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .reader-action, summary):focus-visible {
   outline: 2px solid var(--accent); outline-offset: 4px;
 }
 .feature-tabs a[aria-current="page"] { background: var(--accent-soft); box-shadow: inset 0 -2px 0 var(--accent); }
@@ -87,7 +87,7 @@ html body .submissions-page :is(textarea, input):focus-visible {
   box-shadow: 0 0 0 3px var(--accent-soft), 0 10px 26px #1b2b4512;
 }
 @media (hover: hover) and (pointer: fine) {
-  html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):hover {
+  html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):hover {
     translate: 0 -2px; box-shadow: 0 5px 14px #1b2b451a;
   }
   .feature-tabs a:hover { background: var(--accent-soft); border-color: var(--accent); }
@@ -98,7 +98,7 @@ html body .submissions-page :is(textarea, input):focus-visible {
     border-color: var(--accent); background: var(--page-sheet); box-shadow: 0 4px 12px #1b2b450b;
   }
 }
-html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .library-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):active {
+html body :is(button, input[type="submit"], input[type="button"], .feature-tabs a, .site-nav a, .reader-action, summary):not(:disabled):not([aria-disabled="true"]):active {
   translate: 0 0; box-shadow: inset 0 1px 3px #1b2b4520;
 }
 @media (max-width: 767px) {
@@ -107,9 +107,9 @@ html body :is(button, input[type="submit"], input[type="button"], .feature-tabs 
   .destination-title__icon svg { width: 24px; height: 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html body :is(button, input, textarea, summary, .feature-tabs a, .site-nav a, .library-nav a, .reader-action),
+  html body :is(button, input, textarea, summary, .feature-tabs a, .site-nav a, .reader-action),
   html body .guestbook-form, html body .submissions-page form { transition: none !important; translate: none !important; }
-  html body :is(button, input, summary, .feature-tabs a, .site-nav a, .library-nav a, .reader-action):hover,
+  html body :is(button, input, summary, .feature-tabs a, .site-nav a, .reader-action):hover,
   html body .guestbook-form:hover, html body .submissions-page form:hover { translate: none !important; }
 }
 /* Native cursors cover every route, including category shelves and modal controls. */

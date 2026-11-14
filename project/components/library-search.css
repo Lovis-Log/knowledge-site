@@ -3,6 +3,9 @@
 .library-search form:focus-within { border-color: var(--accent); outline: 2px solid #b3844126; }
 .library-search input { width: 100%; min-width: 0; padding: 10px 0; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; }
 .library-search button { border: 0; background: var(--ink); color: #fff; border-radius: 9px; padding: 10px 15px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.library-search input::-webkit-search-cancel-button { display: none; }
+.library-search .library-search__clear { display: grid; place-items: center; flex: 0 0 auto; width: 32px; height: 32px; padding: 0; background: transparent; color: var(--muted); }
+.library-search .library-search__clear:hover { color: var(--ink); background: var(--accent-soft); }
 .library-search__suggestions { position: absolute; top: calc(100% + 8px); width: 100%; overflow: hidden; border: 1px solid var(--rule); border-radius: 14px; background: var(--paper); box-shadow: 0 18px 45px #1b2b4326; }
 .library-search__suggestions[hidden] { display: none; }
 .library-search ul { list-style: none; padding: 4px; margin: 0; max-height: 328px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--rule) transparent; }

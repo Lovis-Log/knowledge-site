@@ -149,10 +149,6 @@ export function Submissions() {
             placeholder="https://" value={url} onChange={(event) => edit(event.target.value, setUrl)} />
         </label>
         <div className={styles.footer}>
-          <p className={styles.hint}><UiText
-            zh="正文与链接至少填一项。每天最多 3 次，最多保留 5 条待处理投稿。"
-            en="Add text or a link. Three submissions per day, five pending at most."
-          /></p>
           <button className={styles.submit} type="submit" disabled={busy || (!message.trim() && !url.trim())}>
             {busy
               ? <UiText zh="提交中…" en="Sending…" />

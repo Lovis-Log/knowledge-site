@@ -166,7 +166,6 @@ export function DonateButton() {
                   <label htmlFor="donate-note-text"><UiText zh="写给站长" en="A note for the author" /></label>
                   <textarea id="donate-note-text" rows={3} maxLength={2000} required value={note} disabled={busy}
                     onChange={event => { setNote(event.target.value); setSent(false); requestId.current = ''; }} />
-                  <p><UiText zh="仅你和管理员可见；无需打赏也可以捎信。需登录后发送。" en="Only you and administrators can read this. No donation required. Sign in to send." /></p>
                   <button type="submit" disabled={busy || !note.trim()}>{busy ? <UiText zh="发送中…" en="Sending…" /> : <UiText zh="发送私密捎信" en="Send private note" />}</button>
                   {sent && <p role="status"><UiText zh="捎信已送达，谢谢你。" en="Your note has been delivered. Thank you." /></p>}
                   {error && <p role="alert">{error} <Link href="/login/" onClick={close}><UiText zh="登录" en="Sign in" /></Link></p>}

@@ -52,6 +52,10 @@ export function LibrarySearch() {
             setActive(index => results.length ? (index < 0 ? (event.key === 'ArrowDown' ? 0 : results.length - 1) : (index + (event.key === 'ArrowDown' ? 1 : -1) + results.length) % results.length) : -1);
           }
         }} />
+      {query && <button type="button" className="library-search__clear" {...uiLabel('清空搜索', 'Clear search')}
+        onClick={() => { setQuery(''); setActive(-1); setOpen(false); input.current?.focus(); }}>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><path d="m6 6 12 12M18 6 6 18" /></svg>
+      </button>}
       <button type="submit"><UiText zh="搜索" en="Search" /></button>
     </form>
     <div hidden={!expanded} className="library-search__suggestions">

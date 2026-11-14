@@ -2134,6 +2134,7 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 }
 
 .zoomable {
+  position: relative;
   display: block;
   width: 100%;
   margin: 1.8em 0;
@@ -2155,6 +2156,14 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
   height: auto;
 }
 
+.zoomable__icon {
+  position: absolute; right: 12px; bottom: 12px;
+  display: grid; place-items: center; width: 38px; height: 38px;
+  border: 1px solid var(--line-strong); border-radius: 50%;
+  color: var(--ink); background: var(--page-sheet);
+  box-shadow: 0 3px 12px #1b2b4520;
+}
+
 .zoomable:hover {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--line-strong));
   box-shadow: 3px 5px 0 #ebe3d3;
@@ -2165,31 +2174,34 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 32px;
-  background: color-mix(in srgb, #14100c 90%, transparent);
-  backdrop-filter: blur(3px);
-  cursor: zoom-out;
+  width: 100vw; height: 100dvh; max-width: none; max-height: none;
+  box-sizing: border-box; border: 0; margin: 0; padding: 0;
+  overflow: hidden; background: transparent;
 }
-
-.lightbox img {
-  max-width: 92vw;
-  max-height: 82vh;
+.lightbox::backdrop { background: #14100ce8; backdrop-filter: blur(3px); }
+.lightbox__stage {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  overflow: hidden; touch-action: none; user-select: none; overscroll-behavior: contain;
+}
+.lightbox__stage img {
+  max-width: 92vw; max-height: calc(100dvh - 140px);
   object-fit: contain;
-  border-radius: 10px;
+  pointer-events: none; user-select: none;
+  transform-origin: center;
+  border-radius: 6px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
 }
-
-.lightbox__hint {
-  color: color-mix(in srgb, #fbf9f4 70%, transparent);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
+.lightbox__controls {
+  position: absolute; right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom));
+  display: flex; gap: 4px; padding: 5px; border: 1px solid #ffffff30;
+  border-radius: 14px; background: var(--page-sheet); box-shadow: 0 8px 28px #0004;
 }
+.lightbox__controls button {
+  display: grid; place-items: center; min-width: 42px; height: 42px;
+  padding: 8px; border: 0; border-radius: 9px; background: transparent;
+  color: var(--ink); font: 600 .82rem/1 var(--sans);
+}
+.lightbox__controls button:hover { background: var(--accent-soft); }
 
 /* ---------- sources / pager ---------- */
 

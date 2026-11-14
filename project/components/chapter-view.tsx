@@ -1,5 +1,4 @@
 "use client";
-import { ReaderLink as Link } from "./navigation-feedback";
 import { UiText } from "@/components/ui-text";
 import { notFound } from "next/navigation";
 import { ChapterPager } from "@/components/chapter-pager";
@@ -114,9 +113,9 @@ export default function ChapterView({
               {chapter.tags?.map((tag) => {
                 const label = tagLabel(tag);
                 return (
-                  <Link prefetch={false} href={`/search/?tag=${encodeURIComponent(tag)}`} key={tag} className="tag">
+                  <span key={tag} className="tag">
                     <UiText zh={label.zh} en={label.en} />
-                  </Link>
+                  </span>
                 );
               })}
             </div>
