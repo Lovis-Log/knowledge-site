@@ -517,6 +517,16 @@ test("registration accepts an invite alone but never neither invite nor reason",
 });
 test("approval grants reading, ordinary users cannot administer, logout revokes session and cookies are secure", async () => {
   assert.equal((await review("manual_reader", "approve")).status, 200);
+  const beforeNote = (await user("manual_reader"))!;
+  assert.equal((await review("manual_reader", "note")).status, 200);
+  const afterNote = (await user("manual_reader"))!;
+  assert.equal(afterNote.status, beforeNote.status);
+  assert.equal(afterNote.version, beforeNote.version + 1);
+  const noteLog = await db.prepare("SELECT note,admin_id FROM review_logs WHERE user_id=? AND action='note'").bind(afterNote.id).first<{ note: string; admin_id: string }>();
+  assert.equal(noteLog?.note, "Reviewed identity and application");
+  assert.equal(noteLog?.admin_id, "admin-id");
+  assert.equal((await admin.call(`/api/admin/users/${afterNote.id}`, "PATCH", { action: "note", note: "   ", version: afterNote.version })).status, 400);
+  assert.equal((await admin.call(`/api/admin/users/${afterNote.id}`, "PATCH", { action: "note", note: "stale", version: beforeNote.version })).status, 409);
   const c = client();
   const login = await c.call("/api/auth/login", "POST", {
     username: "manual_reader",

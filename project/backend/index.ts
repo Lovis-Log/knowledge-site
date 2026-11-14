@@ -860,11 +860,13 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
           "申请已被更新，请刷新 / Refresh this application",
         );
       const transitions: Record<string, { from: string[]; to: string }> = {
+        note: { from: ["pending", "approved", "rejected", "disabled"], to: user.status },
         approve: { from: ["pending", "rejected"], to: "approved" },
         reject: { from: ["pending"], to: "rejected" },
         disable: { from: ["approved"], to: "disabled" },
         enable: { from: ["disabled"], to: "approved" },
       };
+      if (action === "note" && !note.trim()) fail(400, "INVALID_NOTE", "请填写备注 / Note is required");
       const transition = transitions[action];
       if (!transition || !transition.from.includes(user.status))
         fail(
@@ -884,7 +886,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
           )
           .bind(crypto.randomUUID(), user.id, admin.id, action, note, now()),
       ];
-      if (transition.to === "disabled")
+      if (action === "disable")
         // Retire outstanding reset credentials in the same transaction as the
         // status change, so a concurrent redemption cannot outlive a disable.
         statements.push(

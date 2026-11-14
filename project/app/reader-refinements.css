@@ -57,6 +57,26 @@ html body .destination-title {
 /* Administration shares the destination typography, including Windows CJK serif fallback. */
 .admin-shell { --serif: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", "Noto Serif SC", Georgia, serif; }
 .admin-shell :is(h2, h3) { font-family: var(--serif); }
+.admin-nav a { padding: 8px 2px; border-bottom: 2px solid transparent; font-weight: 600; transition: color 180ms var(--ease), border-color 180ms var(--ease); }
+.admin-nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+.admin-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.admin-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.review-panel > h2 { margin: 0 0 20px; }
+.review-panel > h3 { margin: 0 0 8px; }
+.review-panel .review-reason { margin: 0 0 20px; }
+.review-panel .admin-actions { margin-top: 16px; gap: 12px; }
+.review-note-editor { margin-top: 20px; display: grid; gap: 12px; }
+.review-note-editor > button { justify-self: start; }
+.review-recovery { margin-top: 24px; color: var(--muted); font-size: .85rem; }
+.review-recovery summary { cursor: pointer; width: fit-content; }
+.review-recovery p { margin: 12px 0; }
+.review-log { margin-top: 20px; border-top: 1px solid var(--rule); border-bottom: 0; }
+.review-log__header { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 16px; font-size: .8rem; color: var(--muted); }
+.review-log__header strong { color: var(--ink); font-family: var(--serif); font-size: 1rem; }
+.review-log__header time { margin-left: auto; }
+.review-log p { margin: 12px 0 0; }
+.review-log__label { color: var(--muted); font-size: .85rem; }
+@media (max-width: 600px) { .review-log__header time { flex-basis: 100%; margin-left: 0; } }
 html body .admin-shell :is(input, select, textarea) {
   box-sizing: border-box;
   transition: translate 180ms var(--ease), border-color 180ms var(--ease), box-shadow 180ms var(--ease);

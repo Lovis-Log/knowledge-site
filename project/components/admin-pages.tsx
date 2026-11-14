@@ -57,6 +57,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
     [note, setNote] = useState(""),
     [secret, setSecret] = useState(""),
     [secretKind, setSecretKind] = useState<"invite" | "reset">("invite");
+  const [noteOpen, setNoteOpen] = useState(false);
   const [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [loaded, setLoaded] = useState(false);
@@ -118,6 +119,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
   async function inspect(user: User) {
     const sequence = ++reviewSequence.current;
     setSelected(user);
+    setNoteOpen(false);
     setNote("");
     setLogs([]);
     setError("");
@@ -141,7 +143,8 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
         note,
         version: selected.version,
       });
-      setSelected(null);
+      if (action === "note") await inspect(selected);
+      else setSelected(null);
       setNote("");
       await load();
     } catch (e) {
@@ -220,14 +223,11 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
         </span>}
       </header>
       <nav className="admin-nav">
-        <Link href="/admin/users/">
+        <Link href="/admin/users/" aria-current={mode === "users" ? "page" : undefined}>
           <UiText zh="用户审核" en="User reviews" />
         </Link>
-        <Link href="/admin/invites/">
+        <Link href="/admin/invites/" aria-current={mode === "invites" ? "page" : undefined}>
           <UiText zh="邀请码" en="Invites" />
-        </Link>
-        <Link href="/library/">
-          <UiText zh="返回书库" en="Back to library" />
         </Link>
       </nav>
       {mode === "users" && summary && (
@@ -380,18 +380,6 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
                 <UiText zh="申请理由" en="Application reason" />
               </h3>
               <p className="review-reason">{selected.reason}</p>
-              <label>
-                <UiText
-                  zh="审核备注（仅管理员可见）"
-                  en="Review note (administrators only)"
-                />
-                <textarea
-                  rows={3}
-                  maxLength={2000}
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                />
-              </label>
               {selected.role !== "admin" && (
                 <div className="admin-actions">
                   {(selected.status === "pending" ||
@@ -415,28 +403,38 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
                       <UiText zh="重新启用" en="Enable" />
                     </button>
                   )}
-                  <button
-                    disabled={busy || !note.trim()}
-                    onClick={() => void issueReset()}
-                  >
-                    <UiText
-                      zh="已核实身份，签发重置凭据"
-                      en="Identity verified: issue reset credential"
-                    />
-                  </button>
+                  <button disabled={busy} aria-expanded={noteOpen} aria-controls="admin-note-editor" onClick={() => setNoteOpen(!noteOpen)}><UiText zh="审核备注" en="Review note" /></button>
                 </div>
               )}
-              <h3>
-                <UiText zh="审核记录" en="Review history" />
-              </h3>
+              {noteOpen && <div id="admin-note-editor" className="review-note-editor"><label>
+                <UiText
+                  zh="审核备注（仅管理员可见）"
+                  en="Review note (administrators only)"
+                />
+                <textarea
+                  rows={3}
+                  maxLength={2000}
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </label>
+                <button disabled={busy || !note.trim()} onClick={() => void act("note")}><UiText zh="保存备注" en="Save note" /></button>
+              </div>}
+              {selected.role !== "admin" && <details className="review-recovery">
+                <summary><UiText zh="账号恢复" en="Account recovery" /></summary>
+                <p><UiText zh="用户忘记密码时，核实身份并填写审核备注后，可签发一次性重置凭据。" en="If the user forgot their password, verify their identity and add a review note before issuing a one-use credential." /></p>
+                <button disabled={busy || !note.trim()} onClick={() => void issueReset()}><UiText zh="签发重置凭据" en="Issue reset credential" /></button>
+              </details>}
               {logs.length ? (
                 logs.map((log) => (
                   <div className="review-log" key={log.id}>
-                    <small>
-                      {date(log.created_at)} · {log.admin_username} ·{" "}
-                      {log.action}
-                    </small>
-                    <p>{log.note || "—"}</p>
+                    <div className="review-log__header">
+                      <strong><UiText zh="审核记录" en="Review history" /></strong>
+                      <span><UiText zh="操作人：" en="By: " />{log.admin_username}</span>
+                      <span><UiText zh={({approve: "通过申请", reject: "拒绝申请", disable: "禁用账号", enable: "重新启用", note: "添加备注", issue_reset: "签发重置凭据"} as Record<string, string>)[log.action] || log.action} en={log.action} /></span>
+                      <time dateTime={new Date(log.created_at * 1000).toISOString()}>{date(log.created_at)}</time>
+                    </div>
+                    {log.note && <p><span className="review-log__label"><UiText zh="管理员备注：" en="Administrator note: " /></span>{log.note}</p>}
                   </div>
                 ))
               ) : (
