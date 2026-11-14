@@ -186,7 +186,7 @@ test('deletion removes personal records, rolls back failures, protects admins an
             n: number;
         }>())!.n, 1);
         await f.db.prepare('DROP TRIGGER reject_delete').run();
-        assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'test123', username: 'reader' })).status, 200);
+        assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'test123' })).status, 200);
         for (const table of ['users', 'sessions', 'favorites', 'guestbook_entries'])
             assert.equal((await f.db.prepare(`SELECT count(*) AS n FROM ${table} WHERE ${table === 'users' ? 'id' : 'user_id'}='reader'`).first<{
                 n: number;
@@ -213,10 +213,12 @@ test('profile changes verify credentials, enforce uniqueness and preserve identi
         assert.equal((await f.r.call('/api/account/profile', { ...payload, currentPassword: 'wrong' })).status, 400);
         assert.equal((await f.r.call('/api/account/profile', { ...payload, username: 'OTHER' })).status, 409);
         assert.equal((await f.r.call('/api/account/profile', { ...payload, username: 'invalid-name' })).status, 400);
-        assert.equal((await f.r.call('/api/account/profile', { ...payload, nickname: ' ' })).status, 400);
+        assert.equal((await f.r.call('/api/account/profile', { ...payload, username: ' ' })).status, 400);
         assert.equal((await f.r.call('/api/account/profile', payload)).status, 200);
         const account = await (await f.r.call('/api/auth/me')).json() as { user: { id: string; username: string; nickname: string } };
-        assert.deepEqual({ id: account.user.id, username: account.user.username, nickname: account.user.nickname }, { id: 'reader', username: 'NewReader', nickname: '新名字' });
+        assert.deepEqual({ id: account.user.id, username: account.user.username, nickname: account.user.nickname }, { id: 'reader', username: 'NewReader', nickname: 'NewReader' });
+        const managed = await (await f.a.call('/api/admin/users')).json() as { users: { id: string; username: string }[] };
+        assert.equal(managed.users.find(user => user.id === 'reader')?.username, 'NewReader');
         assert.equal((await f.db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id='reader'").first<{ n: number }>())!.n, 1);
         assert.equal((await f.r.call('/api/auth/login', { username: 'reader', password: 'test123' })).status, 401);
         assert.equal((await f.r.call('/api/auth/login', { username: 'newreader', password: 'test123' })).status, 200);
@@ -231,7 +233,7 @@ test('account mutation validation leaves credentials and personal records intact
         assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'new123', confirmPassword: 'different' })).status, 400);
         assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'short', confirmPassword: 'short' })).status, 400);
         assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'wrong', username: 'reader' })).status, 400);
-        assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'test123', username: 'other' })).status, 400);
+        assert.equal((await f.r.call('/api/account/delete', { currentPassword: '' })).status, 400);
         assert.equal((await f.r.call('/api/auth/me')).status, 200);
         const csrf = await f.mf.dispatchFetch('https://features.test/api/account/profile', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: 'Forged', nickname: 'Forged', currentPassword: 'test123' }) });
         assert.equal(csrf.status, 403);

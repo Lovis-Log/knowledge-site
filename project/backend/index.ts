@@ -175,7 +175,7 @@ async function session(request: Request, db: DB) {
   if (!/^[a-f0-9]{64}$/.test(token)) return null;
   return db
     .prepare(
-      "SELECT u.id,u.username,u.nickname,u.role,u.status FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token_hash=? AND s.expires_at>? AND u.status='approved'",
+      "SELECT u.id,u.username,u.username AS nickname,u.role,u.status FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token_hash=? AND s.expires_at>? AND u.status='approved'",
     )
     .bind(await digest(token), now())
     .first<SessionUser>();
@@ -343,14 +343,14 @@ async function guestbookApi(request: Request, db: DB, path: string) {
     // hidden entry flat, so a hidden reply stays actionable on its own.
     const { results } = await db.prepare(
       moderation
-        ? "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=1 AND g.id<? ORDER BY g.id DESC LIMIT 21"
-        : "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IS NULL AND g.hidden=0 AND g.id<? ORDER BY g.id DESC LIMIT 21",
+        ? "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=1 AND g.id<? ORDER BY g.id DESC LIMIT 21"
+        : "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IS NULL AND g.hidden=0 AND g.id<? ORDER BY g.id DESC LIMIT 21",
     ).bind(before).all<GuestbookRow>();
     const items = results.slice(0, 20).map((row) => guestbookItem(row, user.id));
     if (!moderation && items.length) {
       const placeholders = items.map(() => "?").join(",");
       const { results: replies } = await db.prepare(
-        `SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IN (${placeholders}) AND g.hidden=0 ORDER BY g.id ASC`,
+        `SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IN (${placeholders}) AND g.hidden=0 ORDER BY g.id ASC`,
       ).bind(...items.map((item) => item.id)).all<GuestbookRow>();
       const threads = new Map(items.map((item) => [item.id, item]));
       for (const row of replies)
@@ -370,7 +370,7 @@ async function guestbookApi(request: Request, db: DB, path: string) {
         if (typeof targetId !== "number" || !Number.isSafeInteger(targetId) || targetId < 1)
           fail(400, "INVALID_PARENT", "回复目标无效 / Invalid reply target");
         const target = await db.prepare(
-          "SELECT g.id,g.parent_id,g.hidden,u.nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.id=?",
+          "SELECT g.id,g.parent_id,g.hidden,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.id=?",
         ).bind(targetId).first<{
           id: number; parent_id: number | null; hidden: number; nickname: string;
         }>();
@@ -534,10 +534,11 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         const username = text(data, 'username', 3, 32);
         if (!/^[a-z0-9_]+$/i.test(username))
             fail(400, 'INVALID_USERNAME', '用户名仅限字母、数字和下划线 / Use letters, digits and underscores only');
-        const nickname = text(data, 'nickname', 1, 64);
+        // One public name: keep the legacy nickname column in sync for messages.
+        const nickname = username;
         try {
-            const result = await db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND nickname=? AND status='approved'")
-                .bind(username, nickname, user.id, current.password_hash, user.username, user.nickname).run();
+            const result = await db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND status='approved'")
+                .bind(username, nickname, user.id, current.password_hash, user.username).run();
             if (!result.meta.changes)
                 fail(409, 'STALE_ACCOUNT', '账号已变化，请刷新后重试 / Account changed; refresh and try again');
         } catch (error) {
@@ -548,8 +549,6 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         return json({ ok: true, username, nickname });
     }
     if (deleting) {
-        if (data.username !== user.username)
-            fail(400, 'CONFIRMATION_REQUIRED', '请准确输入用户名 / Enter your username exactly');
         const guard = "EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user')";
         const statements = ['reset_tokens', 'review_logs', 'submissions', 'favorites', 'guestbook_entries', 'sessions'].map(table => db.prepare(`DELETE FROM ${table} WHERE ${table === 'review_logs' ? '(user_id=? OR admin_id=?)' : 'user_id=?'} AND ${guard}`).bind(...(table === 'review_logs' ? [user.id, user.id] : [user.id]), user.id, current.password_hash));
         const results = await db.batch([...statements, db.prepare("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'").bind(user.id, current.password_hash)]);
@@ -590,10 +589,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
         "用户名仅可用字母、数字和下划线 / Letters, digits and underscores only",
       );
     const password = newPassword(data);
-    const nickname =
-        (typeof data.nickname === "string"
-          ? text(data, "nickname", 0, 64)
-          : "") || username,
+    const nickname = username,
       code =
         data.inviteCode === undefined ? "" : text(data, "inviteCode", 0, 128),
       reason = data.reason === undefined ? "" : text(data, "reason", 0, 2000);

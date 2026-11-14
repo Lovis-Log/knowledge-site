@@ -333,8 +333,6 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
                   <tr key={user.id}>
                     <td>
                       <strong>{user.username}</strong>
-                      <br />
-                      {user.nickname}
                       {user.role === "admin" && " · admin"}
                     </td>
                     <td>{labels[user.status]?.join(" / ")}</td>
@@ -377,9 +375,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
           {selected && (
             <section className="review-panel">
               <h2>
-                {selected.nickname && selected.nickname !== selected.username
-                  ? `${selected.username} · ${selected.nickname}`
-                  : selected.username}
+                {selected.username}
               </h2>
               <h3>
                 <UiText zh="申请理由" en="Application reason" />

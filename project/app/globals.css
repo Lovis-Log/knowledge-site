@@ -2944,7 +2944,10 @@ html.lm-modal-open {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -3278,10 +3281,20 @@ html.lm-modal-open {
 .account-avatar--large{width:64px;height:64px;font-size:30px}
 .account-settings{max-width:760px;padding-bottom:80px}
 .account-settings__identity{display:flex;align-items:center;gap:18px;margin:28px 0 16px}
-.account-settings__identity p{margin:4px 0 0;overflow-wrap:anywhere}
+.account-settings__identity strong{min-width:0;overflow-wrap:anywhere}
+.account-settings__identity .account-settings__rename{margin-left:auto;flex-shrink:0}
+.account-settings__editor{padding-bottom:12px}
+.account-settings__actions{display:flex;gap:8px;margin-top:16px}
 .account-settings__section{border-top:1px solid var(--rule);margin-top:32px;padding-top:20px}
 .account-settings fieldset{border:0;padding:0;margin:0;min-width:0}
-.account-settings input{border-radius:6px;min-height:44px}
+.account-settings input{box-sizing:border-box;border-radius:6px;min-height:44px;transition:translate 180ms var(--ease),box-shadow 180ms var(--ease),border-color 180ms var(--ease)}
+.account-settings input:focus{translate:0 -2px;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--lift-1)}
+@media(hover:hover){.account-settings input:hover:not(:disabled){translate:0 -2px;box-shadow:var(--lift-1);border-color:var(--accent)}}
+@media(prefers-reduced-motion:reduce){.account-settings input,.account-settings input:hover:not(:disabled),.account-settings input:focus{translate:none;transition:none}}
+@media(max-width:480px){.account-settings__identity{gap:12px;flex-wrap:wrap}.account-settings__identity strong{flex:1}.account-settings__identity .account-settings__rename{font-size:.8rem}}
 .account-settings input:focus-visible,.account-settings button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .account-settings button{min-height:44px;margin-left:0}
 .account-settings__danger button{color:#a32c38;border-color:currentColor}
+.account-pop a,.account-pop button{display:flex;align-items:center;gap:10px}
+.account-pop a>svg,.account-pop button>svg{width:18px;height:18px;flex:none}
+.account-pop a,.account-pop button,.account-settings__section h2,.reader-interactions h2{font-family:var(--serif)}

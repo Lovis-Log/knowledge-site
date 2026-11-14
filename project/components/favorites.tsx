@@ -4,6 +4,7 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api";
 import { UiText } from "./ui-text";
+import { PageHeading } from "./page-heading";
 
 type Target = { book: string; chapter?: string };
 type Favorite = Required<Target> & {
@@ -97,7 +98,7 @@ export function FavoritesView() {
 
   return (
     <div className="shell reader-interactions">
-      <h1><UiText zh="我的收藏" en="My favorites" /></h1>
+      <PageHeading kind="favorites" zh="我的收藏" en="My favorites" />
       {error && <p role="alert">{error}</p>}
       {!items && (error ?
         <button type="button" className="reader-action" onClick={() => { setError(""); retry(attempt + 1); }}><UiText zh="重试" en="Retry" /></button> :
