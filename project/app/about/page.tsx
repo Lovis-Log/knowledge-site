@@ -10,83 +10,45 @@ import { PageHeading } from "@/components/page-heading";
 
 export const metadata: Metadata = {
   title: "关于",
-  description: `了解${site.name}的内容、阅读功能、账号隐私与 AI 辅助内容说明。`,
+  description: `关于 ${site.name} 的学习笔记、阅读功能与联系方式。`,
 };
 
 export default function AboutPage() {
-  return (
-    <PageEntry className="shell about">
-      <header className="page-header">
-        <p className="eyebrow"><UiText zh="关于" /></p>
-        <PageHeading kind="about" zh="关于这个网站" en="About this website" />
-        <p className="page-lede">
-          <UiText zh={`${site.name} 是我的个人知识库，记录课程学习、AI 工具实践，以及阅读中值得保留的内容。我把零散的资料和思考整理在这里，方便回顾、查找和继续探索，也分享给有相同兴趣的人。`}
-            en={`${site.name} is my personal knowledge base for coursework, hands-on experiments with AI tools, and reading worth keeping. I bring these materials and thoughts together so I can revisit them, find what I need, and share them with people who have similar interests.`} />
-        </p>
-      </header>
+  return <PageEntry className="shell about">
+    <header className="page-header">
+      <p className="eyebrow"><UiText zh="关于" /></p>
+      <PageHeading kind="about" zh="关于这个网站" en="About this website" />
+      <p className="page-lede"><UiText
+        zh={`${site.name} 是 Lovis 的个人知识库，收录课程笔记、AI 实践和阅读中值得留下的内容。`}
+        en={`${site.name} is Lovis’s personal knowledge base for coursework, AI experiments, and reading worth keeping.`} /></p>
+    </header>
+    <div className="prose prose--page"><AboutTabs entries={updates}>
+      <h2><UiText zh="内容与来源" en="Notes & sources" /></h2>
+      <p><UiText
+        zh="内容分为专业课程、AI Era 和精选收录，按课程或主题整理成书。笔记保留来源链接，并随学习持续修订；部分内容由 AI 辅助整理，引用或使用代码前请核对原始资料。"
+        en="Courses, AI Era, and Curated collect material into books by course or topic. Notes retain source links and evolve as I learn. Some use AI assistance; check the original material before citing a claim or using code." /></p>
 
-      <div className="prose prose--page"><AboutTabs entries={updates}>
-        <h2><UiText zh="这里有什么" /></h2>
-        <p>
-          <UiText zh="书库分为专业课程、AI Era 和精选收录，包含大模型原理、智能体工程、AI 编程实践、数学与计算机课程，以及文章、视频和访谈等材料。内容按课程或主题整理成书；你可以沿着目录学习，也可以从感兴趣的一篇开始。"
-            en="The library has three sections: Courses, AI Era, and Curated. They cover large language models, agent engineering, AI-assisted programming, mathematics and computer science, alongside articles, videos, and interviews. Materials are organized into books by course or topic. Follow a table of contents or start with an article that interests you." />
-        </p>
+      <h2><UiText zh="阅读与交流" en="Reading & discussion" /></h2>
+      <p><UiText
+        zh="你可以搜索书籍与章节、收藏内容、调整阅读字号，并在可用时切换中英文。欢迎在留言板分享心得、提出建议或反馈问题。"
+        en="Search books and chapters, save favorites, adjust text size, and switch languages where available. Use the guestbook to share ideas, suggest improvements, or report problems." /></p>
 
-        <h2><UiText zh="关于这些笔记" /></h2>
-        <p>
-          <UiText zh="学习笔记会结合原始材料做讲解、分析和整理；仅收录原文的内容会标注「原文」。章节保留来源链接，方便回到完整材料查阅和核对。这些记录代表我当前的理解，会随着学习继续补充、修订；引用时请以原始来源为准。"
-            en="Study notes explain, analyze, and organize the source material. Entries that preserve the source text are marked “Original.” Chapters retain source links so you can read the full material and check the details. These notes reflect my current understanding and will be expanded and revised as I learn. Please consult the original sources when citing." />
-        </p>
+      <h2><UiText zh="账号与隐私" en="Accounts & privacy" /></h2>
+      <p><UiText
+        zh="注册不要求邮箱或手机号，阅读权限通过邀请码或管理员审核获得。密码以加盐哈希保存；收藏归个人账号，投稿仅本人和管理员可见，留言向站内读者公开。注销会删除账号及个人数据，已独立发布的笔记保留。"
+        en="Registration needs no email or phone number. An invite or administrator approval grants reading access. Passwords are stored as salted hashes. Favorites belong to your account; submissions are private to you and administrators, while guestbook posts are visible to readers. Deletion removes your account and personal data; independently published notes remain." /></p>
 
-        <h2><UiText zh="功能与使用方式" en="Features & reading tools" /></h2>
-        <ul>
-          <li><UiText zh="分类与目录：按主题浏览书籍，通过书内章节和篇内目录定位内容；每章保留来源链接，便于延伸阅读和核对。"
-            en="Browse by topic and book, then use chapter lists and article contents to find what you need. Source links support further reading and verification." /></li>
-          <li><UiText zh="收藏与继续阅读：收藏感兴趣的书籍或文章，从首页的「继续阅读」入口返回最近读过的章节。阅读进度和语言、字号等偏好保存在当前浏览器中，更换设备时不一定同步。"
-            en="Save books or articles to your account and use Continue reading to reopen your latest chapter. Reading progress and preferences such as language and text size are stored in the current browser and may not follow you to another device." /></li>
-          <li><UiText zh="阅读与交流：可调整正文字号，按章节提供的版本切换阅读语言或查看原文与精读内容。留言板用于分享心得、提出建议和反馈问题，也支持删除自己的留言。"
-            en="Adjust text size and, where available, switch reading languages or view original material alongside notes. The guestbook is a place to share ideas, suggest improvements, and report issues. You can delete your own messages." /></li>
-        </ul>
+      <h2><UiText zh="技术架构" en="Built with" /></h2>
+      <p><UiText
+        zh="笔记以 Markdown 保存在 Obsidian 中，界面使用 Next.js、React 和 TypeScript，部署于 Cloudflare Pages；Worker 与 D1 负责访问控制和账号数据。"
+        en="Markdown notes live in Obsidian. Next.js, React, and TypeScript power the interface on Cloudflare Pages; a Worker and D1 handle access control and account data." /></p>
 
-        <h2><UiText zh="技术架构" en="Technical architecture" /></h2>
-        <p><UiText zh="内容以 Markdown 保存在 Obsidian 知识库中，书籍与章节由 frontmatter 描述，构建时统一解析为目录与阅读数据。界面使用 Next.js App Router、React 和 TypeScript，静态导出后由 Cloudflare Pages 托管。"
-          en="Content lives as Markdown in an Obsidian vault. Frontmatter describes books and chapters, which are parsed into the catalog and reading data at build time. The interface uses Next.js App Router, React and TypeScript, statically exported and hosted on Cloudflare Pages." /></p>
-        <p><UiText zh="Cloudflare Worker 负责页面访问控制与 API；Cloudflare D1 保存账号、会话、邀请码、收藏、留言和私密投稿，以及按版本存储的阅读内容。受保护页面和数据均经过服务端权限校验，阅读正文不会作为公开静态资源分发。"
-          en="A Cloudflare Worker controls page access and serves the API. Cloudflare D1 stores accounts, sessions, invites, favorites, messages, private submissions and versioned reading content. Protected pages and data pass server-side authorization; reading text is excluded from public static assets." /></p>
-        <p><UiText zh="正文渲染使用 React Markdown，配合 GFM、KaTeX 和代码高亮展示表格、公式与示例。搜索在当前浏览器中匹配目录元数据；阅读进度、界面语言和字号等偏好保存在本地。源码通过 Git 管理，并经 GitHub 与 Cloudflare Pages 的发布流程更新；页面、Worker 和内容版本保持对应。"
-          en="React Markdown, GFM, KaTeX and syntax highlighting render tables, equations and code. Search matches catalog metadata in the browser; reading progress, interface language and text preferences stay local. Git tracks the source, and the GitHub–Cloudflare Pages release process keeps pages, the Worker and the content version aligned." /></p>
-
-        <h2><UiText zh="账号与隐私" en="Accounts & privacy" /></h2>
-        <p><UiText zh="我们重视账号隐私，并按使用需要处理账号信息。目前注册不要求邮箱或手机号，阅读权限通过邀请码或管理员审核获得。密码以加盐哈希形式保存，不存储明文密码；登录状态通过受保护的 Cookie 维持。"
-          en="We value account privacy and use account information only as needed to operate the site. Registration currently requires no email address or phone number. Access is granted through an invite code or administrator review. Passwords are stored as salted hashes rather than plain text, and protected cookies maintain sign-in sessions." /></p>
-        <p><UiText zh="账号申请信息和审核记录不会向其他读者公开，管理员会在审核与账号维护时接触必要资料。收藏仅在对应账号下展示；留言中的昵称与正文会向站内读者展示，请勿在公开留言中填写密码或其他私密信息。"
-          en="Applications and review records are not shown to other readers. Administrators access the information needed for review and account maintenance. Favorites are displayed within their respective accounts. Guestbook nicknames and messages are visible to site readers, so please keep passwords and other private information out of messages." /></p>
-
-        <h2><UiText zh="AI 辅助内容与准确性" en="AI-assisted content & accuracy" /></h2>
-        <p><UiText zh="部分内容使用 AI 工具辅助生成、翻译或整理，可能存在事实错误、推导遗漏、表述不准确或信息过时等不足。页面经过整理并不意味着每一处都完整、准确，也不意味着适用于所有场景。阅读时请结合原始资料核验，重要结论与代码示例尤其需要自行检查。"
-          en="Some content is generated, translated, or organized with AI assistance. It may contain factual errors, missing steps, unclear explanations, or outdated information. Editing does not guarantee that every detail is complete, accurate, or suitable for every situation. Check the source material, particularly for important conclusions and code examples." /></p>
-        <p><UiText zh="本站会随学习和使用反馈持续更新。若发现问题，欢迎附上对应书名、文章链接或复现步骤留言，帮助补充和修正内容。"
-          en="The site will continue to evolve as I learn and receive feedback. If you find a problem, include the book, article link, or steps to reproduce it so the material can be improved." /></p>
-
-        <h2><UiText zh="投稿与账号数据" en="Submissions and account data" /></h2><p><UiText zh="投稿仅本人和管理员可见，采用后仍需独立整理与复核。永久注销功能暂未开放；开放后将删除个人账号、收藏、留言和原始投稿，已独立发布的笔记保留。" en="Submissions are private to you and administrators and require editorial review. Account deletion is not yet enabled; once available, it will remove account data, favorites, messages and original submissions. Independently published notes remain." /></p>
-        <h2><UiText zh="联系与致谢" /></h2>
-        <p>
-          <UiText zh="发现网站 Bug、内容问题，或想分享学习心得，欢迎到" en="To report a website bug or content issue, or share something you learned, visit the " />
-          <Link href="/guestbook/" prefetch={false}><UiText zh="留言板" en="guestbook" /></Link>
-          <UiText zh="交流。也可以通过邮件联系我：" en=". You can also reach me by email: " />
-          <span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" />
-        </p>
-        <p>
-          <UiPair zh={<>本网站的界面设计受到 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a> 启发。网站源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub 仓库 ↗</a>。</>}
-            en={<>The interface was inspired by <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil’s book ↗</a>. The source code is available in the <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub repository ↗</a>.</>} />
-        </p>
-
-        <p className="about__back">
-          <Link className="text-link" href="/library/">
-            <UiText zh="← 回到书库" />
-          </Link>
-        </p>
-      </AboutTabs></div>
-    </PageEntry>
-  );
+      <h2><UiText zh="联系与致谢" en="Contact & credits" /></h2>
+      <p><Link href="/guestbook/" prefetch={false}><UiText zh="留言板" en="Guestbook" /></Link>{" · "}<span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
+      <p><UiPair
+        zh={<>界面灵感来自 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a>。源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>。</>}
+        en={<>Interface inspired by <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil’s book ↗</a>. Source on <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>.</>} /></p>
+      <p className="about__back"><Link className="text-link" href="/library/"><UiText zh="← 回到书库" /></Link></p>
+    </AboutTabs></div>
+  </PageEntry>;
 }

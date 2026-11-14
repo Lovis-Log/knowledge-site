@@ -11,6 +11,7 @@ export function PasswordInput({
   maxLength,
   autoComplete,
   placeholder,
+  fresh = false,
 }: {
   id?: string;
   name: string;
@@ -19,8 +20,11 @@ export function PasswordInput({
   maxLength?: number;
   autoComplete?: string;
   placeholder?: string;
+  fresh?: boolean;
 }) {
   const [visible, setVisible] = useState(false);
+  const [value, setValue] = useState('');
+  const [locked, setLocked] = useState(fresh);
   return (
     <span className="password-input">
       <input
@@ -32,6 +36,12 @@ export function PasswordInput({
         maxLength={maxLength}
         autoComplete={autoComplete}
         placeholder={placeholder}
+        value={fresh ? value : undefined}
+        readOnly={fresh && locked}
+        data-lpignore={fresh ? 'true' : undefined}
+        data-1p-ignore={fresh ? 'true' : undefined}
+        onFocus={fresh ? () => { if (locked) { setValue(''); setLocked(false); } } : undefined}
+        onChange={fresh ? event => setValue(event.target.value) : undefined}
       />
       <button
         type="button"

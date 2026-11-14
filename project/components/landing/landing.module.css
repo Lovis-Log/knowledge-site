@@ -64,6 +64,10 @@
   padding-inline: clamp(24px, 7vw, 118px);
 }
 
+@media (min-width: 1024px) {
+  .shell { max-width: 1620px; padding-inline: clamp(24px, 6vw, 96px); }
+}
+
 /* ---------- header ---------- */
 
 .header {

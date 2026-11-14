@@ -6,6 +6,13 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import type { Lang } from "@/content/types";
 import { ZoomImage } from "./zoom-image";
+import { CodeBlock } from "./code-block";
+
+// Read highlighted HAST text, preserving indentation and trailing newlines.
+type CodeTextNode = { value?: string; children?: ReadonlyArray<CodeTextNode> };
+function codeText(node?: CodeTextNode): string {
+  return typeof node?.value === 'string' ? node.value : node?.children?.map(codeText).join('') ?? '';
+}
 
 /**
  * 给标题 id 加语言前缀：双语章节两版正文同时在 DOM 中，
@@ -38,6 +45,7 @@ function rehypeLangIds(options: { lang: string }) {
 }
 
 const components: Options["components"] = {
+  pre: ({ node, children, ...props }) => <CodeBlock code={codeText(node)} {...props}>{children}</CodeBlock>,
   img: ({ node: _node, src, alt, title }) => (
     <ZoomImage src={typeof src === "string" ? src : undefined} alt={alt} title={title} />
   ),

@@ -5,17 +5,13 @@ import { api, ApiError } from '@/lib/api';
 import { UiText } from '@/components/ui-text';
 import { AccountAvatar } from '@/components/account-avatar';
 import { PageHeading } from '@/components/page-heading';
+import { PasswordInput } from '@/components/password-input';
 
 type Settings = { username: string; role: string; features: { changePassword: boolean; deleteAccount: boolean } };
 type Action = 'profile' | 'password' | 'delete';
 
 function FreshPassword({ id }: { id: string }) {
-  const [value, setValue] = useState('');
-  const [locked, setLocked] = useState(true);
-  return <input id={id} name="currentPassword" type="password" required maxLength={128}
-    autoComplete="new-password" data-lpignore="true" data-1p-ignore="true"
-    value={value} readOnly={locked} onFocus={() => { if (locked) { setValue(''); setLocked(false); } }}
-    onChange={event => setValue(event.target.value)} />;
+  return <PasswordInput id={id} name="currentPassword" required maxLength={128} autoComplete="new-password" fresh />;
 }
 
 export function AccountSettings() {
@@ -94,8 +90,8 @@ export function AccountSettings() {
         <h2><UiText zh="修改密码" en="Change password" /></h2>
         {settings.features.changePassword ? <form onSubmit={event => void submit(event, 'password')}><fieldset disabled={busy !== null}>
           <label htmlFor="change-password-current"><UiText zh="当前密码" en="Current password" /></label><FreshPassword id="change-password-current" />
-          <label><UiText zh="新密码" en="New password" /><input name="password" type="password" autoComplete="new-password" required minLength={6} maxLength={128} /></label>
-          <label><UiText zh="确认新密码" en="Confirm new password" /><input name="confirmPassword" type="password" autoComplete="new-password" required minLength={6} maxLength={128} /></label>
+          <label><UiText zh="新密码" en="New password" /><PasswordInput name="password" autoComplete="new-password" required minLength={6} maxLength={128} /></label>
+          <label><UiText zh="确认新密码" en="Confirm new password" /><PasswordInput name="confirmPassword" autoComplete="new-password" required minLength={6} maxLength={128} /></label>
           <div className="account-settings__actions"><button type="submit"><UiText zh={busy === 'password' ? '保存中…' : '保存新密码'} en={busy === 'password' ? 'Saving…' : 'Save password'} /></button><button type="button" onClick={() => { setSecurityPanel(null); setError(''); passwordButton.current?.focus(); }}><UiText zh="取消" en="Cancel" /></button></div>
         </fieldset></form> : <p><UiText zh="修改密码暂时不可用，请稍后重试或联系管理员。" en="Password changes are temporarily unavailable. Try later or contact the administrator." /></p>}
       </section>}
