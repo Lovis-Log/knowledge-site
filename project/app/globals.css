@@ -3371,8 +3371,8 @@ html body .account-settings .password-input .password-input__toggle:hover{transl
   .rocket-loader__dots i{opacity:1}
 }
 
-.prose .about-tech{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 1.4em;padding:0;list-style:none}
-.prose .about-tech li{margin:0;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;background:var(--action-bg);color:var(--muted);font:.8rem/1.6 var(--sans)}
+.prose .about-tech{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 1.4em;padding:0;list-style:none}
+.prose .about-tech>span{margin:0;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;background:var(--action-bg);color:var(--muted);font:.8rem/1.6 var(--sans)}
 html body .about__email+.copy-control button{background:var(--action-bg)}
 .account-settings__danger button[type=submit],.account-settings button.account-settings__delete-trigger{background:#faf0ef}
 
