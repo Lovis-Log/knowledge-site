@@ -20,7 +20,7 @@ export const landingScenes = [
 ] as const;
 
 export const landingVolumes = [
-  { slug: "mit-linear-algebra", title: { zh: "MIT 线性代数", en: "MIT Linear Algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: "/covers/editorial-math-480.webp" },
-  { slug: "agent-engineering", title: { zh: "AI 工程与设计", en: "AI Engineering & Design" }, description: { zh: "围绕智能体构建与设计的实践笔记。", en: "Practical notes on building and designing agents." }, cover: "/covers/editorial-agent-engineering-v1-480.webp" },
-  { slug: "cpp-programming-course", title: { zh: "C++ 程序设计", en: "C++ Programming" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: "/covers/editorial-cpp-programming-v2-480.webp" },
+  { title: { zh: "线性代数", en: "Linear algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: "/covers/editorial-math-480.webp" },
+  { title: { zh: "智能体工程", en: "Agent engineering" }, description: { zh: "围绕智能体构建与设计的实践笔记。", en: "Practical notes on building and designing agents." }, cover: "/covers/editorial-agent-engineering-v1-480.webp" },
+  { title: { zh: "C++ 编程", en: "Programming in C++" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: "/covers/editorial-cpp-programming-v2-480.webp" },
 ] as const;

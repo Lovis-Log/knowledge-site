@@ -96,7 +96,7 @@ export function LandingPage() {
         <div className={styles.collectionHeading}><h2 id="collection-title"><UiText {...copy.collectionTitle} /></h2><p><UiText {...copy.collectionDescription} /></p></div>
         <div className={styles.volumes}>
           {landingVolumes.map((volume) => (
-            <figure className={styles.volume} key={volume.slug}>
+            <figure className={styles.volume} key={volume.cover}>
               <div className={styles.coverWell}><img src={volume.cover} width={480} height={640} loading="lazy" decoding="async" alt="" /></div>
               <figcaption><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></figcaption>
             </figure>
