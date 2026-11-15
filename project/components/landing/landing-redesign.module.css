@@ -21,6 +21,7 @@
 .brand img { width: 34px; height: 34px; object-fit: contain; }
 .sectionNav, .headerActions { display: flex; align-items: center; gap: clamp(20px, 2.5vw, 40px); }
 .sectionNav { font-size: 13px; }
+.languageSlot { width: 36px; height: 36px; }
 .sectionNav a { padding-block: 12px; }
 .sectionNav a:hover { color: var(--lm-gold-deep); }
 .account { display: inline-flex; gap: 10px; align-items: center; justify-content: center; min-height: 44px; padding: 0 19px; border: 1px solid #cfc3b0; border-radius: 4px; background: transparent; color: inherit; font-size: 13px !important; }

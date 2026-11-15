@@ -20,9 +20,12 @@ export function LandingPage() {
   const [authView, setAuthView] = useState<AuthView | null>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [motionPaused, setMotionPaused] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const closeAuth = useCallback(() => setAuthView(null), []);
 
   useEffect(() => {
+    // The shared header translates DOM attributes before this page hydrates.
+    setHydrated(true);
     try { setMotionPaused(localStorage.getItem("shufang:motion") === "paused"); } catch { /* Use the system motion preference. */ }
     let live = true;
     const refresh = () => {
@@ -63,7 +66,7 @@ export function LandingPage() {
             <a href="#reflection"><UiText zh="关于" en="The idea" /></a>
           </nav>
           <div className={styles.headerActions}>
-            <UiLanguageToggle />
+            <div className={styles.languageSlot}>{hydrated && <UiLanguageToggle />}</div>
             {signedIn
               ? <Link href="/library/" className={styles.account}><AccountIcon /><UiText zh="书库" en="Library" /></Link>
               : <button type="button" className={styles.account} onClick={() => setAuthView("login")}><AccountIcon /><UiText zh="登录" en="Sign in" /></button>}
