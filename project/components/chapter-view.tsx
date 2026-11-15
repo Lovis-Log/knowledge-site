@@ -14,6 +14,7 @@ import type { Lang } from "@/content/types";
 import { contentTypeLabel } from "@/lib/content-labels";
 import { tagLabel } from "@/lib/tag-labels";
 import { formatDate, paddedNumber } from "@/lib/format";
+import { chapterGroupOf, chapterHeading } from "@/lib/chapter-label";
 import { availableLangs, pickVersion } from "@/lib/language";
 import { buildToc } from "@/lib/toc";
 
@@ -38,6 +39,8 @@ export default function ChapterView({
     ? buildToc(chapter.translation!.body, "en")
     : [];
   const adjacent = getAdjacentChapters(bookSlug, chapterSlug);
+  const grouped = Boolean(chapterGroupOf(chapter, book.groups));
+  const heading = chapterHeading(chapter, book.groups);
   const tocs = langs.map((lang) => ({
     lang,
     items: buildToc(chapter.versions[lang]!.body, lang),
@@ -73,8 +76,8 @@ export default function ChapterView({
         <header className="chapter-header">
           <p className="eyebrow">
             <UiText
-              zh={`第 ${paddedNumber(chapter.number)} 章`}
-              en={`Chapter ${paddedNumber(chapter.number)}`}
+              zh={heading}
+              en={grouped ? heading : `Chapter ${paddedNumber(chapter.number)}`}
             />
           </p>
           {langs.map((lang) => {
@@ -90,15 +93,21 @@ export default function ChapterView({
               </div>
             );
           })}
-          {(chapter.publishedAt || bilingual) && (
+          {(chapter.publishedAt || bilingual || book.studyPeriod) && (
             <div className="chapter-meta">
-              {chapter.publishedAt && (
+              {book.studyPeriod ? (
                 <span>
-                  <UiText
-                    zh={`首发于 ${formatDate(chapter.publishedAt)}`}
-                    en={`Published ${formatDate(chapter.publishedAt)}`}
-                  />
+                  <UiText zh={book.studyPeriod} en={book.studyPeriod} />
                 </span>
+              ) : (
+                chapter.publishedAt && (
+                  <span>
+                    <UiText
+                      zh={`首发于 ${formatDate(chapter.publishedAt)}`}
+                      en={`Published ${formatDate(chapter.publishedAt)}`}
+                    />
+                  </span>
+                )
               )}
               {bilingual && <span className="badge">中 / EN</span>}
             </div>
@@ -183,6 +192,7 @@ export default function ChapterView({
         <SourceList sources={chapter.sources} />
         <ChapterPager
           bookSlug={book.slug}
+          groups={book.groups}
           prev={adjacent.prev}
           next={adjacent.next}
         />

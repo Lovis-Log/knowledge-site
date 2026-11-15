@@ -24,8 +24,8 @@ export default function AboutPage() {
     </header>
     <div className="prose prose--page"><AboutTabs entries={updates}>
       <p><UiPair
-        zh={<><strong>内容与来源：</strong>内容分为专业课程、AI Era 和精选收录，按课程或主题整理成书。笔记保留来源链接，并随学习持续修订；部分内容由 AI 辅助整理，引用或使用代码前请核对原始资料。</>}
-        en={<><strong>Notes &amp; sources: </strong>Courses, AI Era, and Curated collect material into books by course or topic. Notes retain source links and evolve as I learn. Some use AI assistance; check the original material before citing a claim or using code.</>} /></p>
+        zh={<><strong>内容与来源：</strong>内容分为校内课程、专业课程、AI Era 和精选收录，按课程或主题整理成书。笔记保留来源链接，并随学习持续修订；部分内容由 AI 辅助整理，引用或使用代码前请核对原始资料。</>}
+        en={<><strong>Notes &amp; sources: </strong>Campus and online courses, AI Era, and Curated collect material into books by course or topic. Notes retain source links and evolve as I learn. Some use AI assistance; check the original material before citing a claim or using code.</>} /></p>
 
       <p><UiPair
         zh={<><strong>阅读与交流：</strong>你可以搜索书籍与章节、收藏内容、调整阅读字号，并在可用时切换中英文。欢迎在留言板分享心得、提出建议或反馈问题。</>}

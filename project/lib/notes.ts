@@ -6,6 +6,7 @@ import type {
   Book,
   BookLink,
   Chapter,
+  ChapterGroup,
   ChapterVersion,
   Lang,
   Source,
@@ -83,6 +84,20 @@ function toBookLinks(value: unknown): BookLink[] {
   });
 }
 
+/** 显式分组；未声明 groups 的旧书保持单组目录 */
+function toChapterGroups(value: unknown): ChapterGroup[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const groups = value.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const record = item as Record<string, unknown>;
+    if (!record.id) return [];
+    const id = String(record.id);
+    const title = record.title ? String(record.title) : id;
+    return [{ id, title, heading: record.heading ? String(record.heading) : title }];
+  });
+  return groups.length ? groups : undefined;
+}
+
 /** 章节类型打平时，靠前的更具体，优先作为书本级标签 */
 const CONTENT_TYPE_PRIORITY = [
   "video-course",
@@ -147,6 +162,7 @@ const ORG_BY_HOST: Record<string, string> = {
   "youtu.be": "YouTube",
   "arxiv.org": "arXiv",
   "github.com": "GitHub",
+  "drive.google.com": "Google Drive",
   "x.com": "X",
   "medium.com": "Medium",
   "substack.com": "Substack",
@@ -322,6 +338,8 @@ function loadBook(bookDir: string, folder: string): Book | null {
   type Acc = {
     slug: string;
     number: number;
+    displayNumber?: string;
+    group?: string;
     updatedAt: string;
     publishedAt: string;
     sources: Source[];
@@ -351,6 +369,8 @@ function loadBook(bookDir: string, folder: string): Book | null {
       acc = {
         slug,
         number,
+        displayNumber: data.displayNumber ? String(data.displayNumber) : undefined,
+        group: data.group ? String(data.group) : undefined,
         updatedAt,
         publishedAt,
         sources: toSources(data.sources),
@@ -362,6 +382,8 @@ function loadBook(bookDir: string, folder: string): Book | null {
     }
 
     acc.number = Math.min(acc.number, number);
+    if (!acc.displayNumber && data.displayNumber) acc.displayNumber = String(data.displayNumber);
+    if (!acc.group && data.group) acc.group = String(data.group);
     if (updatedAt > acc.updatedAt) acc.updatedAt = updatedAt;
     if (!acc.publishedAt && publishedAt) acc.publishedAt = publishedAt;
     if (!acc.sources.length) acc.sources = toSources(data.sources);
@@ -379,6 +401,8 @@ function loadBook(bookDir: string, folder: string): Book | null {
     .map((chapter) => ({
       slug: chapter.slug,
       number: chapter.number,
+      displayNumber: chapter.displayNumber,
+      group: chapter.group,
       updatedAt: chapter.updatedAt,
       publishedAt:
         chapter.publishedAt ||
@@ -423,6 +447,8 @@ function loadBook(bookDir: string, folder: string): Book | null {
     contentType: bookMeta.content_type
       ? String(bookMeta.content_type)
       : deriveContentType(chapters),
+    studyPeriod: bookMeta.studyPeriod ? String(bookMeta.studyPeriod) : undefined,
+    groups: toChapterGroups(bookMeta.groups),
     chapters,
   };
 }

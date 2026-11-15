@@ -94,6 +94,7 @@ project/
 - 章节文件用 `NN - 标题` 命名，序号两位补零。
 - 中英双版用 `.zh` / `.en` 后缀配对，同一章的 `slug` 与章节序号必须一致。
 - 每个文件 frontmatter 必填 `slug`、`title`、`summary`、`updatedAt`、`sources`；语言由后缀推断。
+- 可选字段 `groups`（书籍）、`group` 与 `displayNumber`（章节）、`studyPeriod`（书籍）用于校内课程的分组目录、独立编号和学期显示；未设置的旧书保持原有目录、编号与日期。
 - 主题分类来自 `Knowledge Site/taxonomy.json`；首页按大类预览，大类页按子分类展示。
 - 只有单一语言时正常显示，不出现切换按钮。
 

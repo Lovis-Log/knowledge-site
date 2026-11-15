@@ -1,17 +1,18 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
-import type { Chapter } from "@/content/types";
+import type { Chapter, ChapterGroup } from "@/content/types";
 import { pickTitle } from "@/lib/language";
-import { paddedNumber } from "@/lib/format";
+import { chapterPagerLabel } from "@/lib/chapter-label";
 
 interface ChapterPagerProps {
   bookSlug: string;
+  groups?: ChapterGroup[];
   prev?: Chapter;
   next?: Chapter;
 }
 
-export function ChapterPager({ bookSlug, prev, next }: ChapterPagerProps) {
+export function ChapterPager({ bookSlug, groups, prev, next }: ChapterPagerProps) {
   return (
     <nav className={`pager${!prev && !next ? " pager--single" : ""}`} {...uiLabel("章节导航")}>
       <Link href={`/books/${bookSlug}/#chapters-heading`} className="pager__contents">
@@ -24,7 +25,7 @@ export function ChapterPager({ bookSlug, prev, next }: ChapterPagerProps) {
         <Link href={`/books/${bookSlug}/${prev.slug}/`} className="pager__link pager__link--prev">
           <span className="pager__label"><UiText zh="← 上一篇" /></span>
           <span className="pager__title">
-            {paddedNumber(prev.number)} · {pickTitle(prev)}
+            {chapterPagerLabel(prev, groups)} · {pickTitle(prev)}
           </span>
         </Link>
       ) : (
@@ -34,7 +35,7 @@ export function ChapterPager({ bookSlug, prev, next }: ChapterPagerProps) {
         <Link href={`/books/${bookSlug}/${next.slug}/`} className="pager__link pager__link--next">
           <span className="pager__label"><UiText zh="下一篇 →" /></span>
           <span className="pager__title">
-            {paddedNumber(next.number)} · {pickTitle(next)}
+            {chapterPagerLabel(next, groups)} · {pickTitle(next)}
           </span>
         </Link>
       ) : (

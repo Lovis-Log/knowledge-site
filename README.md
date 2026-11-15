@@ -8,8 +8,9 @@
 
 | 大类 | 内容 |
 |---|---|
-| [AI Era](Knowledge%20Site/AI%20Era/) | 大模型原理、智能体工程、AI 编程与工具实践 |
+| [校内课程](Knowledge%20Site/%E6%A0%A1%E5%86%85%E8%AF%BE%E7%A8%8B/) | 校内课程的课堂笔记、作业解析与复习整理 |
 | [专业课程](Knowledge%20Site/%E4%B8%93%E4%B8%9A%E8%AF%BE%E7%A8%8B/) | 数学、计算机与人工智能课程笔记 |
+| [AI Era](Knowledge%20Site/AI%20Era/) | 大模型原理、智能体工程、AI 编程与工具实践 |
 | [精选收录](Knowledge%20Site/%E7%B2%BE%E9%80%89%E6%94%B6%E5%BD%95/) | 文章、外刊、视频与访谈的原文收录和学习笔记 |
 
 ## 站点特性

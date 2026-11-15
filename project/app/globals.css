@@ -1566,6 +1566,19 @@ button {
   margin-bottom: 18px;
 }
 
+.chapter-group + .chapter-group {
+  margin-top: 34px;
+}
+
+.chapter-group__title {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
 .chapter-list {
   list-style: none;
   margin: 0;

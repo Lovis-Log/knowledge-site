@@ -1,6 +1,12 @@
 {
   "sections": [
     {
+      "slug": "campus-courses",
+      "name": "校内课程",
+      "description": "按校内课程整理课堂笔记与作业解析，记录课程讲授的概念、定理、例题和证明，保留课件与作业的原始出处，供课前预习、课后复习与期末查漏补缺。",
+      "groupByCategory": false
+    },
+    {
       "slug": "courses",
       "name": "专业课程",
       "description": "按课程整理数学、计算机与人工智能的学习笔记，涵盖线性代数、实分析、离散数学、程序设计和智能体等内容。沿着课程进度梳理概念、推导、证明与代码示例，配合理解检验和原始资料，方便从头学习、复习重点，也为后续研究与项目实践积累基础。",
@@ -31,6 +37,12 @@
     }
   ],
   "categories": [
+    {
+      "slug": "campus-courses",
+      "section": "campus-courses",
+      "name": "校内课程",
+      "description": "校内课程的课堂笔记、作业解析与复习整理"
+    },
     {
       "slug": "ai-era",
       "section": "ai-era",

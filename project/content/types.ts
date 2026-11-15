@@ -15,9 +15,22 @@ export interface ChapterVersion {
   body: string;
 }
 
+/** 书本目录里的分组，如「课程」「作业」；旧书不设置 */
+export interface ChapterGroup {
+  id: string;
+  /** 章节页序号前缀与分组简称，如「课程」「作业」 */
+  title: string;
+  /** 书本目录中的分组标题，如「课程目录」「作业目录」 */
+  heading: string;
+}
+
 export interface Chapter {
   slug: string;
   number: number;
+  /** 目录与章节页展示的编号；缺省时用 number，作业等分组可独立编号 */
+  displayNumber?: string;
+  /** 所属分组 id，对应书籍 _book.md 的 groups；缺省时沿用单组目录 */
+  group?: string;
   versions: Partial<Record<Lang, ChapterVersion>>;
   translation?: ChapterVersion;
   updatedAt: string;
@@ -57,5 +70,9 @@ export interface Book {
   collection?: boolean;
   /** 书本级内容类型，取 content_type */
   contentType?: string;
+  /** 校内课程的学期/阶段，如「大一」；显示在目录行与章节顶部，旧书不设置 */
+  studyPeriod?: string;
+  /** 书本目录的分组顺序；不设置时按单组平铺 */
+  groups?: ChapterGroup[];
   chapters: Chapter[];
 }

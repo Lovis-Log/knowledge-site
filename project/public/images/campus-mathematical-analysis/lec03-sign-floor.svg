@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="340" viewBox="0 0 860 340">
+  <defs>
+    <marker id="ax" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#1f2937"/>
+    </marker>
+  </defs>
+  <rect width="860" height="340" fill="#ffffff"/>
+  <style>
+    .axis{stroke:#1f2937;stroke-width:1.5}
+    .ink{fill:#1f2937;font-family:'Microsoft YaHei','Noto Sans SC',sans-serif}
+    .muted{fill:#6b7280;font-family:'Microsoft YaHei','Noto Sans SC',sans-serif}
+    .step{stroke:#2563eb;stroke-width:3;fill:none;stroke-linecap:round}
+  </style>
+
+  <text x="40" y="32" class="ink" font-size="18" font-weight="600">符号函数与取整函数</text>
+
+  <text x="190" y="62" class="ink" font-size="16" text-anchor="middle">y = sgn x</text>
+  <line x1="70" y1="170" x2="340" y2="170" class="axis" marker-end="url(#ax)"/>
+  <line x1="200" y1="290" x2="200" y2="70" class="axis" marker-end="url(#ax)"/>
+  <text x="346" y="176" class="ink" font-size="14">x</text>
+  <text x="206" y="72" class="ink" font-size="14">y</text>
+
+  <line x1="90" y1="240" x2="194" y2="240" class="step"/>
+  <circle cx="194" cy="240" r="4.5" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+  <circle cx="200" cy="170" r="4.5" fill="#2563eb"/>
+  <line x1="206" y1="100" x2="310" y2="100" class="step"/>
+  <circle cx="206" cy="100" r="4.5" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="178" y="246" class="muted" font-size="13" text-anchor="end">−1</text>
+  <text x="178" y="106" class="muted" font-size="13" text-anchor="end">1</text>
+  <text x="190" y="188" class="muted" font-size="13" text-anchor="end">O</text>
+
+  <text x="640" y="62" class="ink" font-size="16" text-anchor="middle">y = [x]</text>
+  <line x1="500" y1="170" x2="810" y2="170" class="axis" marker-end="url(#ax)"/>
+  <line x1="620" y1="300" x2="620" y2="60" class="axis" marker-end="url(#ax)"/>
+  <text x="816" y="176" class="ink" font-size="14">x</text>
+  <text x="626" y="62" class="ink" font-size="14">y</text>
+
+  <g class="step">
+    <line x1="530" y1="240" x2="574" y2="240"/>
+    <line x1="575" y1="205" x2="619" y2="205"/>
+    <line x1="620" y1="170" x2="664" y2="170"/>
+    <line x1="665" y1="135" x2="709" y2="135"/>
+    <line x1="710" y1="100" x2="754" y2="100"/>
+  </g>
+  <g fill="#2563eb">
+    <circle cx="530" cy="240" r="4.5"/><circle cx="575" cy="205" r="4.5"/>
+    <circle cx="620" cy="170" r="4.5"/><circle cx="665" cy="135" r="4.5"/>
+    <circle cx="710" cy="100" r="4.5"/>
+  </g>
+  <g fill="#ffffff" stroke="#2563eb" stroke-width="2.5">
+    <circle cx="575" cy="240" r="4.5"/><circle cx="620" cy="205" r="4.5"/>
+    <circle cx="665" cy="170" r="4.5"/><circle cx="710" cy="135" r="4.5"/>
+    <circle cx="755" cy="100" r="4.5"/>
+  </g>
+  <text x="608" y="188" class="muted" font-size="13" text-anchor="end">O</text>
+  <text x="608" y="211" class="muted" font-size="13" text-anchor="end">−1</text>
+  <text x="608" y="140" class="muted" font-size="13" text-anchor="end">1</text>
+
+  <text x="430" y="326" class="muted" font-size="13" text-anchor="middle">sgn x 在 0 处取 0；[x] 在整数处跳跃，每段左闭右开。</text>
+</svg>

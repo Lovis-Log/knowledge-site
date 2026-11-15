@@ -15,11 +15,8 @@
 ```
 Knowledge Site/
 ├─ taxonomy.json
-├─ AI Era/
-│  ├─ AI 工程与设计/
-│  ├─ 大模型原理与使用/
-│  ├─ LLM Wiki Workflow/
-│  └─ Vibe Coding Tutorials/
+├─ 校内课程/
+│  └─ 工科数学分析/
 ├─ 专业课程/
 │  ├─ 数学/
 │  │  ├─ MIT Real Analysis/
@@ -30,6 +27,11 @@ Knowledge Site/
 │  │  ├─ Harvard Python Programming/
 │  │  ├─ Python for AI/
 │  │  └─ CMU AI Agents/
+├─ AI Era/
+│  ├─ AI 工程与设计/
+│  ├─ 大模型原理与使用/
+│  ├─ LLM Wiki Workflow/
+│  └─ Vibe Coding Tutorials/
 └─ 精选收录/
    ├─ 外刊精读/
    ├─ 社会与思辨/
@@ -42,7 +44,7 @@ Knowledge Site/
 - 网站递归发现书籍，URL 取自书籍和章节的 `slug`；移动或重命名文件夹不改变已发布链接。
 - 章节文件用 `NN - 标题` 命名，序号两位补零。新章节的 `slug` 前缀与初始序号一致；已发布章节合并或重排时保留原 `slug`，以免旧链接失效。
 - 中英双版用 `.zh` / `.en` 后缀配对；同一章的两种语言使用一致的文件序号与 `slug`。
-- AI Era 与精选收录直接展示书籍；专业课程保留子分类。网站排序由 `taxonomy.json` 的 sections 决定，专业课程在 AI Era 前。
+- 校内课程、AI Era 与精选收录直接展示书籍；专业课程保留子分类。网站排序由 `taxonomy.json` 的 sections 决定，依次为校内课程、专业课程、AI Era、精选收录。
 - 封面固定使用英文展示名，封面下方的加粗书名跟随界面语言；展示译名集中在服务端的 `project/lib/book-title-translations.ts`，随受保护目录下发，不替换其他正式书名。
 - 只有一种语言也可以，站点不会显示语言切换。
 
@@ -76,6 +78,8 @@ collection: true                      # 可选：多来源汇编，卡片显示�
 
 `coverImage` 可选，图片放 `project/public/covers/`。多来源汇编的书（如 Vibe Coding）不写 `author`，只写 `collection: true`。
 
+校内课程可把目录分成「课程」「作业」等多组：在 `_book.md` 用可选的 `groups` 按顺序声明 `id`、`title`（章节页序号前缀，如「作业」）和 `heading`（目录标题，如「作业目录」），并用 `studyPeriod`（如 `大一`）表示学期。章节用 `group` 归组、用 `displayNumber` 独立编号，`number` 仍由文件序号决定，只作稳定标识。没有这些字段的书保持单组目录、原有编号与日期。
+
 ## 章节 frontmatter
 
 ```yaml
@@ -99,7 +103,9 @@ sources:
 
 必填：`slug`、`title`、`summary`、`updatedAt`、`sources`。
 
-`publishedAt` 可选，写在章节 frontmatter 顶层表示本章原资源首发日期；不写时自动取 `sources` 中最早的 `publishedAt`。
+`group` 与 `displayNumber` 可选，仅用于声明了 `groups` 的书；`number` 由文件序号生成，不写在 frontmatter 里。
+
+`publishedAt` 可选，写在章节 frontmatter 顶层表示本章原资源首发日期；不写时自动取 `sources` 中最早的 `publishedAt`。课程笔记日期未知时不要补写日期，由 `_book.md` 的 `studyPeriod` 负责展示时间。
 
 `content_type` 取值：`video-course`、`technical-tutorial`、`science-explainer`、`news`、`opinion`、`podcast-interview`、`reference`、`social-post`。
 

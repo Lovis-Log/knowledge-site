@@ -10,6 +10,7 @@ export const bookDisplayTitles: Record<string, { zh: string; en: string }> = {
   'mit-real-analysis': { zh: 'MIT 实分析', en: 'MIT Real Analysis' },
   'mit-discrete-applied-mathematics': { zh: 'MIT 离散应用数学', en: 'MIT Discrete Applied Mathematics' },
   'mit-game-theory': { zh: 'MIT 博弈论', en: 'MIT Game Theory' },
+  'campus-mathematical-analysis': { zh: '工科数学分析', en: 'Mathematical Analysis' },
   '3b1b-essence-of-calculus': { zh: '3B1B 微积分的本质', en: '3B1B Essence of Calculus' },
   '3b1b-essence-of-linear-algebra': { zh: '3B1B 线性代数的本质', en: '3B1B Essence of Linear Algebra' },
   '3b1b-differential-equations': { zh: '3B1B 微分方程', en: '3B1B Differential Equations' },

@@ -1,18 +1,26 @@
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { CSSProperties } from "react";
-import type { Book } from "@/content/types";
+import type { Book, Chapter } from "@/content/types";
 import { pickVersion } from "@/lib/language";
-import { formatDate, paddedNumber } from "@/lib/format";
+import { formatDate } from "@/lib/format";
+import { chapterNumberLabel } from "@/lib/chapter-label";
 import { UiPair, UiText } from "@/components/ui-text";
 import { InlineMarkdown } from "@/components/markdown";
 
-export function ChapterList({ book }: { book: Book }) {
+export function ChapterList({
+  book,
+  chapters = book.chapters,
+}: {
+  book: Book;
+  chapters?: Chapter[];
+}) {
   return (
     <ol className="chapter-list">
-      {book.chapters.map((chapter, index) => {
+      {chapters.map((chapter, index) => {
         const zh = pickVersion(chapter.versions);
         const en = chapter.versions.en ?? zh;
         const bilingual = Boolean(chapter.versions.zh && chapter.versions.en);
+        const meta = book.studyPeriod ?? (chapter.publishedAt ? formatDate(chapter.publishedAt) : "");
         return (
           <li
             key={chapter.slug}
@@ -20,7 +28,7 @@ export function ChapterList({ book }: { book: Book }) {
             style={{ "--i": index } as CSSProperties}
           >
             <Link prefetch={false} href={`/books/${book.slug}/${chapter.slug}/`} className="chapter-row">
-              <span className="chapter-row__num">{paddedNumber(chapter.number)}</span>
+              <span className="chapter-row__num">{chapterNumberLabel(chapter)}</span>
               <span className="chapter-row__body">
                 <span className="chapter-row__title">
                   <UiText zh={zh.title} en={en.title} />
@@ -31,7 +39,7 @@ export function ChapterList({ book }: { book: Book }) {
                 )}
               </span>
               <span className="chapter-row__meta">
-                {chapter.publishedAt ? formatDate(chapter.publishedAt) : ""}
+                {meta}
               </span>
             </Link>
           </li>

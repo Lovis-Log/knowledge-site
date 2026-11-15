@@ -18,6 +18,13 @@ export default function BookView({ slug }: { slug: string }) {
   const section = getLibrarySections().find((item) =>
     item.books.some((itemBook) => itemBook.slug === book.slug),
   );
+  const groups = book.groups?.flatMap((group) => {
+    const chapters = book.chapters.filter((chapter) => chapter.group === group.id);
+    return chapters.length ? [{ ...group, chapters }] : [];
+  });
+  const ungrouped = groups?.length
+    ? book.chapters.filter((chapter) => !groups.some((group) => group.id === chapter.group))
+    : [];
 
   return (
     <div className="shell">
@@ -91,7 +98,23 @@ export default function BookView({ slug }: { slug: string }) {
         >
           <UiText zh="目录" />
         </h2>
-        <ChapterList book={book} />
+        {groups?.length ? (
+          <>
+            {groups.map((group) => (
+              <div className="chapter-group" key={group.id}>
+                <h3 className="chapter-group__title">{group.heading}</h3>
+                <ChapterList book={book} chapters={group.chapters} />
+              </div>
+            ))}
+            {ungrouped.length > 0 && (
+              <div className="chapter-group">
+                <ChapterList book={book} chapters={ungrouped} />
+              </div>
+            )}
+          </>
+        ) : (
+          <ChapterList book={book} />
+        )}
       </section>
     </div>
   );

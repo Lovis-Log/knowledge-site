@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="300" viewBox="0 0 820 300">
+  <rect width="820" height="300" fill="#ffffff"/>
+  <style>
+    .axis{stroke:#1f2937;stroke-width:1.6}
+    .ink{fill:#1f2937;font-family:'Microsoft YaHei','Noto Sans SC',sans-serif}
+    .muted{fill:#6b7280;font-family:'Microsoft YaHei','Noto Sans SC',sans-serif}
+    .blue{stroke:#2563eb;fill:none}
+    .dot{fill:#2563eb}
+    .hollow{fill:#ffffff;stroke:#2563eb;stroke-width:2}
+    .dash{stroke:#9ca3af;stroke-width:1.2;stroke-dasharray:5 4}
+  </style>
+
+  <text x="40" y="34" class="ink" font-size="18" font-weight="600">δ 邻域与去心 δ 邻域</text>
+  <text x="40" y="58" class="muted" font-size="15">O(x₀, δ) = (x₀ − δ, x₀ + δ) = { x : |x − x₀| &lt; δ }</text>
+
+  <line x1="60" y1="120" x2="760" y2="120" class="axis"/>
+  <polygon points="760,120 748,115 748,125" fill="#1f2937"/>
+  <text x="768" y="125" class="muted" font-size="15">x</text>
+
+  <line x1="290" y1="120" x2="530" y2="120" class="blue" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="290" cy="120" r="5" class="hollow"/>
+  <circle cx="530" cy="120" r="5" class="hollow"/>
+  <circle cx="410" cy="120" r="6" class="dot"/>
+  <text x="410" y="150" class="ink" font-size="15" text-anchor="middle">x₀</text>
+  <text x="290" y="150" class="muted" font-size="14" text-anchor="middle">x₀ − δ</text>
+  <text x="530" y="150" class="muted" font-size="14" text-anchor="middle">x₀ + δ</text>
+  <text x="410" y="94" class="blue" font-size="14" text-anchor="middle">含中心，长度 2δ</text>
+
+  <line x1="60" y1="225" x2="760" y2="225" class="axis"/>
+  <polygon points="760,225 748,220 748,230" fill="#1f2937"/>
+  <text x="768" y="230" class="muted" font-size="15">x</text>
+
+  <line x1="290" y1="225" x2="530" y2="225" class="blue" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="290" cy="225" r="5" class="hollow"/>
+  <circle cx="530" cy="225" r="5" class="hollow"/>
+  <circle cx="410" cy="225" r="6" fill="#ffffff" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="410" y="255" class="ink" font-size="15" text-anchor="middle">x₀</text>
+  <text x="410" y="199" class="blue" font-size="14" text-anchor="middle">去掉中心，0 &lt; |x − x₀| &lt; δ</text>
+
+  <text x="40" y="284" class="muted" font-size="14">右邻域取 x₀ &lt; x &lt; x₀ + δ，左邻域取 x₀ − δ &lt; x &lt; x₀。</text>
+</svg>
