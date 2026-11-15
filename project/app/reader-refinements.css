@@ -1,4 +1,23 @@
 .library-page { padding-top: 20px; }
+/* About tabs share the full page width rather than a narrow reading column. */
+.about .prose--page { max-width: none; }
+
+/* Exempt shared language controls from the global button lift in every header. */
+html body button.ui-language-toggle {
+  translate: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+.ui-language-toggle__label { display: inline-flex; transition: translate 180ms var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .ui-language-toggle:hover .ui-language-toggle__label { translate: 0 -2px; }
+}
+.ui-language-toggle:focus-visible .ui-language-toggle__label { translate: 0 -2px; }
+.ui-language-toggle:active .ui-language-toggle__label { translate: 0 0; }
+#lovismind-landing[data-motion="paused"] .ui-language-toggle__label { translate: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ui-language-toggle .ui-language-toggle__label { translate: none !important; transition: none; }
+}
 .library-page > .library-nav { margin-block: 0; padding-block: 12px; }
 .library-page > .library-search { margin-block: 22px; }
 .library-page .library { padding-top: 12px; }

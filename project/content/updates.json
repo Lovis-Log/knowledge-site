@@ -1,5 +1,39 @@
 [
   {
+    "date": "2026-11-15",
+    "version": "1.10.0",
+    "features": [
+      {
+        "zh": "首页重构为连续滚动的书库导览，更新桌面与手机阅读预览、完整书封和逐行呈现动效；中英文介绍、阅读功能与常见问答同步修订。",
+        "en": "Redesigned the landing page with a continuous library tour, desktop and mobile reading previews, complete book covers, and line-by-line reveals. Revised the introduction, reading features, and FAQ in both languages."
+      },
+      {
+        "zh": "首页导航加粗，小字字号与站内界面统一缩放，首屏标题增加行间留白；语言切换仅文字浮动，按钮背景保持固定。",
+        "en": "Bolder landing navigation, small text that scales with the rest of the site, and more space between hero lines. Language controls now lift only their labels, keeping the button background stationary."
+      },
+      {
+        "zh": "登录提示明确为进入 Lovis 的知识库，移除首页“写在前面”标签；关于介绍和更新日志扩展正文宽度，减少右侧空白。",
+        "en": "Sign-in copy now identifies Lovis’s knowledge vault. Removed the personal-note label and widened the About introduction and release notes to reduce unused space."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-14",
+    "version": "1.9.1",
+    "features": [
+      {
+        "zh": "修正登录后返回原章节、账号恢复和请求失败后的操作反馈，完善留言回复目标失效时的提示。",
+        "en": "Fixed returning to the original chapter after sign-in, account recovery, and feedback after failed requests; clarified unavailable guestbook reply targets."
+      },
+      {
+        "zh": "账号停用时同步撤销待用的密码重置凭据，完善邀请码兼容与碰撞处理；调整管理员审核、账号恢复控件和操作记录的排版。",
+        "en": "Disabling an account now also revokes pending password-reset credentials. Improved invitation-code compatibility and collision handling, plus the layout of administrator reviews, recovery controls, and audit records."
+      }
+    ],
+    "content": []
+  },
+  {
     "date": "2026-11-14",
     "version": "1.9.0",
     "features": [

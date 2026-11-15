@@ -47,7 +47,7 @@ export function UiLanguageToggle() {
 
   return (
     <button type="button" className="ui-language-toggle" {...uiLabel("Switch to English", "切换为中文")} onClick={toggle}>
-      <UiText zh="EN" en="中" />
+      <span className="ui-language-toggle__label"><UiText zh="EN" en="中" /></span>
     </button>
   );
 }

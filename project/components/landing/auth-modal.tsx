@@ -312,12 +312,12 @@ export function AuthModal({
                 <UiText
                   zh={
                     mode === "login"
-                      ? "登录后进入属于你的知识空间。"
+                      ? "登录后进入属于Lovis的知识库"
                       : "使用邀请码直接通过，或提交申请由管理员审核。"
                   }
                   en={
                     mode === "login"
-                      ? "Enter your credentials to access the knowledge vault."
+                      ? "Sign in to enter Lovis’s knowledge vault."
                       : "Use an invite code for immediate access, or apply for administrator review."
                   }
                 />

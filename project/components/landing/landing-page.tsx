@@ -202,7 +202,6 @@ export function LandingPage() {
         <div className={`${styles.shell} ${styles.reflectionInner}`}>
           <div className={`${styles.reflectionArt} ${styles.reveal}`} data-landing-reveal="visible" aria-hidden="true"><img src={landingAssets.book} width={1536} height={1024} loading="lazy" decoding="async" alt="" /></div>
           <div className={styles.reflectionCopy}>
-            <p className={`${styles.eyebrow} ${styles.lineReveal}`} data-landing-reveal="visible"><UiText zh="写在前面" en="A personal note" /></p>
             <h2 id="reflection-title">
               {reflectionTitleParts.map((line, index) => (
                 <span className={`${styles.titleLine} ${styles.lineReveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${index * 90}ms` }} key={`${line.zh}-${index}`}><UiText zh={line.zh} en={line.en} /></span>
