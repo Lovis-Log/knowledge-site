@@ -7,6 +7,9 @@ export const landingAssets = {
   agents: "/images/landing/cover-agents-v2.webp",
   cpp: "/images/landing/cover-cpp-v2.webp",
   book: "/images/landing/open-book-v2.webp",
+  mobile: "/images/landing/hero-mobile-v3.webp",
+  resume: "/images/landing/hero-resume-v3.webp",
+  desktop: "/images/landing/hero-desktop-v3.webp",
 } as const;
 
 export const publicLandingAssets: readonly string[] = Object.values(landingAssets);

@@ -8,7 +8,7 @@ import { UiText } from "@/components/ui-text";
 import { api } from "@/lib/api";
 import { uiLabel } from "@/lib/ui-language";
 import { AuthModal, type AuthView } from "./auth-modal";
-import { landingCopy as copy, landingQuestions, landingVolumes } from "./landing-copy";
+import { landingCopy as copy, landingFeatures, landingQuestions, landingVolumes } from "./landing-copy";
 import { landingAssets } from "@/lib/landing-assets";
 import { LandingStory } from "./landing-story";
 import styles from "./landing-redesign.module.css";
@@ -85,7 +85,7 @@ export function LandingPage() {
   }
 
   return (
-    <div ref={root} id="lovismind-landing" className={styles.landing} data-motion={motionPaused ? "paused" : "on"}>
+    <div ref={root} id="lovismind-landing" className={styles.landing} data-motion={motionPaused ? "paused" : "on"} data-intro={hydrated ? "ready" : undefined}>
       <header className={styles.header}>
         <div className={`${styles.shell} ${styles.headerInner}`}>
           <a href="#top" className={styles.brand} suppressHydrationWarning {...uiLabel("LovisMind 首页", "LovisMind home")}>
@@ -107,34 +107,45 @@ export function LandingPage() {
 
       <section id="top" className={`${styles.hero} ${styles.shell}`} aria-labelledby="landing-title">
         <div className={styles.heroCopy}>
-          <h1 id="landing-title"><UiText {...copy.heroTitle} /><br /><span className={styles.heroAccent}><UiText {...copy.heroAccent} /></span></h1>
-          <p className={styles.heroDescription}><UiText {...copy.heroDescription} /></p>
-          <div className={styles.actions}>
+          <h1 id="landing-title"><span className={styles.heroLine} data-landing-entry><UiText {...copy.heroTitle} /></span><span className={`${styles.heroLine} ${styles.heroAccent}`} data-landing-entry style={{ animationDelay: "90ms" }}><UiText {...copy.heroAccent} /></span></h1>
+          <p className={styles.heroDescription} data-landing-entry style={{ animationDelay: "160ms" }}><UiText {...copy.heroDescription} /></p>
+          <div className={styles.actions} data-landing-entry style={{ animationDelay: "220ms" }}>
             {entrance(styles.primary)}
-            <a href="#vault-preview" className={styles.textAction}><UiText zh="先看看里面" en="Take a look inside" /><Arrow /></a>
           </div>
           <noscript><p><a href="/login/"><UiText zh="登录" en="Sign in" /></a> · <a href="/register/"><UiText zh="创建账号" en="Create account" /></a></p></noscript>
         </div>
         <div className={styles.heroArt} aria-hidden="true">
           <div className={styles.heroStageNote}><UiText zh="阅读留下的痕迹，都在这里。" en="A few things worth coming back to." /></div>
-          <img className={styles.heroPreview} src={landingAssets.shelf} width={1600} height={890} alt="" fetchPriority="high" />
-          <img className={styles.heroBook} src="/images/lovismind-cover.webp" width={1254} height={1254} alt="" />
+          <div className={styles.heroDesktopLayer} data-landing-entry style={{ animationDelay: "280ms" }}><img src={landingAssets.desktop} width={1600} height={652} alt="" fetchPriority="high" /></div>
+          <div className={styles.heroMobileLayer} data-landing-entry style={{ animationDelay: "390ms" }}><img src={landingAssets.mobile} width={560} height={1260} alt="" /></div>
+          <div className={styles.heroResumeLayer} data-landing-entry style={{ animationDelay: "500ms" }}><img src={landingAssets.resume} width={1000} height={292} alt="" /></div>
         </div>
-        <div className={styles.heroFoot}><span><UiText zh="文字留痕，思绪成网。" en="Where readings linger and thoughts intertwine." /></span><a href="#vault-preview" suppressHydrationWarning {...uiLabel("查看书库预览", "Explore the library preview")}><Arrow /></a></div>
       </section>
 
       <LandingStory paused={motionPaused} />
+
+      <section id="reading-features" className={`${styles.features} ${styles.shell}`} aria-labelledby="features-title">
+        <div className={`${styles.featureCopy} ${styles.reveal}`} data-landing-reveal="visible">
+          <h2 id="features-title"><UiText zh="让阅读，" en="Your reading." /><br /><span><UiText zh="顺着你的节奏。" en="At your own pace." /></span></h2>
+          <p><UiText zh="不必一次读完。留下读到的位置，选择合适的字号，再从目录回到想看的那一节。" en="You don’t have to finish in one sitting. Keep your place, choose a comfortable view, and return to the passage you want to read." /></p>
+          <a href="#collections" className={styles.featureLink}><UiText zh="看看书架上有什么" en="Find your next read" /><Arrow /></a>
+        </div>
+        <div className={styles.featureWorkbench}>
+          <div className={styles.featureWorkbenchHead}><UiText zh="阅读里的一些便利" en="A little room to settle in" /></div>
+          <ul>{landingFeatures.map((item, index) => <li key={item.title.en} className={styles.reveal} data-landing-reveal="visible" style={{ transitionDelay: `${index * 75}ms` }}><span className={styles.featureSymbol} aria-hidden="true">{index === 2 ? "↗" : "✓"}</span><div><h3><UiText {...item.title} /></h3><p><UiText {...item.description} /></p></div><span className={styles.featureNumber} aria-hidden="true">{String(index + 1).padStart(2, "0")}</span></li>)}</ul>
+        </div>
+      </section>
 
       <section id="collections" className={`${styles.collection} ${styles.shell}`} aria-labelledby="collection-title">
         <div className={styles.collectionHeading}><h2 id="collection-title"><UiText {...copy.collectionTitle} /></h2><p><UiText {...copy.collectionDescription} /></p></div>
         <div className={styles.volumes}>
           {landingVolumes.map((volume, index) => (
-            <figure className={styles.volume} key={volume.cover}>
-              <div className={`${styles.coverWell} ${styles.reveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${index * 90}ms` }}>
-                <div className={styles.landingBook} aria-hidden="true"><span className={styles.coverTitle}>{volume.title.en}</span><img src={volume.cover} width={480} height={720} loading="lazy" decoding="async" alt="" /><span className={styles.coverImprint}>LovisMind · Reading notes</span></div>
-              </div>
-              <figcaption><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></figcaption>
-            </figure>
+            <Link href={signedIn ? volume.href : `/login/?next=${encodeURIComponent(volume.href)}`} className={styles.collectionCard} key={volume.cover} suppressHydrationWarning {...uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`)}>
+              <figure className={styles.volume}>
+                <div className={`${styles.collectionPreview} ${styles.reveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${index * 90}ms` }}><img src={volume.cover} width={480} height={720} loading="lazy" decoding="async" alt="" /></div>
+                <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
+              </figure>
+            </Link>
           ))}
         </div>
         <a href="#entrance" className={styles.collectionLink}><UiText zh="到书库里，慢慢读。" en="Find your next read in the library." /><Arrow /></a>
@@ -154,7 +165,7 @@ export function LandingPage() {
 
       <section className={`${styles.questions} ${styles.shell}`} aria-labelledby="questions-title">
         <div><h2 id="questions-title"><UiText zh="进来之前，几句说明。" en="A few things before you come in." /></h2><p><UiText zh="关于内容，也关于这间书房。" en="About the reading, and the room around it." /></p></div>
-        <div className={styles.questionList}>{landingQuestions.map((item) => <details key={item.question.en}><summary><UiText {...item.question} /><span aria-hidden="true">+</span></summary><p><UiText {...item.answer} /></p></details>)}</div>
+        <div className={styles.questionList}>{landingQuestions.map((item) => <details key={item.question.en}><summary><span className={styles.questionText}><UiText {...item.question} /></span><span aria-hidden="true">+</span></summary><p><UiText {...item.answer} /></p></details>)}</div>
       </section>
 
       <footer id="entrance" className={styles.entrance}>

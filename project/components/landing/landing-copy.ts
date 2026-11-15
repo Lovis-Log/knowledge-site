@@ -23,9 +23,15 @@ export const landingScenes = [
 ] as const;
 
 export const landingVolumes = [
-  { title: { zh: "线性代数", en: "Linear algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: landingAssets.math },
-  { title: { zh: "智能体工程", en: "Agent engineering" }, description: { zh: "围绕智能体构建与设计的实践笔记。", en: "Practical notes on building and designing agents." }, cover: landingAssets.agents },
-  { title: { zh: "C++ 编程", en: "Programming in C++" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: landingAssets.cpp },
+  { title: { zh: "线性代数", en: "Linear algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: landingAssets.math, href: "/books/mit-linear-algebra/" },
+  { title: { zh: "智能体工程", en: "Agent engineering" }, description: { zh: "围绕智能体构建与设计的实践笔记。", en: "Practical notes on building and designing agents." }, cover: landingAssets.agents, href: "/books/agent-engineering/" },
+  { title: { zh: "C++ 编程", en: "Programming in C++" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: landingAssets.cpp, href: "/books/cpp-programming-course/" },
+] as const;
+
+export const landingFeatures = [
+  { title: { zh: "继续上次的阅读", en: "Pick up where you left off" }, description: { zh: "在同一浏览器回到最近章节，接着未完的地方。", en: "Return to your recent chapter in the same browser, and pick up the thread." } },
+  { title: { zh: "把页面调到舒服", en: "Make the page feel right" }, description: { zh: "三档字号、目录显隐，保留自己的阅读偏好。", en: "Choose a text size and show or hide the outline. Keep the view that suits you." } },
+  { title: { zh: "沿着来源，再读一遍", en: "Follow a thought back to its source" }, description: { zh: "从笔记回到原文；有双语内容时，切换语言对照。", en: "Follow the original links, or compare languages where both versions are available." } },
 ] as const;
 
 export const landingQuestions = [
