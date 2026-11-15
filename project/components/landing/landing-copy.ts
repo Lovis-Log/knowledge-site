@@ -24,7 +24,7 @@ export const landingScenes = [
 
 export const landingVolumes = [
   { title: { zh: "线性代数", en: "Linear Algebra" }, description: { zh: "矩阵变换、向量空间与几何投影的系统推演。", en: "A systematic exploration of matrix transformations, vector spaces, and geometric projections." }, cover: landingAssets.bookMath, href: "/books/mit-linear-algebra/" },
-  { title: { zh: "外刊精读", en: "English Close Reading" }, description: { zh: "长篇时文研读，涵盖论证结构、词法句式与背景注释。", en: "Close readings of long-form journalism, with notes on argument structure, vocabulary, syntax, and context." }, cover: landingAssets.bookNews, href: "/books/english-news-reading/" },
+  { title: { zh: "外刊精读", en: "English close reading" }, description: { zh: "长篇时文研读，涵盖论证结构、词法句式与背景注释。", en: "Close readings of long-form journalism, with notes on argument structure, vocabulary, syntax, and context." }, cover: landingAssets.bookNews, href: "/books/english-news-reading/" },
   { title: { zh: "C++ 编程与系统", en: "C++ & Systems Programming" }, description: { zh: "探讨语言核心特性、内存模型与底层运行机制。", en: "An exploration of core language features, memory models, and the mechanisms underlying program execution." }, cover: landingAssets.bookCpp, href: "/books/cpp-programming-course/" },
 ] as const;
 
