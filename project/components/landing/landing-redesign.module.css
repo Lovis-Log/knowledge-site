@@ -15,7 +15,7 @@
 .landing button { cursor: pointer; }
 .landing a:focus-visible, .landing button:focus-visible { outline: 2px solid var(--lm-gold-deep); outline-offset: 5px; }
 .shell { width: min(100%, 1600px); margin-inline: auto; padding-inline: clamp(24px, 5.5vw, 92px); }
-.header { height: 80px; position: relative; z-index: 20; border-bottom: 1px solid var(--lm-line); }
+.header { height: 80px; position: relative; z-index: 20; border-bottom: 0; }
 .headerInner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font: 700 29px/1 Georgia, serif; letter-spacing: -.055em; }
 .brand img { width: 34px; height: 34px; object-fit: contain; }
@@ -100,7 +100,6 @@
 .footerWordmark { display: flex; align-items: center; justify-content: space-between; font: 500 clamp(76px, 17vw, 272px)/1 Georgia, serif; letter-spacing: -.075em; margin-top: 100px; padding-bottom: 36px; color: #e7d5b2; }
 .footerWordmark > span { font: 300 .65em/1 var(--sans); color: #dfbd85; margin-left: 24px; }
 .footerMeta { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 23px; border-top: 1px solid #ffffff25; font-size: .8125rem; color: #cac6bd; }
-.motionToggle { display: inline-flex; align-items: center; gap: 12px; padding: 10px 0 10px 10px; background: none; color: inherit; border: 0; font-size: .8125rem !important; }
 .entrance a:focus-visible, .entrance button:focus-visible { outline-color: #e0b878; }
 
 @media (min-width: 1600px) { .heroArt img { width: 105%; } }
@@ -175,7 +174,6 @@
   .footerWordmark { font-size: 17vw; margin-top: 70px; padding-bottom: 25px; }
   .footerWordmark > span { margin-left: 12px; }
   .footerMeta { gap: 12px; font-size: .75rem; padding-block: 17px; }
-  .motionToggle { font-size: .75rem !important; }
 }
 @media (max-width: 360px) {
   .headerInner { padding-inline: 16px; gap: 10px; }
@@ -319,8 +317,6 @@
 .heroLine { display: block; }
 .heroLine + .heroLine { margin-top: .18em; }
 .brand .brandDescription { max-width: 13em; font: 400 .75rem/1.4 var(--sans); letter-spacing: 0; }
-.heroAuthLink { border: 0; padding: 6px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
-.heroAuthLink:hover { text-decoration: underline; }
 @media (max-width: 1100px) { .brand .brandDescription { display: none; } }
 .heroDescription { max-width: 43em; margin: 14px auto 17px; font-size: 1rem; line-height: 1.7; }
 .hero .primary { min-height: 44px; padding-block: 10px; }

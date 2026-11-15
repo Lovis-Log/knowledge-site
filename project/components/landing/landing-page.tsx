@@ -59,7 +59,6 @@ export function LandingPage() {
   const [authView, setAuthView] = useState<AuthView | null>(null);
   const [authNext, setAuthNext] = useState<string | undefined>(undefined);
   const [signedIn, setSignedIn] = useState(false);
-  const [motionPaused, setMotionPaused] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const closeAuth = useCallback(() => { setAuthView(null); setAuthNext(undefined); }, []);
   const openAuth = useCallback((view: AuthView, next?: string) => { setAuthNext(next); setAuthView(view); }, []);
@@ -68,7 +67,6 @@ export function LandingPage() {
   useEffect(() => {
     // The shared header translates DOM attributes before this page hydrates.
     setHydrated(true);
-    try { setMotionPaused(localStorage.getItem("shufang:motion") === "paused"); } catch { /* Use the system motion preference. */ }
     let live = true;
     const refresh = () => {
       api<{ user: unknown | null }>("/api/auth/me")
@@ -89,7 +87,7 @@ export function LandingPage() {
     function setup() {
       observer?.disconnect();
       items.forEach((item) => { item.dataset.landingReveal = "visible"; });
-      if (motionPaused || reduced.matches || !("IntersectionObserver" in window)) return;
+      if (reduced.matches || !("IntersectionObserver" in window)) return;
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
@@ -108,15 +106,8 @@ export function LandingPage() {
     setup();
     reduced.addEventListener("change", setup);
     return () => { live = false; observer?.disconnect(); reduced.removeEventListener("change", setup); };
-  }, [motionPaused]);
+  }, []);
 
-  function toggleMotion() {
-    setMotionPaused((current) => {
-      const next = !current;
-      try { localStorage.setItem("shufang:motion", next ? "paused" : "on"); } catch { /* Still works for this visit. */ }
-      return next;
-    });
-  }
 
   function entrance(className: string) {
     return signedIn
@@ -125,7 +116,7 @@ export function LandingPage() {
   }
 
   return (
-    <div ref={root} id="lovismind-landing" className={styles.landing} data-motion={motionPaused ? "paused" : "on"} data-intro={hydrated ? "ready" : undefined}>
+    <div ref={root} id="lovismind-landing" className={styles.landing} data-motion="on" data-intro={hydrated ? "ready" : undefined}>
       <header className={styles.header}>
         <div className={`${styles.shell} ${styles.headerInner}`}>
           <a href="#top" className={styles.brand} suppressHydrationWarning {...uiLabel("LovisMind 首页", "LovisMind home")}>
@@ -151,7 +142,6 @@ export function LandingPage() {
           <p className={styles.heroDescription} data-landing-entry style={{ animationDelay: "160ms" }}><UiText {...copy.heroDescription} /></p>
           <div className={styles.actions} data-landing-entry style={{ animationDelay: "220ms" }}>
             {entrance(styles.primary)}
-            {!signedIn && <span><button type="button" className={styles.heroAuthLink} onClick={() => openAuth("login")}><UiText zh="登录" en="Sign in" /></button> · <button type="button" className={styles.heroAuthLink} onClick={() => openAuth("register")}><UiText zh="注册" en="Register" /></button></span>}
           </div>
           <noscript><p><a href="/login/"><UiText zh="登录" en="Sign in" /></a> · <a href="/register/"><UiText zh="创建账号" en="Create account" /></a></p></noscript>
         </div>
@@ -163,7 +153,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <LandingStory paused={motionPaused} />
+      <LandingStory paused={false} />
 
       <section id="reading-features" className={`${styles.features} ${styles.shell}`} aria-labelledby="features-title">
         <div className={`${styles.featureCopy} ${styles.reveal}`} data-landing-reveal="visible">
@@ -232,9 +222,6 @@ export function LandingPage() {
           <div className={styles.footerWordmark} aria-hidden="true">LovisMind<span>↗</span></div>
           <div className={styles.footerMeta}>
             <span>© 2026 LovisMind · <UiText zh="个人学习知识库" en="Personal learning archive" /><br /><UiText zh="正文系个人研习记录，学术引用请核实原始出处。" en="Personal study notes; please refer to primary sources for formal citation." /></span><a href="#top"><UiText zh="回到页首" en="Back to top" /> ↑</a>
-            <button type="button" className={styles.motionToggle} aria-pressed={motionPaused} onClick={toggleMotion} suppressHydrationWarning {...uiLabel(motionPaused ? "开启动效" : "暂停动效", motionPaused ? "Turn motion on" : "Pause motion")}>
-              <UiText zh={motionPaused ? "开启动效" : "暂停动效"} en={motionPaused ? "Motion on" : "Pause motion"} /><span aria-hidden="true">{motionPaused ? "▷" : "Ⅱ"}</span>
-            </button>
           </div>
         </div>
       </footer>
