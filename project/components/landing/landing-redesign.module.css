@@ -317,6 +317,10 @@
 .hero { padding-top: 22px; padding-bottom: 16px; }
 .hero h1 { max-width: 1150px; margin-inline: auto; font-size: clamp(42px, 3.8vw, 68px); line-height: 1.12; }
 .heroLine { display: block; }
+.brand .brandDescription { max-width: 13em; font: 400 11px/1.4 var(--sans); letter-spacing: 0; }
+.heroAuthLink { border: 0; padding: 6px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.heroAuthLink:hover { text-decoration: underline; }
+@media (max-width: 760px) { .brand .brandDescription { display: none; } }
 .heroDescription { max-width: 43em; margin: 14px auto 17px; font-size: 14px; line-height: 1.7; }
 .hero .primary { min-height: 44px; padding-block: 10px; }
 .heroArt {
