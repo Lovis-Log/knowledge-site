@@ -17,6 +17,44 @@ function Arrow() {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
 }
 
+function sentenceParts(text: string) {
+  return text.match(/[^。！？.!?]+[。！？.!?]+|[^。！？.!?]+$/g)?.map((part) => part.trim()).filter(Boolean) ?? [text];
+}
+
+// Latin titles get a word-boundary split close to half their length, so the
+// forced lines stay balanced instead of leaving one sentence to wrap alone.
+function balancedPair(text: string) {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 4) return null;
+  let best: [string, string] | null = null;
+  for (let index = 2; index <= words.length - 2; index += 1) {
+    const first = words.slice(0, index).join(" ");
+    const second = words.slice(index).join(" ");
+    if (!best || Math.abs(first.length - second.length) < Math.abs(best[0].length - best[1].length)) best = [first, second];
+  }
+  return best;
+}
+
+function titleParts(text: string) {
+  const parts = sentenceParts(text);
+  if (parts.length > 1) return parts.length === 2 && /\s/.test(text) ? balancedPair(parts.join(" ")) ?? parts : parts;
+  const comma = text.search(/[，,]/);
+  return comma > 0 ? [text.slice(0, comma + 1), text.slice(comma + 1)] : parts;
+}
+
+// Split both languages only when they produce the same number of lines, so one
+// language never renders an empty line meant for the other.
+function pairedParts(zh: string, en: string, split: (text: string) => string[]) {
+  const zhParts = split(zh);
+  const enParts = split(en);
+  return zhParts.length === enParts.length && zhParts.length > 1
+    ? zhParts.map((part, index) => ({ zh: part, en: enParts[index] }))
+    : [{ zh, en }];
+}
+
+const reflectionTitleParts = pairedParts(copy.reflectionTitle.zh, copy.reflectionTitle.en, titleParts);
+const reflectionDescriptionParts = pairedParts(copy.reflectionDescription.zh, copy.reflectionDescription.en, sentenceParts);
+
 export function LandingPage() {
   const [authView, setAuthView] = useState<AuthView | null>(null);
   const [authNext, setAuthNext] = useState<string | undefined>(undefined);
@@ -146,7 +184,7 @@ export function LandingPage() {
             const card = (
               <figure className={styles.volume} data-landing-reveal="visible">
                 <div className={styles.collectionWell}>
-                  <img src={volume.cover} width={750} height={1000} loading="lazy" decoding="async" alt="" />
+                  <img src={volume.cover} width={528} height={704} loading="lazy" decoding="async" alt="" />
                 </div>
                 <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
               </figure>
@@ -162,11 +200,17 @@ export function LandingPage() {
       <section id="reflection" className={styles.reflection} aria-labelledby="reflection-title">
         <div className={`${styles.shell} ${styles.reflectionInner}`}>
           <div className={`${styles.reflectionArt} ${styles.reveal}`} data-landing-reveal="visible" aria-hidden="true"><img src={landingAssets.book} width={1536} height={1024} loading="lazy" decoding="async" alt="" /></div>
-          <div className={`${styles.reflectionCopy} ${styles.reveal}`} data-landing-reveal="visible">
-            <p className={styles.eyebrow}><UiText zh="关于这间书房" en="A note on this library" /></p>
-            <h2 id="reflection-title"><UiText {...copy.reflectionTitle} /></h2>
-            <p><UiText {...copy.reflectionDescription} /></p>
-            <span className={styles.handwritten}><UiText zh="留着，下次再读。" en="Keep it. Come back to it." /></span>
+          <div className={styles.reflectionCopy}>
+            <p className={`${styles.eyebrow} ${styles.lineReveal}`} data-landing-reveal="visible"><UiText zh="关于这间书房" en="A note on this library" /></p>
+            <h2 id="reflection-title">
+              {reflectionTitleParts.map((line, index) => (
+                <span className={`${styles.titleLine} ${styles.lineReveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${index * 90}ms` }} key={`${line.zh}-${index}`}><UiText zh={line.zh} en={line.en} /></span>
+              ))}
+            </h2>
+            <p>{reflectionDescriptionParts.map((part, index) => (
+              <span className={styles.fadePart} data-landing-reveal="visible" style={{ transitionDelay: `${220 + index * 110}ms` }} key={`${part.zh.slice(0, 6)}-${index}`}><UiText zh={part.zh} en={index < reflectionDescriptionParts.length - 1 ? `${part.en} ` : part.en} /></span>
+            ))}</p>
+            <span className={`${styles.handwritten} ${styles.handwrittenReveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${220 + reflectionDescriptionParts.length * 110 + 80}ms` }}><UiText zh="留着，下次再读。" en="Keep it. Come back to it." /></span>
           </div>
         </div>
       </section>

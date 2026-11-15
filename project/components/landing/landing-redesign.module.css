@@ -527,11 +527,31 @@
   .collectionCard:hover .collectionWell, .collectionCard:hover .collectionWell img { transform: none; }
 }
 
+/* The reflection copy arrives line by line, after its book plate. */
+.lineReveal {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity .65s ease, translate .8s cubic-bezier(.2, .7, .2, 1);
+}
+.lineReveal[data-landing-reveal="pending"] { opacity: 0; translate: 0 12px; }
+.lineReveal[data-landing-reveal="visible"] { opacity: 1; translate: 0 0; }
+.titleLine { display: block; }
+.fadePart { opacity: 1; transition: opacity .65s ease; }
+.fadePart[data-landing-reveal="pending"] { opacity: 0; }
+.fadePart[data-landing-reveal="visible"] { opacity: 1; }
+.handwrittenReveal { transition: opacity .65s ease, translate .8s cubic-bezier(.2, .7, .2, 1); }
+.handwrittenReveal[data-landing-reveal="pending"] { opacity: 0; translate: 0 12px; }
+.handwrittenReveal[data-landing-reveal="visible"] { opacity: 1; translate: 0 0; }
+
 @media (prefers-reduced-motion: reduce) {
   .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
   .collectionCard:hover .collectionWell, .collectionCard:hover .collectionWell img { transform: none; }
   .collectionCard figcaption svg { transition: none; }
+  .lineReveal[data-landing-reveal], .fadePart[data-landing-reveal], .handwrittenReveal[data-landing-reveal] { opacity: 1; translate: 0 0; }
 }
 .landing[data-motion="paused"] .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
 .landing[data-motion="paused"] .collectionCard:hover .collectionWell,
 .landing[data-motion="paused"] .collectionCard:hover .collectionWell img { transform: none; }
+.landing[data-motion="paused"] .lineReveal[data-landing-reveal],
+.landing[data-motion="paused"] .fadePart[data-landing-reveal],
+.landing[data-motion="paused"] .handwrittenReveal[data-landing-reveal] { opacity: 1; translate: 0 0; }
