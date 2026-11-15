@@ -2,9 +2,9 @@
 /* About tabs share the full page width rather than a narrow reading column. */
 .about .prose--page { max-width: none; }
 
-/* Exempt shared language controls from the global button lift in every header. */
+/* Keep the reset through transform optimization, which removes literal translate: none. */
 html body button.ui-language-toggle {
-  translate: none !important;
+  translate: var(--language-button-position, 0px 0px) !important;
   transform: none !important;
   box-shadow: none !important;
 }
