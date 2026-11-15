@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import localFont from "next/font/local";
 import { ReaderLink as Link } from "../navigation-feedback";
 import { AccountIcon } from "@/components/account-icon";
 import { UiLanguageToggle } from "@/components/ui-language-toggle";
@@ -12,6 +13,16 @@ import { landingCopy as copy, landingFeatures, landingQuestions, landingVolumes 
 import { landingAssets } from "@/lib/landing-assets";
 import { LandingStory } from "./landing-story";
 import styles from "./landing-redesign.module.css";
+
+const headingSerif = localFont({
+  src: "./fonts/noto-serif-sc-landing-500.woff2",
+  weight: "500",
+  style: "normal",
+  display: "swap",
+  variable: "--font-landing-serif",
+  adjustFontFallback: false,
+  fallback: ["Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "STSong", "SimSun", "Georgia", "serif"],
+});
 
 function Arrow() {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" /></svg>;
@@ -116,7 +127,7 @@ export function LandingPage() {
   }
 
   return (
-    <div ref={root} id="lovismind-landing" className={styles.landing} data-motion="on" data-intro={hydrated ? "ready" : undefined}>
+    <div ref={root} id="lovismind-landing" className={`${headingSerif.variable} ${styles.landing}`} data-motion="on" data-intro={hydrated ? "ready" : undefined}>
       <header className={styles.header}>
         <div className={`${styles.shell} ${styles.headerInner}`}>
           <a href="#top" className={styles.brand} suppressHydrationWarning {...uiLabel("LovisMind 首页", "LovisMind home")}>
