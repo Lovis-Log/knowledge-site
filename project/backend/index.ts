@@ -7,6 +7,7 @@ import {
   needsPasswordUpgrade,
 } from "./password";
 import { isValidPassword } from "../lib/password-policy";
+import { publicLandingAssets } from "../lib/landing-assets";
 import { decryptInvite, importInviteKey, importInviteKeys, importInviteKeysIfConfigured, InviteStorageError, inviteCodeHashes, isShortInviteCode, storeInvite } from "./invites";
 
 // Secrets are provisioned separately from Wrangler's generated resource bindings.
@@ -1062,6 +1063,7 @@ export default {
         ].includes(path) ||
         (path.startsWith("/_next/static/") && !path.endsWith(".map")) ||
         path.startsWith("/brand/") ||
+        publicLandingAssets.includes(path) ||
         [
           "/images/hero-scene.webp",
           "/images/landing-hero.webp",

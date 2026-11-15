@@ -110,6 +110,21 @@ try {
       const response = await fetch(base + path, { signal: AbortSignal.timeout(15_000) });
       if (!response.ok) throw new Error(`Production smoke check failed: ${path}`);
     }
+    // A local static server bypasses Worker authorization. Verify every actual
+    // homepage image anonymously against the deployed bytes before declaring success.
+    const homepage = await fetch(base + "/", { cache: "no-store", signal: AbortSignal.timeout(15_000) });
+    const homepageHtml = await homepage.text();
+    const imagePaths = new Set([...homepageHtml.matchAll(/<img\b[^>]*\bsrc="(\/[^"?#]+)"/g)].map((match) => match[1]));
+    if (!imagePaths.size) throw new Error("No production homepage images found to verify.");
+    for (const path of imagePaths) {
+      const image = await fetch(base + path, { cache: "no-store", signal: AbortSignal.timeout(15_000) });
+      if (!image.ok || !image.headers.get("content-type")?.startsWith("image/"))
+        throw new Error(`Anonymous production image failed: ${path} (${image.status})`);
+      const bytes = Buffer.from(await image.arrayBuffer());
+      if (!bytes.length || !bytes.equals(await readFile("out" + path)))
+        throw new Error(`Production image does not match the built asset: ${path}`);
+    }
+    console.log(`Anonymous production images verified: ${imagePaths.size} real assets.`);
     const protectedPage = await fetch(base + "/library/", { headers: { Accept: "text/html" }, redirect: "manual", signal: AbortSignal.timeout(15_000) });
     if (protectedPage.status !== 303 || !protectedPage.headers.get("location")?.startsWith("/login/"))
       throw new Error("Anonymous library access did not redirect to login.");

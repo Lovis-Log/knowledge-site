@@ -7,6 +7,7 @@ import { scrypt } from "@noble/hashes/scrypt.js";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { randomBytes } from "node:crypto";
 import { decryptInvite, hashInviteCode, importInviteKey, importInviteKeys, storeInvite } from "../invites";
+import { landingAssets, publicLandingAssets } from "../../lib/landing-assets";
 
 const origin = "https://lovismind.test";
 const password = "Test password with sufficient length!";
@@ -396,6 +397,36 @@ test("anonymous website, payloads, attachments and content API enforce the publi
   const legacyAccount = await c.call("/account/");
   assert.equal(legacyAccount.status, 308);
   assert.equal(legacyAccount.headers.get("Location"), "/library/");
+});
+
+test("every rendered landing image is an existing public asset without exposing private cover paths", async () => {
+  const anonymous = client();
+  const html = await readFile("out/index.html", "utf8");
+  const rendered = new Set([...html.matchAll(/<img\b[^>]*\bsrc="(\/[^"?#]+)"/g)].map((match) => match[1]));
+  for (const asset of publicLandingAssets) assert.ok(rendered.has(asset), `Public marketing asset must appear in the built homepage: ${asset}`);
+  for (const asset of rendered) {
+    const bytes = await readFile("public" + asset);
+    assert.ok(bytes.length > 0, `Missing homepage image: ${asset}`);
+    assert.deepEqual(await readFile("out" + asset), bytes, `Built image must match the real public file: ${asset}`);
+    for (const method of ["GET", "HEAD"]) {
+      const response = await anonymous.call(asset, method);
+      assert.equal(response.status, 200, `${method} ${asset}`);
+      assert.equal(response.headers.get("X-Asset-Path"), asset);
+    }
+  }
+  for (const [publicPath, source] of [
+    [landingAssets.math, "/covers/editorial-math-480.webp"],
+    [landingAssets.agents, "/covers/editorial-agent-engineering-v1-480.webp"],
+    [landingAssets.cpp, "/covers/editorial-cpp-programming-v2-480.webp"],
+  ]) {
+    assert.deepEqual(await readFile("public" + publicPath), await readFile("public" + source));
+    assert.equal((await anonymous.call(source)).status, 401);
+  }
+  for (const privatePath of ["/images/landing/unlisted.webp", "/covers/editorial-math-240.webp", "/covers/editorial-llm-principles-v1-480.webp", "/images/projection-error.svg"]) {
+    assert.equal((await anonymous.call(privatePath)).status, 401, privatePath);
+    const response = await mf.dispatchFetch(origin + privatePath, { headers: { Accept: "text/html" }, redirect: "manual" });
+    assert.equal(response.status, 303, privatePath);
+  }
 });
 
 test("merged image-generation-workflows book redirects authenticated readers", async () => {

@@ -103,54 +103,6 @@
 .motionToggle { display: inline-flex; align-items: center; gap: 12px; padding: 10px 0 10px 10px; background: none; color: inherit; border: 0; font-size: 11px !important; }
 .entrance a:focus-visible, .entrance button:focus-visible { outline-color: #e0b878; }
 
-/* One ancestor timeline drives copy and image together, including reverse scroll.
-   No scroll handlers, animation dependencies or per-frame React state. */
-@supports (animation-timeline: view()) {
-  @media (min-width: 761px) and (min-height: 650px) and (prefers-reduced-motion: no-preference) {
-    .story[data-animated="true"] .storyTrack { height: 300svh; view-timeline-name: --library-story; view-timeline-axis: block; }
-    .story[data-animated="true"] .storyStage { position: sticky; top: 0; height: 100svh; padding-bottom: 0; }
-    .story[data-animated="true"] .storyStep { position: absolute; inset: 0; padding: 65px clamp(24px, 5.5vw, 92px); }
-    .story[data-animated="true"] .storyStep .storyCopy,
-    .story[data-animated="true"] .storyStep .storyScreen { animation: scene-first linear both; animation-timeline: --library-story; animation-range: contain 0% contain 100%; }
-    .story[data-animated="true"] .step1 .storyCopy,
-    .story[data-animated="true"] .step1 .storyScreen { animation-name: scene-middle; }
-    .story[data-animated="true"] .step2 .storyCopy,
-    .story[data-animated="true"] .step2 .storyScreen { animation-name: scene-last; }
-    .story[data-animated="true"] .storyScreen { width: 100%; max-width: min(680px, 65svh); justify-self: end; }
-  }
-  @media (max-width: 760px) and (min-height: 720px) and (prefers-reduced-motion: no-preference) {
-    .story[data-animated="true"] .storyTrack { height: 245svh; view-timeline-name: --library-story-mobile; view-timeline-axis: block; }
-    .story[data-animated="true"] .storyStage { position: sticky; top: 0; height: 100svh; padding-bottom: 0; }
-    .story[data-animated="true"] .storyStep { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding: 35px 24px 65px; }
-    .story[data-animated="true"] .storyCopy { width: 100%; max-width: 450px; }
-    .story[data-animated="true"] .storyStep .storyCopy,
-    .story[data-animated="true"] .storyStep .storyScreen { animation: scene-first linear both; animation-timeline: --library-story-mobile; animation-range: contain 0% contain 100%; }
-    .story[data-animated="true"] .step1 .storyCopy,
-    .story[data-animated="true"] .step1 .storyScreen { animation-name: scene-middle; }
-    .story[data-animated="true"] .step2 .storyCopy,
-    .story[data-animated="true"] .step2 .storyScreen { animation-name: scene-last; }
-    .story[data-animated="true"] .storyScreen { width: min(100%, 430px); }
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .hero { view-timeline-name: --hero; }
-    .landing[data-motion="on"] .heroArt { animation: hero-leave linear both; animation-timeline: --hero; animation-range: exit 0% exit 100%; }
-  }
-}
-@keyframes scene-first {
-  0%, 26% { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
-  36%, 100% { opacity: 0; transform: translateY(-24px) scale(.985); visibility: hidden; }
-}
-@keyframes scene-middle {
-  0%, 26% { opacity: 0; transform: translateY(24px) scale(.985); visibility: hidden; }
-  36%, 61% { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
-  71%, 100% { opacity: 0; transform: translateY(-24px) scale(.985); visibility: hidden; }
-}
-@keyframes scene-last {
-  0%, 61% { opacity: 0; transform: translateY(24px) scale(.985); visibility: hidden; }
-  71%, 100% { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
-}
-@keyframes hero-leave { to { transform: translateY(-60px) rotate(3deg); opacity: .4; } }
-
 @media (min-width: 1600px) { .heroArt img { width: 105%; } }
 @media (max-width: 1000px) {
   .sectionNav { gap: 18px; font-size: 12px; }
@@ -240,3 +192,122 @@
 }
 .landing[data-motion="paused"] *, .landing[data-motion="paused"] *::before, .landing[data-motion="paused"] *::after { animation: none !important; transition: none !important; }
 .landing[data-motion="paused"] .primary:hover, .landing[data-motion="paused"] .goldButton:hover, .landing[data-motion="paused"] .volume:hover .coverWell img { transform: none; }
+
+/* The opening follows the reference's slogan-first hierarchy. */
+.hero { display: block; min-height: 0; padding-top: 70px; padding-bottom: 55px; }
+.heroCopy { max-width: 1120px; margin-inline: auto; padding: 0; text-align: center; }
+.hero h1 { max-width: none; margin: 0; font: 500 clamp(56px, 6.8vw, 102px)/1.24 var(--serif); letter-spacing: -.055em; text-wrap: balance; }
+.heroAccent { color: #92703b; }
+.heroDescription { max-width: 41em; margin: 27px auto 29px; font-size: 15px; line-height: 1.9; }
+.hero .actions { justify-content: center; }
+.heroArt { display: block; width: 100%; height: clamp(310px, 35vw, 475px); margin: 58px 0 0; background: #e9e0ce; overflow: hidden; border-radius: 9px; }
+.heroStageNote { position: absolute; top: 22px; left: 27px; z-index: 2; color: #645c4e; font-size: 11px; letter-spacing: .035em; }
+.heroArt .heroPreview { position: absolute; width: 72%; height: auto; top: 77px; left: 6%; margin: 0; transform: rotate(-4deg); border: 1px solid #d8ceba; border-radius: 5px; box-shadow: 0 18px 36px #594b3526; }
+.heroArt .heroBook { position: absolute; width: 29%; height: auto; right: 3%; top: 12px; margin: 0; transform: rotate(7deg); filter: drop-shadow(0 22px 24px #493b372f); }
+.heroFoot { position: static; margin-top: 24px; padding-top: 16px; border: 0; }
+
+/* A persistent outer frame, with one damped timeline for text and images. */
+.story { padding-top: 75px; }
+.storyIntro { padding-bottom: 18px; }
+.storyIntro p { max-width: 45em; margin: 18px auto 0; color: var(--lm-ink); font-size: 14px; line-height: 1.9; }
+.story[data-animated="true"] .storyTrack { height: 270svh; }
+.storyStage { display: grid; grid-template-columns: minmax(0,.76fr) minmax(0,1.24fr); gap: 5vw; align-items: center; padding-bottom: 0; }
+.story[data-animated="true"] .storyStage { position: sticky; top: 0; height: 100svh; }
+.storyTextStack { position: relative; min-width: 0; height: 430px; }
+.storyTextStack .storyCopy { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; max-width: none; }
+.storyTextStack .storyCopy:not(:first-child), .screenImage [data-story-image]:not(:first-child) { visibility: hidden; opacity: 0; }
+.storyTextStack .sceneProgress { display: none; }
+.sceneName { margin-bottom: 24px; font-size: 12px; }
+.storyCopy h3 { font-size: clamp(33px, 3.6vw, 56px); margin-bottom: 24px; }
+.storyCopy p { max-width: 30em; }
+.sceneDetail { display: block; margin-top: 25px; color: #76684f; font-size: 11px; line-height: 1.8; }
+.storyScreen { width: 100%; padding: 0 12px 12px; background: #fbf9f4; }
+.screenImage { position: relative; aspect-ratio: 1600 / 890; overflow: hidden; background: #f8f5ef; }
+.screenImage [data-story-image] { position: absolute; inset: 0; will-change: opacity, transform; }
+.screenImage img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.storyIndicators { position: absolute; left: clamp(24px, 5.5vw, 92px); bottom: 12%; display: flex; gap: 8px; }
+.storyIndicators i { width: 26px; height: 3px; background: #d3cbbb; }
+.storyIndicators i[data-current="true"] { background: #825d1d; }
+.staticStory { padding-block: 30px 70px; }
+.staticStory .storyStep { gap: 5vw; padding-block: 50px; }
+.staticStory .storyScreen { padding: 12px; }
+
+.reveal { transition: opacity .85s cubic-bezier(.2,.7,.2,1), transform .95s cubic-bezier(.2,.7,.2,1), filter .85s; }
+.reveal[data-landing-reveal="pending"] { opacity: 0; transform: translateY(36px); filter: blur(3px); }
+.reveal[data-landing-reveal="visible"] { opacity: 1; transform: none; filter: none; }
+.coverWell { padding: 36px 25%; }
+.coverWell img { aspect-ratio: 3 / 4; object-fit: contain; }
+.reflection { overflow: visible; }
+.reflectionInner { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 7%; min-height: 570px; padding-block: 95px; }
+.reflectionArt { min-width: 0; margin: 0; }
+.reflectionArt img { width: 100%; max-width: 100%; height: auto; object-fit: contain; }
+.reflectionCopy { min-width: 0; }
+.reflection h2 { font-size: clamp(32px, 3.25vw, 51px); }
+.questions { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 8%; padding-block: 110px; }
+.questions h2 { font: 500 clamp(28px, 3vw, 43px)/1.5 var(--serif); letter-spacing: -.035em; margin: 0 0 18px; text-wrap: balance; }
+.questions > div > p { color: var(--lm-muted); font-size: 13px; }
+.questionList details { border-bottom: 1px solid var(--lm-line); }
+.questionList summary { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 23px 0; font-size: 14px; list-style: none; cursor: pointer; }
+.questionList summary::-webkit-details-marker { display: none; }
+.questionList summary > span:last-child { font-size: 24px; font-weight: 300; transition: transform .25s; }
+.questionList details[open] summary > span:last-child { transform: rotate(45deg); }
+.questionList details p { font-size: 13px; line-height: 1.95; color: var(--lm-ink); margin: 0 32px 24px 0; }
+.questionList summary:focus-visible { outline: 2px solid var(--lm-gold-deep); outline-offset: 4px; }
+
+@media (max-width: 1000px) {
+  .hero h1 { font-size: clamp(54px, 7.5vw, 78px); }
+  .storyCopy h3 { font-size: 37px; }
+  .storyCopy p { font-size: 13px; }
+  .reflectionInner { gap: 5%; }
+}
+@media (max-width: 760px) {
+  .hero { padding-top: 49px; padding-bottom: 35px; }
+  .hero h1 { font-size: clamp(43px, 10.3vw, 68px); line-height: 1.35; }
+  .heroDescription { font-size: 13px; margin: 22px auto 25px; max-width: 31em; }
+  .heroArt { height: clamp(225px, 65vw, 340px); margin-top: 36px; border-radius: 6px; }
+  .heroStageNote { font-size: 9px; top: 17px; left: 16px; right: 16px; }
+  .heroArt .heroPreview { width: 86%; top: 67px; left: 4%; }
+  .heroArt .heroBook { width: 42%; top: 54px; right: -3%; }
+  .heroFoot { margin-top: 15px; padding-top: 5px; font-size: 10px; }
+  .story { padding-top: 55px; }
+  .storyIntro { padding-bottom: 25px; }
+  .storyIntro h2 { font-size: 28px; }
+  .storyIntro p { font-size: 12px; max-width: 26em; margin-top: 15px; }
+  .story[data-animated="true"] .storyTrack { height: 240svh; }
+  .storyStage { display: flex; flex-direction: column; justify-content: center; gap: 28px; padding-block: 45px 75px; }
+  .storyTextStack { width: 100%; height: 250px; flex: none; }
+  .sceneName { margin-bottom: 17px; font-size: 11px; }
+  .storyCopy h3 { font-size: clamp(29px, 7.6vw, 39px); margin-bottom: 15px; line-height: 1.4; }
+  .storyCopy p { font-size: 12px; line-height: 1.9; }
+  .sceneDetail { margin-top: 18px; font-size: 10px; }
+  .storyScreen { width: min(100%, 480px); }
+  .screenBar { font-size: 8px; gap: 10px; }
+  .screenBar > span:first-child { font-size: 15px; }
+  .storyIndicators { bottom: 4%; }
+  .staticStory { padding-block: 0 35px; }
+  .staticStory .storyStep { gap: 26px; padding-block: 35px; }
+  .coverWell { padding: 25px 20%; }
+  .reflectionInner { grid-template-columns: 1fr; gap: 35px; padding-block: 65px; }
+  .reflectionArt { width: min(100%, 480px); justify-self: center; margin: 0; }
+  .reflectionCopy { padding: 0; }
+  .reflection h2 { font-size: 34px; }
+  .questions { grid-template-columns: 1fr; gap: 25px; padding-block: 70px; }
+  .questions h2 { font-size: 29px; }
+  .questions > div > p { font-size: 12px; }
+  .questionList summary { font-size: 13px; padding-block: 20px; }
+  .questionList details p { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-landing-reveal] { opacity: 1; transform: none; filter: none; }
+}
+.landing[data-motion="paused"] .reveal[data-landing-reveal] { opacity: 1; transform: none; filter: none; }
+.landingBook { position: relative; display: grid; grid-template-rows: 22% minmax(0, 1fr) 11%; gap: 7%; width: 100%; aspect-ratio: 3 / 4; padding: 10% 12% 5%; background-color: #22314b; background-image: repeating-linear-gradient(90deg, transparent 0 2px, #ffffff08 2px 3px); border-radius: 2px 6px 6px 2px; box-shadow: inset 7px 0 6px #0003, inset 10px 0 1px #ffffff12, 7px 13px 16px -8px #1d273c66; transform: rotate(-5deg); transition: transform .55s cubic-bezier(.2,.7,.25,1); }
+.volume:nth-child(2) .landingBook { background-color: #30493b; transform: rotate(3deg); }
+.volume:nth-child(3) .landingBook { background-color: #6a3c2e; transform: rotate(-3deg); }
+.coverTitle { font: 600 clamp(11px, 1.25vw, 18px)/1.15 Georgia, serif; color: #f0e4c9; text-align: center; align-self: center; }
+.coverImprint { font-size: clamp(4px, .42vw, 7px); color: #d9cfb9; text-align: center; white-space: nowrap; letter-spacing: .03em; align-self: center; }
+.coverWell .landingBook img, .volume:nth-child(n) .coverWell .landingBook img, .volume:hover .coverWell .landingBook img { width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; object-fit: cover; box-shadow: none; transform: none; }
+.volume:hover .landingBook { transform: translateY(-6px) rotate(0); }
+@media (max-width: 760px) { .coverTitle { font-size: clamp(10px, 2.7vw, 18px); } .coverImprint { font-size: 4px; } }
+@media (prefers-reduced-motion: reduce) { .volume:hover .landingBook { transform: none; } }
+.landing[data-motion="paused"] .volume:hover .landingBook { transform: none; }
