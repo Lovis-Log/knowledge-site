@@ -21,4 +21,11 @@
 
 常规的提交、推送、合并和自动部署已获得用户授权，不再逐步询问是否继续。若必须由用户解决权限、登录、自动审批拒绝或重大需求歧义，应说明具体阻塞和已完成的部分；不得绕过安全限制，也不得把等待中的部署当作成功。
 
+## Codex 主导的 T3 会话：子任务默认走 Claude / Codebuddy 路由
+
+- 在 T3 Code 中由 Codex 主导时，子任务默认且只能使用用户配置的 Claude（`claudeAgent`）与 Codebuddy（`acpRegistry_codebuddy_code`）两条路由，通过 T3 `delegate_task` 调度；未经用户明确要求，不得改用原生 GPT/Codex 子 agent。
+- 派发前说明 provider、模型、effort 与任务范围；完成后报告实际执行模型；请求模型与实际执行模型不一致时必须说明，不得把 GPT 子 agent 说成 Claude 或 Codebuddy。
+- Codebuddy 仅使用 DeepSeek；路由额度耗尽或不可用时，说明原因后按已授权顺序改用另一条已批准路由或由 Codex 接管，不得静默换成 GPT 子 agent，也不得反复重试。
+- 详细规则与路由健康状态以 `C:/Users/LENOVO/.t3/userdata/team-mode/SKILL.md` 和同目录 `route-health.json` 为准；本节只约束 T3 协作，不改变独立客户端的配置与手动激活要求。
+
 本规则不改变 Claude/DeepSeek 集成的手动激活要求。
