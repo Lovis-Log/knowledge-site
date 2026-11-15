@@ -93,13 +93,13 @@ export function LandingStory({ paused }: { paused: boolean }) {
               <span className={styles.sceneDetail}><UiText {...scene.detail} /></span>
               <div className={styles.sceneProgress} aria-hidden="true">{landingScenes.map((s, j) => <i key={s.image} data-current={i === j} />)}</div>
             </div>)}
+            <div className={styles.storyIndicators} aria-hidden="true">{landingScenes.map((s, i) => <i data-story-indicator data-current={i === 0} key={s.image} />)}</div>
           </div>
           <figure className={styles.storyScreen}>
             <div className={styles.screenBar} aria-hidden="true"><span>LovisMind</span><span><UiText zh="阅读的几个片刻" en="A few moments in the library" /></span><span>↗</span></div>
             <div className={styles.screenImage}>{landingScenes.map((s, i) => <div data-story-image key={s.image}><SceneImage index={i} /></div>)}</div>
             <figcaption className={styles.screenCaption}><UiText zh="从当前书库截取" en="Captured from the current library" /></figcaption>
           </figure>
-          <div className={styles.storyIndicators} aria-hidden="true">{landingScenes.map((s, i) => <i data-story-indicator data-current={i === 0} key={s.image} />)}</div>
         </div>
       </div> : <div className={`${styles.staticStory} ${styles.shell}`}>
         {landingScenes.map((scene, i) => <article className={styles.storyStep} key={scene.image}>

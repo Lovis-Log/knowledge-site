@@ -19,10 +19,12 @@ function Arrow() {
 
 export function LandingPage() {
   const [authView, setAuthView] = useState<AuthView | null>(null);
+  const [authNext, setAuthNext] = useState<string | undefined>(undefined);
   const [signedIn, setSignedIn] = useState(false);
   const [motionPaused, setMotionPaused] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-  const closeAuth = useCallback(() => setAuthView(null), []);
+  const closeAuth = useCallback(() => { setAuthView(null); setAuthNext(undefined); }, []);
+  const openAuth = useCallback((view: AuthView, next?: string) => { setAuthNext(next); setAuthView(view); }, []);
   const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -81,7 +83,7 @@ export function LandingPage() {
   function entrance(className: string) {
     return signedIn
       ? <Link href="/library/" className={className}><UiText {...copy.enter} /><Arrow /></Link>
-      : <button type="button" className={className} onClick={() => setAuthView("login")}><UiText {...copy.enter} /><Arrow /></button>;
+      : <button type="button" className={className} onClick={() => openAuth("login")}><UiText {...copy.enter} /><Arrow /></button>;
   }
 
   return (
@@ -100,7 +102,7 @@ export function LandingPage() {
             <div className={styles.languageSlot}>{hydrated && <UiLanguageToggle />}</div>
             {signedIn
               ? <Link href="/library/" className={styles.account}><AccountIcon /><UiText zh="书库" en="Library" /></Link>
-              : <button type="button" className={styles.account} onClick={() => setAuthView("login")}><AccountIcon /><UiText zh="登录" en="Sign in" /></button>}
+              : <button type="button" className={styles.account} onClick={() => openAuth("login")}><AccountIcon /><UiText zh="登录" en="Sign in" /></button>}
           </div>
         </div>
       </header>
@@ -139,14 +141,20 @@ export function LandingPage() {
       <section id="collections" className={`${styles.collection} ${styles.shell}`} aria-labelledby="collection-title">
         <div className={styles.collectionHeading}><h2 id="collection-title"><UiText {...copy.collectionTitle} /></h2><p><UiText {...copy.collectionDescription} /></p></div>
         <div className={styles.volumes}>
-          {landingVolumes.map((volume, index) => (
-            <Link href={signedIn ? volume.href : `/login/?next=${encodeURIComponent(volume.href)}`} className={styles.collectionCard} key={volume.cover} suppressHydrationWarning {...uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`)}>
-              <figure className={styles.volume}>
-                <div className={`${styles.collectionPreview} ${styles.reveal}`} data-landing-reveal="visible" style={{ transitionDelay: `${index * 90}ms` }}><img src={volume.cover} width={480} height={720} loading="lazy" decoding="async" alt="" /></div>
+          {landingVolumes.map((volume) => {
+            const label = uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`);
+            const card = (
+              <figure className={styles.volume} data-landing-reveal="visible">
+                <div className={styles.collectionWell}>
+                  <img src={volume.cover} width={750} height={1000} loading="lazy" decoding="async" alt="" />
+                </div>
                 <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
               </figure>
-            </Link>
-          ))}
+            );
+            return signedIn
+              ? <Link href={volume.href} className={styles.collectionCard} key={volume.href} suppressHydrationWarning {...label}>{card}</Link>
+              : <a href={volume.href} className={styles.collectionCard} key={volume.href} suppressHydrationWarning {...label} onClick={(event) => { event.preventDefault(); openAuth("login", volume.href); }}>{card}</a>;
+          })}
         </div>
         <a href="#entrance" className={styles.collectionLink}><UiText zh="到书库里，慢慢读。" en="Find your next read in the library." /><Arrow /></a>
       </section>
@@ -174,7 +182,7 @@ export function LandingPage() {
             <div><h2><UiText {...copy.closingTitle} /></h2><p><UiText {...copy.closingDescription} /></p></div>
             <div className={styles.actions}>
               {entrance(styles.goldButton)}
-              {!signedIn && <button type="button" className={styles.lightAction} onClick={() => setAuthView("register")}><UiText {...copy.join} /><Arrow /></button>}
+              {!signedIn && <button type="button" className={styles.lightAction} onClick={() => openAuth("register")}><UiText {...copy.join} /><Arrow /></button>}
             </div>
           </div>
           <div className={styles.footerWordmark} aria-hidden="true">LovisMind<span>↗</span></div>
@@ -186,7 +194,7 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
-      {authView && <AuthModal view={authView} onClose={closeAuth} />}
+      {authView && <AuthModal view={authView} next={authNext} onClose={closeAuth} />}
     </div>
   );
 }

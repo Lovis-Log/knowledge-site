@@ -425,3 +425,113 @@
 }
 .landing[data-motion="paused"] .sectionNav a:hover, .landing[data-motion="paused"] .questionList summary:hover .questionText, .landing[data-motion="paused"] .questionList summary:focus-visible .questionText { translate: var(--faq-row-position, 0px 0px); }
 .landing[data-motion="paused"] .collectionCard:hover .collectionPreview img { transform: none; }
+
+/* ---------- Refinement pass ---------- */
+
+/* Opening: more air around the slogan, and a larger collage in the stage. */
+.hero { padding-top: 42px; padding-bottom: 68px; }
+.hero h1 { font-size: clamp(48px, 4.8vw, 84px); line-height: 1.16; letter-spacing: -.05em; }
+.heroDescription { max-width: 44em; margin: 24px auto 30px; font-size: 15px; line-height: 1.85; }
+.hero .primary { min-height: 50px; padding: 12px 24px; }
+.heroArt {
+  --stage-height: clamp(330px, 54svh, 560px);
+  --desktop-width: min(84%, calc((var(--stage-height) - 72px) * 2.454));
+  --phone-width: calc((var(--stage-height) - 64px) * .46);
+  --composition-width: calc(var(--desktop-width) + var(--phone-width) - 24px);
+  max-width: 1360px;
+  margin-top: 42px;
+}
+.heroResumeLayer { width: clamp(258px, 29%, 384px); }
+.heroStageNote { top: 16px; left: 24px; }
+
+/* The story now lives on the same paper as the sections around it, and its
+   canvas sits lower than the viewport so the next section can rise beneath. */
+.story { background: var(--lm-paper); padding-top: 92px; }
+.storyIntro { padding-bottom: 22px; }
+.story[data-animated="true"] .storyTrack { height: 250svh; }
+.story[data-animated="true"] .storyStage {
+  height: auto;
+  min-height: clamp(560px, 78svh, 720px);
+  padding-block: 36px 62px;
+}
+.storyStage { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 5vw; }
+.storyIndicators { position: absolute; left: 0; bottom: -36px; }
+
+/* The experts block keeps the reference's generous, even separation. */
+.features { padding-block: 104px 128px; }
+.featureCopy h2 { font-size: clamp(32px, 3.4vw, 54px); }
+
+/* Collection: complete cloth-bound covers, wiped in like the reference. */
+.collection { padding-top: 96px; padding-bottom: 104px; }
+.volumes { gap: clamp(20px, 2.4vw, 40px); }
+.collectionCard { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.collectionWell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #ece3d3;
+  clip-path: inset(0 0 0 0);
+  transition:
+    clip-path .9s cubic-bezier(.2, .7, .2, 1),
+    transform .6s cubic-bezier(.2, .7, .2, 1),
+    box-shadow .45s,
+    background .45s;
+}
+.volume:nth-child(2) .collectionWell { background: #e5eae2; transition-delay: 70ms, 0s, 0s, 0s; }
+.volume:nth-child(3) .collectionWell { background: #e5e9ed; transition-delay: 140ms, 0s, 0s, 0s; }
+.volume[data-landing-reveal="pending"] .collectionWell { clip-path: inset(0 0 100% 0); transform: translateY(14px); }
+.volume[data-landing-reveal="visible"] .collectionWell { clip-path: inset(0 0 0 0); transform: none; }
+.collectionWell img {
+  display: block;
+  width: 69%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 3px 7px 7px 3px;
+  box-shadow: 0 22px 32px -16px #2a241944;
+  transition: transform .6s cubic-bezier(.2, .7, .2, 1), box-shadow .6s cubic-bezier(.2, .7, .2, 1);
+}
+.collectionCard:hover .collectionWell { transform: translateY(-4px); box-shadow: 0 18px 34px #24391613; }
+.collectionCard:hover .collectionWell img {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 30px 44px -18px #2a241955;
+}
+.collectionCard:active .collectionWell { transform: scale(.99); }
+.collectionCard figcaption svg { transition: translate .25s; }
+.collectionCard:hover figcaption svg { translate: 4px 0; }
+
+@media (min-width: 761px) and (max-height: 800px) {
+  .hero { padding-top: 26px; padding-bottom: 32px; }
+  .hero h1 { font-size: clamp(44px, 4.4vw, 64px); line-height: 1.15; }
+  .heroDescription { margin: 18px auto 22px; font-size: 13px; line-height: 1.75; }
+  .heroArt { --stage-height: clamp(300px, 50svh, 440px); margin-top: 30px; }
+  .story[data-animated="true"] .storyStage { min-height: clamp(520px, 76svh, 640px); padding-block: 28px 48px; }
+}
+
+@media (max-width: 760px) {
+  .hero { padding-top: 34px; padding-bottom: 42px; }
+  .hero h1 { font-size: clamp(36px, 9.2vw, 56px); line-height: 1.22; }
+  .heroDescription { margin: 19px auto 24px; font-size: 13px; line-height: 1.8; }
+  .heroArt { --stage-height: clamp(255px, 72vw, 375px); margin-top: 32px; }
+  .story { padding-top: 62px; }
+  .story[data-animated="true"] .storyStage { min-height: 0; height: auto; padding-block: 30px 64px; }
+  .storyIndicators { bottom: -18px; }
+  .features { padding-block: 72px 82px; }
+  .featureCopy h2 { font-size: 33px; }
+  .collection { padding-top: 64px; padding-bottom: 70px; }
+  .volumes { gap: 32px; }
+  .collectionWell { aspect-ratio: 1.04; }
+  .collectionWell img { width: 64%; max-width: 280px; }
+  .collectionCard:hover .collectionWell, .collectionCard:hover .collectionWell img { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
+  .collectionCard:hover .collectionWell, .collectionCard:hover .collectionWell img { transform: none; }
+  .collectionCard figcaption svg { transition: none; }
+}
+.landing[data-motion="paused"] .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
+.landing[data-motion="paused"] .collectionCard:hover .collectionWell,
+.landing[data-motion="paused"] .collectionCard:hover .collectionWell img { transform: none; }

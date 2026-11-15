@@ -26,9 +26,11 @@ const statuses: Record<string, [string, string]> = {
 
 export function AuthModal({
   view,
+  next,
   onClose,
 }: {
   view: AuthView;
+  next?: string;
   onClose: () => void;
 }) {
   const [mode, setMode] = useState<AuthView>(view);
@@ -142,7 +144,7 @@ export function AuthModal({
           username: values.username,
           password: values.password,
         });
-        const target = safeNext(new URLSearchParams(window.location.search).get("next"));
+        const target = safeNext(next ?? new URLSearchParams(window.location.search).get("next"));
         setEntering(true);
         startNavigation(target, { fullDocument: true });
         window.location.assign(target);

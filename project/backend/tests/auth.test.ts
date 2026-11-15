@@ -7,7 +7,7 @@ import { scrypt } from "@noble/hashes/scrypt.js";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils.js";
 import { randomBytes } from "node:crypto";
 import { decryptInvite, hashInviteCode, importInviteKey, importInviteKeys, storeInvite } from "../invites";
-import { landingAssets, publicLandingAssets } from "../../lib/landing-assets";
+import { publicLandingAssets } from "../../lib/landing-assets";
 
 const origin = "https://lovismind.test";
 const password = "Test password with sufficient length!";
@@ -414,15 +414,7 @@ test("every rendered landing image is an existing public asset without exposing 
       assert.equal(response.headers.get("X-Asset-Path"), asset);
     }
   }
-  for (const [publicPath, source] of [
-    [landingAssets.math, "/covers/editorial-math-480.webp"],
-    [landingAssets.agents, "/covers/editorial-agent-engineering-v1-480.webp"],
-    [landingAssets.cpp, "/covers/editorial-cpp-programming-v2-480.webp"],
-  ]) {
-    assert.deepEqual(await readFile("public" + publicPath), await readFile("public" + source));
-    assert.equal((await anonymous.call(source)).status, 401);
-  }
-  for (const privatePath of ["/images/landing/unlisted.webp", "/covers/editorial-math-240.webp", "/covers/editorial-llm-principles-v1-480.webp", "/images/projection-error.svg"]) {
+  for (const privatePath of ["/covers/editorial-math.webp", "/covers/editorial-news-480.webp", "/covers/editorial-math-240.webp", "/covers/editorial-llm-principles-v1-480.webp", "/images/landing/unlisted.webp", "/images/projection-error.svg"]) {
     assert.equal((await anonymous.call(privatePath)).status, 401, privatePath);
     const response = await mf.dispatchFetch(origin + privatePath, { headers: { Accept: "text/html" }, redirect: "manual" });
     assert.equal(response.status, 303, privatePath);

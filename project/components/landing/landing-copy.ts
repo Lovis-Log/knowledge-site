@@ -23,9 +23,9 @@ export const landingScenes = [
 ] as const;
 
 export const landingVolumes = [
-  { title: { zh: "线性代数", en: "Linear algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: landingAssets.math, href: "/books/mit-linear-algebra/" },
-  { title: { zh: "智能体工程", en: "Agent engineering" }, description: { zh: "围绕智能体构建与设计的实践笔记。", en: "Practical notes on building and designing agents." }, cover: landingAssets.agents, href: "/books/agent-engineering/" },
-  { title: { zh: "C++ 编程", en: "Programming in C++" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: landingAssets.cpp, href: "/books/cpp-programming-course/" },
+  { title: { zh: "线性代数", en: "Linear algebra" }, description: { zh: "矩阵、空间，以及它们之间的关系。", en: "Matrices, spaces, and the relationships between them." }, cover: landingAssets.bookMath, href: "/books/mit-linear-algebra/" },
+  { title: { zh: "外刊精读", en: "English close reading" }, description: { zh: "英文新闻与文章的精读笔记。", en: "Close reading notes on English news and essays." }, cover: landingAssets.bookNews, href: "/books/english-news-reading/" },
+  { title: { zh: "C++ 编程", en: "Programming in C++" }, description: { zh: "从语言基础，到程序如何工作。", en: "From language fundamentals to how programs work." }, cover: landingAssets.bookCpp, href: "/books/cpp-programming-course/" },
 ] as const;
 
 export const landingFeatures = [
