@@ -15,7 +15,7 @@ export const landingCopy = {
 
 export const landingScenes = [
   { name: { zh: "书库", en: "The library" }, title: { zh: "从感兴趣的一本开始。", en: "Start with what draws you in." }, description: { zh: "课程、文章与学习笔记，各有位置，也各有值得重读的理由。", en: "Courses, articles and study notes. Each with a place, and a reason to return." }, image: "ai-shelf.webp", width: 1340, height: 1096, alt: { zh: "LovisMind 书库中的 AI 时代书架", en: "The AI Era shelf in the LovisMind library" } },
-  { name: { zh: "目录", en: "The chapters" }, title: { zh: "沿着章节，一点点读进去。", en: "A subject unfolds, chapter by chapter." }, description: { zh: "一门课整理成一本书，顺着目录往下读，也方便回到没弄懂的地方。", en: "A course becomes a volume. Follow the outline, or return to the part you’re still working through." }, image: "linear-algebra.webp", width: 1380, height: 1026, alt: { zh: "MIT 线性代数课程的书封与章节目录", en: "MIT Linear Algebra book cover and chapter outline" } },
+  { name: { zh: "目录", en: "The chapters" }, title: { zh: "沿着章节，一点点读进去。", en: "A subject unfolds, chapter by chapter." }, description: { zh: "一门课整理成一本书，顺着目录往下读，也方便回到没弄懂的地方。", en: "A course becomes a volume. Follow the outline, or return to the part you’re still working through." }, image: "linear-algebra.webp", width: 1380, height: 1026, alt: { zh: "线性代数笔记的书封与章节目录", en: "Book cover and chapter outline for the linear algebra notes" } },
   { name: { zh: "正文", en: "The reading" }, title: { zh: "读得深入，也找得到来处。", en: "Read closely. Keep the source in sight." }, description: { zh: "公式、代码和个人理解留在正文里；需要对照时，再回到原始来源。", en: "Equations, code and personal notes share the page. The original source is there when you need to look back." }, image: "agent.webp", width: 1020, height: 988, alt: { zh: "AI 工程笔记的章节阅读界面", en: "A chapter from the AI engineering notes" } },
 ] as const;
 
