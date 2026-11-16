@@ -54,5 +54,15 @@ test("campus section sorts first and shows no subcategories", () => {
   );
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
-  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-mathematical-analysis"]);
+  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-discrete-mathematics", "campus-mathematical-analysis"]);
+});
+
+test("discrete mathematics preserves the supplied chapter numbers and has no homework group", () => {
+  const book = getAllBooks().find((item) => item.slug === "campus-discrete-mathematics");
+  assert.ok(book);
+  assert.equal(book.studyPeriod, "大一");
+  assert.deepEqual(book.groups?.map((group) => group.id), ["course"]);
+  assert.deepEqual(book.chapters.map((chapter) => chapter.number), [1, 2, 3, 4, 7]);
+  assert.deepEqual(book.chapters.map(chapterNumberLabel), ["01", "02", "03", "04", "07"]);
+  assert.ok(book.chapters.every((chapter) => chapter.group === "course" && chapter.versions.zh?.body));
 });

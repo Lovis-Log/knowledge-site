@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-11-16",
+    "version": "1.10.1",
+    "features": [],
+    "content": [
+      {
+        "title": "离散数学 · 命题逻辑、谓词逻辑、集合、关系和函数、图论 / Discrete Mathematics · Five chapters of course notes",
+        "href": "/books/campus-discrete-mathematics/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-15",
     "version": "1.10.0",
     "features": [

@@ -974,5 +974,25 @@
   "vibe-coding/03-saas-ai-workflow": {
     "title": "用 AI 交付一个完整 SaaS：从规划、界面、后端到自动排错",
     "hash": "1b7925ffd10965bf1d2a2125ee52619b55cd40701f600c537ada2da91c383d18"
+  },
+  "campus-discrete-mathematics/01-propositional-logic": {
+    "title": "命题逻辑",
+    "hash": "2e40a080aa2d676a52ef09385a3f86817041a432a65f8556578ca50ca630fbf6"
+  },
+  "campus-discrete-mathematics/02-predicate-logic": {
+    "title": "谓词逻辑",
+    "hash": "68c53ee502b77b74d5a91d127265f9269d48b10be2503c2f9b6250ad53820300"
+  },
+  "campus-discrete-mathematics/03-sets": {
+    "title": "集合",
+    "hash": "f7c5a6d10b67549e7bf75f3b8c01c7261e0ade448f165fd2cdd3a7145e5efccf"
+  },
+  "campus-discrete-mathematics/04-relations-and-functions": {
+    "title": "关系和函数",
+    "hash": "05bc73d2bd17d5d7b93d6b09d91b1139605139d60eef11d506cde049a8c72bed"
+  },
+  "campus-discrete-mathematics/07-graph-theory": {
+    "title": "图论",
+    "hash": "0872c92087765ed3a400c5bf446f09a6c96fd5d50ad2a35b45a9595da443f7d9"
   }
 }
