@@ -7,6 +7,10 @@ content_type: "reference"
 group: "course"
 displayNumber: "03"
 tags: ["离散数学"]
+sources:
+  - kind: article
+    title: "第3章集合.pdf"
+    url: "https://drive.google.com/file/d/1zBEq8Ne-_fyFk3lbhQ2POc-9Z-xcV-I-/view?usp=drivesdk"
 ---
 
 集合论研究对象及其构成的集合：属于关系判断一个对象是否为某集合的元素，包含关系比较两个集合的元素范围。集合本身也可以作为另一个集合的元素，属于与包含必须分别判断。本章的主线是：先用外延原则把"两个集合相等"化归为"元素相同"，再用逻辑等价把集合运算化成命题运算，得到并、交、差、补、对称差的一套代数律；最后用空集和后继集把自然数本身也构造成集合，并用特征函数把集合运算翻译成 0-1 串的位运算。
@@ -712,4 +716,4 @@ $$
 
 ## 资料来源
 
-根据原课件《第3章集合.pdf》整理。
+- [第3章集合.pdf](https://drive.google.com/file/d/1zBEq8Ne-_fyFk3lbhQ2POc-9Z-xcV-I-/view?usp=drivesdk)

@@ -7,6 +7,10 @@ content_type: "reference"
 group: "course"
 displayNumber: "07"
 tags: ["离散数学"]
+sources:
+  - kind: article
+    title: "第7章图论.pdf"
+    url: "https://drive.google.com/file/d/1nCIncs21HAhkef1odokPp1HU_aQ1Hs5j/view?usp=drivesdk"
 ---
 
 图论研究“点”与“点之间的连线”所构成的结构。现实中的交通网、通信网、社交关系、程序流程都可以抽象成图，于是“能否一笔走遍”“最少几条路”“哪些点是关键枢纽”这类问题就变成图上的通路、连通性与矩阵计算问题。本章按“基本概念 → 通路与连通 → 图的表示 → 图的运算”展开：7.1 建立图、度、分类、子图与同构的概念；7.2 研究通路、回路、距离与连通性；7.3 给出邻接表、邻接矩阵、可达矩阵、关联矩阵四种表示；7.4 讨论图与图之间的集合运算。
@@ -961,4 +965,4 @@ $$
 
 ## 资料来源
 
-根据原课件《第7章图论.pdf》整理。
+- [第7章图论.pdf](https://drive.google.com/file/d/1nCIncs21HAhkef1odokPp1HU_aQ1Hs5j/view?usp=drivesdk)

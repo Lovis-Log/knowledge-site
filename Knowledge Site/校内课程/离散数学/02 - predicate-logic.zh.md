@@ -7,6 +7,10 @@ content_type: "reference"
 group: "course"
 displayNumber: "02"
 tags: ["离散数学"]
+sources:
+  - kind: article
+    title: "第2章谓词逻辑.pdf"
+    url: "https://drive.google.com/file/d/1SpvzWRCqaCTPda-sp141bEazV5wVyQuD/view?usp=drivesdk"
 ---
 
 命题逻辑把简单命题当作不可再分的整体，因此无法刻画命题内部的个体、性质和数量关系。“所有人都是会死的，苏格拉底是人，所以苏格拉底会死”这个推理，若只把它符号化为 $p\land q\to r$，并不是重言式；命题逻辑看不出“所有人”与“苏格拉底”之间的联系。谓词逻辑把命题进一步分析为个体词、谓词和量词，从而能够表达“所有”“存在”这类数量关系。
@@ -770,4 +774,4 @@ $$
 
 ## 资料来源
 
-根据原课件《第2章谓词逻辑.pdf》整理。
+- [第2章谓词逻辑.pdf](https://drive.google.com/file/d/1SpvzWRCqaCTPda-sp141bEazV5wVyQuD/view?usp=drivesdk)

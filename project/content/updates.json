@@ -1,6 +1,18 @@
 [
   {
     "date": "2026-11-16",
+    "version": "1.10.3",
+    "features": [],
+    "content": [
+      {
+        "title": "离散数学 · 补齐 Google Drive 课程资料入口与五章原课件链接 / Discrete Mathematics · Added the course folder and five slide PDF links",
+        "href": "/books/campus-discrete-mathematics/",
+        "kind": "修订 / Revised"
+      }
+    ]
+  },
+  {
+    "date": "2026-11-16",
     "version": "1.10.2",
     "features": [
       {

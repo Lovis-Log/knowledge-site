@@ -7,6 +7,10 @@ content_type: "reference"
 group: "course"
 displayNumber: "04"
 tags: ["离散数学"]
+sources:
+  - kind: article
+    title: "第4章关系和函数.pdf"
+    url: "https://drive.google.com/file/d/1u45UJfgfB7nN8XXZy2Recl5ZeTMf93mS/view?usp=drivesdk"
 ---
 
 本章把“两个对象之间是否存在某种联系”抽象成集合论意义下的关系：先由有序对与笛卡儿积给出关系的集合定义，再讨论关系图与关系矩阵两种表示法，然后研究关系的运算（并、交、差、补、逆、复合、幂）、五种基本性质（自反、反自反、对称、反对称、传递），以及为“补上”性质而引入的闭包。关系的两类重要特例——等价关系与偏序关系——分别在 4.6、4.7 中展开；4.8 把函数看作满足单值性条件的特殊二元关系，并讨论复合、反函数与集合的基数。
@@ -1826,4 +1830,4 @@ $$
 
 ## 资料来源
 
-根据原课件《第4章关系和函数.pdf》整理。
+- [第4章关系和函数.pdf](https://drive.google.com/file/d/1u45UJfgfB7nN8XXZy2Recl5ZeTMf93mS/view?usp=drivesdk)

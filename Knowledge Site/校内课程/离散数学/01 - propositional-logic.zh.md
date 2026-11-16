@@ -7,6 +7,10 @@ content_type: "reference"
 group: "course"
 displayNumber: "01"
 tags: ["离散数学"]
+sources:
+  - kind: article
+    title: "第1章命题逻辑.pdf"
+    url: "https://drive.google.com/file/d/1PA9VNWSvsinD9Tgys9ZmihmtDI7CEkbz/view?usp=drivesdk"
 ---
 
 数理逻辑用数学符号刻画推理规则，研究推理体系的一致性、可靠性与完备性。命题逻辑是其中最基础的一层：它把简单命题作为不可再分的单位，用联结词把命题组合起来，再通过真值表、等值演算和推理规则判断一个推理是否有效。
@@ -1192,4 +1196,4 @@ $$
 
 ## 资料来源
 
-根据原课件《第1章命题逻辑.pdf》整理。
+- [第1章命题逻辑.pdf](https://drive.google.com/file/d/1PA9VNWSvsinD9Tgys9ZmihmtDI7CEkbz/view?usp=drivesdk)

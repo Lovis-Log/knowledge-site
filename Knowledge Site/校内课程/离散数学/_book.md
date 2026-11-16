@@ -13,4 +13,7 @@ groups:
   - id: "course"
     title: "课程"
     heading: "课程目录"
+links:
+  - label: "课程资料（Google Drive）"
+    url: "https://drive.google.com/drive/folders/18rxAc0IelroLSh82miHeAskQSn-r51cU"
 ---

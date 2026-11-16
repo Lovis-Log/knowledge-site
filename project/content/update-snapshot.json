@@ -977,22 +977,22 @@
   },
   "campus-discrete-mathematics/01-propositional-logic": {
     "title": "命题逻辑",
-    "hash": "2e40a080aa2d676a52ef09385a3f86817041a432a65f8556578ca50ca630fbf6"
+    "hash": "b6fbd0917d45239d32e992887adad7061ebc8a03b0c3580d03c488b592cde90a"
   },
   "campus-discrete-mathematics/02-predicate-logic": {
     "title": "谓词逻辑",
-    "hash": "68c53ee502b77b74d5a91d127265f9269d48b10be2503c2f9b6250ad53820300"
+    "hash": "08ebe67f173ed4ce3e5bdcae55ecccc4b13b140000875bf34ec854855f72d155"
   },
   "campus-discrete-mathematics/03-sets": {
     "title": "集合",
-    "hash": "f7c5a6d10b67549e7bf75f3b8c01c7261e0ade448f165fd2cdd3a7145e5efccf"
+    "hash": "ba2292f203be47054b906af0c114712414da2103329a969b1a1cd8dbaf510b97"
   },
   "campus-discrete-mathematics/04-relations-and-functions": {
     "title": "关系和函数",
-    "hash": "05bc73d2bd17d5d7b93d6b09d91b1139605139d60eef11d506cde049a8c72bed"
+    "hash": "3e88aa4e97b5f08c738cf1ea4982fc217511e85f708c48cc6545ea7a5e506e0b"
   },
   "campus-discrete-mathematics/07-graph-theory": {
     "title": "图论",
-    "hash": "0872c92087765ed3a400c5bf446f09a6c96fd5d50ad2a35b45a9595da443f7d9"
+    "hash": "075679339aa9ea6e25f4e692768bf36c115003acd38c617f76d9d8b3c7ea105b"
   }
 }
