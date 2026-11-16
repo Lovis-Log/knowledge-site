@@ -150,6 +150,7 @@ const thumbSources = new Set([
   "/covers/editorial-agent-engineering-v1.webp",
   "/covers/editorial-agents.webp",
   "/covers/editorial-campus-mathematical-analysis-v1.webp",
+  "/covers/editorial-campus-discrete-mathematics-v1.webp",
   "/covers/editorial-coding.webp",
   "/covers/editorial-cpp-programming-v2.webp",
   "/covers/editorial-finance-and-business-v1.webp",

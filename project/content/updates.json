@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-16",
+    "version": "1.10.2",
+    "features": [
+      {
+        "zh": "为离散数学补充专属插画封面及适配手机与桌面的缩略图。",
+        "en": "Added an illustrated cover and responsive thumbnails for Discrete Mathematics."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-16",
     "version": "1.10.1",
     "features": [],
     "content": [
