@@ -40,7 +40,10 @@ sources:
 (1) 若 $f$ 在 $x_0$ 两侧二阶可导，且 $f''$ 在 $(x_0-\delta,x_0)$ 与 $(x_0,x_0+\delta)$ 上**符号相反**，则 $x_0$ 是拐点；若**符号相同**，则不是拐点。
 
 (2) 若 $f$ 在 $(x_0-\delta,x_0+\delta)$ 上二阶可导，且 $x_0$ 是拐点，则必有
-$$f''(x_0)=0.$$
+
+$$
+f''(x_0)=0.
+$$
 
 注意 (2) 只是必要条件。$f''(x_0)=0$ 推不出拐点：$f(x)=x^4$ 满足 $f''(0)=0$，但 $f''(x)=12x^2>0\ (x\neq 0)$，函数在 $\mathbb{R}$ 上严格下凸，$(0,0)$ 不是拐点。因此判断拐点必须看 $f''$ 在两侧是否变号，而不是只看某个点是否为零。
 
@@ -55,28 +58,43 @@ $$f''(x_0)=0.$$
 (2) 若 $\lim\limits_{x\to a^+}f(x)=\pm\infty$ 或 $\lim\limits_{x\to b^-}f(x)=\pm\infty$，则 $x=a$（或 $x=b$）是竖直渐近线；
 
 (3) 若存在 $a\neq 0$、$b\in\mathbb{R}$，使
-$$\lim_{x\to+\infty}\bigl[f(x)-(ax+b)\bigr]=0
+
+$$
+\lim_{x\to+\infty}\bigl[f(x)-(ax+b)\bigr]=0
 \quad\text{或}\quad
-\lim_{x\to-\infty}\bigl[f(x)-(ax+b)\bigr]=0,$$
+\lim_{x\to-\infty}\bigl[f(x)-(ax+b)\bigr]=0,
+$$
 则 $y=ax+b$ 是斜渐近线。
 
 求法上，竖直渐近线从函数的无定义点（或定义区间的端点）去找，再验证单侧极限是否为无穷；水平与斜渐近线则先算斜率再算截距：
-$$a=\lim_{x\to+\infty}\frac{f(x)}{x},\qquad b=\lim_{x\to+\infty}\bigl[f(x)-ax\bigr],$$
+
+$$
+a=\lim_{x\to+\infty}\frac{f(x)}{x},\qquad b=\lim_{x\to+\infty}\bigl[f(x)-ax\bigr],
+$$
 $-\infty$ 方向同理。若 $a=0$ 且 $b$ 有限，得到的就是水平渐近线，所以水平情形是斜渐近线的特例。左右两个方向可以有不同的渐近线。
 
 **例 1** 求曲线 $y=\dfrac{(x-1)^2}{3(x+1)}$ 的渐近线。
 
 解 先求斜渐近线的斜率：
-$$a=\lim_{x\to\infty}\frac{(x-1)^2}{3x(x+1)}=\frac13,$$
+
+$$
+a=\lim_{x\to\infty}\frac{(x-1)^2}{3x(x+1)}=\frac13,
+$$
 再求截距：
-$$b=\lim_{x\to\infty}\left[\frac{(x-1)^2}{3(x+1)}-\frac{x}{3}\right]
+
+$$
+b=\lim_{x\to\infty}\left[\frac{(x-1)^2}{3(x+1)}-\frac{x}{3}\right]
 =\frac13\lim_{x\to\infty}\frac{(x-1)^2-x(x+1)}{x+1}
-=\frac13\lim_{x\to\infty}\frac{-3x+1}{x+1}=-1.$$
+=\frac13\lim_{x\to\infty}\frac{-3x+1}{x+1}=-1.
+$$
 所以 $y=\dfrac{x}{3}-1$ 是斜渐近线，且 $x\to+\infty$ 与 $x\to-\infty$ 两个方向共用这一条。
 
 再看无定义点 $x=-1$：
-$$\lim_{x\to-1^+}\frac{(x-1)^2}{3(x+1)}=+\infty,\qquad
-\lim_{x\to-1^-}\frac{(x-1)^2}{3(x+1)}=-\infty,$$
+
+$$
+\lim_{x\to-1^+}\frac{(x-1)^2}{3(x+1)}=+\infty,\qquad
+\lim_{x\to-1^-}\frac{(x-1)^2}{3(x+1)}=-\infty,
+$$
 故 $x=-1$ 是竖直渐近线，两侧分别趋于 $+\infty$ 与 $-\infty$。
 
 这里没有水平渐近线：$x\to\pm\infty$ 时函数与 $x/3$ 同阶，不趋于常数。
@@ -84,9 +102,13 @@ $$\lim_{x\to-1^+}\frac{(x-1)^2}{3(x+1)}=+\infty,\qquad
 **例 2** 求曲线 $y=\sqrt[3]{x^3-x^2-x+1}$ 的渐近线。
 
 解 先算斜率：
-$$a=\lim_{x\to\infty}\frac{\sqrt[3]{x^3-x^2-x+1}}{x}
-=\lim_{x\to\infty}\sqrt[3]{1-\frac{1}{x}-\frac{1}{x^2}+\frac{1}{x^3}}=1.$$
+
+$$
+a=\lim_{x\to\infty}\frac{\sqrt[3]{x^3-x^2-x+1}}{x}
+=\lim_{x\to\infty}\sqrt[3]{1-\frac{1}{x}-\frac{1}{x^2}+\frac{1}{x^3}}=1.
+$$
 再算截距。把根号内的式子写成 $x^3\left(1-\dfrac{x^2+x-1}{x^3}\right)$，利用 $(1+u)^{1/3}=1+\dfrac{u}{3}+o(u)$（$u\to 0$）：
+
 $$
 \begin{aligned}
 b&=\lim_{x\to\infty}\left[\sqrt[3]{x^3-x^2-x+1}-x\right]\\
@@ -94,9 +116,13 @@ b&=\lim_{x\to\infty}\left[\sqrt[3]{x^3-x^2-x+1}-x\right]\\
 &=\lim_{x\to\infty}x\left[-\frac13\cdot\frac{x^2+x-1}{x^3}+o\!\left(\frac{1}{x^2}\right)\right]
 =-\frac13.
 \end{aligned}
+
 $$
 因此渐近线为
-$$y=x-\frac13.$$
+
+$$
+y=x-\frac13.
+$$
 函数在 $\mathbb{R}$ 上处处有定义且连续，没有竖直渐近线；又因为 $x\to\pm\infty$ 时 $y\to\pm\infty$，也没有水平渐近线。
 
 ## 作图的步骤
@@ -111,14 +137,20 @@ $$y=x-\frac13.$$
 表格是最关键的一步。它把“在哪升、在哪降、在哪凹、在哪凸、极值是多少”一次性摆清楚，图像只是把表格翻译成几何。
 
 **例 3** 作函数
-$$y=\frac{1}{\sqrt{2\pi}}\mathrm{e}^{-\frac{x^2}{2}}$$
+
+$$
+y=\frac{1}{\sqrt{2\pi}}\mathrm{e}^{-\frac{x^2}{2}}
+$$
 的图像（标准正态分布的密度函数）。
 
 解 定义域为 $\mathbb{R}$，且是偶函数，只需考察 $x\geqslant 0$，再关于 $y$ 轴对称。
 
 求导：
-$$f'(x)=-\frac{1}{\sqrt{2\pi}}x\mathrm{e}^{-\frac{x^2}{2}},\qquad
-f''(x)=\frac{1}{\sqrt{2\pi}}\mathrm{e}^{-\frac{x^2}{2}}(x^2-1).$$
+
+$$
+f'(x)=-\frac{1}{\sqrt{2\pi}}x\mathrm{e}^{-\frac{x^2}{2}},\qquad
+f''(x)=\frac{1}{\sqrt{2\pi}}\mathrm{e}^{-\frac{x^2}{2}}(x^2-1).
+$$
 $f'$ 只在 $x=0$ 处为零；$x>0$ 时 $f'(x)<0$，函数单调下降。$f''$ 在 $x=1$ 处为零：$0<x<1$ 时 $f''<0$（上凸），$x>1$ 时 $f''>0$（下凸），所以 $x=1$ 是拐点。
 
 $x\to\infty$ 时 $y\to 0$，故 $y=0$（$x$ 轴）是水平渐近线；函数处处连续，没有竖直渐近线；又因 $y\to 0$，也没有斜渐近线。
@@ -140,17 +172,26 @@ $x\to\infty$ 时 $y\to 0$，故 $y=0$（$x$ 轴）是水平渐近线；函数处
 解 定义域为 $(-\infty,-1)\cup(-1,+\infty)$，图像被直线 $x=-1$ 分成左右两支。
 
 求导：
-$$f'(x)=\frac{(2x-2)(x+1)-(x-1)^2}{3(x+1)^2}
-=\frac{(x+3)(x-1)}{3(x+1)^2},$$
+
+$$
+f'(x)=\frac{(2x-2)(x+1)-(x-1)^2}{3(x+1)^2}
+=\frac{(x+3)(x-1)}{3(x+1)^2},
+$$
 驻点为 $x=-3$ 与 $x=1$。$x=-3$ 左侧 $f'>0$、右侧 $f'<0$，是极大值点；$x=1$ 左侧 $f'<0$、右侧 $f'>0$，是极小值点。
 
 再求二阶导数：
-$$f''(x)=\frac{8}{3(x+1)^3}.$$
+
+$$
+f''(x)=\frac{8}{3(x+1)^3}.
+$$
 它在定义域内没有零点，所以曲线没有拐点；但 $f''$ 在 $x=-1$ 两侧符号相反（左负右正），这正对应两支曲线弯曲方向不同——$x<-1$ 上凸，$x>-1$ 下凸。
 
 由例 1，斜渐近线为 $y=\dfrac{x}{3}-1$，竖直渐近线为 $x=-1$。函数值与极限：
-$$f(-3)=-\frac83,\qquad f(1)=0,\qquad
-\lim_{x\to-1^+}f(x)=+\infty,\qquad \lim_{x\to-1^-}f(x)=-\infty.$$
+
+$$
+f(-3)=-\frac83,\qquad f(1)=0,\qquad
+\lim_{x\to-1^+}f(x)=+\infty,\qquad \lim_{x\to-1^-}f(x)=-\infty.
+$$
 
 列成表：
 
@@ -165,22 +206,30 @@ $$f(-3)=-\frac83,\qquad f(1)=0,\qquad
 ![例 4 的函数图像](/images/campus-mathematical-analysis/20-rational-graph.png)
 
 右支始终在斜渐近线上方、左支始终在下方，这一点可以直接算出来：
-$$f(x)-\left(\frac{x}{3}-1\right)=\frac{4}{3(x+1)},$$
+
+$$
+f(x)-\left(\frac{x}{3}-1\right)=\frac{4}{3(x+1)},
+$$
 右支 $x+1>0$ 为正，左支为负。作图时这条信息能保证曲线不会画到渐近线的错误一侧。
 
 **例 5** 作函数 $y=\sqrt[3]{x^3-x^2-x+1}$ 的图像。
 
 解 先因式分解：
-$$f(x)=\sqrt[3]{(x-1)^2(x+1)}=(x-1)^{2/3}(x+1)^{1/3},$$
+
+$$
+f(x)=\sqrt[3]{(x-1)^2(x+1)}=(x-1)^{2/3}(x+1)^{1/3},
+$$
 定义域为 $\mathbb{R}$。
 
 求导：
+
 $$
 \begin{aligned}
 f'(x)&=\frac23(x-1)^{-1/3}(x+1)^{1/3}+\frac13(x-1)^{2/3}(x+1)^{-2/3}\\
 &=\frac{2(x+1)+(x-1)}{3(x-1)^{1/3}(x+1)^{2/3}}
 =\frac{x+\frac13}{\sqrt[3]{(x-1)(x+1)^2}}.
 \end{aligned}
+
 $$
 $f'$ 的零点是 $x=-\dfrac13$；在 $x=\pm1$ 处 $f'$ 不存在。逐段看符号：
 
@@ -192,16 +241,25 @@ $f'$ 的零点是 $x=-\dfrac13$；在 $x=\pm1$ 处 $f'$ 不存在。逐段看符
 所以 $x=-1$ 不是极值点（两侧都增），$x=-\dfrac13$ 是极大值点，$x=1$ 是极小值点。
 
 再求二阶导数。直接对 $f'=\dfrac{x+1/3}{\sqrt[3]{(x-1)(x+1)^2}}$ 取对数再求导较省力：
-$$\ln|f'(x)|=\ln\left|x+\frac13\right|-\frac13\ln|x-1|-\frac23\ln|x+1|,$$
+
+$$
+\ln|f'(x)|=\ln\left|x+\frac13\right|-\frac13\ln|x-1|-\frac23\ln|x+1|,
+$$
 两边求导得
-$$f''(x)=f'(x)\left[\frac{1}{x+\frac13}-\frac{1}{3(x-1)}-\frac{2}{3(x+1)}\right]
-=\frac{-8}{9\sqrt[3]{(x-1)^4(x+1)^5}}.$$
+
+$$
+f''(x)=f'(x)\left[\frac{1}{x+\frac13}-\frac{1}{3(x-1)}-\frac{2}{3(x+1)}\right]
+=\frac{-8}{9\sqrt[3]{(x-1)^4(x+1)^5}}.
+$$
 $f''$ 没有零点，但在 $x=\pm1$ 处不存在。分母中 $(x-1)^{4/3}>0$，而 $(x+1)^{5/3}$ 与 $x+1$ 同号，所以 $f''$ 的符号与 $x+1$ 相反：$x<-1$ 时 $f''>0$（下凸），$x>-1$ 时 $f''<0$（上凸）。于是 $x=-1$ 两侧变号，$(-1,0)$ 是拐点；$x=1$ 两侧不变号，$(1,0)$ 不是拐点。
 
 由例 2，渐近线为 $y=x-\dfrac13$，没有竖直、水平渐近线。
 
 函数值：
-$$f(-1)=0,\qquad f\left(-\frac13\right)=\sqrt[3]{\frac{16}{9}\cdot\frac23}=\frac23\sqrt[3]{4},\qquad f(1)=0.$$
+
+$$
+f(-1)=0,\qquad f\left(-\frac13\right)=\sqrt[3]{\frac{16}{9}\cdot\frac23}=\frac23\sqrt[3]{4},\qquad f(1)=0.
+$$
 
 列成表：
 

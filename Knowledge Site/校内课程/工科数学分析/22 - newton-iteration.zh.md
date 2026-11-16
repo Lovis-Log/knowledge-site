@@ -17,11 +17,17 @@ sources:
 ## 为什么需要近似求根
 
 一元二次方程有求根公式：
-$$ax^2+bx+c=0\ (a\neq 0)
+
+$$
+ax^2+bx+c=0\ (a\neq 0)
 \ \Longrightarrow\
-x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}.$$
+x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}.
+$$
 三次、四次方程也有根式解，但对一般的 $n$ 次方程
-$$x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0=0,$$
+
+$$
+x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0=0,
+$$
 当 $n\geqslant 5$ 时不存在由系数经有限次四则运算和开方给出全部根的通用公式（伽罗瓦理论）。更一般的函数方程 $f(x)=0$ 就更不必说了。所以必须研究近似解法：给定精度 $\varepsilon_0$，求 $\tilde x$ 使 $|\tilde x-x^*|\leqslant\varepsilon_0$，其中 $x^*$ 是方程的根。
 
 两种最基本的办法是二分法和牛顿迭代法。二分法只要求连续性，收敛有保证但速度慢；牛顿法用切线加速，收敛快，但对函数和初值有要求。
@@ -37,11 +43,17 @@ $$x^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0=0,$$
 - 若 $f(a_1)f(x_1)<0$，根在 $(a_1,x_1)$ 内，取 $[a_2,b_2]=[a_1,x_1]$。
 
 新区间长度是原来的 $\dfrac12$。重复下去得到闭区间套 $\{[a_k,b_k]\}$，且
-$$|x_k-x^*|\leqslant\frac{b_k-a_k}{2}=\frac{b-a}{2^k}.$$
+
+$$
+|x_k-x^*|\leqslant\frac{b_k-a_k}{2}=\frac{b-a}{2^k}.
+$$
 要让误差不超过 $\varepsilon_0$，只需
-$$\frac{b-a}{2^k}\leqslant\varepsilon_0
+
+$$
+\frac{b-a}{2^k}\leqslant\varepsilon_0
 \ \Longleftrightarrow\
-k\geqslant\log_2\frac{b-a}{\varepsilon_0}.$$
+k\geqslant\log_2\frac{b-a}{\varepsilon_0}.
+$$
 二分法每步只把误差减半，属于线性收敛；它的优点是只要 $f$ 连续且端点异号就一定收敛，不需要导数。
 
 ## 牛顿迭代法（切线法）
@@ -55,25 +67,46 @@ k\geqslant\log_2\frac{b-a}{\varepsilon_0}.$$
 (3) $f''(x)$ 在 $(a,b)$ 内保号。
 
 取 $x_0$ 为 $a$、$b$ 中满足
-$$f(x_0)f''(x_0)>0$$
+
+$$
+f(x_0)f''(x_0)>0
+$$
 的那一个端点，则以 $x_0$ 为初值的迭代
-$$x_{k+1}=x_k-\frac{f(x_k)}{f'(x_k)},\qquad k=0,1,2,\cdots$$
+
+$$
+x_{k+1}=x_k-\frac{f(x_k)}{f'(x_k)},\qquad k=0,1,2,\cdots
+$$
 产生的序列 $\{x_k\}$ 单调收敛于 $f(x)=0$ 在 $[a,b]$ 内的唯一根 $x^*$。
 
 三个条件合起来的意思是：函数在整个区间上严格单调，并且弯曲方向不变；初值要取在“函数值与弯曲方向同号”的那个端点，这样切线才会把迭代点推向根的一侧而不会跑出区间。
 
 **几何来源** 过 $(x_k,f(x_k))$ 作切线，其方程为
-$$y=f(x_k)+f'(x_k)(x-x_k).$$
+
+$$
+y=f(x_k)+f'(x_k)(x-x_k).
+$$
 令 $y=0$，解出的 $x$ 正是 $x_{k+1}=x_k-\dfrac{f(x_k)}{f'(x_k)}$。所以牛顿法就是**用切线的零点代替曲线的零点**，逐次逼近。
 
 **收敛性的简证** 以 $f(a)<0<f(b)$、$f'>0$、$f''>0$ 的情形为例（其余情形对称）。由泰勒公式
-$$f(x)=f(x_k)+f'(x_k)(x-x_k)+\frac{f''(\xi)}{2}(x-x_k)^2,$$
+
+$$
+f(x)=f(x_k)+f'(x_k)(x-x_k)+\frac{f''(\xi)}{2}(x-x_k)^2,
+$$
 因为 $f''>0$，曲线在切线上方，即
-$$f(x)>f(x_k)+f'(x_k)(x-x_k)\qquad (x\neq x_k).$$
+
+$$
+f(x)>f(x_k)+f'(x_k)(x-x_k)\qquad (x\neq x_k).
+$$
 特别地，在 $x=x_{k+1}$ 处切线值为 $0$，故
-$$f(x_{k+1})>0=f(x^*).$$
+
+$$
+f(x_{k+1})>0=f(x^*).
+$$
 结合 $f$ 严格递增，得 $x^*<x_{k+1}<x_k$。于是 $\{x_k\}$ 单调递减且有下界 $x^*$，由单调有界定理收敛到某个 $L$。在
-$$f(x_k)=f'(x_k)(x_k-x_{k+1})$$
+
+$$
+f(x_k)=f'(x_k)(x_k-x_{k+1})
+$$
 中令 $k\to\infty$：左端 $f(x_k)\to f(L)$，右端因 $f'$ 有正下界而迫使 $x_k-x_{k+1}\to 0$，于是 $f(L)=0$，即 $L=x^*$。
 
 ![牛顿切线法：切线与 $x$ 轴的交点逼近根](/images/campus-mathematical-analysis/22-newton-tangent.png)
@@ -83,12 +116,21 @@ $$f(x_k)=f'(x_k)(x_k-x_{k+1})$$
 求 $\sqrt A$（$A>0$ 给定），并具体计算 $\sqrt7$。
 
 求 $\sqrt A$ 等价于求
-$$f(x)=x^2-A=0$$
+
+$$
+f(x)=x^2-A=0
+$$
 的正根 $x^*$。先找正整数 $n$ 使
-$$(n-1)^2<A<n^2,$$
+
+$$
+(n-1)^2<A<n^2,
+$$
 在 $[n-1,n]$ 上 $f$ 连续、$f(n-1)<0<f(n)$、$f'(x)=2x>0$、$f''(x)=2>0$，定理条件全部满足。取 $x_0=n$（此时 $f(n)>0$，$f''>0$），迭代为
-$$x_{k+1}=x_k-\frac{x_k^2-A}{2x_k}
-=\frac12\left(x_k+\frac{A}{x_k}\right).$$
+
+$$
+x_{k+1}=x_k-\frac{x_k^2-A}{2x_k}
+=\frac12\left(x_k+\frac{A}{x_k}\right).
+$$
 
 对 $A=7$，$2^2<7<3^2$，取 $x_0=3$：
 
@@ -104,16 +146,31 @@ $$x_{k+1}=x_k-\frac{x_k^2-A}{2x_k}
 ## 例 2：解 $\ln x=\sin x$
 
 记
-$$f(x)=\ln x-\sin x,$$
+
+$$
+f(x)=\ln x-\sin x,
+$$
 在区间 $\left[\dfrac{\pi}{2},\mathrm{e}\right]$ 上考察。端点值：
-$$f\left(\frac{\pi}{2}\right)=\ln\frac{\pi}{2}-1<0,\qquad
-f(\mathrm{e})=1-\sin \mathrm{e}>0.$$
+
+$$
+f\left(\frac{\pi}{2}\right)=\ln\frac{\pi}{2}-1<0,\qquad
+f(\mathrm{e})=1-\sin \mathrm{e}>0.
+$$
 导数：
-$$f'(x)=\frac1x-\cos x>0,$$
+
+$$
+f'(x)=\frac1x-\cos x>0,
+$$
 因为 $\dfrac1x>0$，而在 $\left[\dfrac{\pi}{2},\mathrm{e}\right]$ 上 $\cos x\leqslant 0$。再看
-$$f''(x)=\sin x-\frac{1}{x^2}.$$
+
+$$
+f''(x)=\sin x-\frac{1}{x^2}.
+$$
 在 $\left[\dfrac{\pi}{2},\mathrm{e}\right]$ 上 $\sin x\geqslant\sin \mathrm{e}$（$\sin$ 在此区间递减），而 $\dfrac{1}{x^2}\leqslant\dfrac{4}{\pi^2}$，所以
-$$f''(x)\geqslant\sin \mathrm{e}-\frac{4}{\pi^2}>0.$$
+
+$$
+f''(x)\geqslant\sin \mathrm{e}-\frac{4}{\pi^2}>0.
+$$
 三个条件满足。又 $f(\mathrm{e})>0$、$f''(\mathrm{e})>0$，故取 $x_0=\mathrm{e}$。
 
 迭代结果：
@@ -132,14 +189,20 @@ $$f''(x)\geqslant\sin \mathrm{e}-\frac{4}{\pi^2}>0.$$
 定理给出的是**充分条件**，而且结论只保证“从指定端点出发”的单调收敛。牛顿法本身只有**局部收敛性**：初值离根足够近时才可能收敛，不能把它说成对任意初值都收敛。常见的失效方式有：
 
 **初值选错，迭代循环** 对 $f(x)=x^3-2x+2$ 取 $x_0=0$：
-$$x_1=0-\frac{2}{-2}=1,\qquad
-x_2=1-\frac{1}{1}=0,$$
+
+$$
+x_1=0-\frac{2}{-2}=1,\qquad
+x_2=1-\frac{1}{1}=0,
+$$
 于是 $0,1,0,1,\cdots$ 无限循环。这个方程其实有实根（约 $-1.769$），但 $x_0=0$ 不在它的收敛范围内。
 
 **导数在迭代点为零** 若某个 $x_k$ 使 $f'(x_k)=0$，迭代公式分母为零，切线平行于 $x$ 轴，迭代无法进行。
 
 **初值太远，迭代发散** 对 $f(x)=\arctan x$ 取 $x_0=3$：
-$$x_1=3-\frac{\arctan3}{1/(1+3^2)}=3-10\arctan3\approx-9.49,$$
+
+$$
+x_1=3-\frac{\arctan3}{1/(1+3^2)}=3-10\arctan3\approx-9.49,
+$$
 下一步会跳到更远的地方，序列不收敛。
 
 **重根处收敛变慢** 若 $x^*$ 是 $f$ 的重根，则 $f(x^*)=f'(x^*)=0$，牛顿法虽可能仍收敛，但速度退化为线性，不再有每步误差平方的效果。
