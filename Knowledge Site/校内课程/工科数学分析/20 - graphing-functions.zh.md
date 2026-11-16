@@ -3,7 +3,7 @@ slug: "20-graphing-functions"
 title: "函数作图"
 summary: "第 20 讲：函数作图。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "20"
 tags:

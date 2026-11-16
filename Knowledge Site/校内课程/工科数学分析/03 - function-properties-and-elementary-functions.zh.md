@@ -3,7 +3,7 @@ slug: "03-function-properties-and-elementary-functions"
 title: "函数的几种特性与初等函数"
 summary: "第 3 讲：函数的几种特性与初等函数。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "03"
 tags:

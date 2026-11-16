@@ -3,7 +3,7 @@ slug: "29-homework-06"
 title: "第 6 次作业与解析"
 summary: "第 6 次作业的原题与解析。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "homework"
 displayNumber: "06"
 tags:

@@ -3,7 +3,7 @@ slug: "10-chapter-2-review"
 title: "第二章 极限与连续复习"
 summary: "第 10 讲：第二章 极限与连续复习。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "10"
 tags:

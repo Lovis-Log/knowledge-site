@@ -3,7 +3,7 @@ slug: "08-properties-of-continuous-functions-on-closed-intervals"
 title: "闭区间上连续函数的性质"
 summary: "第 8 讲：闭区间上连续函数的性质。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "08"
 tags:

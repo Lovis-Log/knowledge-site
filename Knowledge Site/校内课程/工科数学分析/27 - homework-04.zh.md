@@ -3,7 +3,7 @@ slug: "27-homework-04"
 title: "第 4 次作业与解析"
 summary: "第 4 次作业的原题与解析。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "homework"
 displayNumber: "04"
 tags:

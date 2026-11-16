@@ -3,7 +3,7 @@ slug: "07-continuity-and-discontinuity"
 title: "连续与间断"
 summary: "第 7 讲：连续与间断。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "07"
 tags:

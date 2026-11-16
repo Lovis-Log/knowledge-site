@@ -3,7 +3,7 @@ slug: "28-homework-05"
 title: "第 5 次作业与解析"
 summary: "第 5 次作业的原题与解析。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "homework"
 displayNumber: "05"
 tags:

@@ -162,7 +162,6 @@ const ORG_BY_HOST: Record<string, string> = {
   "youtu.be": "YouTube",
   "arxiv.org": "arXiv",
   "github.com": "GitHub",
-  "drive.google.com": "Google Drive",
   "x.com": "X",
   "medium.com": "Medium",
   "substack.com": "Substack",
@@ -221,6 +220,8 @@ function rankNames(names: string[]): string | undefined {
 /** 单条来源的署名：报社与机构站点署机构，平台类站点署频道或个人 */
 function creditFor(source: Source): string | undefined {
   const origin = sourceOrigin(source.url);
+  // File hosting is not authorship; an uploaded handout may have no named author.
+  if (origin === "drive.google.com" && !source.author) return undefined;
   const press = matchHost(PRESS_BY_HOST, origin);
   if (press) return press;
   if (!matchHostKey(PLATFORM_HOSTS, origin)) {

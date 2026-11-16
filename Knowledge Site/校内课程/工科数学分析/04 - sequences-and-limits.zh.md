@@ -3,7 +3,7 @@ slug: "04-sequences-and-limits"
 title: "数列与数列极限"
 summary: "第 4 讲：数列与数列极限。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "04"
 tags:

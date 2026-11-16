@@ -3,7 +3,7 @@ slug: "13-implicit-and-parametric-differentiation"
 title: "隐函数的导数和参数式求导"
 summary: "第 13 讲：隐函数的导数和参数式求导。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "13"
 tags:

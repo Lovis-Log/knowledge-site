@@ -3,7 +3,7 @@ slug: "02-mappings-and-functions"
 title: "映射与函数"
 summary: "第 2 讲：映射与函数。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "02"
 tags:

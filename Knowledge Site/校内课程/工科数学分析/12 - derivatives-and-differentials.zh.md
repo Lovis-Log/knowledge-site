@@ -3,7 +3,7 @@ slug: "12-derivatives-and-differentials"
 title: "导数和微分"
 summary: "第 12 讲：导数和微分。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "12"
 tags:

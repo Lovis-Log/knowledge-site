@@ -3,7 +3,7 @@ slug: "14-higher-order-derivatives-and-differentials"
 title: "高阶导数和高阶微分"
 summary: "第 14 讲：高阶导数和高阶微分。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "14"
 tags:

@@ -3,7 +3,7 @@ slug: "21-optimization-models"
 title: "最优化问题数学模型"
 summary: "第 21 讲：最优化问题数学模型。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "21"
 tags:

@@ -3,7 +3,7 @@ slug: "01-sets-and-real-numbers"
 title: "集合与实数集"
 summary: "第 1 讲：集合与实数集。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "01"
 tags:

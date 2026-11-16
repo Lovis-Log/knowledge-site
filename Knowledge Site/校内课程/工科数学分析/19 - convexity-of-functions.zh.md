@@ -3,7 +3,7 @@ slug: "19-convexity-of-functions"
 title: "函数的凸性"
 summary: "第 19 讲：函数的凸性。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "19"
 tags:

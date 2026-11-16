@@ -3,7 +3,7 @@ slug: "11-derivatives-and-differentiation-rules"
 title: "导数概念与求导法则"
 summary: "第 11 讲：导数概念与求导法则。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "11"
 tags:

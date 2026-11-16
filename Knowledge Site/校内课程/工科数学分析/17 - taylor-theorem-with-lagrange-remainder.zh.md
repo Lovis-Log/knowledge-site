@@ -3,7 +3,7 @@ slug: "17-taylor-theorem-with-lagrange-remainder"
 title: "带拉格朗日余项的泰勒定理"
 summary: "第 17 讲：带拉格朗日余项的泰勒定理。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "17"
 tags:

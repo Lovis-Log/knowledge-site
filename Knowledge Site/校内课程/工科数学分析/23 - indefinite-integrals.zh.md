@@ -3,7 +3,7 @@ slug: "23-indefinite-integrals"
 title: "不定积分"
 summary: "第 23 讲：不定积分。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "23"
 tags:

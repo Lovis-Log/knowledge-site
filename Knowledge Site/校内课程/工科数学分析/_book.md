@@ -8,7 +8,7 @@ longDescription: "整理工科数学分析第一学期的课堂内容，从集�
 category: "campus-courses"
 studyPeriod: "大一"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 groups:
   - id: "course"
     title: "课程"

@@ -3,7 +3,7 @@ slug: "06-limits-of-functions"
 title: "函数极限"
 summary: "第 6 讲：函数极限。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "06"
 tags:

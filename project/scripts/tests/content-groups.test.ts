@@ -7,6 +7,8 @@ test("campus course keeps explicit course and homework groups with independent n
   const book = getAllBooks().find((item) => item.slug === "campus-mathematical-analysis");
   assert.ok(book, "campus book is loaded");
   assert.equal(book.studyPeriod, "大一");
+  assert.equal(book.author, undefined, "cloud storage is not the course author");
+  assert.equal(book.contentType, "reference");
   assert.deepEqual(
     book.groups?.map((group) => group.heading),
     ["课程目录", "作业目录"],

@@ -3,7 +3,7 @@ slug: "22-newton-iteration"
 title: "牛顿迭代法"
 summary: "第 22 讲：牛顿迭代法。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "22"
 tags:

@@ -3,7 +3,7 @@ slug: "00-course-introduction"
 title: "课程介绍"
 summary: "课程概况、考核方式与学习参考。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "00"
 tags:

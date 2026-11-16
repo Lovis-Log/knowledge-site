@@ -3,7 +3,7 @@ slug: "09-orders-of-infinitesimals"
 title: "无穷小量与无穷大量的阶"
 summary: "第 9 讲：无穷小量与无穷大量的阶。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "09"
 tags:

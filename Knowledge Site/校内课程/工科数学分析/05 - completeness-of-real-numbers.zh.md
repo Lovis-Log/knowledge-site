@@ -3,7 +3,7 @@ slug: "05-completeness-of-real-numbers"
 title: "实数基本定理"
 summary: "第 5 讲：实数基本定理。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "05"
 tags:

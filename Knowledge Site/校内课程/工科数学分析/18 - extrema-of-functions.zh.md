@@ -3,7 +3,7 @@ slug: "18-extrema-of-functions"
 title: "函数的极值和最值"
 summary: "第 18 讲：函数的极值和最值。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "18"
 tags:

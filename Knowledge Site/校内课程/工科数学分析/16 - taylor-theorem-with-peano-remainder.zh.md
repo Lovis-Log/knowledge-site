@@ -3,7 +3,7 @@ slug: "16-taylor-theorem-with-peano-remainder"
 title: "带佩亚诺余项的泰勒定理"
 summary: "第 16 讲：带佩亚诺余项的泰勒定理。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "16"
 tags:

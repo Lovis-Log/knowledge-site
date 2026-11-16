@@ -3,7 +3,7 @@ slug: "15-mean-value-theorems-and-lhopital"
 title: "微分中值定理与洛必达法则"
 summary: "第 15 讲：微分中值定理与洛必达法则。"
 updatedAt: "2026-11-15"
-content_type: "video-course"
+content_type: "reference"
 group: "course"
 displayNumber: "15"
 tags:
