@@ -14,9 +14,19 @@
       {
         "zh": "登录提示明确为进入 Lovis 的知识库，移除首页“写在前面”标签；关于介绍和更新日志扩展正文宽度，减少右侧空白。",
         "en": "Sign-in copy now identifies Lovis’s knowledge vault. Removed the personal-note label and widened the About introduction and release notes to reduce unused space."
+      },
+      {
+        "zh": "新增校内课程大类并置于书库首位；课程书籍以课程目录、作业目录两个按钮切换，时间统一显示大一，作业篇内目录只列题号。",
+        "en": "Added Campus Courses as the first library section. Course books switch between Course contents and Homework contents; dates show the study year, and homework outlines list questions only."
       }
     ],
-    "content": []
+    "content": [
+      {
+        "title": "工科数学分析 · 课程介绍、23讲课堂笔记与7次作业解析 / Mathematical Analysis · Introduction, 23 lectures and seven homework sets",
+        "href": "/books/campus-mathematical-analysis/",
+        "kind": "新增 / Added"
+      }
+    ]
   },
   {
     "date": "2026-11-14",
@@ -146,11 +156,31 @@
     "version": "1.6.2",
     "features": [],
     "content": [
-      {"title": "3B1B Essence of Calculus · 12 章 / 12 chapters", "href": "/books/3b1b-essence-of-calculus/", "kind": "新增 / Added"},
-      {"title": "3B1B Essence of Linear Algebra · 16 章 / 16 chapters", "href": "/books/3b1b-essence-of-linear-algebra/", "kind": "新增 / Added"},
-      {"title": "设计师访谈 / Designer interview", "href": "/books/image-generation-workflows/03-new-full-stack-designer/", "kind": "新增 / Added"},
-      {"title": "股票市场入门 / Stock market basics", "href": "/books/finance-and-business/06-stock-market-for-beginners/", "kind": "新增 / Added"},
-      {"title": "美联储笔记 / Federal Reserve notes", "href": "/books/finance-and-business/05-federal-reserve-explained/", "kind": "修订 / Revised"}
+      {
+        "title": "3B1B Essence of Calculus · 12 章 / 12 chapters",
+        "href": "/books/3b1b-essence-of-calculus/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "3B1B Essence of Linear Algebra · 16 章 / 16 chapters",
+        "href": "/books/3b1b-essence-of-linear-algebra/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "设计师访谈 / Designer interview",
+        "href": "/books/image-generation-workflows/03-new-full-stack-designer/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "股票市场入门 / Stock market basics",
+        "href": "/books/finance-and-business/06-stock-market-for-beginners/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "美联储笔记 / Federal Reserve notes",
+        "href": "/books/finance-and-business/05-federal-reserve-explained/",
+        "kind": "修订 / Revised"
+      }
     ]
   },
   {
@@ -158,29 +188,60 @@
     "version": "1.6.1",
     "features": [],
     "content": [
-      {"title": "MIT Game Theory · 25 章 / 25 chapters", "href": "/books/mit-game-theory/", "kind": "新增 / Added"},
-      {"title": "3B1B Differential Equations · 8 章 / 8 chapters", "href": "/books/3b1b-differential-equations/", "kind": "新增 / Added"},
-      {"title": "课程笔记配图 / Diagrams for course notes", "kind": "新增 / Added"},
-      {"title": "多巴胺与好奇心 / Dopamine and curiosity", "href": "/books/society-and-reasoning/08-dopamine-and-curiosity/", "kind": "新增 / Added"},
-      {"title": "AI 与数学、美联储笔记 / Notes on AI and mathematics and the Federal Reserve", "kind": "新增 / Added"}
+      {
+        "title": "MIT Game Theory · 25 章 / 25 chapters",
+        "href": "/books/mit-game-theory/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "3B1B Differential Equations · 8 章 / 8 chapters",
+        "href": "/books/3b1b-differential-equations/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "课程笔记配图 / Diagrams for course notes",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "多巴胺与好奇心 / Dopamine and curiosity",
+        "href": "/books/society-and-reasoning/08-dopamine-and-curiosity/",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "AI 与数学、美联储笔记 / Notes on AI and mathematics and the Federal Reserve",
+        "kind": "新增 / Added"
+      }
     ]
   },
   {
     "date": "2026-11-07",
     "version": "1.6.0",
     "features": [
-      {"zh": "接入账号审核和登录后阅读，新增收藏、留言板和继续阅读。", "en": "Introduced account approval and signed-in reading, along with favorites, a guestbook, and resume reading."},
-      {"zh": "改进阅读页导航和邀请码管理，保留用户名原有大小写。", "en": "Improved reading navigation and invitation management, and preserved username casing."}
+      {
+        "zh": "接入账号审核和登录后阅读，新增收藏、留言板和继续阅读。",
+        "en": "Introduced account approval and signed-in reading, along with favorites, a guestbook, and resume reading."
+      },
+      {
+        "zh": "改进阅读页导航和邀请码管理，保留用户名原有大小写。",
+        "en": "Improved reading navigation and invitation management, and preserved username casing."
+      }
     ],
     "content": [
-      {"title": "与 AI 智能体一起做批判性思考 / Critical thinking with AI agents", "href": "/books/llm-principles/04-critical-thinking-agents/", "kind": "新增 / Added"}
+      {
+        "title": "与 AI 智能体一起做批判性思考 / Critical thinking with AI agents",
+        "href": "/books/llm-principles/04-critical-thinking-agents/",
+        "kind": "新增 / Added"
+      }
     ]
   },
   {
     "date": "2026-11-05",
     "version": "1.5.0",
     "features": [
-      {"zh": "调整首页序言、移动端导航、注册弹窗和账号菜单，修复访客无法看到书库预览图片的问题。", "en": "Refined the preface, mobile navigation, registration dialog, and account menu. Fixed missing library preview images for visitors."}
+      {
+        "zh": "调整首页序言、移动端导航、注册弹窗和账号菜单，修复访客无法看到书库预览图片的问题。",
+        "en": "Refined the preface, mobile navigation, registration dialog, and account menu. Fixed missing library preview images for visitors."
+      }
     ],
     "content": []
   },
@@ -188,7 +249,10 @@
     "date": "2026-11-04",
     "version": "1.4.0",
     "features": [
-      {"zh": "加入公开首页和账号入口，开始预览账号审核与登录后阅读。调整移动端阅读排版与公式显示。", "en": "Added a public landing page and account entry, began previewing account approval and signed-in reading, and refined mobile reading and equation rendering."}
+      {
+        "zh": "加入公开首页和账号入口，开始预览账号审核与登录后阅读。调整移动端阅读排版与公式显示。",
+        "en": "Added a public landing page and account entry, began previewing account approval and signed-in reading, and refined mobile reading and equation rendering."
+      }
     ],
     "content": []
   },
@@ -196,18 +260,31 @@
     "date": "2026-11-03",
     "version": "1.3.0",
     "features": [
-      {"zh": "优化桌面和移动端书架浏览、章节导航、面包屑及双语目录，补充章节标签的中文显示名。", "en": "Improved desktop and mobile shelves, chapter navigation, breadcrumbs, and bilingual contents. Added Chinese labels for chapter tags."}
+      {
+        "zh": "优化桌面和移动端书架浏览、章节导航、面包屑及双语目录，补充章节标签的中文显示名。",
+        "en": "Improved desktop and mobile shelves, chapter navigation, breadcrumbs, and bilingual contents. Added Chinese labels for chapter tags."
+      }
     ],
     "content": [
-      {"title": "精选阅读与学习笔记 / Curated reading and study notes", "kind": "新增 / Added"},
-      {"title": "AI/LLM Workflow", "href": "/books/llm-knowledge-base/", "kind": "整理 / Reorganized"}
+      {
+        "title": "精选阅读与学习笔记 / Curated reading and study notes",
+        "kind": "新增 / Added"
+      },
+      {
+        "title": "AI/LLM Workflow",
+        "href": "/books/llm-knowledge-base/",
+        "kind": "整理 / Reorganized"
+      }
     ]
   },
   {
     "date": "2026-11-02",
     "version": "1.2.0",
     "features": [
-      {"zh": "加入中英文界面切换并更新网站文案。", "en": "Added a Chinese and English interface toggle and refreshed site copy."}
+      {
+        "zh": "加入中英文界面切换并更新网站文案。",
+        "en": "Added a Chinese and English interface toggle and refreshed site copy."
+      }
     ],
     "content": []
   },
@@ -215,17 +292,27 @@
     "date": "2026-11-01",
     "version": "1.1.0",
     "features": [
-      {"zh": "以 Knowledge Site 成稿重建书库，按主题分类，并为书籍补充简介和封面。", "en": "Rebuilt the library from the Knowledge Site notes, organized it by topic, and added book descriptions and covers."}
+      {
+        "zh": "以 Knowledge Site 成稿重建书库，按主题分类，并为书籍补充简介和封面。",
+        "en": "Rebuilt the library from the Knowledge Site notes, organized it by topic, and added book descriptions and covers."
+      }
     ],
     "content": [
-      {"title": "外刊精读新增八篇 Guardian 文章笔记 / Eight Guardian reading notes", "href": "/books/english-news-reading/", "kind": "新增 / Added"}
+      {
+        "title": "外刊精读新增八篇 Guardian 文章笔记 / Eight Guardian reading notes",
+        "href": "/books/english-news-reading/",
+        "kind": "新增 / Added"
+      }
     ]
   },
   {
     "date": "2026-10-31",
     "version": "1.0.0",
     "features": [
-      {"zh": "建成静态知识站，采用 LovisMind 名称和暖纸色界面。", "en": "Built the first static knowledge site and introduced the LovisMind name and warm paper theme."}
+      {
+        "zh": "建成静态知识站，采用 LovisMind 名称和暖纸色界面。",
+        "en": "Built the first static knowledge site and introduced the LovisMind name and warm paper theme."
+      }
     ],
     "content": []
   }

@@ -5,6 +5,7 @@ import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/book-cover";
 import { ChapterList } from "@/components/chapter-list";
+import { ChapterGroupTabs } from "@/components/chapter-group-tabs";
 import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
@@ -100,12 +101,7 @@ export default function BookView({ slug }: { slug: string }) {
         </h2>
         {groups?.length ? (
           <>
-            {groups.map((group) => (
-              <div className="chapter-group" key={group.id}>
-                <h3 className="chapter-group__title">{group.heading}</h3>
-                <ChapterList book={book} chapters={group.chapters} />
-              </div>
-            ))}
+            <ChapterGroupTabs book={book} groups={groups} />
             {ungrouped.length > 0 && (
               <div className="chapter-group">
                 <ChapterList book={book} chapters={ungrouped} />

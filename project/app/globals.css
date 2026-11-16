@@ -1566,17 +1566,32 @@ button {
   margin-bottom: 18px;
 }
 
-.chapter-group + .chapter-group {
-  margin-top: 34px;
+.chapter-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 22px;
 }
 
-.chapter-group__title {
-  margin: 0 0 12px;
-  font-family: var(--serif);
-  font-size: 1.02rem;
+.chapter-tabs__button {
+  padding: 10px 22px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.chapter-tabs__button[aria-selected="true"] {
   color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.chapter-tabs__button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .chapter-list {

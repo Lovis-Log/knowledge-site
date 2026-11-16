@@ -16,7 +16,7 @@ import { tagLabel } from "@/lib/tag-labels";
 import { formatDate, paddedNumber } from "@/lib/format";
 import { chapterGroupOf, chapterHeading } from "@/lib/chapter-label";
 import { availableLangs, pickVersion } from "@/lib/language";
-import { buildToc } from "@/lib/toc";
+import { buildToc, buildHomeworkToc } from "@/lib/toc";
 
 export default function ChapterView({
   bookSlug,
@@ -35,15 +35,16 @@ export default function ChapterView({
 
   const bilingual = langs.length > 1;
   const hasTranslation = Boolean(chapter.translation) && !bilingual;
+  const toc = chapter.group === "homework" ? buildHomeworkToc : buildToc;
   const translationToc = hasTranslation
-    ? buildToc(chapter.translation!.body, "en")
+    ? toc(chapter.translation!.body, "en")
     : [];
   const adjacent = getAdjacentChapters(bookSlug, chapterSlug);
   const grouped = Boolean(chapterGroupOf(chapter, book.groups));
   const heading = chapterHeading(chapter, book.groups);
   const tocs = langs.map((lang) => ({
     lang,
-    items: buildToc(chapter.versions[lang]!.body, lang),
+    items: toc(chapter.versions[lang]!.body, lang),
   }));
 
   const langBlock = (lang: Lang): Record<string, string> =>

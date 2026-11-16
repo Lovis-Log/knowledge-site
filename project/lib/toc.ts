@@ -8,6 +8,17 @@ export interface TocItem {
   depth: 2 | 3;
 }
 
+/** Homework navigation shows only top-level questions; keep original anchor ids. */
+export function buildHomeworkToc(markdown: string, lang: string): TocItem[] {
+  return buildToc(markdown, lang).flatMap((item) => {
+    if (item.depth !== 2) return [];
+    const match = /^(?:题目\s*(\d+)|第\s*(\d+)\s*题|(\d+)\s*[.．、])/.exec(item.text);
+    if (!match) return [];
+    const text = `题目 ${Number(match[1] ?? match[2] ?? match[3])}`;
+    return [{ ...item, text, html: text }];
+  });
+}
+
 const INLINE_MATH_SPLIT = /(\$[^$\n]+\$)/;
 const INLINE_MATH_STRIP = /\$([^$\n]+)\$/g;
 
