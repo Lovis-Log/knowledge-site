@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" width="900" height="480" role="img" aria-labelledby="divTitle divDesc">
+  <title id="divTitle">除数是成对出现的</title>
+  <desc id="divDesc">以 80 为例，除数对为 1 和 80、2 和 40、4 和 20、5 和 16、8 和 10，较小因子都不超过根号 80；以 16 为例，4 和 4 是同一个因子，只能加一次。</desc>
+  <defs>
+    <style>
+      .title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 21px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; fill: #64748b; }
+      .panel-title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 16px; font-weight: 700; fill: #1d4ed8; }
+      .panel-title2 { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 16px; font-weight: 700; fill: #b45309; }
+      .col { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #64748b; }
+      .val { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 15px; font-weight: 700; }
+      .note { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #475569; }
+      .foot { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #334155; }
+      .dash { stroke: #94a3b8; stroke-width: 1.4; stroke-dasharray: 5 4; }
+      .link { stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="900" height="480" fill="#ffffff"/>
+  <text class="title" x="450" y="32" text-anchor="middle">除数是成对出现的</text>
+  <text class="subtitle" x="450" y="56" text-anchor="middle">枚举较小的因子 d，另一个因子 n/d 由配对直接得到</text>
+
+  <!-- 左：n = 80 -->
+  <rect x="28" y="78" width="410" height="320" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+  <text class="panel-title" x="48" y="108">n = 80</text>
+  <text class="col" x="105" y="132" text-anchor="middle">d（较小因子）</text>
+  <text class="col" x="332" y="132" text-anchor="middle">n/d（配对因子）</text>
+  <line class="dash" x1="220" y1="142" x2="220" y2="382"/>
+  <text class="note" x="220" y="160" text-anchor="middle" fill="#b45309">√80 ≈ 8.94</text>
+
+  <text class="note" x="220" y="178" text-anchor="middle" fill="#64748b">只需枚举到 8</text>
+
+  <!-- 行 1 -->
+  <rect x="70" y="192" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="105" y="211" text-anchor="middle" fill="#1d4ed8">1</text>
+  <line class="link" x1="140" y1="206" x2="297" y2="206"/>
+  <rect x="297" y="192" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="332" y="211" text-anchor="middle" fill="#1d4ed8">80</text>
+
+  <!-- 行 2 -->
+  <rect x="70" y="230" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="105" y="249" text-anchor="middle" fill="#1d4ed8">2</text>
+  <line class="link" x1="140" y1="244" x2="297" y2="244"/>
+  <rect x="297" y="230" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="332" y="249" text-anchor="middle" fill="#1d4ed8">40</text>
+
+  <!-- 行 3 -->
+  <rect x="70" y="268" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="105" y="287" text-anchor="middle" fill="#1d4ed8">4</text>
+  <line class="link" x1="140" y1="282" x2="297" y2="282"/>
+  <rect x="297" y="268" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="332" y="287" text-anchor="middle" fill="#1d4ed8">20</text>
+
+  <!-- 行 4 -->
+  <rect x="70" y="306" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="105" y="325" text-anchor="middle" fill="#1d4ed8">5</text>
+  <line class="link" x1="140" y1="320" x2="297" y2="320"/>
+  <rect x="297" y="306" width="70" height="28" rx="6" fill="#ffffff" stroke="#3b82f6" stroke-width="1.4"/>
+  <text class="val" x="332" y="325" text-anchor="middle" fill="#1d4ed8">16</text>
+
+  <!-- 行 5 -->
+  <rect x="70" y="344" width="70" height="28" rx="6" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.6"/>
+  <text class="val" x="105" y="363" text-anchor="middle" fill="#b45309">8</text>
+  <line class="link" x1="140" y1="358" x2="297" y2="358"/>
+  <rect x="297" y="344" width="70" height="28" rx="6" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.6"/>
+  <text class="val" x="332" y="363" text-anchor="middle" fill="#b45309">10</text>
+  <text class="note" x="220" y="386" text-anchor="middle" fill="#b45309">最后一对：8 是 ≤√80 的最大整数因子</text>
+
+  <!-- 右：n = 16 -->
+  <rect x="462" y="78" width="410" height="320" rx="12" fill="#fffdf5" stroke="#fcd34d" stroke-width="1.2"/>
+  <text class="panel-title2" x="482" y="108">n = 16（平方数）</text>
+  <text class="col" x="542" y="132" text-anchor="middle">d</text>
+  <text class="col" x="768" y="132" text-anchor="middle">n/d</text>
+  <line class="dash" x1="655" y1="142" x2="655" y2="382"/>
+  <text class="note" x="655" y="160" text-anchor="middle" fill="#b45309">√16 = 4</text>
+
+  <rect x="507" y="192" width="70" height="28" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.4"/>
+  <text class="val" x="542" y="211" text-anchor="middle" fill="#b45309">1</text>
+  <line class="link" x1="577" y1="206" x2="733" y2="206"/>
+  <rect x="733" y="192" width="70" height="28" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.4"/>
+  <text class="val" x="768" y="211" text-anchor="middle" fill="#b45309">16</text>
+
+  <rect x="507" y="230" width="70" height="28" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.4"/>
+  <text class="val" x="542" y="249" text-anchor="middle" fill="#b45309">2</text>
+  <line class="link" x1="577" y1="244" x2="733" y2="244"/>
+  <rect x="733" y="230" width="70" height="28" rx="6" fill="#ffffff" stroke="#f59e0b" stroke-width="1.4"/>
+  <text class="val" x="768" y="249" text-anchor="middle" fill="#b45309">8</text>
+
+  <rect x="507" y="268" width="70" height="28" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+  <text class="val" x="542" y="287" text-anchor="middle" fill="#92400e">4</text>
+  <line class="link" x1="577" y1="282" x2="733" y2="282" stroke="#d97706"/>
+  <rect x="733" y="268" width="70" height="28" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/>
+  <text class="val" x="768" y="287" text-anchor="middle" fill="#92400e">4</text>
+
+  <text class="note" x="655" y="326" text-anchor="middle" fill="#92400e">4 == 16/4，两个因子相同</text>
+  <text class="note" x="655" y="348" text-anchor="middle" fill="#92400e">这个 4 只加一次，不能加两次</text>
+  <text class="note" x="655" y="380" text-anchor="middle" fill="#64748b">16 的正除数和：1+16+2+8+4 = 31</text>
+
+  <text class="foot" x="450" y="430" text-anchor="middle">每个除数对只需在较小因子一侧发现一次；另一个因子用 n/d 补上</text>
+  <text class="foot" x="450" y="454" text-anchor="middle">平方数在 d = √n 处两个因子重合，必须去重，否则会多算一次</text>
+</svg>

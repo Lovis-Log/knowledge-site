@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 412" width="860" height="412" role="img" aria-labelledby="frogTitle frogDesc">
+  <title id="frogTitle">青蛙跳台阶按最后一步分类</title>
+  <desc id="frogDesc">跳上 n 级台阶的跳法按最后一步分成两类：最后一步跳 1 级时，前面有 f(n-1) 种；最后一步跳 2 级时，前面有 f(n-2) 种。两类相加得到 f(n)=f(n-1)+f(n-2)，其中 f(0)=f(1)=1。</desc>
+  <defs>
+    <style>
+      .title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 21px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; fill: #64748b; }
+      .root { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 18px; font-weight: 700; fill: #1d4ed8; }
+      .branch { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; font-weight: 700; }
+      .detail { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #475569; }
+      .formula { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 18px; font-weight: 700; fill: #0f172a; }
+      .note { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #64748b; }
+      .edge { stroke: #94a3b8; stroke-width: 1.8; fill: none; }
+    </style>
+    <marker id="fArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <rect width="860" height="412" fill="#ffffff"/>
+  <text class="title" x="430" y="32" text-anchor="middle">青蛙跳台阶：按最后一步分类</text>
+  <text class="subtitle" x="430" y="56" text-anchor="middle">每次只能跳 1 级或 2 级，两类跳法互不重叠</text>
+
+  <!-- 根 -->
+  <rect x="355" y="86" width="150" height="52" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.6"/>
+  <text class="root" x="430" y="118" text-anchor="middle">f(n) 种跳法</text>
+
+  <!-- 分支边 -->
+  <path class="edge" d="M392 138 C330 166, 280 180, 245 208" marker-end="url(#fArrow)"/>
+  <path class="edge" d="M468 138 C530 166, 580 180, 615 208" marker-end="url(#fArrow)"/>
+
+  <!-- 左分支 -->
+  <rect x="90" y="212" width="300" height="92" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.6"/>
+  <text class="branch" x="240" y="240" text-anchor="middle" fill="#047857">最后一步跳 1 级</text>
+  <text class="detail" x="240" y="266" text-anchor="middle">前面已经跳到 n−1 级</text>
+  <text class="detail" x="240" y="288" text-anchor="middle">这一段有 f(n−1) 种跳法</text>
+
+  <!-- 右分支 -->
+  <rect x="470" y="212" width="300" height="92" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.6"/>
+  <text class="branch" x="620" y="240" text-anchor="middle" fill="#b45309">最后一步跳 2 级</text>
+  <text class="detail" x="620" y="266" text-anchor="middle">前面已经跳到 n−2 级</text>
+  <text class="detail" x="620" y="288" text-anchor="middle">这一段有 f(n−2) 种跳法</text>
+
+  <!-- 汇总箭头 -->
+  <path class="edge" d="M240 304 C240 330, 330 340, 365 346" marker-end="url(#fArrow)"/>
+  <path class="edge" d="M620 304 C620 330, 530 340, 495 346" marker-end="url(#fArrow)"/>
+
+  <!-- 公式 -->
+  <rect x="270" y="340" width="320" height="44" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+  <text class="formula" x="430" y="369" text-anchor="middle">f(n) = f(n−1) + f(n−2)</text>
+
+  <text class="note" x="430" y="404" text-anchor="middle">边界：f(0)=1（空序列），f(1)=1；n=5 时 f(2)=2，f(3)=3，f(4)=5，f(5)=8</text>
+</svg>

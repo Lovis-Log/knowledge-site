@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" font-family="'Microsoft YaHei','Noto Sans SC','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="960" height="420" rx="18" fill="#fbfcfe"/>
+  <rect x="1" y="1" width="958" height="418" rx="17" fill="none" stroke="#e2e8f0"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">C 风格字符串：末尾必须有结束符 '\0'</text>
+  <text x="40" y="76" font-size="16" fill="#475569">字符数组存字符，字符串还要多一个 '\0'；长度和容量不是一回事。</text>
+
+  <!-- Row A: terminated -->
+  <text x="40" y="122" font-size="18" font-weight="600" fill="#0f172a">有结束符</text>
+  <text x="132" y="122" font-size="16" font-family="'Cascadia Code','Consolas',monospace" fill="#0369a1">char a[] = "Hello";</text>
+
+  <g>
+    <rect x="40" y="138" width="64" height="46" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="72" y="168" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">H</text>
+    <rect x="108" y="138" width="64" height="46" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="140" y="168" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">e</text>
+    <rect x="176" y="138" width="64" height="46" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="208" y="168" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">l</text>
+    <rect x="244" y="138" width="64" height="46" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="276" y="168" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">l</text>
+    <rect x="312" y="138" width="64" height="46" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="344" y="168" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">o</text>
+    <rect x="380" y="138" width="64" height="46" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="412" y="168" text-anchor="middle" font-size="20" font-family="'Cascadia Code','Consolas',monospace" fill="#b91c1c">\0</text>
+  </g>
+  <g font-size="13" fill="#64748b" text-anchor="middle" font-family="'Cascadia Code','Consolas',monospace">
+    <text x="72" y="202">0</text>
+    <text x="140" y="202">1</text>
+    <text x="208" y="202">2</text>
+    <text x="276" y="202">3</text>
+    <text x="344" y="202">4</text>
+    <text x="412" y="202">5</text>
+  </g>
+  <text x="470" y="168" font-size="16" fill="#334155">sizeof(a) = 6</text>
+  <text x="470" y="192" font-size="16" fill="#334155">strlen(a) = 5</text>
+
+  <!-- Row B: unterminated -->
+  <text x="40" y="266" font-size="18" font-weight="600" fill="#0f172a">没有结束符</text>
+  <text x="160" y="266" font-size="16" font-family="'Cascadia Code','Consolas',monospace" fill="#b91c1c">char b[] = {'H','e','l','l','o'};</text>
+
+  <g>
+    <rect x="40" y="282" width="64" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="72" y="312" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#334155">H</text>
+    <rect x="108" y="282" width="64" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="140" y="312" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#334155">e</text>
+    <rect x="176" y="282" width="64" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="208" y="312" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#334155">l</text>
+    <rect x="244" y="282" width="64" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="276" y="312" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#334155">l</text>
+    <rect x="312" y="282" width="64" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+    <text x="344" y="312" text-anchor="middle" font-size="22" font-family="'Cascadia Code','Consolas',monospace" fill="#334155">o</text>
+    <rect x="380" y="282" width="64" height="46" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="2" stroke-dasharray="6 5"/>
+    <text x="412" y="312" text-anchor="middle" font-size="15" fill="#c2410c">无 \0</text>
+  </g>
+  <g font-size="13" fill="#64748b" text-anchor="middle" font-family="'Cascadia Code','Consolas',monospace">
+    <text x="72" y="346">0</text>
+    <text x="140" y="346">1</text>
+    <text x="208" y="346">2</text>
+    <text x="276" y="346">3</text>
+    <text x="344" y="346">4</text>
+    <text x="412" y="346">越界</text>
+  </g>
+  <text x="470" y="312" font-size="16" fill="#b91c1c">sizeof(b) = 5，不是字符串</text>
+  <text x="470" y="336" font-size="15" fill="#64748b">cout &lt;&lt; b 会越过数组边界</text>
+
+  <text x="40" y="396" font-size="15" fill="#475569">数组容量 = 字符数 + 结束符；strlen 不计 '\0'，sizeof 计整个数组。</text>
+</svg>

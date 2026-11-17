@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 520" width="980" height="520" font-family="'Microsoft YaHei','Noto Sans SC','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="980" height="520" rx="18" fill="#fbfcfe"/>
+  <rect x="1" y="1" width="978" height="518" rx="17" fill="none" stroke="#e2e8f0"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">矩阵相乘：行乘列，公共维度相加</text>
+  <text x="40" y="76" font-size="16" fill="#475569">左矩阵的列数必须等于右矩阵的行数；C 的每个元素是 A 的一行与 B 的一列的点积。</text>
+
+  <!-- A -->
+  <text x="70" y="118" font-size="18" font-weight="600" fill="#0f172a">A（3×2）</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="20" text-anchor="middle">
+    <rect x="70" y="132" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="97" y="167" fill="#0c4a6e">5</text>
+    <rect x="124" y="132" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="151" y="167" fill="#0c4a6e">7</text>
+    <rect x="70" y="186" width="54" height="54" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="97" y="221" fill="#92400e">8</text>
+    <rect x="124" y="186" width="54" height="54" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="151" y="221" fill="#92400e">3</text>
+    <rect x="70" y="240" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="97" y="275" fill="#0c4a6e">7</text>
+    <rect x="124" y="240" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="151" y="275" fill="#0c4a6e">4</text>
+  </g>
+  <text x="97" y="322" font-size="13" fill="#64748b" text-anchor="middle">m = 3 行</text>
+  <text x="151" y="322" font-size="13" fill="#64748b" text-anchor="middle">p = 2 列</text>
+
+  <text x="278" y="252" font-size="30" fill="#64748b">×</text>
+
+  <!-- B -->
+  <text x="330" y="162" font-size="18" font-weight="600" fill="#0f172a">B（2×3）</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="20" text-anchor="middle">
+    <rect x="330" y="176" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="357" y="211" fill="#0c4a6e">12</text>
+    <rect x="384" y="176" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="411" y="211" fill="#0c4a6e">3</text>
+    <rect x="438" y="176" width="54" height="54" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="465" y="211" fill="#92400e">6</text>
+    <rect x="330" y="230" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="357" y="265" fill="#0c4a6e">4</text>
+    <rect x="384" y="230" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="411" y="265" fill="#0c4a6e">2</text>
+    <rect x="438" y="230" width="54" height="54" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="465" y="265" fill="#92400e">7</text>
+  </g>
+  <text x="411" y="312" font-size="13" fill="#64748b" text-anchor="middle">p = 2 行</text>
+  <text x="465" y="312" font-size="13" fill="#64748b" text-anchor="middle">n = 3 列</text>
+
+  <text x="602" y="252" font-size="30" fill="#64748b">=</text>
+
+  <!-- C -->
+  <text x="680" y="118" font-size="18" font-weight="600" fill="#0f172a">C（3×3）</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="20" text-anchor="middle">
+    <rect x="680" y="132" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="707" y="167" fill="#0c4a6e">88</text>
+    <rect x="734" y="132" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="761" y="167" fill="#0c4a6e">29</text>
+    <rect x="788" y="132" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="815" y="167" fill="#0c4a6e">79</text>
+    <rect x="680" y="186" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="707" y="221" fill="#0c4a6e">108</text>
+    <rect x="734" y="186" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="761" y="221" fill="#0c4a6e">30</text>
+    <rect x="788" y="186" width="54" height="54" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="815" y="221" fill="#92400e">69</text>
+    <rect x="680" y="240" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="707" y="275" fill="#0c4a6e">100</text>
+    <rect x="734" y="240" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="761" y="275" fill="#0c4a6e">29</text>
+    <rect x="788" y="240" width="54" height="54" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="815" y="275" fill="#0c4a6e">70</text>
+  </g>
+  <text x="761" y="322" font-size="13" fill="#64748b" text-anchor="middle">m = 3 行</text>
+  <text x="815" y="322" font-size="13" fill="#64748b" text-anchor="middle">n = 3 列</text>
+
+  <rect x="40" y="350" width="900" height="140" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="60" y="382" font-size="16" font-weight="600" fill="#0f172a">取 C 的第 1 行、第 2 列（下标从 0 起）：</text>
+  <text x="60" y="414" font-size="18" font-family="'Cascadia Code','Consolas',monospace" fill="#0369a1">c[1][2] = a[1][0]·b[0][2] + a[1][1]·b[1][2] = 8·6 + 3·7 = 69</text>
+  <text x="60" y="446" font-size="14" fill="#475569">i 选 A 的行与 C 的行，j 选 B 的列与 C 的列，k 走完公共维度 p；k 的每一项都要累加进同一个 c[i][j]。</text>
+  <text x="60" y="470" font-size="14" fill="#475569">同一底色标出本次点积用到的一行、一列和结果格。</text>
+</svg>

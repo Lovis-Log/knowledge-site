@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" font-family="'Microsoft YaHei','Noto Sans SC','PingFang SC',sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" rx="18" fill="#fbfcfe"/>
+  <rect x="1" y="1" width="958" height="598" rx="17" fill="none" stroke="#e2e8f0"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">字符指针与指针数组表示的字符串</text>
+  <text x="40" y="76" font-size="16" fill="#475569">指针保存首字符地址；指针数组的每个元素分别指向一个字符串。</text>
+
+  <!-- Top: single char pointer -->
+  <text x="40" y="114" font-size="16" font-family="'Cascadia Code','Consolas',monospace" fill="#0369a1">const char* s = "program";</text>
+  <rect x="40" y="128" width="110" height="40" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="95" y="154" text-anchor="middle" font-size="18" font-family="'Cascadia Code','Consolas',monospace" fill="#155e75">s</text>
+  <line x1="152" y1="148" x2="212" y2="148" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="220" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="241" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">p</text>
+    <rect x="266" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="287" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">r</text>
+    <rect x="312" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="333" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">o</text>
+    <rect x="358" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="379" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">g</text>
+    <rect x="404" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="425" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">r</text>
+    <rect x="450" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="471" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">a</text>
+    <rect x="496" y="126" width="42" height="44" rx="5" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="517" y="155" text-anchor="middle" font-size="19" font-family="'Cascadia Code','Consolas',monospace" fill="#0c4a6e">m</text>
+    <rect x="542" y="126" width="42" height="44" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+    <text x="563" y="155" text-anchor="middle" font-size="18" font-family="'Cascadia Code','Consolas',monospace" fill="#b91c1c">\0</text>
+  </g>
+  <g font-size="12" fill="#64748b" text-anchor="middle" font-family="'Cascadia Code','Consolas',monospace">
+    <text x="241" y="187">0</text>
+    <text x="287" y="187">1</text>
+    <text x="333" y="187">2</text>
+    <text x="379" y="187">3</text>
+    <text x="425" y="187">4</text>
+    <text x="471" y="187">5</text>
+    <text x="517" y="187">6</text>
+    <text x="563" y="187">7</text>
+  </g>
+  <text x="620" y="146" font-size="16" fill="#334155">s 指向首字符 'p'</text>
+  <text x="620" y="170" font-size="16" fill="#334155">s+i 指向第 i 个字符</text>
+  <text x="620" y="194" font-size="16" fill="#334155">cout &lt;&lt; (s+i) 输出后缀</text>
+
+  <line x1="40" y1="222" x2="920" y2="222" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- Bottom: array of pointers -->
+  <text x="40" y="258" font-size="16" font-family="'Cascadia Code','Consolas',monospace" fill="#0369a1">const char* name[5] = {"Li Hua", ...};</text>
+
+  <g font-size="15" font-family="'Cascadia Code','Consolas',monospace">
+    <rect x="40" y="280" width="120" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="100" y="305" text-anchor="middle" fill="#155e75">name[0]</text>
+    <line x1="162" y1="299" x2="200" y2="299" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="205" y="280" width="420" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="220" y="305" fill="#166534">"Li Hua"</text>
+    <text x="590" y="305" fill="#b91c1c">\0</text>
+
+    <rect x="40" y="336" width="120" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="100" y="361" text-anchor="middle" fill="#155e75">name[1]</text>
+    <line x1="162" y1="355" x2="200" y2="355" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="205" y="336" width="420" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="220" y="361" fill="#166534">"He Xiao Ming"</text>
+    <text x="590" y="361" fill="#b91c1c">\0</text>
+
+    <rect x="40" y="392" width="120" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="100" y="417" text-anchor="middle" fill="#155e75">name[2]</text>
+    <line x1="162" y1="411" x2="200" y2="411" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="205" y="392" width="420" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="220" y="417" fill="#166534">"Zhang Li"</text>
+    <text x="590" y="417" fill="#b91c1c">\0</text>
+
+    <rect x="40" y="448" width="120" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="100" y="473" text-anchor="middle" fill="#155e75">name[3]</text>
+    <line x1="162" y1="467" x2="200" y2="467" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="205" y="448" width="420" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="220" y="473" fill="#166534">"Sun Fei"</text>
+    <text x="590" y="473" fill="#b91c1c">\0</text>
+
+    <rect x="40" y="504" width="120" height="38" rx="8" fill="#ecfeff" stroke="#0891b2" stroke-width="1.5"/>
+    <text x="100" y="529" text-anchor="middle" fill="#155e75">name[4]</text>
+    <line x1="162" y1="523" x2="200" y2="523" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="205" y="504" width="420" height="38" rx="8" fill="#f0fdf4" stroke="#16a34a"/>
+    <text x="220" y="529" fill="#166534">"Chen Bao"</text>
+    <text x="590" y="529" fill="#b91c1c">\0</text>
+  </g>
+
+  <text x="650" y="305" font-size="15" fill="#334155">每个元素是一个指针</text>
+  <text x="650" y="329" font-size="15" fill="#334155">字符串常量不必相邻</text>
+  <text x="650" y="417" font-size="15" fill="#334155">name[i] 打印整串</text>
+  <text x="650" y="441" font-size="15" fill="#334155">*name[i] 打印首字符</text>
+
+  <text x="40" y="576" font-size="15" fill="#475569">sizeof(name) 是 5 个指针的大小，不是所有名字的字符总数。</text>
+</svg>

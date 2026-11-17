@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 520" width="940" height="520" role="img" aria-labelledby="hanoiTitle hanoiDesc">
+  <title id="hanoiTitle">汉诺塔的三步递归分解</title>
+  <desc id="hanoiDesc">把 n 个盘从 A 搬到 C：先把 n-1 个盘从 A 搬到 B（C 作中转），再把最大的盘从 A 搬到 C，最后把 n-1 个盘从 B 搬到 C（A 作中转）。</desc>
+  <defs>
+    <style>
+      .title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 21px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; fill: #64748b; }
+      .step { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 17px; font-weight: 700; fill: #1e293b; }
+      .detail { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #475569; }
+      .rod { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; font-weight: 700; fill: #64748b; }
+      .arrow-label { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 11px; fill: #b45309; }
+      .foot { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #334155; }
+      .rod-line { stroke: #94a3b8; stroke-width: 3; stroke-linecap: round; }
+      .base { stroke: #64748b; stroke-width: 4; stroke-linecap: round; }
+      .move { stroke: #f59e0b; stroke-width: 2; fill: none; stroke-dasharray: 6 4; }
+    </style>
+    <marker id="hArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="940" height="520" fill="#ffffff"/>
+  <text class="title" x="470" y="32" text-anchor="middle">汉诺塔：把 n 个盘从 A 搬到 C</text>
+  <text class="subtitle" x="470" y="56" text-anchor="middle">最大盘一动，问题就拆成两个规模为 n−1 的同类子问题</text>
+
+  <!-- 第一步 -->
+  <rect x="30" y="80" width="880" height="112" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <circle cx="66" cy="112" r="16" fill="#3b82f6"/>
+  <text x="66" y="118" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="700">1</text>
+  <text class="step" x="96" y="118">先把上面 n−1 个盘从 A 搬到 B</text>
+  <text class="detail" x="96" y="146">调用 hanoi(n−1, from, to, aux)：这次的目标是 B，C 降为辅助柱。</text>
+  <text class="detail" x="96" y="170">必须先搬走小盘，最大的盘才有机会直接落到 C。</text>
+
+  <line class="rod-line" x1="620" y1="104" x2="620" y2="164"/>
+  <line class="rod-line" x1="720" y1="104" x2="720" y2="164"/>
+  <line class="rod-line" x1="820" y1="104" x2="820" y2="164"/>
+  <line class="base" x1="596" y1="168" x2="644" y2="168"/>
+  <line class="base" x1="696" y1="168" x2="744" y2="168"/>
+  <line class="base" x1="796" y1="168" x2="844" y2="168"/>
+  <text class="rod" x="620" y="188" text-anchor="middle">A</text>
+  <text class="rod" x="720" y="188" text-anchor="middle">B</text>
+  <text class="rod" x="820" y="188" text-anchor="middle">C</text>
+  <path class="move" d="M632 132 C665 112, 690 112, 708 128" marker-end="url(#hArrow)"/>
+  <text class="arrow-label" x="670" y="104" text-anchor="middle">n−1 个盘</text>
+
+  <!-- 第二步 -->
+  <rect x="30" y="204" width="880" height="112" rx="12" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+  <circle cx="66" cy="236" r="16" fill="#f59e0b"/>
+  <text x="66" y="242" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="700">2</text>
+  <text class="step" x="96" y="242">把最大的第 n 个盘从 A 搬到 C</text>
+  <text class="detail" x="96" y="270">此时 A 上只剩最大盘，C 为空，可以直接移动，输出一步。</text>
+  <text class="detail" x="96" y="294">这一动是整个问题的“分界点”，前后各是一段 n−1 的递归。</text>
+
+  <line class="rod-line" x1="620" y1="228" x2="620" y2="288"/>
+  <line class="rod-line" x1="720" y1="228" x2="720" y2="288"/>
+  <line class="rod-line" x1="820" y1="228" x2="820" y2="288"/>
+  <line class="base" x1="596" y1="292" x2="644" y2="292"/>
+  <line class="base" x1="696" y1="292" x2="744" y2="292"/>
+  <line class="base" x1="796" y1="292" x2="844" y2="292"/>
+  <text class="rod" x="620" y="312" text-anchor="middle">A</text>
+  <text class="rod" x="720" y="312" text-anchor="middle">B</text>
+  <text class="rod" x="820" y="312" text-anchor="middle">C</text>
+  <rect x="600" y="272" width="40" height="12" rx="6" fill="#f59e0b"/>
+  <path class="move" d="M640 262 C700 236, 760 236, 806 258" marker-end="url(#hArrow)"/>
+  <text class="arrow-label" x="722" y="230" text-anchor="middle">最大盘 1 步</text>
+
+  <!-- 第三步 -->
+  <rect x="30" y="328" width="880" height="112" rx="12" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1.5"/>
+  <circle cx="66" cy="360" r="16" fill="#10b981"/>
+  <text x="66" y="366" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-size="15" font-weight="700">3</text>
+  <text class="step" x="96" y="366">再把 n−1 个盘从 B 搬到 C</text>
+  <text class="detail" x="96" y="394">调用 hanoi(n−1, aux, from, to)：这次从 B 出发，A 降为辅助柱。</text>
+  <text class="detail" x="96" y="418">两次递归的参数位置不一样，这正是汉诺塔代码最容易写错的地方。</text>
+
+  <line class="rod-line" x1="620" y1="352" x2="620" y2="412"/>
+  <line class="rod-line" x1="720" y1="352" x2="720" y2="412"/>
+  <line class="rod-line" x1="820" y1="352" x2="820" y2="412"/>
+  <line class="base" x1="596" y1="416" x2="644" y2="416"/>
+  <line class="base" x1="696" y1="416" x2="744" y2="416"/>
+  <line class="base" x1="796" y1="416" x2="844" y2="416"/>
+  <text class="rod" x="620" y="436" text-anchor="middle">A</text>
+  <text class="rod" x="720" y="436" text-anchor="middle">B</text>
+  <text class="rod" x="820" y="436" text-anchor="middle">C</text>
+  <path class="move" d="M732 380 C765 360, 790 360, 808 376" marker-end="url(#hArrow)"/>
+  <text class="arrow-label" x="770" y="352" text-anchor="middle">n−1 个盘</text>
+
+  <text class="foot" x="470" y="478" text-anchor="middle">移动次数：M(1)=1，M(n)=2M(n−1)+1，所以 M(n)=2ⁿ−1</text>
+  <text class="foot" x="470" y="502" text-anchor="middle">n=3 时共 7 步；n=64 时需要 2⁶⁴−1 步，递归深度却只有 64 层</text>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 430" width="820" height="430" role="img" aria-labelledby="memTitle memDesc">
+  <title id="memTitle">程序运行时的主要内存区域</title>
+  <desc id="memDesc">代码区存放程序指令；全局数据区存放全局变量和静态变量；堆区存放 new 与 delete 管理的动态数据；栈区存放局部变量、函数参数和返回地址。</desc>
+  <defs>
+    <marker id="memArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 21px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #64748b; }
+      .area { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 18px; font-weight: 700; }
+      .area-en { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #64748b; }
+      .role { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #334155; }
+      .note { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #475569; }
+      .content { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 12px; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="820" height="430" fill="#ffffff"/>
+  <text class="title" x="410" y="34" text-anchor="middle">程序运行时的内存区域</text>
+  <text class="subtitle" x="410" y="58" text-anchor="middle">“放在哪里”与“活多久”是两个不同的问题</text>
+
+  <!-- 代码区 -->
+  <text class="role" x="40" y="127">存放程序代码</text>
+  <line x1="170" y1="122" x2="250" y2="122" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#memArrow)"/>
+  <rect x="262" y="92" width="350" height="62" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="1.5"/>
+  <text class="area" x="282" y="120" fill="#b45309">代码区</text>
+  <text class="area-en" x="282" y="140">code area</text>
+  <text class="content" x="430" y="129">编译后的机器指令</text>
+  <text class="note" x="650" y="127">程序开始到结束</text>
+
+  <!-- 全局数据区 -->
+  <text class="role" x="40" y="197">存放全局数据和静态数据</text>
+  <line x1="200" y1="192" x2="250" y2="192" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#memArrow)"/>
+  <rect x="262" y="162" width="350" height="62" rx="10" fill="#dcfce7" stroke="#22c55e" stroke-width="1.5"/>
+  <text class="area" x="282" y="190" fill="#15803d">全局数据区</text>
+  <text class="area-en" x="282" y="210">data area</text>
+  <text class="content" x="430" y="199">全局变量、静态变量</text>
+  <text class="note" x="650" y="197">程序开始到结束</text>
+
+  <!-- 堆区 -->
+  <text class="role" x="40" y="267">存放动态分配的数据</text>
+  <line x1="185" y1="262" x2="250" y2="262" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#memArrow)"/>
+  <rect x="262" y="232" width="350" height="62" rx="10" fill="#f3e8ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text class="area" x="282" y="260" fill="#7e22ce">堆区</text>
+  <text class="area-en" x="282" y="280">heap area</text>
+  <text class="content" x="430" y="269">new / delete 管理</text>
+  <text class="note" x="650" y="267">由程序员控制</text>
+
+  <!-- 栈区 -->
+  <text class="role" x="40" y="337">存放局部数据</text>
+  <line x1="150" y1="332" x2="250" y2="332" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#memArrow)"/>
+  <rect x="262" y="302" width="350" height="62" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="1.5"/>
+  <text class="area" x="282" y="330" fill="#1d4ed8">栈区</text>
+  <text class="area-en" x="282" y="350">stack area</text>
+  <text class="content" x="430" y="339">局部变量、函数参数、返回地址</text>
+  <text class="note" x="650" y="337">进入作用域创建</text>
+  <text class="note" x="650" y="353">离开作用域销毁</text>
+
+  <!-- 底部说明 -->
+  <line x1="40" y1="390" x2="780" y2="390" stroke="#e2e8f0" stroke-width="1"/>
+  <text class="note" x="40" y="412">静态局部变量虽然写在函数内，但存放在全局数据区，程序全程存在；名字仍只在函数内可见。</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="'Microsoft YaHei','Noto Sans SC','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="960" height="430" rx="18" fill="#fbfcfe"/>
+  <rect x="1" y="1" width="958" height="428" rx="17" fill="none" stroke="#e2e8f0"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">字符串排序：strcmp 比较内容，交换只动指针</text>
+  <text x="40" y="76" font-size="16" fill="#475569">数组元素是 const char* 指针；交换数组元素只改变指向，字符串常量本身留在原处。</text>
+
+  <defs>
+    <marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <marker id="ar-amber" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <!-- before -->
+  <text x="40" y="120" font-size="18" font-weight="600" fill="#0f172a">排序前</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="15" text-anchor="middle">
+    <rect x="40" y="138" width="150" height="42" rx="7" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="115" y="165" fill="#0c4a6e">arr[j]</text>
+    <rect x="210" y="138" width="150" height="42" rx="7" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="285" y="165" fill="#0c4a6e">arr[j+1]</text>
+  </g>
+  <line x1="115" y1="182" x2="115" y2="236" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="285" y1="182" x2="285" y2="236" stroke="#64748b" stroke-width="2" marker-end="url(#ar)"/>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="16" text-anchor="middle">
+    <rect x="40" y="240" width="150" height="44" rx="7" fill="#f8fafc" stroke="#94a3b8"/>
+    <text x="115" y="268" fill="#334155">"Zhang Ming"</text>
+    <rect x="210" y="240" width="150" height="44" rx="7" fill="#f8fafc" stroke="#94a3b8"/>
+    <text x="285" y="268" fill="#334155">"He Xiaoming"</text>
+  </g>
+  <text x="200" y="316" font-size="14" fill="#475569" text-anchor="middle">strcmp("Zhang Ming","He Xiaoming") &gt; 0</text>
+  <text x="200" y="338" font-size="14" fill="#b45309" text-anchor="middle">比较结果为正，需要交换</text>
+
+  <!-- arrow across -->
+  <path d="M382 210 C430 190, 470 190, 518 210" fill="none" stroke="#d97706" stroke-width="2.5" marker-end="url(#ar-amber)"/>
+  <text x="450" y="178" font-size="14" fill="#b45309" text-anchor="middle">swap</text>
+
+  <!-- after -->
+  <text x="560" y="120" font-size="18" font-weight="600" fill="#0f172a">排序后</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="15" text-anchor="middle">
+    <rect x="560" y="138" width="150" height="42" rx="7" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="635" y="165" fill="#166534">arr[j]</text>
+    <rect x="730" y="138" width="150" height="42" rx="7" fill="#dcfce7" stroke="#16a34a"/>
+    <text x="805" y="165" fill="#166534">arr[j+1]</text>
+  </g>
+  <line x1="635" y1="182" x2="805" y2="236" stroke="#16a34a" stroke-width="2" marker-end="url(#ar)"/>
+  <line x1="805" y1="182" x2="635" y2="236" stroke="#16a34a" stroke-width="2" marker-end="url(#ar)"/>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="16" text-anchor="middle">
+    <rect x="560" y="240" width="150" height="44" rx="7" fill="#f8fafc" stroke="#94a3b8"/>
+    <text x="635" y="268" fill="#334155">"Zhang Ming"</text>
+    <rect x="730" y="240" width="150" height="44" rx="7" fill="#f8fafc" stroke="#94a3b8"/>
+    <text x="805" y="268" fill="#334155">"He Xiaoming"</text>
+  </g>
+
+  <!-- note -->
+  <rect x="40" y="360" width="880" height="48" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="58" y="382" font-size="14" fill="#475569">两个字符串常量的位置没有变，变的是数组里两个指针的值；</text>
+  <text x="58" y="400" font-size="14" fill="#475569">所以交换成本是 O(1)，而 strcmp 仍要逐个字符比较，成本与串长有关。</text>
+</svg>

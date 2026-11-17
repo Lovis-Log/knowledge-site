@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 450" width="960" height="450" font-family="'Microsoft YaHei','Noto Sans SC','PingFang SC',sans-serif">
+  <rect x="0" y="0" width="960" height="450" rx="18" fill="#fbfcfe"/>
+  <rect x="1" y="1" width="958" height="448" rx="17" fill="none" stroke="#e2e8f0"/>
+
+  <text x="40" y="44" font-size="24" font-weight="700" fill="#0f172a">杨辉三角：一维数组从右向左原地更新</text>
+  <text x="40" y="76" font-size="16" fill="#475569">只用一个数组保存当前行；先补尾部的 1，再从右向左用上一行的相邻两项相加。</text>
+
+  <!-- index labels -->
+  <g font-size="13" fill="#64748b" text-anchor="middle" font-family="'Cascadia Code','Consolas',monospace">
+    <text x="222" y="112">yh[0]</text>
+    <text x="294" y="112">yh[1]</text>
+    <text x="366" y="112">yh[2]</text>
+    <text x="438" y="112">yh[3]</text>
+    <text x="510" y="112">yh[4]</text>
+  </g>
+
+  <!-- row 1: previous row -->
+  <text x="40" y="160" font-size="15" font-weight="600" fill="#0f172a">上一行（n=3）</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="22" text-anchor="middle">
+    <rect x="186" y="126" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="222" y="160" fill="#0c4a6e">1</text>
+    <rect x="258" y="126" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="294" y="160" fill="#0c4a6e">3</text>
+    <rect x="330" y="126" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="366" y="160" fill="#0c4a6e">3</text>
+    <rect x="402" y="126" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="438" y="160" fill="#0c4a6e">1</text>
+    <rect x="474" y="126" width="72" height="50" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 4"/>
+    <text x="510" y="160" fill="#94a3b8">–</text>
+  </g>
+
+  <!-- row 2: tail set -->
+  <text x="40" y="250" font-size="15" font-weight="600" fill="#0f172a">补尾：yh[4]=1</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="22" text-anchor="middle">
+    <rect x="186" y="216" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="222" y="250" fill="#0c4a6e">1</text>
+    <rect x="258" y="216" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="294" y="250" fill="#0c4a6e">3</text>
+    <rect x="330" y="216" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="366" y="250" fill="#0c4a6e">3</text>
+    <rect x="402" y="216" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="438" y="250" fill="#0c4a6e">1</text>
+    <rect x="474" y="216" width="72" height="50" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="510" y="250" fill="#166534">1</text>
+  </g>
+
+  <!-- row 3: result -->
+  <text x="40" y="340" font-size="15" font-weight="600" fill="#0f172a">从右向左更新后</text>
+  <g font-family="'Cascadia Code','Consolas',monospace" font-size="22" text-anchor="middle">
+    <rect x="186" y="306" width="72" height="50" rx="6" fill="#e0f2fe" stroke="#0284c7"/>
+    <text x="222" y="340" fill="#0c4a6e">1</text>
+    <rect x="258" y="306" width="72" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="294" y="340" fill="#92400e">4</text>
+    <rect x="330" y="306" width="72" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="366" y="340" fill="#92400e">6</text>
+    <rect x="402" y="306" width="72" height="50" rx="6" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+    <text x="438" y="340" fill="#92400e">4</text>
+    <rect x="474" y="306" width="72" height="50" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="510" y="340" fill="#166534">1</text>
+  </g>
+
+  <!-- formulas -->
+  <g font-size="14" font-family="'Cascadia Code','Consolas',monospace" fill="#0369a1">
+    <text x="600" y="238">j=3：yh[3]=yh[2]+yh[3]=3+1=4</text>
+    <text x="600" y="272">j=2：yh[2]=yh[1]+yh[2]=3+3=6</text>
+    <text x="600" y="306">j=1：yh[1]=yh[0]+yh[1]=1+3=4</text>
+  </g>
+  <g>
+    <path d="M580 330 L540 330" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-left)"/>
+  </g>
+  <defs>
+    <marker id="arrow-left" markerWidth="10" markerHeight="10" refX="2" refY="5" orient="auto">
+      <path d="M10,0 L0,5 L10,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <text x="600" y="360" font-size="13" fill="#64748b">更新顺序：j = i−1, i−2, …, 1</text>
+
+  <rect x="40" y="382" width="880" height="52" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="58" y="404" font-size="14" fill="#475569">从右向左时，计算 yh[j] 用到的 yh[j−1] 还没被改写，仍是上一行的值；</text>
+  <text x="58" y="424" font-size="14" fill="#475569">若 j 从小到大，yh[j−1] 已变成新值，结果会偏大（例如本行 j=2 会得到 7 而不是 6）。</text>
+</svg>

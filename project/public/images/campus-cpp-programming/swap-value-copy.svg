@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 450" width="780" height="450" role="img" aria-labelledby="swapTitle swapDesc">
+  <title id="swapTitle">值传递中 main 的 x、y 与 swap 的 a、b 是不同对象</title>
+  <desc id="swapDesc">调用时 x 的值复制给 a，y 的值复制给 b；swap 内交换 a、b 后，main 的 x、y 仍为 10、20；返回时 a、b、temp 撤销。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 20px; font-weight: 700; fill: #0f172a; }
+      .subtitle { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; fill: #64748b; }
+      .panel-title { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 16px; font-weight: 700; }
+      .panel-sub { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; }
+      .var { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 14px; fill: #334155; }
+      .val { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 20px; font-weight: 700; }
+      .note { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #475569; }
+      .arrow-label { font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="780" height="450" fill="#ffffff"/>
+  <text class="title" x="390" y="34" text-anchor="middle">值传递：实参与形参是两份不同的对象</text>
+  <text class="subtitle" x="390" y="58" text-anchor="middle">调用时只复制值，swap 交换的是副本</text>
+
+  <!-- main 栈帧 -->
+  <rect x="30" y="80" width="320" height="300" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  <text class="panel-title" x="50" y="110" fill="#1d4ed8">main 的栈帧</text>
+  <text class="panel-sub" x="50" y="132" fill="#3b82f6">实参</text>
+
+  <rect x="90" y="150" width="200" height="54" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text class="var" x="190" y="172" text-anchor="middle">x</text>
+  <text class="val" x="190" y="194" text-anchor="middle" fill="#1d4ed8">10</text>
+
+  <rect x="90" y="230" width="200" height="54" rx="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+  <text class="var" x="190" y="252" text-anchor="middle">y</text>
+  <text class="val" x="190" y="274" text-anchor="middle" fill="#1d4ed8">20</text>
+
+  <text class="note" x="50" y="330" fill="#3b82f6">交换前后都不变</text>
+
+  <!-- swap 栈帧 -->
+  <rect x="430" y="80" width="320" height="300" rx="12" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+  <text class="panel-title" x="450" y="110" fill="#b45309">swap 的栈帧</text>
+  <text class="panel-sub" x="450" y="132" fill="#d97706">形参（副本）</text>
+
+  <rect x="490" y="150" width="200" height="54" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text class="var" x="590" y="172" text-anchor="middle">a</text>
+  <text class="val" x="590" y="194" text-anchor="middle" fill="#b45309">10</text>
+
+  <rect x="490" y="230" width="200" height="54" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5"/>
+  <text class="var" x="590" y="252" text-anchor="middle">b</text>
+  <text class="val" x="590" y="274" text-anchor="middle" fill="#b45309">20</text>
+
+  <rect x="490" y="310" width="200" height="54" rx="8" fill="#ffffff" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="var" x="590" y="332" text-anchor="middle">temp</text>
+  <text class="val" x="590" y="354" text-anchor="middle" fill="#b45309">10</text>
+
+  <!-- 复制箭头 -->
+  <line x1="290" y1="177" x2="482" y2="177" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="386" y="165" text-anchor="middle">复制 10</text>
+
+  <line x1="290" y1="257" x2="482" y2="257" stroke="#64748b" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="386" y="245" text-anchor="middle">复制 20</text>
+
+  <text class="note" x="390" y="414" text-anchor="middle" fill="#334155">swap 内交换 a、b（10 ↔ 20）；返回时 a、b、temp 撤销，main 的 x、y 仍是 10、20。</text>
+</svg>
