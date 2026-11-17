@@ -18,6 +18,14 @@ import { chapterGroupOf, chapterHeading } from "@/lib/chapter-label";
 import { availableLangs, pickVersion } from "@/lib/language";
 import { buildToc, buildHomeworkToc } from "@/lib/toc";
 
+// Reading-style trial pages. Keep the list explicit so no other campus or
+// professional course chapter inherits the experiment.
+const CAMPUS_READING_TRIAL_CHAPTERS = new Set([
+  "campus-cpp-programming/04-functions",
+  "campus-mathematical-analysis/15-mean-value-theorems-and-lhopital",
+  "campus-discrete-mathematics/02-predicate-logic",
+]);
+
 export default function ChapterView({
   bookSlug,
   chapterSlug,
@@ -42,6 +50,9 @@ export default function ChapterView({
   const adjacent = getAdjacentChapters(bookSlug, chapterSlug);
   const grouped = Boolean(chapterGroupOf(chapter, book.groups));
   const heading = chapterHeading(chapter, book.groups);
+  const campusReadingTrial =
+    book.category === "campus-courses" &&
+    CAMPUS_READING_TRIAL_CHAPTERS.has(`${book.slug}/${chapter.slug}`);
   const tocs = langs.map((lang) => ({
     lang,
     items: toc(chapter.versions[lang]!.body, lang),
@@ -53,7 +64,10 @@ export default function ChapterView({
       : { lang: lang === "zh" ? "zh-CN" : "en" };
 
   return (
-    <div className="shell shell--reading">
+    <div
+      className="shell shell--reading"
+      data-reading-preset={campusReadingTrial ? "campus-notes" : undefined}
+    >
       <ReadingProgress bookSlug={book.slug} chapterSlug={chapter.slug} />
 
       <ReadingLayout

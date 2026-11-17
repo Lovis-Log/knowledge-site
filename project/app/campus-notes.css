@@ -1,0 +1,100 @@
+﻿/* Only the three campus trial chapters opt in through ChapterView. */
+[data-reading-preset="campus-notes"] .prose {
+  line-height: 1.95;
+}
+
+[data-reading-preset="campus-notes"] .prose p {
+  margin-bottom: 1.3em;
+}
+
+[data-reading-preset="campus-notes"] .prose h2 {
+  margin: 2.9em 0 0.9em;
+}
+
+[data-reading-preset="campus-notes"] .prose h3 {
+  margin: 2.3em 0 0.75em;
+}
+
+[data-reading-preset="campus-notes"] .prose h4 {
+  margin: 1.9em 0 0.65em;
+  font-family: var(--serif);
+  font-size: 1.03em;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--ink);
+  scroll-margin-top: 96px;
+}
+
+[data-reading-preset="campus-notes"] .prose > :is(h2, h3, h4):first-child {
+  margin-top: 0;
+}
+
+[data-reading-preset="campus-notes"] .prose li {
+  margin-block: 0.4em;
+}
+
+[data-reading-preset="campus-notes"] .prose li > p {
+  margin-block: 0.45em;
+}
+
+/* A quiet rule preserves quoted theorem boundaries without filled cards. */
+[data-reading-preset="campus-notes"] .prose blockquote {
+  margin: 1.65em 0;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 2px solid color-mix(in srgb, var(--gold) 58%, var(--line-strong));
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+}
+
+[data-reading-preset="campus-notes"] .prose blockquote p {
+  margin-block: 0.75em;
+}
+
+[data-reading-preset="campus-notes"] .prose blockquote > :first-child {
+  margin-top: 0;
+}
+
+[data-reading-preset="campus-notes"] .prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+[data-reading-preset="campus-notes"] .prose .katex-display {
+  margin-block: 1.7em;
+  max-width: 100%;
+}
+
+[data-reading-preset="campus-notes"] .prose :is(blockquote, li) .katex-display {
+  margin-block: 1em;
+}
+
+[data-reading-preset="campus-notes"] .prose :is(.code-block, .table-wrap) {
+  margin-block: 1.8em;
+  max-width: 100%;
+}
+
+@media (max-width: 767px) {
+  [data-reading-preset="campus-notes"] .prose {
+    line-height: 1.9;
+  }
+
+  [data-reading-preset="campus-notes"] .prose p {
+    margin-bottom: 1.2em;
+  }
+
+  [data-reading-preset="campus-notes"] .prose blockquote {
+    padding-left: 0.8em;
+  }
+
+  [data-reading-preset="campus-notes"] .prose li > p {
+    margin-block: 0.45em;
+  }
+
+  [data-reading-preset="campus-notes"] .prose blockquote p {
+    margin-block: 0.75em;
+  }
+
+  [data-reading-preset="campus-notes"] .prose blockquote > :last-child {
+    margin-bottom: 0;
+  }
+}

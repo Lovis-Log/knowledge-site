@@ -2,7 +2,7 @@
 slug: "15-mean-value-theorems-and-lhopital"
 title: "微分中值定理与洛必达法则"
 summary: "第 15 讲：微分中值定理与洛必达法则。"
-updatedAt: "2026-11-15"
+updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "15"
@@ -72,13 +72,13 @@ $$
 
 ### 定理 1（Fermat 定理）
 
-> 定理 1（Fermat 定理）设 $x_0$ 是 $f(x)$ 的一个极值点，且 $f(x)$ 在 $x_0$ 处导数存在，则
+> 定理 1（Fermat 定理）设 $x_0$ 是 $f(x)$ 的一个**极值点**，且 $f(x)$ 在 $x_0$ 处**导数存在**，则
 >
 > $$
 > f'(x_0)=0.
 > $$
 
-注意：定理要求 $f$ 在极值点可导。
+> **注意**：定理要求 $f$ 在极值点可导。
 
 ### 证明
 
@@ -112,7 +112,7 @@ $$
 
 1. 若曲线 $y=f(x)$ 在其极值点处存在切线，那么这条切线必平行于 $x$ 轴。
 2. 条件“$f'(x_0)=0$”是 $x_0$ 为极值点的**必要但非充分条件**，例如：$x^3$ 在 $x_0=0$ 处。
-3. 若 $f'(x_0)=0$，则称 $x_0$ 为**驻点**。驻点不一定是极值点，极值点也不一定是驻点。
+3. 若 $f'(x_0)=0$，则称 $x_0$ 为**驻点**。驻点不一定是极值点，**极值点也不一定是驻点**。
 
 ---
 
@@ -120,7 +120,9 @@ $$
 
 ### 定理 2（Rolle 定理）
 
-> 定理 2（Rolle 定理）设函数 $f(x)$ 在闭区间 $[a,b]$ 上连续，在开区间 $(a,b)$ 上可导，且 $f(a)=f(b)$，则至少存在一点 $\xi\in(a,b)$，使得
+> 定理 2（Rolle 定理）设函数 $f(x)$ 在闭区间 $[a,b]$ 上连续，在开区间 $(a,b)$ 上可导，且 $f(a)=f(b)$，
+>
+> 则至少存在一点 $\xi\in(a,b)$，使得
 >
 > $$
 > f'(\xi)=0.
@@ -176,13 +178,15 @@ $$
 
 ### 定理 3（Lagrange 中值定理）
 
-> 定理 3（Lagrange 中值定理）设 $f(x)$ 在闭区间 $[a,b]$ 上连续，在开区间 $(a,b)$ 上可导，则至少存在一点 $\xi\in(a,b)$，使得
+> 定理 3（Lagrange 中值定理）设 $f(x)$ 在闭区间 $[a,b]$ 上连续，在开区间 $(a,b)$ 上可导，
+>
+> 则至少存在一点 $\xi\in(a,b)$，使得
 >
 > $$
 > f'(\xi)=\frac{f(b)-f(a)}{b-a}.
 > $$
 
-注意与 Rolle 定理的差别：这里不要求 $f(a)=f(b)$，所以结论是“切线斜率等于弦斜率”，而不是“切线水平”。
+> **注意**与 Rolle 定理的差别：这里不要求 $f(a)=f(b)$，所以结论是“切线斜率等于弦斜率”，而不是“切线水平”。
 
 ### 证明：作辅助函数
 
@@ -262,11 +266,11 @@ $$
 \Delta y=f'(x+\theta\Delta x)\Delta x,\qquad \theta\in(0,1).
 $$
 
-注意它与微分近似公式的区别：
-
-$$
-\Delta y=f'(x)\Delta x+o(\Delta x).
-$$
+> **注意**它与微分近似公式的区别：
+>
+> $$
+> \Delta y=f'(x)\Delta x+o(\Delta x).
+> $$
 
 ---
 
@@ -276,7 +280,9 @@ $$
 
 > 定理 4 若 $f(x)$ 在 $(a,b)$ 上可导且有 $f'(x)\equiv0$，则 $f(x)$ 在 $(a,b)$ 上恒为常数。
 
-证明：$\forall x_1,x_2\in(a,b)$，$x_1<x_2$，在 $[x_1,x_2]$ 上应用 Lagrange 中值定理，存在 $\xi\in(x_1,x_2)$，使得
+**证明**：
+
+$\forall x_1,x_2\in(a,b)$，$x_1<x_2$，在 $[x_1,x_2]$ 上应用 Lagrange 中值定理，存在 $\xi\in(x_1,x_2)$，使得
 
 $$
 f(x_2)-f(x_1)=f'(\xi)(x_2-x_1).
@@ -300,7 +306,9 @@ $$
 
 > 例 2 证明：$\arctan x$ 在 $(-\infty,+\infty)$ 上一致连续。
 
-证明：利用 Lagrange 中值定理，以及
+**证明**：
+
+利用 Lagrange 中值定理，以及
 
 $$
 (\arctan x)'=\frac{1}{1+x^2}\in(0,1]
@@ -326,7 +334,9 @@ $$
 
 > 例 3 证明：$\arctan\dfrac{1+x}{1-x}=\arctan x+\dfrac{\pi}{4}$，$x\in(-\infty,1)$。
 
-证明：利用推论 4.1，以及
+**证明**：
+
+利用推论 4.1，以及
 
 $$
 \left(\arctan\frac{1+x}{1-x}\right)'=(\arctan x)'=\frac{1}{1+x^2},\qquad x\in(-\infty,1),
@@ -468,7 +478,9 @@ $$
 > \frac{af(b)-bf(a)}{a-b}=f(\xi)-\xi f'(\xi).
 > $$
 
-证明：考察函数
+**证明**：
+
+考察函数
 
 $$
 F(x)=\frac{f(x)}{x},\qquad G(x)=\frac1x.
@@ -660,7 +672,9 @@ $$
 \lim_{x\to0}\frac{\ln\cos x}{x(x+2)}.
 $$
 
-解：由 L'Hospital 法则得
+**解**：
+
+由 L'Hospital 法则得
 
 $$
 \lim_{x\to0}\frac{\ln\cos x}{x(x+2)}
@@ -681,7 +695,9 @@ $$
 \lim_{x\to0}\frac{x-\sin x}{\sin^3x}.
 $$
 
-解：由 L'Hospital 法则得
+**解**：
+
+由 L'Hospital 法则得
 
 $$
 \lim_{x\to0}\frac{x-\sin x}{\sin^3x}
@@ -703,7 +719,9 @@ $$
 \lim_{x\to+\infty}\frac{\frac{\pi}{2}-\arctan x}{\sin\frac1x}.
 $$
 
-解：由 L'Hospital 法则得
+**解**：
+
+由 L'Hospital 法则得
 
 $$
 \lim_{x\to+\infty}\frac{\frac{\pi}{2}-\arctan x}{\sin\frac1x}
@@ -751,7 +769,9 @@ $$
 
 > 例 5 已知当 $x\to+\infty$ 时，下列函数 $\ln x$，$x^\mu$（$\mu>0$），$e^x$ 都是无穷大量。证明：在上述的顺序中，后一个是比前一个更高级的无穷大。
 
-证明：由 L'Hospital 法则得
+**证明**：
+
+由 L'Hospital 法则得
 
 $$
 \lim_{x\to+\infty}\frac{\ln x}{x^\mu}
@@ -825,7 +845,9 @@ $$
 \lim_{x\to0^+}x\ln x.
 $$
 
-解：这是 $0\cdot\infty$ 型，将其转化为 $\dfrac{\infty}{\infty}$ 型：
+**解**：
+
+这是 $0\cdot\infty$ 型，将其转化为 $\dfrac{\infty}{\infty}$ 型：
 
 $$
 \lim_{x\to0^+}x\ln x
@@ -856,7 +878,9 @@ $$
 \lim_{x\to0^+}\left(\cot x-\frac1x\right).
 $$
 
-解：这是 $\infty-\infty$ 型，先对它通分：
+**解**：
+
+这是 $\infty-\infty$ 型，先对它通分：
 
 $$
 \lim_{x\to0^+}\left(\cot x-\frac1x\right)
@@ -903,7 +927,9 @@ $$
 \lim_{x\to0^+}x^x.
 $$
 
-解：这是 $0^0$ 型，将其改写为
+**解**：
+
+这是 $0^0$ 型，将其改写为
 
 $$
 \lim_{x\to0^+}x^x
@@ -927,7 +953,9 @@ $$
 \lim_{x\to\pi/4}(\tan x)^{\tan 2x}.
 $$
 
-解：这是 $1^\infty$ 型，将其改写为
+**解**：
+
+这是 $1^\infty$ 型，将其改写为
 
 $$
 \lim_{x\to\pi/4}(\tan x)^{\tan 2x}
@@ -968,7 +996,9 @@ $$
 \lim_{x\to0^+}\left(\ln\frac1x\right)^x.
 $$
 
-解：这是 $\infty^0$ 型，将其改写为
+**解**：
+
+这是 $\infty^0$ 型，将其改写为
 
 $$
 \lim_{x\to0^+}\left(\ln\frac1x\right)^x
