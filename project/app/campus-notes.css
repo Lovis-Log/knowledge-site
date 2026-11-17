@@ -59,6 +59,15 @@
   margin-bottom: 0;
 }
 
+/* Reserve the reference's warm fill for explicitly labelled takeaways/pitfalls. */
+[data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="key"] {
+  padding: 14px 20px;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
 [data-reading-preset="campus-notes"] .prose .katex-display {
   margin-block: 1.7em;
   max-width: 100%;

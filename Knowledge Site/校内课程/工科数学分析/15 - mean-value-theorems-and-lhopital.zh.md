@@ -801,7 +801,7 @@ $$
 
 ### 8.7 关于洛必达法则的说明
 
-> $\displaystyle\lim_{x\to a+}\frac{f'(x)}{g'(x)}$ 存在只是 $\displaystyle\lim_{x\to a+}\frac{f(x)}{g(x)}$ 存在的**充分条件**，而非必要条件。
+> **关键结论**：$\displaystyle\lim_{x\to a+}\frac{f'(x)}{g'(x)}$ 存在只是 $\displaystyle\lim_{x\to a+}\frac{f(x)}{g(x)}$ 存在的**充分条件**，而非必要条件。
 
 例如：
 

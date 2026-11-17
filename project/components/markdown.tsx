@@ -45,6 +45,24 @@ function rehypeLangIds(options: { lang: string }) {
 }
 
 const components: Options["components"] = {
+  blockquote: ({ node, children, ...props }) => {
+    // Explicit editorial labels distinguish key takeaways from ordinary quotes.
+    const paragraph = node?.children.find(
+      (child) => child.type === "element" && child.tagName === "p",
+    );
+    const first = paragraph?.type === "element"
+      ? paragraph.children.find((child) => child.type !== "text" || child.value.trim())
+      : undefined;
+    const label = first?.type === "element" && first.tagName === "strong"
+      ? codeText(first)
+      : "";
+    const emphasized = /^(关键结论|理解关键|注意|易错点|易混点)$/.test(label);
+    return (
+      <blockquote {...props} data-note-emphasis={emphasized ? "key" : undefined}>
+        {children}
+      </blockquote>
+    );
+  },
   pre: ({ node, children, ...props }) => <CodeBlock code={codeText(node)} {...props}>{children}</CodeBlock>,
   img: ({ node: _node, src, alt, title }) => (
     <ZoomImage src={typeof src === "string" ? src : undefined} alt={alt} title={title} />
