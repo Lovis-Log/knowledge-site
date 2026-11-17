@@ -1,4 +1,4 @@
-﻿/* Only the three campus trial chapters opt in through ChapterView. */
+/* Campus course chapters opt in through ChapterView; other categories retain their styles. */
 [data-reading-preset="campus-notes"] .prose {
   line-height: 1.95;
 }
