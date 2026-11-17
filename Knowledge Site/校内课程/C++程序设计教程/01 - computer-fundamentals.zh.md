@@ -532,11 +532,6 @@ UCS-2、UCS-4 本身已经是定长表示形式，不能把它们说成只分配
 
 ---
 
-资料：[计算机基础（PPTX）](<D:/Users/LENOVO/Documents/大一上课程/C++程序设计教程/课件/计算机基础.pptx>)
+资料：《计算机基础（PPTX）》（本地课件，暂无在线链接）
 
 - 编码标准说明：[Unicode 官方 UTF 与 UCS 常见问题](https://www.unicode.org/faq/utf_bom.html)、[字符编码模型](https://www.unicode.org/reports/tr17/)。
-
-
-## 课件来源
-
-本章依据课程课件《计算机基础.pptx》整理。原始课件为本地资料，暂未提供在线链接。
