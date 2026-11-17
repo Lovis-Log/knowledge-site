@@ -718,4 +718,4 @@ $$
 
 ## 资料
 
-[课件原件：3.4 空间直线及其方程 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/3.4%20%20%E7%A9%BA%E9%97%B4%E7%9B%B4%E7%BA%BF%E5%8F%8A%E5%85%B6%E6%96%B9%E7%A8%8B%20(1).pptx>)
+[课件原件：3.4 空间直线及其方程 (1).pptx](<https://docs.google.com/presentation/d/11gGFzwABrsjnxfCjjrP90IEPGMzPw30O/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

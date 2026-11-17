@@ -515,4 +515,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.6 线性方程组解的结构 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.6%20%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84%E8%A7%A3%E7%9A%84%E7%BB%93%E6%9E%84%20(1).pptx>)
+- 课件原件：[4.6 线性方程组解的结构 (1).pptx](<https://docs.google.com/presentation/d/1tLqOmccVE8KsOwoFCsF24DXnDT66ZsX6/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

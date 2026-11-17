@@ -445,9 +445,9 @@ $\begin{vmatrix}a_1&a_2&a_3\\1&0&0\\0&1&0\end{vmatrix}=a_3$，与 $(-1)^{2}a_3=a
 
 ## 资料
 
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123402.jpg>)（Screenshot_20261115_123402.jpg，第1题）
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123406.jpg>)（Screenshot_20261115_123406.jpg，第2题）
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123410.jpg>)（Screenshot_20261115_123410.jpg，第3题）
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123414.jpg>)（Screenshot_20261115_123414.jpg，主观题第4题，对应教材第5题）
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123418.jpg>)（Screenshot_20261115_123418.jpg，第5题）
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/1/Screenshot_20261115_123423.jpg>)（Screenshot_20261115_123423.jpg，第6题）
+- [原图](<https://drive.google.com/file/d/1Q8iM433pIhtNJtP4UTU_xdyJu-ohz18A/view?usp=drivesdk>)（Screenshot_20261115_123402.jpg，第1题）
+- [原图](<https://drive.google.com/file/d/1laBPCiQMykoEqPGTaKud_mjB3EvDitA6/view?usp=drivesdk>)（Screenshot_20261115_123406.jpg，第2题）
+- [原图](<https://drive.google.com/file/d/1xln7d-PHDHuutMhcW9oiDYyQU2ahU2m7/view?usp=drivesdk>)（Screenshot_20261115_123410.jpg，第3题）
+- [原图](<https://drive.google.com/file/d/1hIxtFxFCW4pIKwsTIl-py2jwbGcwpIII/view?usp=drivesdk>)（Screenshot_20261115_123414.jpg，主观题第4题，对应教材第5题）
+- [原图](<https://drive.google.com/file/d/1-s806MyiJR2B8Sqr41bqpT-8UKSn7Q4_/view?usp=drivesdk>)（Screenshot_20261115_123418.jpg，第5题）
+- [原图](<https://drive.google.com/file/d/1H6nIOaN0mLDGjRquxS0XT0f8IMnVicOz/view?usp=drivesdk>)（Screenshot_20261115_123423.jpg，第6题）

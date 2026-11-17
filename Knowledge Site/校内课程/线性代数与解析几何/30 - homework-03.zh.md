@@ -362,4 +362,4 @@ $1+6-5=2$，$2+8+3=13$，$-1-4-1=-6$ ✓，与所填一致。
 
 ## 资料
 
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/3.jpg>)（3.jpg，本次作业第 1—8 题）
+- [原图](<https://drive.google.com/file/d/1lsatNhZx8CkTK1NUNdKJXhUfvByZqzNi/view?usp=drivesdk>)（3.jpg，本次作业第 1—8 题）

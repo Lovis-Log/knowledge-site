@@ -413,4 +413,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.3 向量组的线性相关性 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.3%20%E5%90%91%E9%87%8F%E7%BB%84%E7%9A%84%E7%BA%BF%E6%80%A7%E7%9B%B8%E5%85%B3%E6%80%A7%20(1).pptx>)
+- 课件原件：[4.3 向量组的线性相关性 (1).pptx](<https://docs.google.com/presentation/d/14hnaGBsC8TLSUxrIFBkRFMJXFiDeIBiv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

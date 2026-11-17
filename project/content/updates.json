@@ -1,6 +1,23 @@
 [
   {
     "date": "2026-11-17",
+    "version": "1.10.5",
+    "features": [
+      {
+        "zh": "统一线代封面与既有课程的复古学术插画风格，校内课程书壳分别采用酒红、森林绿、赭黄与深靛。新增课程发布检查，防止封面、配色和资料入口退回占位或下载直链。",
+        "en": "Matched the linear algebra illustration to the established vintage academic style, with distinct wine, forest green, ochre and indigo course bindings. Added publication checks for covers, colours and source links."
+      }
+    ],
+    "content": [
+      {
+        "title": "线性代数与解析几何 · 课件及作业来源改为已核验的 Google Drive 只读预览 / Linear Algebra and Analytic Geometry · Verified read-only Google Drive source previews",
+        "href": "/books/campus-linear-algebra-analytic-geometry/",
+        "kind": "修订 / Revised"
+      }
+    ]
+  },
+  {
+    "date": "2026-11-17",
     "version": "1.10.4",
     "features": [],
     "content": [

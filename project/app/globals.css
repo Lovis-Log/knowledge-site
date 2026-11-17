@@ -1284,6 +1284,31 @@ button {
   --cover-accent: #e3c08b;
 }
 
+/* 校内课程四本：酒红 / 森林绿 / 赭黄 / 深靛，各自成册，不和书库默认深蓝共用 */
+[data-book="campus-cpp-programming"] {
+  --cover-bg: #7c2f36;
+  --cover-ink: #f7ebda;
+  --cover-accent: #e0b884;
+}
+
+[data-book="campus-linear-algebra-analytic-geometry"] {
+  --cover-bg: #2b4a33;
+  --cover-ink: #f1e8d3;
+  --cover-accent: #c9ad74;
+}
+
+[data-book="campus-discrete-mathematics"] {
+  --cover-bg: #b98c52;
+  --cover-ink: #2a1d10;
+  --cover-accent: #70501f;
+}
+
+[data-book="campus-mathematical-analysis"] {
+  --cover-bg: #1d2650;
+  --cover-ink: #f3e9d6;
+  --cover-accent: #c8a56d;
+}
+
 /* ---------- book card ---------- */
 
 .book-card {

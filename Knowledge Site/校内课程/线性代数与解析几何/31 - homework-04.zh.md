@@ -414,4 +414,4 @@ $$
 
 ## 资料
 
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/4.jpg>)（4.jpg，本次作业第 1—9 题）
+- [原图](<https://drive.google.com/file/d/1CK6u8VVHsHkh0Zljr2ZXSFNd5LBx4wks/view?usp=drivesdk>)（4.jpg，本次作业第 1—9 题）

@@ -501,4 +501,4 @@ A. 相似　　B. 合同　　C. 等价　　D. 正交相似
 
 ## 资料
 
-[课件原件：6.2 正定实二次型 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/6.2%20%E6%AD%A3%E5%AE%9A%E5%AE%9E%E4%BA%8C%E6%AC%A1%E5%9E%8B%20(1).pptx>)
+[课件原件：6.2 正定实二次型 (1).pptx](<https://docs.google.com/presentation/d/1RU-5jOxy9QKFBuqePKnN_9fnBJT6V32i/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

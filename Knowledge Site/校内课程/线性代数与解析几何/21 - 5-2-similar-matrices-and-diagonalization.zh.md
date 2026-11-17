@@ -552,4 +552,4 @@ $$
 
 ## 资料
 
-[课件原件：5.2 相似矩阵及矩阵可对角化的条件 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/5.2%20%20%E7%9B%B8%E4%BC%BC%E7%9F%A9%E9%98%B5%E5%8F%8A%E7%9F%A9%E9%98%B5%E5%8F%AF%E5%AF%B9%E8%A7%92%E5%8C%96%E7%9A%84%E6%9D%A1%E4%BB%B6%20(1).pptx>)
+[课件原件：5.2 相似矩阵及矩阵可对角化的条件 (1).pptx](<https://docs.google.com/presentation/d/1j4RYaY13jyQGgYXf2HIYvnQH5xPK1OWi/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

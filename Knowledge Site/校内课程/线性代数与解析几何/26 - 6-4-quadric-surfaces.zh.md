@@ -424,4 +424,4 @@ $$
 
 ## 资料
 
-[课件原件：6.4 二次曲面 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/6.4%20%E4%BA%8C%E6%AC%A1%E6%9B%B2%E9%9D%A2%20(1).pptx>)
+[课件原件：6.4 二次曲面 (1).pptx](<https://docs.google.com/presentation/d/1tjk1DkJSw2UhUsk-25HHD8sxLpPqCNmw/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

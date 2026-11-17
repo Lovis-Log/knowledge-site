@@ -504,4 +504,4 @@ $$
 
 ## 资料
 
-- 课件原件：[2.4 矩阵的逆 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/2.4%20%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86%20(1).pptx>)
+- 课件原件：[2.4 矩阵的逆 (1).pptx](<https://docs.google.com/presentation/d/1Hre4HlmcgchVQJwmNsbv9TadOYLD6I-Y/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

@@ -466,4 +466,4 @@ $$
 
 ## 资料
 
-- [课件原件：习题.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/%E4%B9%A0%E9%A2%98.pptx>)（第 1—12 页）
+- [课件原件：习题.pptx](<https://docs.google.com/presentation/d/192fFRvysb8Vxr7PkLakde-Km-U1TgUeW/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)（第 1—12 页）

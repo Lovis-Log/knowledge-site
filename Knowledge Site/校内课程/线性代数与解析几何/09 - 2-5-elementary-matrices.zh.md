@@ -412,4 +412,4 @@ $$
 
 ## 资料
 
-- 课件原件：[2.5 初等矩阵 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/2.5%20%E5%88%9D%E7%AD%89%E7%9F%A9%E9%98%B5%20(1).pptx>)
+- 课件原件：[2.5 初等矩阵 (1).pptx](<https://docs.google.com/presentation/d/1KRd3NA2RBoey_ZC2nCKqScPtql8hJ58X/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

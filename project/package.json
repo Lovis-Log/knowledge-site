@@ -10,7 +10,7 @@
     "dev": "next dev",
     "build": "next build && tsx scripts/build-backend.ts",
     "start": "wrangler pages dev out --port 8788",
-    "verify": "tsx scripts/verify-protected-export.ts && node scripts/verify-ui-language.mjs",
+    "verify": "tsx scripts/verify-protected-export.ts && node scripts/verify-ui-language.mjs && tsx scripts/verify-campus-publication.ts",
     "verify:ui": "node scripts/verify-ui-language.mjs",
     "verify:content": "node scripts/verify-content-refresh.mjs",
     "typecheck": "tsc --noEmit",

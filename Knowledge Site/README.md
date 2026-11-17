@@ -80,6 +80,15 @@ collection: true                      # 可选：多来源汇编，卡片显示�
 
 校内课程可把目录分成「课程」「作业」等多组：在 `_book.md` 用可选的 `groups` 按顺序声明 `id`、`title`（章节页序号前缀，如「作业」）和 `heading`（目录标题，如「作业目录」），并用 `studyPeriod`（如 `大一`）表示学期。章节用 `group` 归组、用 `displayNumber` 独立编号，`number` 仍由文件序号决定，只作稳定标识。没有这些字段的书保持单组目录、原有编号与日期。
 
+### 校内课程封面与原始资料
+
+- 课程封面必须使用同书架邻居的复古纸本、黄铜器具学术插画风格，不用 SVG 几何线稿或临时占位图；文件为 `webp`、`png` 或 `jpeg` 栅格图，放在 `project/public/covers/`。若注册了响应式缩略图，必须同时提供 `-240.webp` 和 `-480.webp`。
+- 版式统一，但书壳颜色要区分：每本课程在 `project/app/globals.css` 有独立的 `[data-book="<slug>"]` 配色，背景色互不重复，正文色与背景对比度不低于 4.5。发布前查看整排书架、详情页小封面和手机宽度。
+- 课件、作业原图等原始资料先查云盘去重，上传原格式并在实际匿名窗口核验 reader / anyone 权限，再用 `drive.google.com/file/d/<id>/view` 或 `docs.google.com` 查看/预览入口回填 `_book.md` 的 `links` 和章节 `sources`/正文链接。课程文件夹入口用 `drive.google.com/drive/folders/<id>`。
+- 不要用站内 `/course-materials/.../lectures`、`/homework`、`file://`、本机路径或 Google `uc?export=download` 等下载直链代替 Drive 预览；仅构建通过或链接格式存在都不算核验完成，必须实际点开确认不是自动下载。云盘受阻时不要降级成站内下载并宣布发布完成。
+- 正文插图仍可使用 `/course-materials/.../figures/...` 或 `/images/...`；普通外部文献、官网和公开课程页面链接不受 Drive 规则限制。
+- `npm run verify` 会运行 `verify-campus-publication.ts`，在本地检查封面文件、响应式缩略图、书壳配色/对比度和 Drive 链接结构；它不联网、不登录，也不核验真实权限。完整人工步骤见 [发布与恢复指南](../project/RELEASING.md)。
+
 ## 章节 frontmatter
 
 ```yaml

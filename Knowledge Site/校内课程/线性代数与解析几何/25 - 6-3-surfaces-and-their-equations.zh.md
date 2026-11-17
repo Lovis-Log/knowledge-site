@@ -306,4 +306,4 @@ $$
 
 ## 资料
 
-[课件原件：6.3 曲面及其方程 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/6.3%20%E6%9B%B2%E9%9D%A2%E5%8F%8A%E5%85%B6%E6%96%B9%E7%A8%8B%20(1).pptx>)
+[课件原件：6.3 曲面及其方程 (1).pptx](<https://docs.google.com/presentation/d/1MFRhr8Ke89tyDpfZrQFW3PGycM-0zWwa/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

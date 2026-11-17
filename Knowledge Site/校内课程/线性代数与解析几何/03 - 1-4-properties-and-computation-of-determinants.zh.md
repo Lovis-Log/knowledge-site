@@ -1034,4 +1034,4 @@ $$
 
 ## 资料
 
-- 课件原件：[1.4 n阶行列式的性质及计算.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/1.4%20n%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E6%80%A7%E8%B4%A8%E5%8F%8A%E8%AE%A1%E7%AE%97.pptx>)
+- 课件原件：[1.4 n阶行列式的性质及计算.pptx](<https://docs.google.com/presentation/d/1SPT8NjxVQ7djlY9FVFE16M9XpZ8fiprv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

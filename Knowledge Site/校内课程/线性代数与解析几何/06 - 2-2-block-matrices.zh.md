@@ -447,4 +447,4 @@ $$
 
 ## 资料
 
-- 课件原件：[2.2 矩阵的分块.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/2.2%20%E7%9F%A9%E9%98%B5%E7%9A%84%E5%88%86%E5%9D%97.pptx>)
+- 课件原件：[2.2 矩阵的分块.pptx](<https://docs.google.com/presentation/d/1u-M6VIv-SJJKUNmqMTJ21tfvg7GIVZ8H/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

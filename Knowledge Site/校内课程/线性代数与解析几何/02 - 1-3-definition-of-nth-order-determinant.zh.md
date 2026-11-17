@@ -367,4 +367,4 @@ $$
 
 ## 资料
 
-[课件原件：1.3  n阶行列式的定义.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/1.3%20%20n%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89.pptx>)
+[课件原件：1.3  n阶行列式的定义.pptx](<https://docs.google.com/presentation/d/1FDufFWsFyJsYEICxDrPCGiT5VnX8WgJg/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

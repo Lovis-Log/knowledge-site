@@ -247,4 +247,4 @@ $$
 
 ## 资料
 
-[课件原件：3.1 空间直角坐标系 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/3.1%20%E7%A9%BA%E9%97%B4%E7%9B%B4%E8%A7%92%E5%9D%90%E6%A0%87%E7%B3%BB%20(1).pptx>)
+[课件原件：3.1 空间直角坐标系 (1).pptx](<https://docs.google.com/presentation/d/1tyZcT6AtVk-EhHPOzkn353uCG4pa9ToN/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

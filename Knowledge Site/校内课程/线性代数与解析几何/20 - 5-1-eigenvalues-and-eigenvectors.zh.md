@@ -410,4 +410,4 @@ $$
 
 ## 资料
 
-[课件原件：5.1 矩阵特征值与特征向量 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/5.1%20%E7%9F%A9%E9%98%B5%E7%89%B9%E5%BE%81%E5%80%BC%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%20(1).pptx>)
+[课件原件：5.1 矩阵特征值与特征向量 (1).pptx](<https://docs.google.com/presentation/d/14QoRBYXp65h8sJFeuykf8mKjBCbHXaHu/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

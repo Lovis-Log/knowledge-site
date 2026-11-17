@@ -657,4 +657,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.1 消元法 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.1%20%E6%B6%88%E5%85%83%E6%B3%95%20(1).pptx>)
+- 课件原件：[4.1 消元法 (1).pptx](<https://docs.google.com/presentation/d/1bdYiRF-AszsYkJPrRCrOhoMFebjZVZT-/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

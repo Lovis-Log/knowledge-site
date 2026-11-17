@@ -462,4 +462,4 @@ $$
 
 ## 资料
 
-- 课件原件：[2.3 矩阵的秩 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/2.3%20%E7%9F%A9%E9%98%B5%E7%9A%84%E7%A7%A9%20(1).pptx>)
+- 课件原件：[2.3 矩阵的秩 (1).pptx](<https://docs.google.com/presentation/d/1U9EGVedqidzfyxgCpq1Jq3bWRVZH1m-x/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

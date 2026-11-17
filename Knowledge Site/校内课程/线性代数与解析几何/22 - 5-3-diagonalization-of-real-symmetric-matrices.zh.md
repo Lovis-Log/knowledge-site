@@ -883,4 +883,4 @@ $$
 
 ## 资料
 
-[课件原件：5.3 实对称矩阵的对角化 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/5.3%20%20%E5%AE%9E%E5%AF%B9%E7%A7%B0%E7%9F%A9%E9%98%B5%E7%9A%84%E5%AF%B9%E8%A7%92%E5%8C%96%20(1).pptx>)
+[课件原件：5.3 实对称矩阵的对角化 (1).pptx](<https://docs.google.com/presentation/d/1bbDgDMjNysdcFCQpD5C4cFc9mwldQZM_/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

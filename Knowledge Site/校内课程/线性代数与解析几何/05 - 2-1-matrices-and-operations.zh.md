@@ -620,4 +620,4 @@ $$
 
 ## 资料
 
-- 课件原件：[2.1 矩阵与矩阵的运算.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/2.1%20%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%9F%A9%E9%98%B5%E7%9A%84%E8%BF%90%E7%AE%97.pptx>)
+- 课件原件：[2.1 矩阵与矩阵的运算.pptx](<https://docs.google.com/presentation/d/1kVd7--VA6rsjy45wyX4nvOprdiLgfEL6/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

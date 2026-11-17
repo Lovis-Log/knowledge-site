@@ -647,4 +647,4 @@ $$
 
 ## 资料
 
-[课件原件：6.1二次型及其标准形 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/6.1%E4%BA%8C%E6%AC%A1%E5%9E%8B%E5%8F%8A%E5%85%B6%E6%A0%87%E5%87%86%E5%BD%A2%20(1).pptx>)
+[课件原件：6.1二次型及其标准形 (1).pptx](<https://docs.google.com/presentation/d/1ev9NfKd3K-_B--DKK0LmxZCHjwjHOnrm/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

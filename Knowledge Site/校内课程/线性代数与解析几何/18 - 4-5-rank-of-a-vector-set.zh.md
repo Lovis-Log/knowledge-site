@@ -371,4 +371,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.5 向量组的秩 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.5%20%E5%90%91%E9%87%8F%E7%BB%84%E7%9A%84%E7%A7%A9%20(1).pptx>)
+- 课件原件：[4.5 向量组的秩 (1).pptx](<https://docs.google.com/presentation/d/16J0qR1w9ihShADQEEn0NFSl14jXHFwoM/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

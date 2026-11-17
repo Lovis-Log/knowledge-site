@@ -288,4 +288,4 @@ $$
 
 ## 资料
 
-[课件原件：3.2 向量的内积、外积及混合积 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/3.2%20%E5%90%91%E9%87%8F%E7%9A%84%E5%86%85%E7%A7%AF%E3%80%81%E5%A4%96%E7%A7%AF%E5%8F%8A%E6%B7%B7%E5%90%88%E7%A7%AF%20(1).pptx>)
+[课件原件：3.2 向量的内积、外积及混合积 (1).pptx](<https://docs.google.com/presentation/d/173b8yZ-2gcXXE0DZwxq2plHSFZ9e2ouK/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

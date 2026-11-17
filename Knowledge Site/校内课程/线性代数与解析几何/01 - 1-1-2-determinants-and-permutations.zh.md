@@ -578,4 +578,4 @@ $$
 
 ## 资料
 
-[课件原件：1.1-1.2  二、三阶行列式、排列及其逆序数和对换.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/1.1-1.2%20%20%E4%BA%8C%E3%80%81%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F%E3%80%81%E6%8E%92%E5%88%97%E5%8F%8A%E5%85%B6%E9%80%86%E5%BA%8F%E6%95%B0%E5%92%8C%E5%AF%B9%E6%8D%A2.pptx>)
+[课件原件：1.1-1.2  二、三阶行列式、排列及其逆序数和对换.pptx](<https://docs.google.com/presentation/d/1GUmDw4joBLuUTIlF4FBhOlqY3zlqLpkT/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

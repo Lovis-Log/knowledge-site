@@ -315,4 +315,4 @@ $$
 
 ## 资料
 
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/5.jpg>)（5.jpg，本次作业第 1—8 题）
+- [原图](<https://drive.google.com/file/d/1KJRouTOsXPVLumdM_Mbr4I5AldOaQFaY/view?usp=drivesdk>)（5.jpg，本次作业第 1—8 题）

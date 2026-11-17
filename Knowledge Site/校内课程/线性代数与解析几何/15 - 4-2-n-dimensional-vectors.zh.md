@@ -121,4 +121,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.2 n维向量 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.2%20n%E7%BB%B4%E5%90%91%E9%87%8F%20(1).pptx>)
+- 课件原件：[4.2 n维向量 (1).pptx](<https://docs.google.com/presentation/d/1F6800EPcqcQKEnbduDrogzsuou_zzBFj/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

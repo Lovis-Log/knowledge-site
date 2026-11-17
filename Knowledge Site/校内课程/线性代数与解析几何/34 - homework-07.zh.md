@@ -436,4 +436,4 @@ $$
 
 ## 资料
 
-- [原图](</course-materials/campus-linear-algebra-analytic-geometry/homework/7.jpg>)（7.jpg，本次作业第 1—7 题）
+- [原图](<https://drive.google.com/file/d/1EORJ90byiLk-D7cwRe0mcffA_uskB_Dj/view?usp=drivesdk>)（7.jpg，本次作业第 1—7 题）

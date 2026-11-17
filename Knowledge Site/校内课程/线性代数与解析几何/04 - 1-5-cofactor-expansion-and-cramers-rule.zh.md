@@ -1076,4 +1076,4 @@ $$
 
 ## 资料
 
-- 课件原件：[1.5 行列式按一行展开及克拉默法则.pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/1.5%20%E8%A1%8C%E5%88%97%E5%BC%8F%E6%8C%89%E4%B8%80%E8%A1%8C%E5%B1%95%E5%BC%80%E5%8F%8A%E5%85%8B%E6%8B%89%E9%BB%98%E6%B3%95%E5%88%99.pptx>)
+- 课件原件：[1.5 行列式按一行展开及克拉默法则.pptx](<https://docs.google.com/presentation/d/1fMm3k7X_JMFGn6CPMqypvSEESMOQXkew/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

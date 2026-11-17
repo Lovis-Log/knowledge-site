@@ -591,4 +591,4 @@ $$
 
 ## 资料
 
-- 课件原件：[4.4 Rⁿ的基、向量在基下的坐标 (1).pptx](</course-materials/campus-linear-algebra-analytic-geometry/lectures/4.4%20R%E2%81%BF%E7%9A%84%E5%9F%BA%E3%80%81%E5%90%91%E9%87%8F%E5%9C%A8%E5%9F%BA%E4%B8%8B%E7%9A%84%E5%9D%90%E6%A0%87%20(1).pptx>)
+- 课件原件：[4.4 Rⁿ的基、向量在基下的坐标 (1).pptx](<https://docs.google.com/presentation/d/1U3IjT-NAugyNKvO6gurF8uhkDeNAD6pd/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

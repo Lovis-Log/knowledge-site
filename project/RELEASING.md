@@ -34,6 +34,26 @@ npm run release
 
 成功前不会报告已上线。脚本的自动验收不代替真实账号的阅读验证；首次变更登录或阅读逻辑后，还需在浏览器检查登录弹窗、书库与代表章节。常规发布不初始化管理员、不改账号、不配置密钥、不清理历史版本、不自动回滚数据库。
 
+## 校内课程发布检查
+
+`npm run verify` 中的 `verify-campus-publication.ts` 会在本地读取内容 API、`app/globals.css` 与 `public/covers/`，结构性地检查课程封面、书壳配色和原始资料入口。它不联网、不登录、不上传，也不能代替 Google Drive 权限核验。发布校内课程时同时遵守以下人工步骤。
+
+### 封面与书架
+
+- 发布前实际查看同一书架相邻课程的真实封面，沿用既有的复古纸本、黄铜器具学术插画语言；不要为了省时间用 SVG 几何线稿或临时占位图替代插画。
+- 课程封面使用 `webp`、`png` 或 `jpeg` 栅格图，放在 `project/public/covers/`，不得直接引用 SVG。若封面在 `components/book-cover.tsx` 的 `thumbSources` 中注册了响应式版本，必须同时存在 `-240.webp` 与 `-480.webp`。
+- 版式统一，但每本书的书壳颜色要区分开：`app/globals.css` 为每个课程 slug 写明 `[data-book="..."]` 的 `--cover-bg`、`--cover-ink`、`--cover-accent`，课程之间背景色不得重复，正文色与背景的对比度不低于 4.5。
+- 完成后检查整排书架的并置效果、书籍详情页的小封面，以及手机宽度下的封面显示；只看一张大图不算通过。
+
+### 原始资料与 Drive 预览
+
+- 上传前先检查云盘已有资料，按课程和文件去重，保留原格式（如 `pptx`、`pdf`），不要为了网页展示转成图片再充当原件。
+- 上传后核验分享设置为“知道链接的任何人都可阅读”（reader / anyone），并用 `https://drive.google.com/file/d/<id>/view` 或 `docs.google.com` 的查看/预览入口回填 `_book.md` 的 `links` 与章节 `sources`/正文资料链接。课程书还应有 `drive.google.com/drive/folders/<id>` 课程文件夹入口。
+- 仅构建成功或脚本确认链接格式存在还不够。必须实际点开每个 Drive 预览，确认能在浏览器中直接阅读而不是自动下载；权限核验以实际匿名窗口为准。
+- 不得把课件、作业原图等原始资料继续指向站内 `/course-materials/.../lectures` 或 `/homework`，也不得使用 `file://`、本机路径、Google `uc?export=download`、`confirm=t` 等下载直链。
+- 正文插图仍可使用 `/course-materials/.../figures/...` 或 `/images/...`；普通外部文献、官网和公开课程页面的链接不受 Drive 规则限制，不要把它们误改成网盘链接。
+- 若云盘上传或权限设置受阻，不能擅自降级为站内下载并宣布发布完成；应说明具体阻塞和已完成部分。
+
 ## 仅检查与预览
 
 ```sh
