@@ -7,7 +7,7 @@ description: "大一工科数学分析课程的课堂笔记。"
 longDescription: "整理工科数学分析第一学期的课堂内容，从集合与实数集讲到极限、连续、一元微分与不定积分，保留课堂例题、证明与作业原题解析，供复习与查阅。"
 category: "campus-courses"
 studyPeriod: "大一"
-updatedAt: "2026-11-17"
+updatedAt: "2026-11-15"
 content_type: "reference"
 groups:
   - id: "course"
