@@ -54,7 +54,43 @@ test("campus section sorts first and shows no subcategories", () => {
   );
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
-  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-cpp-programming", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
+  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-cpp-programming", "campus-linear-algebra-analytic-geometry", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
+});
+
+test("linear algebra and analytic geometry keeps 27 course entries and 7 image homework entries", () => {
+  const book = getAllBooks().find((item) => item.slug === "campus-linear-algebra-analytic-geometry");
+  assert.ok(book, "new campus book is loaded");
+  assert.equal(book.studyPeriod, "大一");
+  assert.equal(book.category, "campus-courses");
+  assert.equal(book.title, "线性代数与解析几何");
+  assert.equal(book.contentType, "reference");
+  assert.deepEqual(
+    book.groups?.map((group) => [group.id, group.heading]),
+    [["course", "课程目录"], ["homework", "作业目录"]],
+  );
+  assert.equal(book.chapters.length, 34);
+
+  const courses = book.chapters.filter((chapter) => chapter.group === "course");
+  const homework = book.chapters.filter((chapter) => chapter.group === "homework");
+  assert.equal(courses.length, 27);
+  assert.equal(homework.length, 7);
+  assert.deepEqual(
+    courses.map((chapter) => chapter.displayNumber),
+    ["1.1-1.2", "1.3", "1.4", "1.5", "2.1", "2.2", "2.3", "2.4", "2.5", "3.1", "3.2", "3.3", "3.4", "4.1", "4.2", "4.3", "4.4", "4.5", "4.6", "5.1", "5.2", "5.3", "6.1", "6.2", "6.3", "6.4", "习题"],
+  );
+  assert.deepEqual(
+    homework.map((chapter) => chapterNumberLabel(chapter)),
+    ["01", "02", "03", "04", "05", "06", "07"],
+  );
+  assert.equal(courses.at(-1)?.slug, "exercise-slides");
+  assert.equal(courses.at(-1)?.versions.zh?.title, "课件习题");
+  assert.equal(chapterHeading(courses.at(-1)!, book.groups), "课程 习题");
+  assert.equal(chapterHeading(courses[0], book.groups), "课程 1.1-1.2");
+  assert.equal(chapterPagerLabel(homework[0], book.groups), "作业 01");
+  assert.ok(book.chapters.every((chapter) => (chapter.versions.zh?.body.length ?? 0) > 0));
+  assert.ok(book.chapters.every((chapter) => !/file:\/\/\//.test(chapter.versions.zh?.body ?? "")));
+  const slugs = getAllBooks().flatMap((item) => item.chapters.map((chapter) => `${item.slug}/${chapter.slug}`));
+  assert.equal(new Set(slugs).size, slugs.length, "chapter slugs stay unique");
 });
 
 test("discrete mathematics preserves the supplied chapter numbers and has no homework group", () => {

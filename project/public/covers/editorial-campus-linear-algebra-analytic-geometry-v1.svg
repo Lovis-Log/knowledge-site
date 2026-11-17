@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 960" width="640" height="960" role="img" aria-label="线性代数与解析几何封面图案">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#8a7350" stroke-width="1" opacity="0.16" />
+    </pattern>
+  </defs>
+  <rect width="640" height="960" fill="#f4ead6" />
+  <rect width="640" height="960" fill="url(#grid)" />
+  <g fill="none" stroke="#3b342a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150 140v180M150 140h24M150 320h24" opacity="0.8" />
+    <path d="M310 140v180M310 140h-24M310 320h-24" opacity="0.8" />
+    <path d="M430 140v180M430 140h24M430 320h24" opacity="0.8" />
+    <path d="M590 140v180M590 140h-24M590 320h-24" opacity="0.8" />
+  </g>
+  <g fill="#96713a">
+    <circle cx="192" cy="182" r="7" />
+    <circle cx="268" cy="182" r="7" />
+    <circle cx="192" cy="278" r="7" />
+    <circle cx="268" cy="278" r="7" />
+  </g>
+  <g fill="#2f6b5f">
+    <circle cx="472" cy="182" r="7" />
+    <circle cx="548" cy="182" r="7" />
+    <circle cx="472" cy="278" r="7" />
+    <circle cx="548" cy="278" r="7" />
+  </g>
+  <g fill="none" stroke="#3b342a" stroke-width="2.4" stroke-linejoin="round" opacity="0.85">
+    <path d="M162 470l128-42 126 70-128 42z" fill="#e9d9bc" fill-opacity="0.7" />
+    <path d="M176 470l128-42" opacity="0.5" />
+    <path d="M226 600l128-42 126 70" opacity="0.5" />
+  </g>
+  <g fill="none" stroke="#3b342a" stroke-width="3" stroke-linecap="round">
+    <path d="M290 540v-190" />
+    <path d="M278 362l12-14 12 14" />
+    <path d="M290 540l170 56" />
+    <path d="M448 588l14 8-16 4" />
+    <path d="M290 540l-150 40" />
+    <path d="M152 572l-14 8 16 4" />
+  </g>
+  <g fill="none" stroke="#2f6b5f" stroke-width="3.4" stroke-linecap="round">
+    <path d="M290 540l112-64" />
+    <path d="M388 484l16-8-6 16" />
+  </g>
+  <g fill="#2f6b5f">
+    <circle cx="290" cy="540" r="6" />
+  </g>
+  <g fill="none" stroke="#96713a" stroke-width="3" opacity="0.9">
+    <ellipse cx="320" cy="770" rx="170" ry="62" />
+    <ellipse cx="320" cy="770" rx="120" ry="44" />
+    <ellipse cx="320" cy="770" rx="62" ry="24" />
+    <path d="M320 700c-46 0-84 30-84 70s38 70 84 70 84-30 84-70-38-70-84-70" opacity="0.55" />
+    <path d="M150 770h340" opacity="0.35" stroke-dasharray="8 10" />
+  </g>
+</svg>

@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-11-17",
+    "version": "1.10.4",
+    "features": [],
+    "content": [
+      {
+        "title": "线性代数与解析几何 · 26节课程笔记、7次作业与课件习题 / Linear Algebra and Analytic Geometry · 26 course notes, seven homework sets, and slide exercises",
+        "href": "/books/campus-linear-algebra-analytic-geometry/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-16",
     "version": "1.10.3",
     "features": [],

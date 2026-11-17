@@ -12,9 +12,14 @@ export interface TocItem {
 export function buildHomeworkToc(markdown: string, lang: string): TocItem[] {
   return buildToc(markdown, lang).flatMap((item) => {
     if (item.depth !== 2) return [];
-    const match = /^(?:题目\s*(\d+)|第\s*(\d+)\s*题|(\d+)\s*[.．、])/.exec(item.text);
-    if (!match) return [];
-    const text = `题目 ${Number(match[1] ?? match[2] ?? match[3])}`;
+    const named = /^(?:题目\s*(\d+)|题\s*(\d+)|第\s*(\d+)\s*题)/.exec(item.text);
+    if (named) {
+      return [{ ...item, text: `题目 ${Number(named[1] ?? named[2] ?? named[3])}`, html: `题目 ${Number(named[1] ?? named[2] ?? named[3])}` }];
+    }
+    const numbered = /^(\d+)\s*[.．、]\s*(.*)$/.exec(item.text);
+    if (!numbered) return [];
+    const part = /^[（(]\s*(\d+)\s*[）)]/.exec(numbered[2]);
+    const text = part ? `题目 ${Number(numbered[1])}（${Number(part[1])}）` : `题目 ${Number(numbered[1])}`;
     return [{ ...item, text, html: text }];
   });
 }
