@@ -54,7 +54,7 @@ test("campus section sorts first and shows no subcategories", () => {
   );
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
-  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-discrete-mathematics", "campus-mathematical-analysis"]);
+  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-cpp-programming", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
 });
 
 test("discrete mathematics preserves the supplied chapter numbers and has no homework group", () => {
