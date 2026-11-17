@@ -9,6 +9,9 @@ category: campus-courses
 studyPeriod: 大一上
 updatedAt: "2026-11-17"
 content_type: reference
+links:
+  - label: 原始课件
+    url: https://drive.google.com/drive/folders/1M7QgA2W8QHzSk8rIb-knz6mjiVYX4Jdb
 groups:
   - id: course
     title: 课程

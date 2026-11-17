@@ -6,7 +6,10 @@ updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "附录A"
-sources: []
+sources:
+  - kind: article
+    title: "计算机基础.pptx"
+    url: "https://drive.google.com/file/d/1bH3ifzi2XwJ7UeN_gdPiIK27KaYwuZA0/view"
 ---
 
 # 附录A 计算机基础
@@ -532,6 +535,6 @@ UCS-2、UCS-4 本身已经是定长表示形式，不能把它们说成只分配
 
 ---
 
-资料：《计算机基础（PPTX）》（本地课件，暂无在线链接）
+资料：[计算机基础.pptx](https://drive.google.com/file/d/1bH3ifzi2XwJ7UeN_gdPiIK27KaYwuZA0/view)
 
 - 编码标准说明：[Unicode 官方 UTF 与 UCS 常见问题](https://www.unicode.org/faq/utf_bom.html)、[字符编码模型](https://www.unicode.org/reports/tr17/)。

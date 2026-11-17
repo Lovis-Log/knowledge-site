@@ -6,7 +6,10 @@ updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "3"
-sources: []
+sources:
+  - kind: article
+    title: "第三章流程控制.pptx"
+    url: "https://drive.google.com/file/d/1lct1mumo1_dZrO-8SjB6WlFEYrHunYjE/view"
 ---
 
 # 第 3 章 流程控制
@@ -1882,4 +1885,4 @@ int main()
 
 ## 资料
 
-- 课件原件：《第三章 流程控制.pptx》（本地课件，暂无在线链接）
+- 课件原件：[第三章流程控制.pptx](https://drive.google.com/file/d/1lct1mumo1_dZrO-8SjB6WlFEYrHunYjE/view)

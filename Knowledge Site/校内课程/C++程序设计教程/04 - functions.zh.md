@@ -6,7 +6,10 @@ updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "4"
-sources: []
+sources:
+  - kind: article
+    title: "第四章函数-雨.pdf"
+    url: "https://drive.google.com/file/d/1FexSSNA9dpocRBQcskE4nB81zuUgHJgJ/view"
 ---
 
 # 第 4 章 函数
@@ -4007,4 +4010,4 @@ C++ 程序可以由多个源文件组成。头文件放声明、宏和类型定�
 
 ## 资料
 
-- 《第四章 函数（PDF）》（本地课件，暂无在线链接）
+- [第四章函数-雨.pdf](https://drive.google.com/file/d/1FexSSNA9dpocRBQcskE4nB81zuUgHJgJ/view)

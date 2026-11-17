@@ -6,7 +6,10 @@ updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "5"
-sources: []
+sources:
+  - kind: article
+    title: "第五章指针-雨.pdf"
+    url: "https://drive.google.com/file/d/1miPUG257YHEaGY1RClxiaYfFqR8mBo5r/view"
 ---
 
 # 第 5 章 指针
@@ -5284,4 +5287,4 @@ int main()
 
 ## 资料
 
-- 《第五章 指针（PDF）》（本地课件，暂无在线链接）
+- [第五章指针-雨.pdf](https://drive.google.com/file/d/1miPUG257YHEaGY1RClxiaYfFqR8mBo5r/view)

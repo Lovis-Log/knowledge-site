@@ -6,7 +6,10 @@ updatedAt: "2026-11-17"
 content_type: "reference"
 group: "course"
 displayNumber: "2"
-sources: []
+sources:
+  - kind: article
+    title: "第二章基本语法.pptx"
+    url: "https://drive.google.com/file/d/18qDuANRbiJHLpwpun8bipheKVO-oZiGh/view"
 ---
 
 # 第2章 基本语法
@@ -1637,4 +1640,4 @@ int main()
 
 ---
 
-资料：《第二章 基本语法（PPTX）》（本地课件，暂无在线链接）
+资料：[第二章基本语法.pptx](https://drive.google.com/file/d/18qDuANRbiJHLpwpun8bipheKVO-oZiGh/view)
