@@ -19,6 +19,30 @@
     "title": "指针",
     "hash": "7122b2cf30f7e439b8354737cb842c92e8daca878ca490674418f1270753f183"
   },
+  "campus-engineering-drawing/01-drawing-fundamentals": {
+    "title": "制图基本知识",
+    "hash": "bac370d2d283f5d036c49afb90f7bc567823401187aac7f2c0c086e00cabacfa"
+  },
+  "campus-engineering-drawing/02-orthographic-projection": {
+    "title": "正投影的基本知识",
+    "hash": "cef18347295eb11a9cb01c92bd7e94c66c93187be459704f17e01f21420ce412"
+  },
+  "campus-engineering-drawing/03-solids-and-intersections": {
+    "title": "立体及其表面交线",
+    "hash": "15b17b1d17473abbb535442a4be94b8b0f4205d52f53a89bc78697d35d3e4c53"
+  },
+  "campus-engineering-drawing/04-axonometric-drawing": {
+    "title": "轴测图",
+    "hash": "3ef8095f3d855be55375a9503cdc5877cb7d4f99b76fa62163b44d71c6f2048d"
+  },
+  "campus-engineering-drawing/05-composite-solids": {
+    "title": "组合体",
+    "hash": "317f8270acae8aa38b800c3469952a3e98ffb84e4f7af5c6b1d9219b15dd12a3"
+  },
+  "campus-engineering-drawing/06-drawing-representation": {
+    "title": "工程图样的表达方法",
+    "hash": "fd1b77530ab396e0fcc15157a18321b109a06e2e99e45061e097d2b6cf57a83c"
+  },
   "campus-linear-algebra-analytic-geometry/1-1-2-determinants-and-permutations": {
     "title": "1.1-1.2 二、三阶行列式、排列及其逆序数和对换",
     "hash": "c6e6ecd97435efa40e1cfe980041c393ae297dc2b3c02d02aa03c0da48b310a4"

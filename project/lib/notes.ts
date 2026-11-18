@@ -439,7 +439,7 @@ function loadBook(bookDir: string, folder: string): Book | null {
     coverImage: bookMeta.coverImage ? String(bookMeta.coverImage) : undefined,
     category: bookMeta.category ? String(bookMeta.category) : "uncategorized",
     updatedAt: asDateString(bookMeta.updatedAt) || newestChapter,
-    author: bookMeta.author ? String(bookMeta.author) : deriveAuthor(chapters),
+    author: bookMeta.author == null ? deriveAuthor(chapters) : String(bookMeta.author).trim() || undefined,
     links: withChapterNumbers(
       explicitLinks.length ? explicitLinks : deriveLinks(chapters),
       chapters,

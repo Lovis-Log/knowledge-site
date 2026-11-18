@@ -1,6 +1,7 @@
 ---
 slug: "campus-engineering-drawing"
 title: "计算机工程制图"
+author: ""
 subtitle: "大一上"
 description: "制图规范、正投影与工程图样表达的课程笔记。"
 longDescription: "从正投影与表面交线入手，练习轴测图、组合体三视图、尺寸标注以及剖视图。六章保留原笔记的作图示例和插图，断面图部分介绍基本概念。"

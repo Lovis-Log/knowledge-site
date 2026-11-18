@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-18",
+    "version": "1.10.6",
+    "features": [
+      {
+        "zh": "加大书库首页「继续阅读」与「校内课程」之间的留白。",
+        "en": "Increased the spacing between Continue Reading and Campus Courses in the library."
+      }
+    ],
+    "content": [
+      {
+        "title": "计算机工程制图 · 上线六章笔记，移除课堂练习记录，课程书页保留一个 onsin.top 来源链接 / Computer Engineering Drawing · Published six chapters, removed in-class exercise records, and kept one linked source on the book page",
+        "href": "/books/campus-engineering-drawing/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-17",
     "version": "1.10.5",
     "features": [

@@ -21,6 +21,7 @@ html body button.ui-language-toggle {
 .library-page > .library-nav { margin-block: 0; padding-block: 12px; }
 .library-page > .library-search { margin-block: 22px; }
 .library-page .library { padding-top: 12px; }
+.library-page > .continue + .library { padding-top: clamp(24px, 3vw, 36px); }
 .brand { position: relative; }
 .brand__tip, .site-header .donate__tip {
   position: absolute; top: calc(100% + 14px); z-index: 60;
