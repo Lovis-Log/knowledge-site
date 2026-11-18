@@ -28,6 +28,48 @@ displayNumber: "07"
 
 边界：`arr` 与 `index` 定长 20，`n>20` 越界。**待确认**：n 的上限；输出元素之间是两个空格 `"  "` 且行尾多一个空格，是否与样例一致。
 
+**原始代码**
+
+```cpp
+/*题目描述
+将一组数据从大到小排列后输出,并显示每个元素及其在原数组中的下标。*/
+
+ #include <iostream>
+ using namespace std;
+
+ void swap(int& a,int& b) {
+    int temp;
+    temp=a;           //出错：写了a=temp
+    a=b;
+    b=temp;
+ }
+
+ int main() {
+    int n;
+    while(cin>>n) {
+        int arr[20];
+        int index[20];
+        for(int i=0;i<n;i++) {
+            cin>>arr[i];
+            index[i]=i;
+        }
+
+        for(int i=0;i<n;i++) {       //优化：i<n-1  因为i=n-1时内层循环不会执行
+            for(int j=i+1;j<n;j++) {
+                if(arr[i]<arr[j]) {
+                    swap(arr[i],arr[j]);
+                    swap(index[i],index[j]);
+                }
+            }
+        }
+        for(int i=0;i<n;i++) {
+            cout<<arr[i]<<" "<<index[i]<<"  ";
+        }
+        cout<<endl;
+    }
+ }
+```
+
 ## B
 
 **合并两个升序数组**
@@ -45,6 +87,154 @@ displayNumber: "07"
 
 **待确认**：两版输出格式不同（一版每个元素后都带空格，一版是首个元素前带空格），需与样例逐字符比对。
 
+**原始代码**
+
+```cpp
+/*把两个升序排列的整型数组合并为一个升序数组,并设计高效算法*/
+
+#include <iostream>
+using namespace std;
+
+void swap(int& a,int& b) {
+    int temp;
+    temp=a;
+    a=b;
+    b=temp;
+}
+
+int main() {
+    int n;
+    cin>>n;
+    while(n--) {
+        int a[10],b[10],c[20];
+
+        int m;
+        cin>>m;
+        for(int i=0;i<m;i++) {
+            cin>>a[i];
+        }
+
+        int n;
+        cin>>n;
+        for(int i=0;i<n;i++) {
+            cin>>b[i];
+        }
+
+        for(int i=0;i<m;i++) {
+            c[i]=a[i];
+        }
+        for(int i=0;i<n;i++) {
+            c[m+i]=b[i];
+        }
+
+        for(int i=0;i<m+n-1;i++) {
+            for(int j=i+1;j<m+n;j++) {
+                if(c[i]>c[j]) {
+                    swap(c[i],c[j]);
+                }
+            }
+        }
+
+        cout<<m+n<<" ";
+        for(int i=0;i<m+n;i++) {
+            cout<<c[i]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+/*
+双指针法（思想）
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int N;
+    cin >> N;
+
+    while (N--) {
+        int m, n;
+        int A[10], B[10], C[20];
+
+        cin >> m;
+        for (int i = 0; i < m; i++) {
+            cin >> A[i];
+        }
+
+        cin >> n;
+        for (int i = 0; i < n; i++) {
+            cin >> B[i];
+        }
+
+        int i = 0, j = 0, k = 0;
+
+        while (i < m && j < n) {
+            if (A[i] <= B[j]) {
+                C[k] = A[i];
+                i++;
+            } else {
+                C[k] = B[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < m) {
+            C[k++] = A[i++];
+        }
+
+        while (j < n) {
+            C[k++] = B[j++];
+        }
+
+        cout << m + n;
+        for (int t = 0; t < m + n; t++) {
+            cout << " " << C[t];
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+
+*/
+```
+
+**优化版**　两个数组已经升序。每次输出两个尚未处理元素中较小的一个，不再建第三个数组，也不需要重新排序。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int main() {
+    int cases;
+    if (!(std::cin >> cases)) return 0;
+    for (int t = 0; t < cases; ++t) {
+        int m, n;
+        std::cin >> m;
+        std::vector<int> a(m);
+        for (int& value : a) std::cin >> value;
+        std::cin >> n;
+        std::vector<int> b(n);
+        for (int& value : b) std::cin >> value;
+
+        int i = 0, j = 0;
+        std::cout << m + n;
+        while (i < m && j < n) {
+            if (a[i] <= b[j]) {
+                std::cout << ' ' << a[i++];
+            } else {
+                std::cout << ' ' << b[j++];
+            }
+        }
+        while (i < m) std::cout << ' ' << a[i++];
+        while (j < n) std::cout << ' ' << b[j++];
+        std::cout << '\n';
+    }
+}
+```
+
 ## C
 
 **用指针数组输出星期英文**
@@ -56,6 +246,28 @@ displayNumber: "07"
 边界：1 与 7 都要能取到（`n<1 || n>7` 才报错），否则 sunday 永远取不到。
 
 **待确认**：输出全小写，是否要求首字母大写；非整数输入未处理。
+
+**原始代码**
+
+```cpp
+/*题目描述
+输入一个表示星期几的数,输出相应的英文单词,要求使用指针数组实现。*/
+
+ #include <iostream>
+ using namespace std;
+
+ int main() {
+    const char* week[7]={"monday","tuesday","wednesday","thursday","friday","saturday","sunday"};    //const 指针只能读取字符，不能修改字符
+    int n;
+    while(cin>>n) {
+        if(n>7||n<1) {
+            cout<<"input error!"<<endl;
+        } else {
+        cout<<week[n-1]<<endl;
+        }
+    }
+ }
+```
 
 ## D
 
@@ -75,6 +287,63 @@ displayNumber: "07"
 
 `n = 1` 时副对角线和为 1。`n < 3` 时程序仍输出原矩阵及副对角线和，去掉外层后没有元素可打印。**待确认**　题目对 `n < 3` 是否另有输出规定。
 
+**原始代码**
+
+```cpp
+/*题目描述
+生成指定形式的n阶矩阵:主对角线及其上方元素为1,主对角线下方元素依次递增;计算副对角线元素之和;删除最外层元素后输出新的n-2阶矩阵。*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    while(cin>>n) {
+
+        int** arr=new int*[n];       //动态储存
+        for(int i=0;i<n;i++) {
+            arr[i]=new int[n];
+        }
+
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                if(j>=i) {
+                    arr[i][j]=1;
+                } else {
+                    arr[i][j]=i-j+1;  //加1
+                }
+            }
+        }
+
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                cout<<arr[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+
+        int sum=0;
+        for(int i=0;i<n;i++) {
+            sum+=arr[i][n-1-i];
+        }
+        cout<<sum<<endl;
+
+        for(int i=1;i<n-1;i++) {
+            for(int j=1;j<n-1;j++) {
+                cout<<arr[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+
+        for(int i=0;i<n;i++) {
+            delete[] arr[i];
+        }
+        delete[] arr;
+
+    }
+}
+```
+
 ## E
 
 **求数组最小元素及其下标**
@@ -92,6 +361,68 @@ displayNumber: "07"
 
 **待确认**：多组输入的判定方式（`while(cin>>n)`）；n 的上限。
 
+**原始代码**
+
+```cpp
+/*设计函数求整型数组的最小元素及其下标, 在主函数中输入数组、 调用函数并输出结果。 若最小值重复出现, 返回第一次出现的位置*/
+
+#include <iostream>
+using namespace std;
+
+void search(int a[],int n,int& min,int& index) {
+    min=a[0];
+    index=0;
+    for(int i=1;i<n;i++) {
+        if(a[i]<min) {
+            min=a[i];
+            index=i;
+        }
+    }
+}
+
+int main() {
+    int n;
+     int* a=new int[n];
+
+    while(cin>>n) {
+        for(int i=0;i<n;i++) {
+            cin>>a[i];
+        }
+        int min,index;
+        search(a,n,min,index);
+        cout<<min<<" "<<index<<endl;
+
+        delete[] a;
+    }
+}
+```
+
+**优化版**　先读长度再分配数组，每组结束自动释放。扫描时只在遇到严格更小的值时更新下标，从而保留第一次出现的位置。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+int firstMinimumIndex(const std::vector<int>& values) {
+    int best = 0;
+    for (int i = 1; i < static_cast<int>(values.size()); ++i) {
+        if (values[i] < values[best]) best = i;
+    }
+    return best;
+}
+
+int main() {
+    int n;
+    while (std::cin >> n) {
+        std::vector<int> values(n);
+        for (int& value : values) std::cin >> value;
+
+        const int index = firstMinimumIndex(values);
+        std::cout << values[index] << ' ' << index << '\n';
+    }
+}
+```
+
 ## F
 
 **有序数组插入并挤出最大数**
@@ -107,6 +438,47 @@ displayNumber: "07"
 
 边界：题面保证 k 在最小与最大之间，所以 `i<n` 恒成立；若 k 大于所有元素，`i` 到 n，移位循环不执行且 `if(i<n)` 跳过，k 被静默丢弃——这是题面假设之外的行为。**待确认**：只处理一组输入。
 
+**原始代码**
+
+```cpp
+/*假设有从小到大排列的一组数据存放在一个数组中,在主函数中从键盘输入一个在该数组的
+最小值和最大值之间的数,并调用一个函数把输入的数插入原有的数组中,保持从小到大的顺序,
+并把最大数挤出,然后在主函数中输出改变后的数组。*/
+
+#include <iostream>
+using namespace std;
+
+void insert(int a[],int n,int k) {
+    int i;
+    for(i=0;i<n;i++) {
+        if(a[i]>=k) {
+            break;
+        }
+    }
+    for(int j=n-1;j>i;j--) {  //去掉最后一位,j-1包括i
+        a[j]=a[j-1];
+    }
+    if(i<n) {
+        a[i]=k;
+    }
+}
+
+int main() {
+    int n,k;
+    cin>>n;
+    int* a=new int[n];
+    for(int i=0;i<n;i++) {
+        cin>>a[i];
+    }
+    cin>>k;
+    insert(a,n,k);
+    for(int i=0;i<n;i++) {
+        cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
+```
+
 ## G
 
 **动态数组随机数赋值与逆置**
@@ -118,6 +490,110 @@ displayNumber: "07"
 样例 `N = 5` 中，第 `279` 步第一次出现两位数 `19`，接下来的有效值是 `24 16 45 74`。因此第一行输出 `19 24 16 45 74`，第二行输出 `74 45 16 24 19`。主版本直接保存 `r` 的话第一项是 `13849`，注释版先取 `r % 100` 会从 `49` 开始，均与样例不符。
 
 按 `N` 分配动态数组，生成后先按原顺序输出。然后用两个下标从首尾向中间移动，每次交换一对，直到相遇或交错。这样可以原地逆置，额外空间为常数。主版本的固定长度数组能容纳题目范围内的 `N`，但题面要求动态分配。
+
+**原始代码**
+
+```cpp
+/*编写程序,按照指定长度生成动态数组,用随机数对数组元素进行赋值,然后逆置该数组元素。例如,数组A的初值为{6,3,7,8,2},逆置后的值为{2,8,7,3,6}。要求:输出逆置前后的数组元素序列。
+提示:为保证输出的可复现,随机数】公式为:n=(25173×1k-1+13849)%65536,最开始初始值取0,之后下一组测试数据也要根据之前的r,不符合要求继续往后算。
+注意:测试数据有多组输入*/
+
+ #include <iostream>
+ using namespace std;
+
+ int main() {
+    int n;
+    int r=0;           //题目要求下一组测试数据的随机数接着上一组继续生成，不能每次重新从 0 开始
+    while(cin>>n) {
+        int a[7];
+        for(int i=0;i<n;i++) {
+            r=(25173*r+13849)%65536;
+            a[i]=r;
+            cout<<a[i]<<" ";
+        }
+        cout<<endl;
+
+        int b[7];
+        for(int i=0;i<n;i++) {
+            b[i]=a[n-i-1];
+            cout<<b[i]<<" ";
+        }
+        cout<<endl;
+    }
+ }
+
+
+ /*
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    long long r = 0;
+
+    while (cin >> n) {
+        int a[7];
+
+        for (int i = 0; i < n; i++) {
+            int num;
+            while (true) {
+                r = (25173 * r + 13849) % 65536;
+                num = r % 100;
+                if (num >= 10 && num <= 99) {
+                    break;
+                }
+            }
+            a[i] = num;
+
+            cout << a[i];
+            if (i != n - 1) cout << " ";
+        }
+        cout << endl;
+
+        for (int i = n - 1; i >= 0; i--) {
+            cout << a[i];
+            if (i != 0) cout << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+ */
+```
+
+**优化版**　按原题样例筛选随机状态本身的两位数。用动态数组保存本组结果，只在程序开始时把随机状态设为零。
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+void printArray(const std::vector<int>& values) {
+    for (std::size_t i = 0; i < values.size(); ++i) {
+        if (i > 0) std::cout << ' ';
+        std::cout << values[i];
+    }
+    std::cout << '\n';
+}
+
+int main() {
+    long long state = 0;
+    int n;
+    while (std::cin >> n) {
+        std::vector<int> values(n);
+        for (int& value : values) {
+            do {
+                state = (25173 * state + 13849) % 65536;
+            } while (state < 10 || state > 99);
+            value = static_cast<int>(state);
+        }
+
+        printArray(values);
+        std::reverse(values.begin(), values.end());
+        printArray(values);
+    }
+}
+```
 
 ## H
 
@@ -137,6 +613,47 @@ displayNumber: "07"
 
 **待确认**：n 的范围与上限、无素数时的输出要求。
 
+**原始代码**
+
+```cpp
+/*编写程序,根据输入数据n,计算Fibonacci数列的前n项存储在数组中(数组需为动态数组),
+找出数组中的素数,并输出。程序利用函数fibonacci计算Fibonacci数列的前n项,利用函数
+isPrime判断一个数是否是素数。*/
+
+#include <iostream>
+using namespace std;
+
+bool isprime(int n) {
+    if(n<2) {
+        return 0;
+    }
+    for(int i=2;i*i<=n;i++) {
+        if(n%i==0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        int* a=new int[n];
+        a[0]=1;
+        a[1]=1;
+        for(int i=2;i<n;i++) {
+            a[i]=a[i-1]+a[i-2];
+        }
+        for(int i=0;i<n;i++) {
+            if(isprime(a[i])==1) {
+                cout<<a[i]<<" ";
+            }
+        }
+        cout<<endl;
+    }
+}
+```
+
 ## I
 
 **统计两个 3×4 矩阵对应位置相等的元素个数**
@@ -144,6 +661,40 @@ displayNumber: "07"
 题意：输入两个 3 行 4 列的整型数组，统计对应位置上数值相等的元素个数。
 
 单组输入，原程序先按行读满矩阵 `a`，再读满 `b`，最后按相同的 `(i, j)` 比较。也可以在读取 `b` 的对应元素时立即与 `a[i][j]` 比较，只保存第一张矩阵。计数从 0 开始，每遇到一对相等元素加 1。
+
+**原始代码**
+
+```cpp
+/*输入两个3行4列的二维数组,统计对应位置上数值相等的元素个数。*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a[3][4];
+    int b[3][4];
+    for(int i=0;i<3;i++) {
+        for(int j=0;j<4;j++) {
+            cin>>a[i][j];
+        }
+    }
+    for(int i=0;i<3;i++) {
+        for(int j=0;j<4;j++) {
+            cin>>b[i][j];
+        }
+    }
+
+    int count=0;
+    for(int i=0;i<3;i++) {
+        for(int j=0;j<4;j++) {
+            if(a[i][j]==b[i][j]) {
+                count++;
+            }
+        }
+    }
+    cout<<count<<endl;
+}
+```
 
 ## J
 
@@ -156,3 +707,180 @@ displayNumber: "07"
 判定函数用 `<` 和 `>` 寻找反例，遇到相同的最大值或最小值仍然允许并列。按行优先扫描时，取行号最小的鞍点，同一行再取列号最小的鞍点。
 
 主版本找到后继续扫描，会输出全部鞍点。注释版找到后退出内外两层循环，落实题面明确写出的「第一个」。例如矩阵元素全是 1 时，按行优先只应输出 `0 0`。
+
+**原始代码**
+
+```cpp
+/*矩阵鞍点是指某元素在所在行中最大、在所在列中最小。输入n阶矩阵,
+输出第一个鞍点的位置;若不存在则输出“没有鞍点”。行列下标均从0开始。*/
+
+#include <iostream>
+using namespace std;
+
+bool is_row_max(int** a,int k,int m,int n) {
+    int j;
+    for(j=0;j<k;j++) {
+        if(a[m][n]<a[m][j]) {      //注意不要加=
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool is_col_min(int** a,int k,int m,int n) {
+    int i;
+    for(i=0;i<k;i++) {
+        if(a[m][n]>a[i][n]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        int** a=new int* [n];
+        for(int i=0;i<n;i++) {
+            a[i]=new int [n];
+        }
+
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                cin>>a[i][j];
+            }
+        }
+
+        int count=0;
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                if(is_row_max(a,n,i,j)==1&&is_col_min(a,n,i,j)==1) {
+                    cout<<i<<" "<<j<<endl;
+                    count++;
+                }
+            }
+        }
+
+        if(count==0) {
+            cout<<"没有鞍点"<<endl;
+        }
+
+        for(int i=0;i<n;i++) {
+            delete[] a[i];
+        }
+        delete[] a;
+    }
+}
+
+
+
+
+/*
+
+#include <iostream>
+using namespace std;
+
+bool is_row_max(int a[][100],int k,int m,int n) {
+    for(int j=0;j<k;j++) {
+        if(a[m][n]<a[m][j]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool is_col_min(int a[][100],int k,int m,int n) {
+    for(int i=0;i<k;i++) {
+        if(a[m][n]>a[i][n]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        int a[100][100];
+
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                cin>>a[i][j];
+            }
+        }
+
+        int count=0;
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<n;j++) {
+                if(is_row_max(a,n,i,j)==1 &&
+                   is_col_min(a,n,i,j)==1) {
+                    cout<<i<<" "<<j<<endl;
+                    count++;
+                    break;
+                }
+            }
+            if(count>0) {
+                break;
+            }
+        }
+
+        if(count==0) {
+            cout<<"没有鞍点"<<endl;
+        }
+    }
+    return 0;
+}
+
+*/
+```
+
+**优化版**　读矩阵时同步求出各行最大值、各列最小值，再按行优先寻找第一个同时等于两者的元素。
+
+```cpp
+#include <algorithm>
+#include <iostream>
+#include <limits>
+#include <utility>
+#include <vector>
+
+std::pair<int, int> firstSaddle(
+    const std::vector<std::vector<int>>& matrix,
+    const std::vector<int>& rowMax,
+    const std::vector<int>& colMin
+) {
+    const int n = static_cast<int>(matrix.size());
+    for (int row = 0; row < n; ++row) {
+        for (int col = 0; col < n; ++col) {
+            const int value = matrix[row][col];
+            if (value == rowMax[row] && value == colMin[col]) {
+                return {row, col};
+            }
+        }
+    }
+    return {-1, -1};
+}
+
+int main() {
+    int n;
+    while (std::cin >> n) {
+        std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
+        std::vector<int> rowMax(n, std::numeric_limits<int>::lowest());
+        std::vector<int> colMin(n, std::numeric_limits<int>::max());
+        for (int row = 0; row < n; ++row) {
+            for (int col = 0; col < n; ++col) {
+                int& value = matrix[row][col];
+                std::cin >> value;
+                rowMax[row] = std::max(rowMax[row], value);
+                colMin[col] = std::min(colMin[col], value);
+            }
+        }
+
+        const auto [row, col] = firstSaddle(matrix, rowMax, colMin);
+        if (row == -1) {
+            std::cout << "没有鞍点\n";
+        } else {
+            std::cout << row << ' ' << col << '\n';
+        }
+    }
+}
+```

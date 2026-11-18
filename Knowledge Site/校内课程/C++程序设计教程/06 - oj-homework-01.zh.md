@@ -24,6 +24,20 @@ ddl 26.10.4 ｜ A–F 共 6 题
 
 **边界**　两个字符之间不能有空格，末尾必须有换行。也可写成 `static_cast<char>(35)`。
 
+**原始代码**
+
+```cpp
+//输出ASC2码
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    cout<<char(35)<<char(110)<<endl;
+}
+```
+
 ## B
 
 **计算矩形周长和面积。** 读入矩形的长和宽，输出周长与面积，中间用空格分隔。原程序读一组，边长可以带小数。
@@ -33,6 +47,23 @@ ddl 26.10.4 ｜ A–F 共 6 题
 `double` 能读入带小数的边长。若以 `int` 读 `3.5 2`，第一次提取读到 `3`，第二次遇到小数点会失败。
 
 例如长 `3.5`、宽 `2` 时输出 `11 7`。若题面要求固定小数位，可用 `fixed` 和 `setprecision`。
+
+**原始代码**
+
+```cpp
+//计算矩形周长和面积
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    double a,b;
+    cin>>a>>b;
+    cout<<(2*(a+b))<<" "<<a*b<<endl;
+    return 0;
+}
+```
 
 ## C
 
@@ -78,6 +109,46 @@ int main() {
 
 把 `if / else` 收进一个条件表达式，是为了让「打什么」和「补不补分隔空格」两件事分开，循环体更短，边界判断也只有一处。
 
+**原始代码**
+
+```cpp
+//打印正方形
+//我不会，使用deepseek
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+
+    // 读入边长，并校验范围
+    cout << "请输入正方形的边长（1-20）：";
+    cin >> n;
+    while (n < 1 || n > 20) {
+        cout << "输入无效，请输入 1 到 20 之间的整数：";
+        cin >> n;
+    }
+
+    // 逐行打印
+    for (int i = 0; i < n; ++i) {          // i 表示行
+        for (int j = 0; j < n; ++j) {      // j 表示列（第几个星号位置）
+            // 第一行、最后一行、第一列、最后一列打印 '*'
+            if (i == 0 || i == n - 1 || j == 0 || j == n - 1)
+                cout << '*';
+            else
+                cout << ' ';
+
+            // 除了最后一列，每个位置后面加一个分隔空格
+            if (j != n - 1)
+                cout << ' ';
+        }
+        cout << endl;                      // 每行结束换行
+    }
+
+    return 0;
+}
+```
+
 ## D
 
 **数的奇偶判断（习题 2-2）。** 连续读入整数，偶数输出 `even`，奇数输出 `odd`，每个结果一行。当前代码读到文件结束为止。
@@ -99,6 +170,29 @@ while (cin >> a)
 
 每组 `O(1)`。
 
+**原始代码**
+
+```cpp
+//习题2-2
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int a;
+    while (cin>>a) {
+
+        if (a%2==0) {
+            cout<<"even"<<endl;
+        } else {
+        cout<<"odd"<<endl;
+        }
+    }
+    return 0;
+}
+```
+
 ## E
 
 **最小数。** 每组三个整数，输出其中的最小值，一行一个。
@@ -117,6 +211,26 @@ cout << (ab <= num3 ? ab : num3) << '\n';
 ```
 
 允许用 `<algorithm>` 时也可直接 `std::min({num1, num2, num3})`（C++11 的列表初始化重载）。每组 `O(1)`。
+
+**原始代码**
+
+```cpp
+//最小数
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int num1,num2,num3;
+    while (cin>>num1>>num2>>num3) {
+         int min;
+         min=(num1<=num2)?(num1<=num3?num1:num3):(num2<=num3?num2:num3) ;
+         cout<<min<<endl;
+    }
+
+}
+```
 
 ## F
 
@@ -150,6 +264,66 @@ string s;
 while (cin >> s) {
     for (int i = (int)s.size() - 1; i >= 0; --i)
         cout << s[i] << (i > 0 ? ' ' : '\n');
+}
+```
+
+**原始代码**
+
+```cpp
+//逆序输出
+
+#include <iostream>
+using namespace std;
+
+int main ()
+{
+    int n;
+    while (cin>>n) {
+        int a,b,c,d,e;
+        a=n/10000;
+        b=n/1000%10;
+        c=n/100%10;
+        d=n/10%10;
+        e=n%10;
+        cout<<e<<" "<<d<<" "<<c<<" "<<b<<" "<<a;
+    }
+
+}
+
+/*
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    while (cin >> n) {
+        for (int i = 0; i < 5; i++) {
+            cout << n % 10;
+            n /= 10;
+            if (i < 4) cout << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}
+*/
+```
+
+**优化版**　用取模和整除做固定五轮循环，并为每组补上换行。适用于题目描述中的五位非负整数。
+
+```cpp
+#include <iostream>
+
+int main() {
+    int number;
+    while (std::cin >> number) {
+        for (int i = 0; i < 5; ++i) {
+            if (i > 0) std::cout << ' ';
+            std::cout << number % 10;
+            number /= 10;
+        }
+        std::cout << '\n';
+    }
 }
 ```
 

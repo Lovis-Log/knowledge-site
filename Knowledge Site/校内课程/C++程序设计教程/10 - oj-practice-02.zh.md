@@ -35,6 +35,34 @@ displayNumber: "05"
 
 **边界**　`i = 10` 落在第三段（因为 `i < 10` 已为假），输出 `21.0000`；`i = 9` 输出 `18.0000`；`i = 49` 输出 `99.0000`；`i = 50` 输出 `75.0000`；`i = -1` 输出 `0.0000`。每组 `O(1)`。
 
+**原始代码**
+
+```cpp
+//分段函数计算
+
+#include <iostream>
+using namespace std;
+#include <iomanip>
+
+int main() {
+    int i;
+    double x;
+    while(cin>>i) {
+        if (i<0) {
+            x=0;
+        } else if(i<10) {
+            x=2*i;
+        } else if(i<50) {
+            x=2*i+1;
+        } else {
+            x=i/2+50;
+        }
+        cout<<fixed<<setprecision(4)<<x<<endl;
+    }
+    return 0;
+}
+```
+
 ## B
 
 **判断闰年。** 每组输入一个年份，按公历规则输出 `Y`（闰年）或 `N`（平年）。
@@ -44,6 +72,28 @@ displayNumber: "05"
 普通年份能被 4 整除就闰，整百年只有能被 400 整除才闰。第二个条件只可能对整百年为真，因此可合成 `(year % 4 == 0 && year % 100 != 0) || year % 400 == 0`。括号让前两个判断的分组更清楚。
 
 **边界**　`1900`：能被 4 整除但被 100 整除、又不被 400 整除，输出 `N`（这是最容易漏的例子）；`2000` 输出 `Y`；`2004` 输出 `Y`；`100` 输出 `N`。注意 `year % 400` 只对整百年起作用，对普通年份没有额外限制。
+
+**原始代码**
+
+```cpp
+//判断闰年
+
+#include <iostream>
+using namespace std;
+
+int main() {
+   int year;
+   while(cin>>year) {
+    if(year%4==0&&year%100!=0) {
+        cout<<"Y"<<endl;
+    } else if(year%400==0) {
+        cout<<"Y"<<endl;
+    } else {
+        cout<<"N"<<endl;
+    }
+   }
+}
+```
 
 ## C
 
@@ -56,6 +106,30 @@ displayNumber: "05"
 **循环怎么工作**　`while (cin >> n)` 一次处理一组，判完立刻输出，读到 EOF 自然结束，不需要先读组数。
 
 **边界**　`153` 满足 `1 + 125 + 27 = 153`，输出 `TRUE`；`370`、`371`、`407` 同样是水仙花数。`100` 的立方和是 `1`，输出 `FALSE`。`999` 的立方和是 `2187`，同样输出 `FALSE`——立方和可以超过三位数，所以不能用「和是否仍是三位数」来代替相等判断。
+
+**原始代码**
+
+```cpp
+//水仙花数
+
+#include<iostream>
+using namespace std;
+
+int main() {
+    int n,a,b,c;
+    while(cin>>n) {
+        a=n/100;
+        b=n/10%10;
+        c=n%10;
+
+        if(n==a*a*a+b*b*b+c*c*c) {
+            cout<<"TRUE"<<endl;
+         } else {
+            cout<<"FALSE"<<endl;
+         }
+    }
+}
+```
 
 ## D
 
@@ -82,6 +156,32 @@ while (cin >> i) {
 
 `continue` 只跳过本组输出，回到 `while` 继续读下一组，不必为越界再套一层大 `if`。
 
+**原始代码**
+
+```cpp
+//成绩转换
+
+#include<iostream>
+using namespace std;
+
+int main() {
+    int i;
+    while(cin>>i) {
+        if (i<=100&&i>=90) {
+            cout<<"A"<<endl;
+        } else if(i>=80&&i<=89) {
+            cout<<"B"<<endl;
+        } else if(i>=70&&i<=79) {
+            cout<<"C"<<endl;
+        } else if(i>=60&&i<=69) {
+            cout<<"D"<<endl;
+        } else if(i>=0&&i<=59) {
+            cout<<"E"<<endl;
+        }
+    }
+}
+```
+
 ## E
 
 **百位个位交换输出。** 输入三位正整数，交换百位和个位、十位不动，输出交换后的数。
@@ -103,6 +203,25 @@ cout << setw(3) << setfill('0') << (100*c + 10*b + a) << '\n';
 `setw(3)` 只在不足三位时补 `0`，`setfill('0')` 是流上的持久设置，后面所有输出都会沿用，若同一份代码还要打印别的数，记得改回空格。前一种写法最省事，也不需要 `<iomanip>`。
 
 **边界**　`123` → `321`；`120` → `21`（或 `021`）；`100` → `1`（或 `001`）；`101` → `101`（回文，结果与原数相同）；`110` → `11`（或 `011`）。每组 `O(1)`。
+
+**原始代码**
+
+```cpp
+//百位个位交换输出
+
+#include<iostream>
+using namespace std;
+
+int main() {
+    int n,a,b,c;
+    while(cin>>n) {
+        a=n/100;
+        b=n/10%10;
+        c=n%10;
+        cout<<(100*c+10*b+a)<<endl;
+    }
+}
+```
 
 ## F
 
@@ -139,6 +258,33 @@ if (profit > lo) bonus += (profit - lo) * 0.01;
 ```
 
 对非负利润，每轮只处理 `[lo, hi]` 内属于本档的部分。40 万以上按 1% 计算全部剩余利润。`std::min` 在 `<algorithm>` 中。
+
+**原始代码**
+
+```cpp
+//计算企业的奖金
+
+#include<iostream>
+using namespace std;
+
+int main() {
+    double profit,bonus;
+    while(cin>>profit) {
+        if(profit<=100000) {
+            bonus=profit*0.1;
+        } else if(100000<profit&&profit<=200000) {
+            bonus=10000+(profit-100000)*0.07;
+        } else if(200000<profit&&profit<=400000) {
+            bonus=17000+(profit-200000)*0.04;
+        } else if(profit>400000) {
+            bonus=25000+(profit-400000)*0.01;
+        }
+        cout<<bonus<<endl;
+    }
+
+    return 0;
+}
+```
 
 ## 待确认清单
 

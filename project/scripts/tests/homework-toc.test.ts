@@ -68,6 +68,15 @@ test("C++ OJ outlines retain all lettered questions and their anchors", () => {
     assert.deepEqual(ids, letters.map((letter) => "zh-" + letter.toLowerCase()));
     chapterAnchors.set(chapter.slug, new Set(ids));
     assert.deepEqual(chapter.sources, []);
+    const questions = body.split(/^## [A-Z]\r?$/m).slice(1);
+    assert.equal(questions.length, letters.length, chapter.slug);
+    for (const [questionIndex, question] of questions.entries()) {
+      assert.match(
+        question,
+        /\*\*原始代码\*\*\s*\x60{3}cpp\r?\n[\s\S]*?\bmain\s*\([\s\S]*?\x60{3}/,
+        chapter.slug + " question " + letters[questionIndex],
+      );
+    }
     assert.match(body, /\*\*来源\*\*　课后作业/);
   }
 

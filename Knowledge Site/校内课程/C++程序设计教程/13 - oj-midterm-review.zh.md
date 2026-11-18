@@ -32,6 +32,53 @@ displayNumber: "08"
 - 输入保证日期与星期合法，代码未做校验；起始日是周末且 `k>0` 时，会先走到下周一才计第一个工作日。
 - 逐日推进的时间是 $O(k)$。当 `k > 0` 且很大时，可以先跳过 `(k - 1) / 5` 个完整星期，每周扣掉五个工作日，再逐日找余下的 1 到 5 个工作日。保留至少一个工作日逐日查找，避免从周末出发且 `k` 恰好是五的倍数时跳过目标日期。
 
+**原始代码**
+
+```cpp
+/*题目描述
+某实验室只在星期一至星期五开放,星期六、星期日休息,不考虑法定节假日。给定起始日期及其星期,求从次日开始数,第k个工作日的日期及星期。
+起始日期本身不计入;只有星期一至星期五才计入工作日。若k为0,直接输出起始日期及星期,即使起始日是周末也不改变。
+按公历计算:能被400整除,或能被4整除但不能被100整除的年份是闰年,2月有29天;其余年份的2月有28天。1、3、5、7、8、10、12月有31天,其余月份有30天。*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int y,m,d,w,k;
+    while(cin>>y>>m>>d>>w>>k) {
+         int md[13]={0,31,28,31,30,31,30,31,31,30,31,30,31};
+         if(y%400==0||(y%4==0&&y%100!=0)) {
+            md[2]=29;
+         }
+
+        while(k>0) {
+            d++;
+            w++;
+            if(d>md[m]) {
+                m++;
+                d=1;
+            }
+            if(w>7) {
+                w=1;
+            }
+            if(m>12) {
+                m=1;
+                y++;
+                md[2]=28;
+                if(y%400==0||(y%4==0&&y%100!=0)) {
+                    md[2]=29;
+                }
+            }
+            if(1<=w&&w<=5) {
+                k--;
+        }
+
+    }
+     cout<<y<<" "<<m<<" "<<d<<" "<<w<<endl;
+}
+}
+```
+
 ## B
 
 **数位平衡数统计**
@@ -46,6 +93,46 @@ displayNumber: "08"
 
 - 题面说“正整数”，但若区间包含 0，拆位循环不执行，`odd==even==0`，代码会把 0 计入；**待确认** `L` 是否保证 ≥1。
 - `sum` 用 `int`。平衡数密度不算低，区间上限到 1e6 时总和可能超过 `int`；题面未给 `L,R` 范围，**待确认**。范围大时应改用 `long long`，更大则需按位 DP 统计（同时维护个数与和），复杂度只与数位长度相关。
+
+**原始代码**
+
+```cpp
+/*题目描述
+对于一个正整数,将其数位从右往左依次编号为第1位、第2位、第3位 .…. 若该数所有奇数位上的数字之和,等于所有偶数位上的数字之和,则称其为“数位平衡数”。例如:121的第1位是1、第3位是1,奇数位和为2;第2位是2,
+偶数位和为2,因此121是数位平衡数。给定整数区间[L,R],请统计区间内数位平衡数的总个数,以及所有数位平衡数的总和。*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int L,R;
+    while(cin>>L>>R) {
+        int sum=0,count=0;
+        for(int i=L;i<=R;i++) {
+            int position=1;
+            int odd=0,even=0;
+            int n=i;
+            while(n>0) {                        //i是循环变量，不能直接放进这个while
+                if(position%2==1) {
+                        odd+=n%10;
+                        n/=10;
+                        position++;
+                    } else {
+                        even+=n%10;
+                        n/=10;
+                        position++;
+                    }
+            }
+            if(odd==even) {
+                count++;
+                sum+=i;
+            }
+        }
+        cout<<count<<endl;
+        cout<<sum<<endl;
+    }
+}
+```
 
 ## C
 
@@ -64,6 +151,61 @@ displayNumber: "08"
 - 源文件括号内的上下界关系转录不清。当前实现遍历闭区间，`a == b` 时检查一个数。
 - 0 的数位和为 0，会被判成好数；题面限定正整数，不影响。
 - 枚举 $b-a+1$ 个数，每个数再拆位。如果区间非常大，可以分别统计不超过 `b` 与不超过 `a - 1` 的正好数，再相减。数位 DP 只需记录当前位、前缀是否紧贴上界和数位和模 6 的余数。补前导零不会改变数位和，最后排除数值 0。
+
+**原始代码**
+
+```cpp
+/*题目描述
+给定两个正整数a和b(asb),若一个整数满足以下两个条件,则称为“好数”:
+1. 该数能被3整除;
+2.该数各位数字之和为偶数。
+请统计区间[a,b]中“好数”的个数。
+有多组测试数据。
+要求:
+根据提示中的主函数,补充digitSum、isGood、countGood 函数的定义,使主函数正确执行。
+函数原型:
+'int digitSum(int n);
+//计算一个正整数的各位数字之和
+bool isGood(int n);
+//判断一个正整数是否为“好数”
+int countGood(int a, int b);
+II统计区间[a,b]中“好数”的个数*/
+
+#include <iostream>
+using namespace std;
+
+int digitSum(int n) {
+    int sum=0;
+    while(n>0) {
+        sum+=n%10;
+        n/=10;
+    }
+    return sum;
+}
+
+bool isGood(int n) {
+    if(digitSum(n)%6==0) {
+        return 1;
+    } else return 0;
+}
+
+int countGood(int a,int b) {
+    int count=0;
+    for(int i=a;i<=b;i++) {
+        if(isGood(i)==1) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int a,b;
+    while(cin>>a>>b) {
+        cout<<countGood(a,b)<<endl;
+    }
+}
+```
 
 ## D
 
@@ -84,6 +226,70 @@ displayNumber: "08"
 - `readID` 读到 EOF 返回 -1；17 位正整数不可能是 -1，哨兵安全。若一行不足 17 个字符，已读的部分会被丢弃并结束循环，属于非法输入，代码不处理。
 - 前 17 位允许前导 0，转成整数会丢前导零，但拆位时高位补 0，加权结果不变。
 
+**原始代码**
+
+```cpp
+/*题目描述
+给定一个18位身份证号,判断其最后一位校验码是否正确。
+身份证号的前17位均为数字,最后一位为数字或大写字母X。校验码的计算规则如下:
+将前17位数字从左到右分别乘以对应的权重,再将所得乘积相加。权重依次为:
+7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 20
+将上述乘积之和对11取余。余数为0~10时,对应的校验码依次为:
+1, 0, X, 9, 8, 7, 6, 5, 4, 3, 20
+若身份证号的最后一位与计算得到的校验码相同,则输出“正确”;否则输出“错误”。
+例如:[样例号码已省略]的校验码正确;[样例号码已省略] 的校验码错误。
+有多组测试数据。
+要求:
+根据提示中的主函数,补充readID、checkID函数的定义,使主函数正确执行。
+函数原型:
+bool checkID(long long n,char c);//判断前17位数字与末位校验码是否匹配
+long long readID();//读取前17位数字并返回对应整数;输入结束时返回-1
+其中,n为身份证号前17位数字所表示的非负整数,c为最后一位校验码。*/
+
+
+#include <iostream>
+using namespace std;
+
+long long readID() {
+    long long n=0;
+    char ch;
+    for(int i=1;i<=17;i++) {
+        if(cin>>ch) {
+            n=n*10+(ch-'0');
+        } else return -1;
+    }
+    return n;
+}
+
+bool checkID(long long n,char c) {
+    int weight[18]={0,7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2};
+    char code[11]={'1','0','X','9','8','7','6','5','4','3','2'};
+    int digit[17];
+    int sum=0;
+    for(int i=16;i>=0;i--) {
+        digit[i]=n%10;
+        n/=10;
+    }
+    for(int k=1;k<=17;k++) {
+        sum+=weight[k]*digit[k-1];
+    }
+    char co;
+    co=code[sum%11];
+    if(co==c) {
+        return 1;
+    } else return 0;
+}
+
+int main() {
+    long long n;
+    char c;
+    while((n=readID())!=-1) {             //这里其实同时做了两件事：1. 执行 readID()，把返回值赋给 n   2. 判断 n 是否不等于 -1。
+        cin>>c;
+        cout<<(checkID(n,c)?"正确":"错误")<<endl;
+    }
+}
+```
+
 ## E
 
 **连续数字段**
@@ -99,6 +305,42 @@ displayNumber: "08"
 - `n=0` 时循环不执行，输出 `1 1`；题面只说正整数，**待确认**是否会出现 0。
 - `n` 用 `int`，最多表示 10 位；若数据可能超过 2^31−1，需改 `long long`。题面未给范围，**待确认**。
 - 输出格式为段数与最长长度，空格分隔，每组一行。
+
+**原始代码**
+
+```cpp
+/*题目描述
+把一个正整数从高位到低位观察,连续相同的数字构成一个数字段。例如,122233100可以分为1、222、33、1、00共5段,其中最长数字段的长度为3。编写程序,输出数字段的总数和最长数字段的长度。
+注意:测试数据有多组*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    while(cin>>n) {
+        int count=1;
+        int len=1,maxlen=1;
+        int last=n%10;
+        n/=10;
+        while(n>0) {
+            int digit=n%10;
+            if(digit==last) {
+                len++;
+            } else {
+                count++;
+                len=1;
+            }
+            if(len>maxlen) {
+                maxlen=len;
+            }
+            last=digit;
+            n/=10;
+        }
+        cout<<count<<" "<<maxlen<<endl;
+    }
+}
+```
 
 ## F
 
@@ -117,3 +359,54 @@ displayNumber: "08"
 - `m>n` 时循环不执行，输出 `none`，题面未说明这种输入。
 - 反转用 `int`：接近 `INT_MAX` 的 10 位数反转后可能超过 `int` 上限（如 `1999999999` 反转得 `9999999991`），产生溢出。若数据范围可能到 1e9 以上，反转变量应改 `long long`。题面未给范围，**待确认**。
 - 区间很大时，可枚举左半部分并镜像生成回文，再对生成的候选判素数。偶数位回文数的奇偶位置数位和相等，因此都能被 11 整除，可以跳过这类候选，单独保留素数 `11`。
+
+**原始代码**
+
+```cpp
+/*题目描述
+如果一个正整数从左向右读和从右向左读完全相同,则称它为回文数。素数是大于1且只有1和自身两个正因子的整数。编写程序,输出给定闭区间[m,n]内所有既是回文数又是素数的整数。
+注意:测试数据有多组*/
+
+#include <iostream>
+using namespace std;
+
+bool prime(int n) {
+    if(n<2) {
+        return 0;
+    }
+    for(int i=2;i*i<=n;i++) {
+        if(n%i==0) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+bool huiwen(int n) {
+    int original=n;
+    int reverse=0;
+    while(n>0) {
+        reverse=reverse*10+n%10;
+        n/=10;
+    }
+    if(reverse==original) {
+        return 1;
+    } else return 0;
+}
+
+int main() {
+    int m,n;
+    while(cin>>m>>n) {
+        int count=0;
+        for(int i=m;i<=n;i++) {
+            if(prime(i)==1&&huiwen(i)==1) {
+                cout<<i<<" ";
+                count++;
+            }
+        }
+        if(count==0) {
+            cout<<"none"<<endl;
+        }
+    }
+}
+```

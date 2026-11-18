@@ -20,6 +20,32 @@ displayNumber: "06"
 
 代码用默认输出精度，通常为 6 位有效数字。`x = 0` 时分子为 `sh(1) > 0`，分母为 0，公式没有定义。常见浮点环境下会输出 `inf`。**待确认**　题目是否排除 `x = 0`。
 
+**原始代码**
+
+```cpp
+/*题目描述
+已知y=sh(1+sh(x))/(sh(2*x)+sh(3*x)),其中sh为双曲正弦函数,即sh(t)=(e^t-e^-t)/2,
+编写一个程序,输入x的值,求y的值。注意:测试数据有多组输入,x、y的数值
+类型都为double类型。*/
+
+#include <iostream>
+using namespace std;
+#include <cmath>
+
+inline double sh(double t) {
+    return (exp(t)-exp(-t))/2;
+}
+
+int main() {
+    double x;
+    while(cin>>x) {
+        double y;
+        y=sh(1+sh(x))/(sh(2*x)+sh(3*x));
+        cout<<y<<endl;
+    }
+}
+```
+
 ## B
 
 **求和运算**
@@ -40,6 +66,173 @@ $$
 - 公式要求分母非零。`p = 0` 时如何处理，截图未指定。
 - 主版本在各部分算完后才判，`long long` 也可能先溢出。每一项非负时，累加途中一旦超过 `INT_MAX`，之后只会更大，可以立即退出。若输入范围不能保证项本身算得出来，还要在每次乘法前判断 `power > INT_MAX / i`。
 
+**原始代码**
+
+```cpp
+/*题目描述
+输入m、n和p的值,求s=1+2+…+m+13+23+…+n3的值。注意判15 +23+ ... +p3断运算中的溢出。
+注意:测试数据有多组输入。提示:int类型的最大值可以用INT_MAX表示,需要#include<climits>，
+单独的次方运算保证不会溢出。保留四位小数需要#include<iomanip>,可以参考代码:
+cout << fixed << setprecision(4) << s <<endl;
+*/
+
+#include <iostream>
+using namespace std;
+#include <iomanip>
+#include<climits>
+
+long long sum1(int m) {       //防止在加的过程中溢出，直接定义long long
+    long long sum=0;          //sum要定义在for循环之外，加法一定要初始化sum为0！！！
+    for (int i=1;i<=m;i++) {
+        sum+=(long long)i;
+    }
+        return sum;        //return放在for循环之外
+}
+
+long long sum3(int n) {
+    long long sum=0;
+    for(int i=1;i<=n;i++) {
+        sum+=(long long)i*i*i;         //3个 int 相乘，结果还是 int，不会自动变成 long long。过程中可能溢出
+    }
+        return sum;
+}
+
+long long sum5(int p) {
+     long long sum=0;
+    for(int long long i=1;i<=p;i++) {
+        sum+=(long long)i*i*i*i*i;
+    }
+        return sum;
+}
+
+int main() {
+    int a,b,c;
+    while(cin>>a>>b>>c) {
+        long long x,y,z,s;
+        double res;
+        x=sum1(a);
+        y=sum3(b);
+        z=sum5(c);
+        s=x+y;
+
+        if (x>INT_MAX || y>INT_MAX || z>INT_MAX|| s>INT_MAX) {   //一次性枚举出所有溢出情况，使代码更简洁
+            cout << "Overflow" << endl;
+            continue;
+        }
+            res=(double)s/z;    //s and t都是int，会先做整数除法，所以需要做类型转换
+
+        cout<<fixed<<setprecision(4)<<res<<endl;
+    }
+}
+
+
+
+/*
+#include <iostream>
+#include <iomanip>   // 用于格式化输出
+#include <climits>   // 用于使用 INT_MAX
+
+using namespace std;
+
+int main() {
+    int m, n, p;
+
+    // 处理多组输入
+    while (cin >> m >> n >> p) {
+        long long numerator = 0;   // 使用 long long 防止中间累加过程溢出
+        long long denominator = 0; // 虽然题目分母是 p^5，但用 long long 更安全
+        bool isOverflow = false;
+
+        // 1. 计算分子：(1 + 2 + ... + m) + (1^3 + 2^3 + ... + n^3)
+        // 计算 1 到 m 的和
+        for (int i = 1; i <= m; ++i) {
+            numerator += i;
+            if (numerator > INT_MAX) { // 检查是否超过 int 最大值
+                isOverflow = true;
+                break;
+            }
+        }
+
+        // 如果没有溢出，继续累加 1 到 n 的立方和
+        if (!isOverflow) {
+            for (int i = 1; i <= n; ++i) {
+                // 注意：这里不能直接写 i*i*i，因为 i 可能很大，i*i*i 会在计算过程中作为 int 溢出
+                // 应该将其转换为 long long 进行乘法
+                long long cube = (long long)i * i * i;
+                numerator += cube;
+                if (numerator > INT_MAX) {
+                    isOverflow = true;
+                    break;
+                }
+            }
+        }
+
+        // 2. 计算分母：1^5 + 2^5 + ... + p^5
+        if (!isOverflow) {
+            for (int i = 1; i <= p; ++i) {
+                // 同样，使用 long long 进行乘法防止计算 i^5 时溢出
+                long long power5 = (long long)i * i * i * i * i;
+                denominator += power5;
+                if (denominator > INT_MAX) {
+                    isOverflow = true;
+                    break;
+                }
+            }
+        }
+
+        // 3. 输出结果
+        if (isOverflow) {
+            cout << "Overflow" << endl;
+        } else {
+            // 题目要求 s 类型为 double，保留四位小数
+            double s = (double)numerator / denominator;
+            cout << fixed << setprecision(4) << s << endl;
+        }
+    }
+
+    return 0;
+}
+*/
+```
+
+**优化版**　随算随查。只有乘法与累加均未超过 INT_MAX 才继续，三个原题样例的输出与题面一致。按公式有定义的输入范围处理。
+
+```cpp
+#include <climits>
+#include <iomanip>
+#include <iostream>
+
+bool addPowers(int last, int exponent, long long& total) {
+    for (long long base = 1; base <= last; ++base) {
+        long long term = 1;
+        for (int i = 0; i < exponent; ++i) {
+            if (term > INT_MAX / base) return false;
+            term *= base;
+        }
+
+        if (total > INT_MAX - term) return false;
+        total += term;
+    }
+    return true;
+}
+
+int main() {
+    int m, n, p;
+    std::cout << std::fixed << std::setprecision(4);
+    while (std::cin >> m >> n >> p) {
+        long long numerator = 0;
+        long long denominator = 0;
+        if (!addPowers(m, 1, numerator) || !addPowers(n, 3, numerator)
+            || !addPowers(p, 5, denominator)) {
+            std::cout << "Overflow\n";
+            continue;
+        }
+
+        std::cout << static_cast<double>(numerator) / denominator << '\n';
+    }
+}
+```
+
 ## C
 
 **算数游戏**
@@ -59,6 +252,125 @@ $$
 - 第一行整数 `t` 表示练习轮数，这一点在题面截断的文字里没有明确，是从代码读出的，**待确认**。
 - 难度 1 时 0 是合法操作数；除法分支已排除除数为 0。输入除 `N/n` 以外字符时代码按继续处理。
 
+**原始代码**
+
+```cpp
+/*题目描述
+用线性同余法生成随机数序列的公式为rk=(multiplierx rk-1 + increment)% modulus,序列中的每个数rk都可以由它
+的前一个数rk-1计算出来。例如,如果有rk=(25173×rk-1+13849)%65536,则可以产生65536个各不相同的整型随机数。设
+计一个函数作为随机数生成器,生成1位或2位的随机数。利用这个随机数生成器,编写一个小学生学习四则运算的练习程序,要求:
+(1)可以进行难度选择,一级难度只用1位数(0-9),二级难度用2位数(10-99);
+(2)可以选择运算类型,包括加、减、乘、除等;
+(3)给出错误提示;
+(4)每次练习10道题,一题10分,可以统计成绩。
+补充说明:
+(1)生成每道题都需要两个随机数,rk的初始值ro=0,按照公式r1=(25173×0+ 13849) % 65536 = 13849, r2 = (25173×13849 + 13849)% 65536=48742 ... 直
+到它是一个1位数或者2位数(根据难度要求),则用来作为运算数。接着继续生成另一个运算数。如果有多次练习也不需要把r重新置0,而是继续带入公式生成。
+(2)如果是减法,需要保证被减数大于减数;如果是除法,需要保证结果是整数。如果生成的两个随机数不符合要求,则重新按照(1)的方式在之前的rk的基础上继续
+生成两个随机数,直到符合要求。
+(3)样例输出可以参考下图,输出的语句可以复制样例输出,输入Y继续流程,输入N会直接进入下一轮,重新输出Start Now?(Y or N)*/
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    long long r = 0;
+    int t;
+    cin >> t;
+
+    for (int k = 1; k <= t; k++) {
+        char start, op;
+        int difficulty;
+        int a, b, answer, input;
+        int score = 0;
+
+        cout << "Start now? (Y or N)" << endl;
+        cin >> start;
+
+        if (start == 'N' || start == 'n')
+            continue;
+
+        cout << "Please enter difficulty (1 or 2):" << endl;
+        cin >> difficulty;
+
+        while (difficulty != 1 && difficulty != 2) {
+            cout << "Input error, please re-enter!" << endl;
+            cin >> difficulty;
+        }
+
+        cout << "Please enter type of operation (+, -, *, /):" << endl;
+        cin >> op;
+
+        while (op != '+' && op != '-' &&
+               op != '*' && op != '/') {
+            cout << "Input error, please re-enter!" << endl;
+            cin >> op;
+        }
+
+        for (int i = 1; i <= 10; i++) {
+
+            while (true) {
+
+                // 生成第一个符合难度的随机数
+                do {
+                    r = (25173 * r + 13849) % 65536;
+                } while ((difficulty == 1 && r > 9) ||
+                         (difficulty == 2 && r < 10) ||
+                         (difficulty == 2 && r > 99));
+
+                a = r;
+
+                // 生成第二个符合难度的随机数
+                do {
+                    r = (25173 * r + 13849) % 65536;
+                } while ((difficulty == 1 && r > 9) ||
+                         (difficulty == 2 && r < 10) ||
+                         (difficulty == 2 && r > 99));
+
+                b = r;
+
+                if (op == '+') {
+                    answer = a + b;
+                }
+                else if (op == '-') {
+                    if (a <= b)
+                        continue;
+
+                    answer = a - b;
+                }
+                else if (op == '*') {
+                    answer = a * b;
+                }
+                else {
+                    if (b == 0 || a % b != 0)
+                        continue;
+
+                    answer = a / b;
+                }
+
+                break;
+            }
+
+            cout << a << op << b << "=" << endl;
+            cin >> input;
+
+            if (input == answer) {
+                cout << "You're right, get 10 points." << endl;
+                score += 10;
+            }
+            else {
+                cout << "answer incorrectly." << endl;
+            }
+        }
+
+        cout << "Your grades are: " << score << endl;
+    }
+
+    return 0;
+}
+```
+
 ## D
 
 **勒让德多项式**
@@ -77,6 +389,73 @@ $$
 - 用 `float` 只有约 7 位有效数字，`n` 大时误差累积，建议 `double`。
 - 朴素递归会重复计算同一阶。题目明确要求递归时，可记忆化，使时间和空间都降为 $O(n)$，其中空间含递归栈。允许迭代时，从 $P_0$、$P_1$ 向前推即可，时间 $O(n)$，额外空间 $O(1)$。
 
+**原始代码**
+
+```cpp
+/*题目描述
+已知勒让德多项式
+编写程序,从键盘输入x和n的值,使用递归函数求pn(x)的值。注意:测试数据有多组输入
+提示:答案保留2位小数,需要#include<iomanip>,可以参考代码:
+cout << fixed << setprecision(2) << pn<< endl;*/
+
+#include <iostream>
+using namespace std;
+#include<iomanip>
+
+float legendre(float x,int n) {
+    if(n==0) {
+        return 1.0;    //初始化为浮点数，加上小数点,下方同理
+    } else if(n==1) {
+        return x;
+    } else {
+        return ((2.0*n-1.0)*legendre(x,n-1)-(n-1.0)*legendre(x,n-2))/n;
+    }
+}
+
+int main() {
+    float x;
+    int n;
+
+    while(cin>>x>>n) {
+        float res;
+        res=legendre(x,n);
+        cout<<fixed<<setprecision(2)<<res<<endl;
+    }
+}
+```
+
+**优化版**　按标准勒让德公式补回乘数 `x`，保留递归并缓存每一阶的结果。每次输入重新建表，复杂度由指数级降到 $O(n)$。
+
+```cpp
+#include <iomanip>
+#include <iostream>
+#include <optional>
+#include <vector>
+
+using Memo = std::vector<std::optional<double>>;
+
+double legendre(int n, double x, Memo& memo) {
+    if (n == 0) return 1.0;
+    if (n == 1) return x;
+    if (memo[n]) return *memo[n];
+
+    const double previous = legendre(n - 1, x, memo);
+    const double earlier = legendre(n - 2, x, memo);
+    memo[n] = ((2.0 * n - 1.0) * x * previous - (n - 1.0) * earlier) / n;
+    return *memo[n];
+}
+
+int main() {
+    double x;
+    int n;
+    std::cout << std::fixed << std::setprecision(2);
+    while (std::cin >> x >> n) {
+        Memo memo(n + 1);
+        std::cout << legendre(n, x, memo) << '\n';
+    }
+}
+```
+
 ## E
 
 **猜数游戏**
@@ -86,6 +465,45 @@ $$
 思路：维护可行区间 `[low, high]`，每轮猜 `(low+high)/2`；收到 1 就把 `high` 调到 `guess-1`，收到 -1 就把 `low` 调到 `guess+1`，收到 0 输出 `count` 并 `break`。1000 个候选最多 10 次必中（`log2(1000)<10`）。
 
 边界：固定文案里的全角标点和空格要跟样例完全一致，否则会被判错；代码是照样例抄的。若玩家回答自相矛盾，循环会因 `low>high` 结束且不再输出，属非法输入，题面未要求处理。
+
+**原始代码**
+
+```cpp
+/*题目描述
+猜数游戏。玩家想好了一个1~1000的整数,由计算机来猜这个数。如果计算机猜出的数比玩家想的数大,则玩家输入1;如果计算
+机猜出的数比玩家想的数小,则玩家输入-1;这个过程一直进行到计算机猜中为止,玩家输入0。
+提示:程序需要先输出一个猜测值然后才输入(0,1或者-1)。程序使用二分搜索来猜测,即每次都选择可能取值范围的中间值
+作为猜测数字,由于初始范围是1到1000,所以先输出500。如果猜测值 500大于玩家所想的数字,则输入1,然后程序
+从[1,499](闭区间)中继续二分搜索;如果如果猜测值500小于玩家所想的数字,则从[501,1000](闭区间)中继续二分搜索。依
+次类推,直到猜中为止。样例的运行结果如下,假如你自己想的是125:*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int low=1,high=1000;
+    int k;
+    int count=0;
+    cout<<"请你想好一个 1～1000 之内的整数，别告诉我，让我来猜猜！"<<endl;
+    cout<<"猜中了，请输入0；若猜的数小了， 请输入-1；若猜的数大了，请输入1"<<endl;
+    cout<<"开始猜了……"<<endl;
+    while(low<=high) {                    //循环条件不好想！！！
+        int guess=(low+high)/2;           //二分法，后面动态调整low and high
+        count++;
+        cout<<"是 "<<guess<<" 吗？"<<endl;
+        cin>>k;
+        if(k==1) {
+            high=guess-1;
+                                        //continue;没有必要加，因为该代码执行完后，循环内已经没有剩余代码需要执行
+        } else if(k==-1) {
+            low=guess+1;
+        } else if(k==0) {
+            cout<<"我猜中啦！只猜了 "<<count<<" 次，很强吧！"<<endl;
+            break;            //猜对了立马退出循环
+        }
+    }
+}
+```
 
 ## F
 
@@ -100,6 +518,66 @@ $$
 - `minprice` 用 `unsigned int` 哨兵 `999999999`。如果首日实际价格比这个哨兵高，代码可能算出一笔不存在的获利。可先读第一天的价格，以它初始化最低价，从第二天开始更新利润。
 - 价格相等时只更新最低价、不产生利润，结果仍为 0，符合“没有可能获利输出 0”。
 - 有无符号混用：`price` 是 `int`、`minprice` 是 `unsigned`，比较时会把 `price` 转成无符号；价格非负时没有问题。
+
+**原始代码**
+
+```cpp
+/*题目描述
+假设现在你拥有一支股票一周的价格序列,第i天的股票价格位于序列的第i个位置,现在你只允许做一次交易,也就是说只
+能先买入再卖出股票(卖出的时间要晚于买入的时间)。请设计程序找出最佳交易时机使得获利最大化。输出最大的获利结
+果。如果没有可能获利,输出0。*/
+
+#include <iostream>
+using namespace std;
+#include <algorithm>         //为了使用max函数
+
+int main() {
+    int T;
+    cin>>T;
+    while(T--) {
+        int price;
+        unsigned int minprice=999999999;   //第一个输入的price必然被赋进minprice
+        int maxprofit=0;                  //如果没获利输出0，重要思想：一旦获利就替换掉初始值
+        for(int i=1;i<=7;i++) {
+        cin>>price;                       //一次for循环读取一个price,实现读取一周中每一天价格
+            if(price<=minprice) {
+                minprice=price;           //从左往右一次找比前一个数小的price
+            } else {
+            int profit=price-minprice;
+            maxprofit=max(maxprofit,profit);
+            }
+        }
+        cout<<maxprofit<<endl;
+    }
+}
+```
+
+**优化版**　用第 1 天的真实价格初始化最低价。每天先计算用此前最低价买入的收益，再更新最低价。
+
+```cpp
+#include <algorithm>
+#include <iostream>
+
+int main() {
+    int cases;
+    if (!(std::cin >> cases)) return 0;
+    for (int i = 0; i < cases; ++i) {
+        long long lowest;
+        std::cin >> lowest;
+        long long best = 0;
+
+        for (int day = 2; day <= 7; ++day) {
+            long long price;
+            std::cin >> price;
+
+            best = std::max(best, price - lowest);
+            lowest = std::min(lowest, price);
+        }
+
+        std::cout << best << '\n';
+    }
+}
+```
 
 ## G
 
@@ -124,6 +602,84 @@ for (int i = 1; i <= n; ++i)
 
 - 本地代码把函数写成 `long long` 返回并用小写名。题面给出了 `int Fabricate(int,int)` 和 `int Multi(int,int)`，还要求两者有调用关系。提交时按指定接口实现，边乘边除可作为理解溢出问题的补充。
 
+**原始代码**
+
+```cpp
+/*题目描述
+给定求组合数公式为C1:
+m!
+n!(m-n)!'
+编写程序,输入两个整数m和n的值,求C”m的值。注意优化算法,降低溢出可能。
+要求:主函数调用以下函数求组合数。int Fabricate(int m,int n);//返回组合数
+的值在Fabricate函数中内需调用Multi函数int Multi(int m, int n);//返回m*(m-
+1) *...* n注意:测试数据有多组输入*/
+
+#include <iostream>
+using namespace std;
+
+long long multi(int m,int n) {
+    long long product=1;
+    for(n;n<=m;n++) {
+        product*=(long long)n;
+     }
+    return product;
+}
+
+long long fabricate(int a,int b) {
+    long long c,d;
+    c=multi(a,(a-b+1));
+    d=multi(b,1);
+    return c/d;
+}
+
+int main() {
+    int in1,in2;
+    while(cin>>in1>>in2) {
+        if(in2>(in1-in2)) {
+            in2=in1-in2;
+        }
+        int res;
+        res=(int)fabricate(in1,in2);
+        cout<<res<<endl;
+    }
+}
+
+
+/*
+#include <iostream>
+using namespace std;
+
+// 声明函数
+int Fabricate(int m, int n);
+
+int main() {
+    int m, n;
+    // 注意：题目要求有多组输入
+    while (cin >> m >> n) {
+        cout << Fabricate(m, n) << endl;
+    }
+    return 0;
+}
+
+// 计算组合数 C(m, n)
+int Fabricate(int m, int n) {
+    // 优化1：利用对称性 C(m, n) = C(m, m-n)，让 n 尽可能小
+    if (n > m - n) {
+        n = m - n;
+    }
+
+    int result = 1;
+    // 优化2：边乘边除，防止中间结果溢出
+    // 公式：C(m, n) = (m * (m-1) * ... * (m-n+1)) / n!
+    // 我们循环 n 次，每次乘一个分子上的数，同时除以一个分母上的数
+    for (int i = 1; i <= n; ++i) {
+        result = result * (m - i + 1) / i;
+    }
+    return result;
+}
+*/
+```
+
 ## H
 
 **美素数**
@@ -137,6 +693,63 @@ for (int i = 1; i <= n; ++i)
 - 1 不是素数，代码已排除；各位数字和为 1 也不可能通过素数判断。
 - 多组区间若很大或大量重叠，逐个试除的总代价是 O(T·(R-L)·√R)。若 `R` 达 1e6 量级、`T` 很大，可先筛素数，再预处理“美素数”的前缀个数，使每组查询 O(1)。题面未给数据范围，**待确认**。
 - `L>R` 时循环不执行、输出 0，题面未说明这种输入。
+
+**原始代码**
+
+```cpp
+/*题目描述
+小明对数的研究比较热爱,一谈到数,脑子里就涌现出好多数的问题,今天,小明想考考你对素数的认识。问题是这样的:
+一个十进制数,如果是素数,而且它的各位数字和也是素数,则称之为“美素数”,如29,本身是素数,而且2+9=11也是
+素数,所以它是美素数。给定一个区间,你能计算出这个区间内有多少个美素数吗?*/
+
+#include <iostream>
+using namespace std;
+
+bool prime(int n) {
+    if(n<=1) {             //注意排除1不是素数
+        return 0;
+    }
+    for(int i=2;i*i<=n;i++) {    //注意i从2开始
+        if(n%i==0) {
+            return 0;
+        }
+    }
+            return 1;
+
+ }
+
+
+int digitsum(int n) {
+    int sum=0;           //注意sum要定义在while循环外部。不然第二次循环后sum清零
+    while(n>0) {
+        int x;
+        x=n%10;
+        n=n/10;
+        sum+=x;
+    }
+    return sum;
+}
+
+int main() {
+    int T;
+    if(cin>>T) {
+        for(int i=1;i<=T;i++) {
+             int L,R;
+             cin>>L>>R;
+             int count=0;              //从0开始加
+             for(int k=L;k<=R;k++) {
+                if(prime(k)==1) {
+                    int sum=digitsum(k);
+                    if(prime(sum)==1) {
+                        count++;
+                    }
+                 }
+             }
+             cout<<"Case #"<<i<<": "<<count<<endl;
+        }
+    }
+}
+```
 
 ## I
 
@@ -159,6 +772,45 @@ for (int i = 1; i <= n; ++i)
 
 同题的另一份源文件见 [第四次作业补充 E](/books/campus-cpp-programming/09-oj-homework-04-supplement/#zh-e)。
 
+**原始代码**
+
+```cpp
+/*题目描述
+给定一个非负的整数n,计算从0到10n之间有多少个整数是由不同的数字组合成的。例如输入2,统计0 <= x<102之间有
+多少个整数是由不同的数字组合成时,应去掉带有重复数字的整数 11、22、33、44、55、66、77、88、99,最后返回结
+果为91。注意:测试数据有多组输入*/
+
+#include <iostream>                       //容易被题目误导去用总数减有相同数字的数总数
+using namespace std;
+
+long long A(int m,int n) {                //定义排列数
+    long long product=1;
+    for(int i=m;i>=(m-n+1);i--) {
+        product*=i;
+    }
+    return product;
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        if(n>=11) {
+            cout<<0<<endl;
+        } else if(n==0) {
+            cout<<1<<endl;
+        } else if(n>1&&n<=10) {
+            int res=10;
+            for(int i=2;i<=n;i++) {
+                res+=(9*A(9,(i-1)));    //首位不能为0
+             }
+             cout<<res<<endl;
+        } else if(n==1) {
+                cout<<10<<endl;
+        }
+    }
+}
+```
+
 ## J
 
 **字典序**
@@ -180,3 +832,146 @@ for (int i = 1; i <= n; ++i)
 - 需要 `1<=k<=n`；`k=0` 或越界会陷入死循环，题面未要求处理。
 
 逐个求后继的入门写法见 [第四次作业补充 G](/books/campus-cpp-programming/09-oj-homework-04-supplement/#zh-g)。
+
+**原始代码**
+
+```cpp
+/*题目描述
+字典序是给对应位置元素所属集合分别相同的各个有序多元组规定顺序的方法。对于数字的字典序排列,不同排列的先后关
+系是从左到右逐个比较对应的数字的先后来决定的。例如1235和12345,按字典序排序12345排列在1235之前。假设整数
+序列1、2、3、 ..... n按字典序排序,现在给定非负整数n,在序列中找到第k个整数并输出其值。例如,n=13,k=2,那么对应的
+字典序为[1,10,11,12,13,2,3,4,5,6,7,8,9],第2个数字为10。因此输出10。注意:测试数据有多组输入*/
+
+#include<iostream>
+using namespace std;
+#include<algorithm>
+
+int getcount(int prefix,int n) {       //计算前缀数字为x时，小于等于n的数有多少个
+    int count=0;
+    int first=prefix;
+    int last=prefix;
+    while(first<=n) {
+        count+=min(n,last)-first+1;;
+        first*=10;
+        last=last*10+9;
+    }
+    return count;
+}
+
+int main() {
+    int n,k;
+    while(cin>>n>>k){
+        int prefix=1;
+        while(true) {
+            int count=getcount(prefix,n);
+            if(k<=count) {
+                if(k==1) {
+                cout<<prefix<<endl;
+                break;
+                }
+                prefix*=10;
+                k-=1;
+            } else{
+                k-=count;
+                prefix+=1;
+            }
+        }
+    }
+}
+
+
+
+/*
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+// 计算以 prefix 为根的子树中，有多少个数字 <= n
+long long getCount(long long prefix, long long n) {
+    long long count = 0;
+    long long first = prefix;
+    long long last = prefix;
+
+    while (first <= n) {
+        // 当前层中实际包含的节点数，不能超过 n
+        count += min(n, last) - first + 1;
+        // 进入下一层
+        first *= 10;
+        last = last * 10 + 9;
+    }
+    return count;
+}
+
+int main() {
+    long long n, k;
+
+    // 循环读取多组测试数据
+    while (cin >> n >> k) {
+        long long prefix = 1;
+
+        while (true) {
+            long long count = getCount(prefix, n);
+
+            if (k <= count) {
+                // 第 k 个数在当前 prefix 的子树中
+                // 如果正好是当前节点本身，直接输出
+                if (k == 1) {
+                    cout << prefix << endl;
+                    break;
+                }
+                // 否则进入下一层
+                prefix *= 10;
+                k -= 1; // 减去当前节点占用的 1 个名额
+            } else {
+                // 第 k 个数不在当前子树，向右移动到下一个兄弟节点
+                k -= count;
+                prefix += 1;
+            }
+        }
+    }
+
+    return 0;
+}
+*/
+```
+
+**优化版**　先数当前十进制前缀覆盖的整数，再整棵跳过或进入下一层。端点用 64 位整数，覆盖原代码使用的 32 位输入范围。
+
+```cpp
+#include <algorithm>
+#include <iostream>
+
+long long subtreeSize(long long prefix, int n) {
+    long long size = 0;
+    long long first = prefix;
+    long long pastLast = prefix + 1;
+    const long long limit = static_cast<long long>(n) + 1;
+    while (first < limit) {
+        size += std::min(pastLast, limit) - first;
+        first *= 10;
+        pastLast *= 10;
+    }
+    return size;
+}
+
+int main() {
+    int n, k;
+    while (std::cin >> n >> k) {
+        long long prefix = 1;
+        --k;
+
+        while (k > 0) {
+            const long long size = subtreeSize(prefix, n);
+            if (k >= size) {
+                ++prefix;
+                k -= size;
+            } else {
+                prefix *= 10;
+                --k;
+            }
+        }
+        std::cout << prefix << '\n';
+    }
+}
+```

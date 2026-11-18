@@ -21,6 +21,77 @@ displayNumber: "04"
 
 对位权 `p`（`1, 10, 100, …`），每一整段 `10 * p` 个数里，当前位恰好有 `p` 个 `1`。设 `high = N / p / 10`，`digit = N / p % 10`，`low = N % p`。完整段贡献 `high * p`，最后一段的额外贡献取决于 `digit`。`digit == 0` 加 0，`digit == 1` 加 `low + 1`，`digit > 1` 加 `p`。例如 `N = 213` 时，十位有两段完整的 `10–19` 和 `110–119`，尾段还有 `210–213`，合计 24 次。
 
+**原始代码**
+
+```cpp
+/*题目描述
+给定一个十进制整数N,求出从1到N的所有整数中出现”1”的个数。例如:N=2时1,2出现了1个“1”。
+N=12时1,2,3,4,5,6,7,8,9,10,11,12。出现了5个“1”。*/
+
+#include <iostream>
+using namespace std;
+
+int getcount(int n) {
+    int count=0;
+    while(n>0) {
+        int k;
+        k=n%10;
+        n/=10;
+        if(k==1) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int T;
+    cin>>T;
+    while(T--) {                //不要错用if
+        int N;
+        cin>>N;
+        int total=0;            //注意初始化为0
+        for(int i=1;i<=N;i++) {
+            total+=getcount(i);
+        }
+        cout<<total<<endl;
+    }
+}
+```
+
+**优化版**　直接按位统计整周期与尾部贡献，将复杂度降为 $O(\log N)$。用 64 位整数保存 32 位输入的答案和位权。
+
+```cpp
+#include <iostream>
+
+long long countOnes(int n) {
+    long long count = 0;
+    for (long long place = 1; place <= n; place *= 10) {
+        const long long high = n / place / 10;
+        const int digit = n / place % 10;
+        const long long low = n % place;
+
+        count += high * place;
+        if (digit == 1) {
+            count += low + 1;
+        } else if (digit > 1) {
+            count += place;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int cases;
+    if (!(std::cin >> cases)) return 0;
+    for (int i = 0; i < cases; ++i) {
+        int n;
+        std::cin >> n;
+        std::cout << countOnes(n) << '\n';
+    }
+}
+```
+
 ## B
 
 **围圈报数游戏**
@@ -31,6 +102,45 @@ displayNumber: "04"
 - **关键**：循环从 `i = 2` 推到 `n`，最后把 0 基编号加 1 换回题目编号。以 `n = 3` 为例，`f(2) = 1`、`f(3) = 1`，输出 2。
 - **边界**：`n = 1` 时循环不执行，直接输出 1；复杂度为 `O(n)`，远小于模拟整个报数过程的开销。
 
+**原始代码**
+
+```cpp
+/*题目描述
+有n(0<n <= 50,且n为整数)个人围成一圈,顺序排号(1,2,…,n)。从第一
+个人开始报数(从1到3报数),凡报到3的人退出圈子,问最后留下的是原来第几号的那位。*/
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int N;
+    while(cin>>N) {
+        int answer=0;
+        for(int i=2;i<=N;i++) {
+        answer=(answer+3)%i;
+        }
+        cout<<answer+1<<endl;          //注意最后加1，因为answer从0开始编号
+    }
+}
+
+/*约瑟夫环问题
+有n个人编号为0,1,2, .. ,n-1,围坐在一张圆桌周围。编号为0的人开始报数,数到m-1的那个人出
+列;他的下一个人又从0开始报数,数到m-1的那个人继续出列;依此规则重复下去,直到剩下最
+后一人,那么最后剩下的人编号是多少?
+设最后剩下的人的编号是f(n),则f(n)=[f(n-1)+m]modn
+
+证明:第一轮,编号(m-l)mod n的人出列此时剩下n-1个人,仍是一个圈,但起点变化
+设k=(m-l)modn,则下一个报数的人是(k+l)mod n，把他看作新的0号
+而我们知道,编号0.1.2,…,n-2中.最后剩下的是f(n-1)
+新编号f(n-1),对应旧编号[f(n-1)+k+1]mod n
+所以f(n)= [f(n-1) + k+l ] mod n
+       = [f(n-1) + (m-1)mod n + 1 ] mod n
+       =[f(n-1)+m]modn
+
+注：从0编号是为了对应模取余结果为0，1，2.....,n-1
+*/
+```
+
 ## C
 
 **分解偶数为两素数之和**
@@ -40,6 +150,70 @@ displayNumber: "04"
 - **思路**：从小到大枚举较小的加数 `i = 2..n/2`，同时判断 `i` 和 `n-i` 是否都是素数，找到第一组就输出并 `break`。
 - **关键**：素数判断先排除小于 2 的数，再用 `i * i <= n` 试除到平方根；`break` 保证每个输入只输出一种表示，避免多解造成输出超限。
 - **边界**：`n = 4` 时输出 `4=2+2`；若 `n = 2`，循环范围为空，不会输出。**待确认**：题面只写“输入一个偶数”，代码却处理到 EOF；请确认是否多组输入，以及 OJ 是否要求输出“较小加数最小”的那一组。代码默认偶数不小于 4；`n` 的范围也会影响逐个试除是否够快。
+
+**原始代码**
+
+```cpp
+/*题目描述
+验证歌德巴赫猜想:任何一个充分大的偶数都可以表示为两个素数之和。请输入一
+个偶数,将其表示成两个素数之和。*/
+
+//输出超限，需重写
+
+/*
+#include <iostream>
+using namespace std;
+
+bool isprime(int n) {
+    for(int i=2;i*i<=n;i++) {
+        if(n%i==0) {
+            return 0;
+        }
+    }
+    return 1;      //注意放在for循环外面
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        for(int i=2;2*i<=n;i++) {
+            if(isprime(i)==1&&isprime(n-i)==1) {
+                cout<<n<<"="<<i<<"+"<<n-i<<endl;
+            }
+        }
+    }
+}
+
+*/
+
+#include <iostream>
+using namespace std;
+
+bool isprime(int n) {
+    if (n < 2) return false;          // 0、1 不是素数
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    int n;
+    while(cin >> n) {
+
+        for (int i = 2; i <= n / 2; i++) {
+            if (isprime(i) && isprime(n - i)) {
+                cout << n << "=" << i << "+" << n - i << endl;
+                break;                    // 找到一种表示后立即结束
+            }
+        }
+    }
+
+    return 0;
+}
+```
 
 ## D
 
@@ -59,6 +233,58 @@ $$
 
 代码只在有面积的分支里设置 `fixed << setprecision(2)`。外切或相离时，是否显示 `0.00` 会依赖前面组是否设置过该格式。若原题要求统一两位小数，可在输入循环前设置一次。
 
+**原始代码**
+
+```cpp
+/*题目描述
+编写一个程序,计算平面上两个圆的相交面积。*/
+
+#include <iostream>
+using namespace std;
+#include <iomanip>
+#include <algorithm>
+#include <cmath>
+
+const double pi=acos(-1);   //精确地求出圆周率 π 的值（因为 arccos(−1)=π，这比手动写 3.1415926 精度高得多。
+
+int main() {
+    double x1,y1,r1,x2,y2,r2;
+    while(cin>>x1>>y1>>r1>>x2>>y2>>r2) {
+        double dx=x1-x2;
+        double dy=y1-y2;
+        double d=sqrt(dx*dx+dy*dy);
+        double R=r1+r2;
+        double r=min(r1,r2);
+
+        if(d>=R) {
+            cout<<0.00<<endl;
+        } else if(d<=fabs(r1-r2)) {             //容易漏掉内含和内切的情况！调用绝对值函数
+            cout<<fixed<<setprecision(2)<<pi*r*r<<endl;
+        } else {
+            double angle1=2*acos((d*d+r1*r1-r2*r2)/2/d/r1);    //余弦定理
+            double angle2=2*acos((d*d+r2*r2-r1*r1)/2/d/r2);
+            double area1=0.5*r1*r1*(angle1-sin(angle1));       //扇形面积公式0.5*r*r*α，算弓形面积
+            double area2=0.5*r2*r2*(angle2-sin(angle2));
+            cout<<fixed<<setprecision(2)<<area1+area2<<endl;
+        }
+    }
+}
+
+
+
+/*
+// 强制限定在 [-1.0, 1.0] 之间
+cos_a1 = max(-1.0, min(1.0, cos_a1));
+cos_a2 = max(-1.0, min(1.0, cos_a2));
+潜在隐患：acos 的精度越界
+在浮点数计算中，(d*d+r1*r1-r2*r2)/2/d/r1 算出来的理论值在 [−1,1] 之间，但由于计算机浮点误差，它可能算出来是 1.0000000000000002。
+一旦传给 acos，就会返回 NaN（非数字），导致输出错误。
+修改：用 max(-1.0, min(1.0, val)) 把参数强制限制在 [−1,1] 范围内。
+
+可以在代码开头时初始化area=0,最后统一cout<<area.可简化代码
+*/
+```
+
 ## E
 
 **寻找不同数字组合个数**
@@ -70,6 +296,45 @@ $$
 - **边界/代码疑点**：`n = 0` 时代码输出 1，对应 `[0,1)` 中只有 0；`n = 1` 输出 10。代码在 `n >= 11` 时直接输出 0，但按示例的累计口径，`n = 11` 时长度 1 到 10 的合法数仍然存在，只是不存在 11 位且各位互异的十进制数，因此这里应继续使用累计结果，而不是归零。**待确认**：题目是否限制 `n <= 10`，以及 `n = 0` 时区间端点如何定义；若允许 `n > 10`，`n >= 11` 的分支属于代码问题，不是题意。
 
 同题见 [第三次作业 I](/books/campus-cpp-programming/11-oj-homework-03/#zh-i)，含 `n = 10` 的累计结果。
+
+**原始代码**
+
+```cpp
+/*题目描述
+给定一个非负的整数n,计算从0到10^n之间有多少个整数是由不同的数字组合成的。例如输入2,统计0 <= x<10^2之间有
+多少个整数是由不同的数字组合成时,应去掉带有重复数字的整数11、22、33、44、55、66、77、88、99,最后返回结果为91。*/
+
+
+#include <iostream>                       //容易被题目误导去用总数减有相同数字的数总数
+using namespace std;
+
+long long A(int m,int n) {                //定义排列数
+    long long product=1;
+    for(int i=m;i>=(m-n+1);i--) {
+        product*=i;
+    }
+    return product;
+}
+
+int main() {
+    int n;
+    while(cin>>n) {
+        if(n>=11) {
+            cout<<0<<endl;
+        } else if(n==0) {
+            cout<<1<<endl;
+        } else if(n>1&&n<=10) {
+            int res=10;
+            for(int i=2;i<=n;i++) {
+                res+=(9*A(9,(i-1)));    //首位不能为0
+             }
+             cout<<res<<endl;
+        } else if(n==1) {
+                cout<<10<<endl;
+        }
+    }
+}
+```
 
 ## F
 
@@ -84,6 +349,67 @@ $$
 - **关键**：初始化 `dp[0][j] = 1`（没有书时只有一种放法）和 `dp[i][1] = 1`；课桌相同，所以不能使用隔板法或排列数，例如 `(1,0,2,3)` 与 `(3,1,2,0)` 是同一种方案。
 - **边界**：表的大小按 `1..20` 预留；答案最大约为 `p(20) = 627`，`int` 足够。**待确认**：输入是否确为多组 `n k` 到 EOF，以及 `n`、`k` 是否严格不超过 20。
 
+**原始代码**
+
+```cpp
+/*题目描述
+现在有n本同样的《C++程序设计》教材,教室里一共有k张同样的课桌。你需要把这n本教材放到
+这k张课桌上,每张课桌可以放0到n本教材,请你计算出一共有多少种不同的放法?(提示:不
+考虑教材摆放的排列顺序,若n=6,k=4,则1,0,2,3和3,1,2,0算成同一种放法)*/
+
+#include <iostream>
+using namespace std;
+
+int dp[25][25];       //定义二维数组（从0开始编号），1<=n,k<=20
+                      //访问 dp[20][20] 只有0~19下标，会越界。其实dp[21][21]就够了
+
+int main() {
+    for (int j = 0; j <= 20; j++)   //初始化
+        dp[0][j] = 1;
+
+    for (int i = 0; i <= 20; i++)
+        dp[i][1] = 1;
+
+    for (int i = 1; i <= 20; i++) {
+        for (int j = 1; j <= 20; j++) {
+            if (i < j)
+                dp[i][j] = dp[i][i];
+            else
+                dp[i][j] = dp[i][j-1] + dp[i-j][j];
+        }
+    }
+
+    int n, k;
+    while (cin >> n >> k) {
+        cout << dp[n][k] << endl;
+    }
+
+    return 0;
+}
+
+
+/*
+状态转移方程
+定义：  dp[i][j] 表示将 i 本相同的书放到 j 张相同的课桌上的不同方案数。
+我们分两种情况讨论。
+情况 1：至少有一张课桌是空的
+相当于把 i 本书放到 j−1 张课桌：dp[i][j-1]
+
+情况 2：所有课桌都不为空
+先给每张课桌放一本书，剩下 i−j 本书继续分配给 j 张课桌：dp[i-j][j]
+因此：dp[i][j]=dp[i][j-1]+dp[i-j][j]
+
+当 (i<j) 时，当书的数量小于桌子的数量时，多出来的桌子不会影响分配方案数。
+必然存在空课桌，因此：dp[i][j]=dp[i][i]（此时就可以用递推公式了）
+
+初始条件  dp[0][j]=1    dp[i][1]=1;
+
+这里不能用隔板法
+（1，2，3，0） （3，2，1，0）
+对于不同的课桌，是两种方案；对于相同的课桌，却是同一种方案。
+*/
+```
+
 ## G
 
 **字典序中第k个数**
@@ -95,3 +421,64 @@ $$
 - **边界**：算法要求 `n >= 1` 且 `1 <= k <= n`，代码没有校验；`k > n` 时输出没有意义。**待确认**：题面只写 `n` 为非负整数，未给 `n`、`k` 的范围；若 `k` 可达很大，`O(k)` 会超时，可先统计每个前缀子树的节点数，整段跳过无关子树，把复杂度降到 `O(log^2 n)` 级别（前提是 `k <= n`，且统计子树时使用 64 位整数避免溢出）。
 
 跳过整棵子树的推导和示例见 [第三次作业 J](/books/campus-cpp-programming/11-oj-homework-03/#zh-j)。
+
+**原始代码**
+
+```cpp
+/*题目描述
+字典序是给对应位置元素所属集合分别相同的各个有序多元组规定顺序的方法。对于数字的字典
+序排列,不同排列的先后关系是从左到右逐个比较对应的数字的先后来决定的。例如1235和
+12345,按字典序排序12345排列在1235之前。假设整数序列1、2、3、 ..... n按字典序排序,
+现在给定非负整数n,在序列中找到第k个整数并输出其值。例如,n=13,k=2,那么对应的字典
+序为[1,10,11,12,13,2,3,4,5,6,7,8,9],第2个数字为10。因此输出10。*/
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, k;
+
+    while (cin >> n >> k) {
+        int x = 1;
+
+        for (int i = 1; i < k; i++) {
+            if (x * 10 <= n) {
+                x *= 10;
+            }
+            else {
+                while (x % 10 == 9 || x + 1 > n) {
+                    x /= 10;
+                }
+                x++;
+            }
+        }
+
+        cout << x << endl;
+    }
+
+    return 0;
+}
+
+
+/*
+情况 1：向下走
+如果当前数字乘 10 不超过 n：    if (x * 10 <= n)
+                               x *= 10;
+例如：1 -> 10  相当于从父节点走到第一个子节点。
+情况 2：向右走
+如果没有子节点，就尝试访问下一个兄弟节点。:   x++
+例如：10->11
+情况 3：向上返回
+如果已经走到当前分支的末尾，例如：19->2
+就需要先返回父节点：19->1
+然后访问下一个兄弟：1->2
+对应：while (x % 10 == 9 || x + 1 > n) {
+     x /= 10;
+    }
+    x++;
+其中：
+- x % 10 == 9：当前已经是最后一个兄弟节点。
+- x + 1 > n：下一个数字超出了范围。
+*/
+```
