@@ -13,6 +13,7 @@ export const bookDisplayTitles: Record<string, { zh: string; en: string }> = {
   'campus-mathematical-analysis': { zh: '工科数学分析', en: 'Mathematical Analysis' },
   'campus-cpp-programming': { zh: 'C++程序设计教程', en: 'C++ Programming Tutorial' },
   'campus-discrete-mathematics': { zh: '离散数学', en: 'Discrete Mathematics' },
+  'campus-engineering-drawing': { zh: '计算机工程制图', en: 'Computer Engineering Drawing' },
   'campus-linear-algebra-analytic-geometry': { zh: '线性代数与解析几何', en: 'Linear Algebra & Analytic Geometry' },
   '3b1b-essence-of-calculus': { zh: '3B1B 微积分的本质', en: '3B1B Essence of Calculus' },
   '3b1b-essence-of-linear-algebra': { zh: '3B1B 线性代数的本质', en: '3B1B Essence of Linear Algebra' },

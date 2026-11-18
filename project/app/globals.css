@@ -1284,7 +1284,7 @@ button {
   --cover-accent: #e3c08b;
 }
 
-/* 校内课程四本：酒红 / 森林绿 / 赭黄 / 深靛，各自成册，不和书库默认深蓝共用 */
+/* 校内课程书封配色 */
 [data-book="campus-cpp-programming"] {
   --cover-bg: #7c2f36;
   --cover-ink: #f7ebda;
@@ -1307,6 +1307,16 @@ button {
   --cover-bg: #1d2650;
   --cover-ink: #f3e9d6;
   --cover-accent: #c8a56d;
+}
+
+[data-book="campus-engineering-drawing"] {
+  --cover-bg: #315755;
+  --cover-ink: #f7ead4;
+  --cover-accent: #dfbf8e;
+}
+
+.book-cover--sm[data-book="campus-engineering-drawing"] {
+  padding: 7px 9px 5px 13px;
 }
 
 /* ---------- book card ---------- */
