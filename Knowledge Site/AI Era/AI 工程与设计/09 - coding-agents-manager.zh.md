@@ -7,10 +7,10 @@ content_type: opinion
 categories:
   - ai-era
 tags:
-  - ai-agents
-  - management
-  - delegation
-  - code-review
+  - coding-agents
+  - context-management
+  - task-decomposition
+  - decision-making
 sources:
   - kind: article
     title: "Your coding agents made you a manager"

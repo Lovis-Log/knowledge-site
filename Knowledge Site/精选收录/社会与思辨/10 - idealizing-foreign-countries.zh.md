@@ -7,10 +7,10 @@ content_type: opinion
 categories:
   - curated
 tags:
-  - cultural-comparison
-  - attribution-bias
-  - media-critique
+  - culture
   - education
+  - media-literacy
+  - critical-thinking
 sources:
   - kind: video
     title: "哪来这么多崇洋媚外的人"

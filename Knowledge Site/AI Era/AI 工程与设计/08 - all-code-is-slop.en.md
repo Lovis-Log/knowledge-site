@@ -7,10 +7,10 @@ content_type: technical-tutorial
 categories:
   - ai-era
 tags:
-  - ai-coding-agents
-  - code-quality
+  - coding-agents
+  - quality-assurance
   - verification
-  - software-architecture
+  - debugging
 sources:
   - kind: video
     title: "All Code Is Slop (Except Mine) — Lauren Tan, SpaceXSI"

@@ -8,9 +8,9 @@ categories:
   - ai-era
 tags:
   - code-review
-  - ai-agents
-  - engineering-process
-  - risk-management
+  - coding-agents
+  - verification
+  - deployment
 sources:
   - kind: article
     title: "How the Claude Code team does code review"

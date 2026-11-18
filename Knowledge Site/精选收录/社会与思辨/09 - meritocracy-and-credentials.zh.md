@@ -7,10 +7,9 @@ content_type: opinion
 categories:
   - curated
 tags:
-  - meritocracy
   - education
-  - social-mobility
-  - credentialism
+  - inequality
+  - self-knowledge
 sources:
   - kind: video
     title: "聊聊优绩主义：东西方差异｜如何摆脱优绩主义｜如何对高学历祛魅"
