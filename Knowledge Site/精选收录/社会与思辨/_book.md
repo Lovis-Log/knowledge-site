@@ -8,5 +8,5 @@ author: "Olga Loiek"
 content_type: "science-explainer"
 category: "curated"
 collection: true
-updatedAt: "2026-11-08"
+updatedAt: "2026-11-18"
 ---
