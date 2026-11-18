@@ -12,6 +12,7 @@ export interface TocItem {
 export function buildHomeworkToc(markdown: string, lang: string): TocItem[] {
   return buildToc(markdown, lang).flatMap((item) => {
     if (item.depth !== 2) return [];
+    if (/^[A-Z]$/.test(item.text)) return [item];
     const named = /^(?:题目\s*(\d+)|题\s*(\d+)|第\s*(\d+)\s*题)/.exec(item.text);
     if (named) {
       return [{ ...item, text: `题目 ${Number(named[1] ?? named[2] ?? named[3])}`, html: `题目 ${Number(named[1] ?? named[2] ?? named[3])}` }];

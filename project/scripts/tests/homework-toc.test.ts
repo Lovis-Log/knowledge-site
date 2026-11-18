@@ -51,3 +51,30 @@ test("ordinary course outlines retain their detailed headings", () => {
   assert.ok(items.some((item) => item.depth === 3));
   assert.ok(items.some((item) => item.text.includes("证明")));
 });
+
+test("C++ OJ outlines retain all lettered questions and their anchors", () => {
+  const book = getAllBooks().find((item) => item.slug === "campus-cpp-programming")!;
+  const homework = book.chapters.filter((chapter) => chapter.group === "homework");
+  assert.equal(homework.length, 8);
+
+  const counts = [6, 8, 6, 7, 6, 10, 10, 6];
+  const chapterAnchors = new Map<string, Set<string>>();
+  for (const [index, chapter] of homework.entries()) {
+    const body = chapter.versions.zh!.body;
+    const items = buildHomeworkToc(body, "zh");
+    const letters = "ABCDEFGHIJ".slice(0, counts[index]).split("");
+    assert.deepEqual(items.map((item) => item.text), letters, chapter.slug);
+    const ids = items.map((item) => item.id);
+    assert.deepEqual(ids, letters.map((letter) => "zh-" + letter.toLowerCase()));
+    chapterAnchors.set(chapter.slug, new Set(ids));
+    assert.deepEqual(chapter.sources, []);
+    assert.match(body, /\*\*来源\*\*　课后作业/);
+  }
+
+  for (const chapter of homework) {
+    const body = chapter.versions.zh!.body;
+    for (const [, slug, anchor] of body.matchAll(/\/books\/campus-cpp-programming\/([^/]+)\/#([^)\s]+)/g)) {
+      assert.ok(chapterAnchors.get(slug)?.has(anchor), chapter.slug + " links to " + slug + "#" + anchor);
+    }
+  }
+});
