@@ -48,11 +48,11 @@ npm run release
 ### 原始资料与 Drive 预览
 
 - 上传前先检查云盘已有资料，按课程和文件去重，保留原格式（如 `pptx`、`pdf`），不要为了网页展示转成图片再充当原件。
-- 上传后核验分享设置为“知道链接的任何人都可阅读”（reader / anyone），并用 `https://drive.google.com/file/d/<id>/view` 或 `docs.google.com` 的查看/预览入口回填 `_book.md` 的 `links` 与章节 `sources`/正文资料链接。课程书还应有 `drive.google.com/drive/folders/<id>` 课程文件夹入口。
-- 仅构建成功或脚本确认链接格式存在还不够。必须实际点开每个 Drive 预览，确认能在浏览器中直接阅读而不是自动下载；权限核验以实际匿名窗口为准。
+- 上传后回读文件身份及预览链接，用 `https://drive.google.com/file/d/<id>/view` 或 `docs.google.com` 查看入口回填章节来源，并在 `_book.md` 提供课程文件夹入口。
+- 用户手动将课程文件夹共享为“知道链接的人可查看”，并负责匿名可见性确认。用户要求先发布时，使用已核实的预览 URL 上线，并报告共享状态和对应文件夹入口。
 - 不得把课件、作业原图等原始资料继续指向站内 `/course-materials/.../lectures` 或 `/homework`，也不得使用 `file://`、本机路径、Google `uc?export=download`、`confirm=t` 等下载直链。
 - 正文插图仍可使用 `/course-materials/.../figures/...` 或 `/images/...`；普通外部文献、官网和公开课程页面的链接不受 Drive 规则限制，不要把它们误改成网盘链接。
-- 若云盘上传或权限设置受阻，不能擅自降级为站内下载并宣布发布完成；应说明具体阻塞和已完成部分。
+- 云盘上传受阻时报告缺失的原件或预览入口。部署验收复用此前有效的正文检查，同一版本的同一检查只执行一次。
 
 ## 仅检查与预览
 

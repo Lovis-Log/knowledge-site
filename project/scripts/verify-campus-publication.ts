@@ -13,6 +13,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const CAMPUS_CATEGORY = "campus-courses";
 export const STRICT_DRIVE_BOOK_SLUGS = [
+  "campus-basic-physics",
   "campus-linear-algebra-analytic-geometry",
 ] as const;
 

@@ -1285,6 +1285,12 @@ button {
 }
 
 /* 校内课程书封配色 */
+[data-book="campus-basic-physics"] {
+  --cover-bg: #4e3b59;
+  --cover-ink: #fff0d8;
+  --cover-accent: #ddb78c;
+}
+
 [data-book="campus-cpp-programming"] {
   --cover-bg: #7c2f36;
   --cover-ink: #f7ebda;
@@ -1315,6 +1321,7 @@ button {
   --cover-accent: #dfbf8e;
 }
 
+.book-cover--sm[data-book="campus-basic-physics"],
 .book-cover--sm[data-book="campus-engineering-drawing"] {
   padding: 7px 9px 5px 13px;
 }

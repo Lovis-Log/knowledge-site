@@ -54,7 +54,7 @@ test("campus section sorts first and shows no subcategories", () => {
   );
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
-  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-cpp-programming", "campus-engineering-drawing", "campus-linear-algebra-analytic-geometry", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
+  assert.deepEqual(campus.books.map((book) => book.slug), ["campus-basic-physics", "campus-cpp-programming", "campus-engineering-drawing", "campus-linear-algebra-analytic-geometry", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
 });
 
 test("linear algebra and analytic geometry keeps 27 course entries and 7 image homework entries", () => {
