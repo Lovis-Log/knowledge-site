@@ -1,5 +1,5 @@
 export type UiLang = "zh" | "en";
-export const UI_LANG_STORAGE_KEY = "shufang:ui-lang";
+export const UI_LANG_STORAGE_KEY = "shufang:ui-lang-v2";
 
 // Display translations only. Content names, slugs and taxonomy stay unchanged.
 export const uiEnglish: Record<string, string> = {

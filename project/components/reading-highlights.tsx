@@ -13,6 +13,11 @@ const registryName = "lovismind-reading-highlight";
 type Target = { mark: ReadingHighlight; remove: boolean; rect: DOMRect; range: Range };
 type PaintedMark = { mark: ReadingHighlight; ranges: Range[] };
 
+function formulaForRange(range: Range) {
+  const node = range.startContainer.childNodes[range.startOffset];
+  return node instanceof HTMLElement && node.matches(".katex") ? node : null;
+}
+
 function visibleSelectionRect(range: Range) {
   return Array.from(range.getClientRects()).findLast((box) =>
     box.width > 0 && box.height > 0 && box.bottom > 0 && box.top < innerHeight &&
@@ -52,9 +57,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       for (const mark of marks) painted.current.push({ mark, ranges: highlightRanges(index, mark) });
     }
     const ranges = painted.current.flatMap((item) => item.ranges);
+    const formulas = ranges.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
+    formulas.forEach((element) => element.classList.add("reading-formula-highlight"));
+    const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-highlight"));
     if (typeof Highlight === "function" && CSS.highlights) {
-      CSS.highlights.set(registryName, new Highlight(...ranges));
-      return () => { CSS.highlights.delete(registryName); };
+      CSS.highlights.set(registryName, new Highlight(...ranges.filter((range) => !formulaForRange(range))));
+      return () => { CSS.highlights.delete(registryName); clearFormulas(); };
     }
     const update = () => setFallback(ranges.flatMap((range) => Array.from(range.getClientRects())));
     let frame = 0;
@@ -65,6 +73,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => {
+      clearFormulas();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
@@ -125,6 +134,14 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         });
       });
     };
+    const previewSelection = () => {
+      const selection = window.getSelection();
+      const range = selection?.rangeCount && !selection.isCollapsed ? selection.getRangeAt(0) : null;
+      article.querySelectorAll<HTMLElement>(".katex").forEach((formula) => {
+        formula.classList.toggle("reading-formula-selected", Boolean(range && range.intersectsNode(formula)));
+      });
+    };
+    document.addEventListener("selectionchange", previewSelection);
     const observer = new MutationObserver(clear);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
     article.addEventListener("pointerup", selected);
@@ -134,6 +151,8 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     window.addEventListener("scroll", reposition, { passive: true });
     window.addEventListener("resize", reposition);
     return () => {
+      document.removeEventListener("selectionchange", previewSelection);
+      article.querySelectorAll(".reading-formula-selected").forEach((formula) => formula.classList.remove("reading-formula-selected"));
       article.removeEventListener("pointerup", selected);
       article.removeEventListener("click", clickMark);
       document.removeEventListener("pointerdown", dismissOutside);

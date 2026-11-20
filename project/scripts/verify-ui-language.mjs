@@ -41,7 +41,7 @@ for (const test of [
     navigator: { languages: [test.browser], language: test.browser },
     localStorage: { getItem(key) {
       if (test.blocked) throw new Error("Storage unavailable");
-      if (key === "shufang:ui-lang") return test.saved ?? null;
+      if (key === "shufang:ui-lang-v2") return test.saved ?? null;
       if (key === "shufang:lang") return test.contentLang ?? null;
       return null;
     } },

@@ -33,7 +33,7 @@ function applyTheme(theme: Theme, persist = false) {
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
   document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
-    meta.setAttribute("content", theme === "dark" ? "#15130e" : "#fbf9f5");
+    meta.setAttribute("content", theme === "dark" ? "#141414" : "#fbf9f5");
   });
   if (!persist) return;
   try {

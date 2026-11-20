@@ -20,11 +20,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#fbf9f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#15130e" },
+    { media: "(prefers-color-scheme: dark)", color: "#141414" },
   ],
 };
 
-const bootstrap = `(function(){var d=document.documentElement;var l;try{l=localStorage.getItem("shufang:ui-lang");}catch(e){}if(l!=="zh"&&l!=="en"){l="en";}d.dataset.uiLang=l;d.lang=l==="zh"?"zh-CN":"en";})();(function(){try{var d=document.documentElement;var l=localStorage.getItem("shufang:lang");if(l==="zh"||l==="en"){d.dataset.lang=l;}var f=localStorage.getItem("shufang:font-size");if(f==="sm"||f==="md"||f==="lg"){d.dataset.fontSize=f;}var t=localStorage.getItem("shufang:toc");if(t==="0"){d.dataset.toc="closed";}}catch(e){}})();`;
+const bootstrap = `(function(){var d=document.documentElement;var l;try{l=localStorage.getItem("shufang:ui-lang-v2");}catch(e){}if(l!=="zh"&&l!=="en"){l="en";}d.dataset.uiLang=l;d.lang=l==="zh"?"zh-CN":"en";})();(function(){try{var d=document.documentElement;var l=localStorage.getItem("shufang:lang");if(l==="zh"||l==="en"){d.dataset.lang=l;}var f=localStorage.getItem("shufang:font-size");if(f==="sm"||f==="md"||f==="lg"){d.dataset.fontSize=f;}var t=localStorage.getItem("shufang:toc");if(t==="0"){d.dataset.toc="closed";}}catch(e){}})();`;
 
 const themeBootstrap = `(function(){var d=document.documentElement;var t;try{t=localStorage.getItem("shufang:theme");}catch(e){}if(t!=="dark"&&t!=="light"){try{t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}catch(e){t="light";}}d.dataset.theme=t;d.style.colorScheme=t;})();`;
 
