@@ -58,13 +58,11 @@
   gap: 1rem;
 }
 
-.headText {
-  display: grid;
-  gap: 0.45rem;
-  min-width: 0;
-}
-
 .title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
   margin: 0;
   font-family: var(--serif);
   font-size: clamp(1.35rem, 3vw, 1.6rem);
@@ -72,12 +70,9 @@
   line-height: 1.35;
 }
 
-.lede {
-  max-width: 46rem;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.75;
+.titleIcon {
+  flex: none;
+  color: var(--accent);
 }
 
 .close {
@@ -128,13 +123,15 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 0.6rem;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .optional {
   color: var(--faint);
   font-size: 0.72rem;
+  font-weight: 400;
 }
 
 .field textarea,

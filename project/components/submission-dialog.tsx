@@ -68,17 +68,13 @@ export function SubmissionDialog() {
       >
         <div className={styles.panel}>
           <header className={styles.head}>
-            <div className={styles.headText}>
-              <h2 id="submission-dialog-title" className={styles.title}>
-                <UiText zh="投稿" en="Submissions" />
-              </h2>
-              <p className={styles.lede}>
-                <UiText
-                  zh="留下想分享的文字或链接。投稿仅你和管理员可见；已采用表示决定使用素材，不会自动发布，管理员会另行整理与复核。"
-                  en="Leave a note or a link you would like to share. Only you and administrators can see submissions. Adoption means the material will be used, not published automatically; an administrator will review it separately."
-                />
-              </p>
-            </div>
+            <h2 id="submission-dialog-title" className={styles.title}>
+              <svg className={styles.titleIcon} aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 6 9 7 9-7" />
+              </svg>
+              <UiText zh="投稿" en="Submissions" />
+            </h2>
             <button
               type="button"
               className={styles.close}

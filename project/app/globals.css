@@ -3501,6 +3501,10 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
   gap: 8px;
 }
 
+.chapter-row__date {
+  flex: none;
+}
+
 .chapter-row__progress {
   border-radius: 999px;
   padding: 2px 8px;
@@ -3521,8 +3525,7 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 }
 
 @media (max-width: 767px) {
-  .chapter-row__meta { width: 100%; justify-content: flex-start; }
-  .chapter-row__progress { margin-inline-start: auto; }
+  .chapter-row__meta { width: 100%; justify-content: flex-end; }
 }
 
 @media (max-width: 1199px) {

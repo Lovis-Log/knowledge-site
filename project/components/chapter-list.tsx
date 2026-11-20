@@ -42,14 +42,14 @@ export function ChapterList({
                 )}
               </span>
               <span className="chapter-row__meta">
-                {meta && <span>{meta}</span>}
                 {percent > 0 && (
                   <span className="chapter-row__progress" data-complete={percent === 100 || undefined}>
                     {percent === 100
-                      ? <><span aria-hidden="true">?</span><span className="reader-sr-only"><UiText zh="???" en="Completed" /></span></>
-                      : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`?? ${percent}%`} en={`${percent}% read`} /></span></>}
+                      ? <><span aria-hidden="true">✓</span><span className="reader-sr-only"><UiText zh="已完成" en="Completed" /></span></>
+                      : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`已读 ${percent}%`} en={`${percent}% read`} /></span></>}
                   </span>
                 )}
+                {meta && <span className="chapter-row__date">{meta}</span>}
               </span>
             </Link>
           </li>
