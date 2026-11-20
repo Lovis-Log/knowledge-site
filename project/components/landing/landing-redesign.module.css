@@ -479,14 +479,19 @@
   clip-path: inset(0 0 0 0);
   transition:
     clip-path 1.3s cubic-bezier(.2, .7, .2, 1),
+    translate 1.3s cubic-bezier(.2, .7, .2, 1),
     transform .6s cubic-bezier(.2, .7, .2, 1),
     box-shadow .45s,
     background .45s;
 }
-.volumes > .collectionCard:nth-child(2) .collectionWell { background: #e5eae2; transition-delay: 70ms, 0s, 0s, 0s; }
-.volumes > .collectionCard:nth-child(3) .collectionWell { background: #e5e9ed; transition-delay: 140ms, 0s, 0s, 0s; }
-.volume[data-landing-reveal="pending"] .collectionWell { clip-path: inset(0 0 100% 0); transform: translateY(14px); }
-.volume[data-landing-reveal="visible"] .collectionWell { clip-path: inset(0 0 0 0); transform: none; }
+.volumes > .collectionCard:nth-child(2) .collectionWell { background: #e5eae2; transition-delay: 70ms, 70ms, 0s, 0s, 0s; }
+.volumes > .collectionCard:nth-child(3) .collectionWell { background: #e5e9ed; transition-delay: 140ms, 140ms, 0s, 0s, 0s; }
+/* Applying the closed state must not animate: browsers do not start
+   transitions on off-screen elements, so a transition here would replay as a
+   reverse wipe when the card first enters the viewport. Snap closed instead,
+   then let the visible state wipe and rise with the stagger above. */
+.volume[data-landing-reveal="pending"] .collectionWell { clip-path: inset(0 0 100% 0); translate: 0 14px; transition: none; }
+.volume[data-landing-reveal="visible"] .collectionWell { clip-path: inset(0 0 0 0); translate: 0 0; }
 .collectionWell img {
   display: block;
   width: 69%;
@@ -548,12 +553,12 @@
 .handwrittenReveal[data-landing-reveal="visible"] { opacity: 1; translate: 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
+  .volume[data-landing-reveal] .collectionWell { clip-path: none; translate: none; transform: none; }
   .collectionCard:hover .collectionWell, .collectionCard:hover .collectionWell img { transform: none; }
   .collectionCard figcaption svg { transition: none; }
   .lineReveal[data-landing-reveal], .fadePart[data-landing-reveal], .handwrittenReveal[data-landing-reveal] { opacity: 1; translate: 0 0; }
 }
-.landing[data-motion="paused"] .volume[data-landing-reveal] .collectionWell { clip-path: none; transform: none; }
+.landing[data-motion="paused"] .volume[data-landing-reveal] .collectionWell { clip-path: none; translate: none; transform: none; }
 .landing[data-motion="paused"] .collectionCard:hover .collectionWell,
 .landing[data-motion="paused"] .collectionCard:hover .collectionWell img { transform: none; }
 .landing[data-motion="paused"] .lineReveal[data-landing-reveal],
@@ -565,89 +570,89 @@
 /* The landing keeps its own paper palette; these overrides mirror the global
    LovisMind dark tokens without touching the pre-rendered cover artwork. */
 :global(html[data-theme="dark"]) .landing {
-  --lm-ink: #c9bda5;
-  --lm-muted: #a89a82;
+  --lm-ink: #c5c5c0;
+  --lm-muted: #9a9a95;
   --lm-gold: #d9b878;
   --lm-gold-deep: #e0c084;
-  --lm-paper: #15130e;
-  --lm-line: #3a3023;
-  color: #f2e9d7;
+  --lm-paper: #101112;
+  --lm-line: #303134;
+  color: #f1f1ee;
   background: var(--lm-paper);
 }
 :global(html[data-theme="dark"]) .landing a:focus-visible,
 :global(html[data-theme="dark"]) .landing button:focus-visible { outline-color: #d9b878; }
-:global(html[data-theme="dark"]) .account { border-color: #4a3f2e; }
+:global(html[data-theme="dark"]) .account { border-color: #3a3b3d; }
 :global(html[data-theme="dark"]) .heroAccent { color: #d9b878; }
 :global(html[data-theme="dark"]) .heroDescription { color: var(--lm-ink); }
-:global(html[data-theme="dark"]) .primary { background: var(--lm-gold); color: #1d1810 !important; }
+:global(html[data-theme="dark"]) .primary { background: var(--lm-gold); color: #16130d !important; }
 :global(html[data-theme="dark"]) .primary:hover { background: #e6c98d; }
-:global(html[data-theme="dark"]) .heroArt { background: #211c14; }
-:global(html[data-theme="dark"]) .heroStageNote { color: #b3a58c; }
+:global(html[data-theme="dark"]) .heroArt { background: #17181a; }
+:global(html[data-theme="dark"]) .heroStageNote { color: #a0a09b; }
 :global(html[data-theme="dark"]) .heroArt .heroDesktopLayer img,
 :global(html[data-theme="dark"]) .heroArt .heroMobileLayer img,
 :global(html[data-theme="dark"]) .heroArt .heroResumeLayer img {
-  border-color: #403628;
+  border-color: #35363a;
   box-shadow: 0 13px 30px #00000055;
 }
 :global(html[data-theme="dark"]) .storyScreen {
-  background: #201b13;
-  border-color: #3a3023;
+  background: #161719;
+  border-color: #303134;
   box-shadow: 0 20px 55px -28px #000000aa;
 }
-:global(html[data-theme="dark"]) .screenBar { color: #b0a288; border-bottom-color: #322a1f; }
-:global(html[data-theme="dark"]) .screenBar > span:first-child { color: #f2e9d7; }
-:global(html[data-theme="dark"]) .screenImage { background: #1a1611; }
-:global(html[data-theme="dark"]) .sceneDetail { color: #b09f82; }
+:global(html[data-theme="dark"]) .screenBar { color: #a0a09b; border-bottom-color: #2a2b2d; }
+:global(html[data-theme="dark"]) .screenBar > span:first-child { color: #f1f1ee; }
+:global(html[data-theme="dark"]) .screenImage { background: #121315; }
+:global(html[data-theme="dark"]) .sceneDetail { color: #9f9f9a; }
 :global(html[data-theme="dark"]) .featureCopy h2 > span:last-child { color: #d9b878; }
-:global(html[data-theme="dark"]) .featureWorkbench { border-top-color: #3a3023; }
-:global(html[data-theme="dark"]) .featureWorkbench li:last-child { background: #221c13; }
+:global(html[data-theme="dark"]) .featureWorkbench { border-top-color: #303134; }
+:global(html[data-theme="dark"]) .featureWorkbench li:last-child { background: #1c1d1f; }
 :global(html[data-theme="dark"]) .featureSymbol { color: #d9b878; }
-:global(html[data-theme="dark"]) .collectionWell { background: #231d15; }
-:global(html[data-theme="dark"]) .volumes > .collectionCard:nth-child(2) .collectionWell { background: #1f241d; }
-:global(html[data-theme="dark"]) .volumes > .collectionCard:nth-child(3) .collectionWell { background: #1e2329; }
+:global(html[data-theme="dark"]) .collectionWell { background: #1f2022; }
+:global(html[data-theme="dark"]) .volumes > .collectionCard:nth-child(2) .collectionWell { background: #1d1f21; }
+:global(html[data-theme="dark"]) .volumes > .collectionCard:nth-child(3) .collectionWell { background: #1b1d20; }
 :global(html[data-theme="dark"]) .collectionWell img { box-shadow: 0 22px 32px -16px #00000088; }
 :global(html[data-theme="dark"]) .collectionCard:hover .collectionWell { box-shadow: 0 18px 34px #00000055; }
 :global(html[data-theme="dark"]) .collectionCard:hover .collectionWell img { box-shadow: 0 30px 44px -18px #00000099; }
-:global(html[data-theme="dark"]) .collectionLink { border-bottom-color: #4a3f2e; }
-:global(html[data-theme="dark"]) .reflection { background: #1a1610; }
+:global(html[data-theme="dark"]) .collectionLink { border-bottom-color: #3a3b3d; }
+:global(html[data-theme="dark"]) .reflection { background: #131416; }
 :global(html[data-theme="dark"]) .reflectionArt img { filter: drop-shadow(0 20px 20px #00000055); }
-:global(html[data-theme="dark"]) .handwritten { color: #d9b878; border-bottom-color: #5d4c32; }
+:global(html[data-theme="dark"]) .handwritten { color: #d9b878; border-bottom-color: #5a4a2e; }
 :global(html[data-theme="dark"]) .questions > div > p { color: var(--lm-muted); }
-:global(html[data-theme="dark"]) .entrance { background: #100e0a; color: #f3ecdc; }
-:global(html[data-theme="dark"]) .entranceTop p { color: #c9bda4; }
-:global(html[data-theme="dark"]) .lightAction { color: #f3ecdc; border-color: #6f6453; }
-:global(html[data-theme="dark"]) .footerWordmark { color: #d9c49e; }
-:global(html[data-theme="dark"]) .footerMeta { color: #b3a891; border-top-color: #ffffff1f; }
-:global(html[data-theme="dark"]) .storyIndicators i { background: #4a3f2f; }
+:global(html[data-theme="dark"]) .entrance { background: #0c0d0e; color: #f2f2ef; }
+:global(html[data-theme="dark"]) .entranceTop p { color: #bdbdb8; }
+:global(html[data-theme="dark"]) .lightAction { color: #f2f2ef; border-color: #55565a; }
+:global(html[data-theme="dark"]) .footerWordmark { color: #d6d3cc; }
+:global(html[data-theme="dark"]) .footerMeta { color: #a7a7a2; border-top-color: #ffffff1f; }
+:global(html[data-theme="dark"]) .storyIndicators i { background: #3a3b3d; }
 :global(html[data-theme="dark"]) .storyIndicators i[data-current="true"] { background: #d9b878; }
-:global(html[data-theme="dark"]) .sceneProgress i { background: #4a3f2f; }
+:global(html[data-theme="dark"]) .sceneProgress i { background: #3a3b3d; }
 :global(html[data-theme="dark"]) .sceneProgress i[data-current="true"] { background: #d9b878; }
 :global(html[data-theme="dark"]) .questionList summary:focus-visible { outline-color: #d9b878; }
 
 /* The sign-in overlay is part of the landing surface. Structural selectors keep
    the shared auth dialog readable without forking its component styles. */
 :global(html[data-theme="dark"]) .landing [role="dialog"] {
-  border-color: #3d3325;
-  background: #1c1811;
-  color: #f0e7d6;
+  border-color: #343538;
+  background: #17181a;
+  color: #efefec;
 }
 :global(html[data-theme="dark"]) .landing [role="dialog"] > :first-child {
-  border-right-color: #3d3325;
-  background: linear-gradient(170deg, #2a2216, #211b12 55%, #191510);
+  border-right-color: #343538;
+  background: linear-gradient(170deg, #232426, #1c1d1f 55%, #17181a);
 }
 :global(html[data-theme="dark"]) .landing [role="dialog"] > :first-child::before {
   background-image:
-    linear-gradient(to right, rgba(240, 230, 210, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(240, 230, 210, 0.045) 1px, transparent 1px);
+    linear-gradient(to right, rgba(240, 240, 236, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(240, 240, 236, 0.045) 1px, transparent 1px);
 }
-:global(html[data-theme="dark"]) .landing [role="dialog"] :is(p, small) { color: #b7a98f; }
-:global(html[data-theme="dark"]) .landing [role="dialog"] label { color: #d8cdb9; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] :is(p, small) { color: #aaaaa5; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] label { color: #d2d2cd; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] input {
-  border-color: #453a2a;
-  background: #14110c;
-  color: #f0e7d6;
+  border-color: #3a3b3d;
+  background: #111213;
+  color: #efefec;
 }
-:global(html[data-theme="dark"]) .landing [role="dialog"] input::placeholder { color: #8d816d; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] input::placeholder { color: #7f7f7a; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] input:focus {
   border-color: #c8a46a;
   box-shadow: 0 0 0 3px rgba(216, 184, 120, 0.18);
@@ -655,14 +660,14 @@
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="authOverline"] { color: #d9b878; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="fieldHint"],
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="micro"],
-:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="switch"] { color: #a89a82; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="switch"] { color: #9a9a95; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="switch"] button { color: #e0c084; }
-:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="authClose"] { color: #b7a98f; }
-:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="authClose"]:hover { background: #2c251a; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="authClose"] { color: #aaaaa5; }
+:global(html[data-theme="dark"]) .landing [role="dialog"] [class*="authClose"]:hover { background: #242628; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="statusCard"] {
-  border-color: #453a2a;
-  background: #241e15;
-  color: #c9bda5;
+  border-color: #3a3b3d;
+  background: #1e1f21;
+  color: #c5c5c0;
 }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="formError"] {
   border-color: #6b3a2c;
@@ -671,11 +676,11 @@
 }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="fullButton"] {
   background: #d9b878;
-  color: #1d1810;
+  color: #16130d;
 }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="fullButton"]:hover { background: #e6c98d; }
 :global(html[data-theme="dark"]) .landing [role="dialog"] [class*="statusSymbol"] {
-  border-color: #5d4c32;
-  background: #2a2216;
+  border-color: #5a4a2e;
+  background: #232426;
   color: #e0c084;
 }
