@@ -6,13 +6,14 @@ import type { ReadingProgressEntry } from "@/lib/reading-state-types";
 import { uiLabel } from "@/lib/ui-language";
 import { UiText } from "./ui-text";
 
-function scrollMax() {
-  return document.documentElement.scrollHeight - window.innerHeight;
+function scrollMax(article: Element | null) {
+  const end = article ? article.getBoundingClientRect().bottom + window.scrollY : document.documentElement.scrollHeight;
+  return Math.max(0, end - window.innerHeight);
 }
 
-function currentPercent() {
-  const max = scrollMax();
-  return max <= 0 ? 100 : Math.min(100, Math.max(0, window.scrollY / max * 100));
+function currentPercent(max: number) {
+  if (max === 0) return 100;
+  return Math.min(100, Math.max(0, window.scrollY / max * 100));
 }
 
 export function ReadingProgress({ book, chapter, account, entry }: {
@@ -24,13 +25,15 @@ export function ReadingProgress({ book, chapter, account, entry }: {
   const [percent, setPercent] = useState(0);
 
   useEffect(() => {
+    const article = document.querySelector(".reading-main");
+    let max = scrollMax(article);
     let frame = 0;
     let restore = 0;
     let saveTimer = 0;
     let changed = false;
     let ready = !account;
     let lastScrollY = window.scrollY;
-    let current = currentPercent();
+    let current = currentPercent(max);
     let lastRecorded = current;
     let furthest = entry?.furthest ?? 0;
     let observedAt = entry?.observedAt ?? 0;
@@ -45,7 +48,7 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     };
 
     const update = (scroll: boolean) => {
-      current = currentPercent();
+      current = currentPercent(max);
       setPercent(current);
       const newScrollY = window.scrollY;
       if (scroll && newScrollY !== lastScrollY) changed = true;
@@ -65,11 +68,10 @@ export function ReadingProgress({ book, chapter, account, entry }: {
         update(true);
       });
     };
-    const onResize = () => update(false);
+    const onResize = () => { max = scrollMax(article); update(false); };
     const onLeavingPage = () => { update(true); flush(); };
     const onHidden = () => { if (document.visibilityState === "hidden") onLeavingPage(); };
     const observer = new ResizeObserver(onResize);
-    const article = document.querySelector(".reading-main");
     if (article) observer.observe(article);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
@@ -81,7 +83,7 @@ export function ReadingProgress({ book, chapter, account, entry }: {
       void changeReadingState(account, book, chapter, { action: "open" }).catch(() => {});
       restore = requestAnimationFrame(() => {
         if (!changed && !window.location.hash && window.scrollY < 3 && entry && entry.resume > 2) {
-          window.scrollTo({ top: scrollMax() * entry.resume / 100, behavior: "instant" });
+          window.scrollTo({ top: max * entry.resume / 100, behavior: "instant" });
         }
         update(false);
         ready = true;
