@@ -85,6 +85,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     if (!article) return;
     const clear = () => { setTarget(null); setError(false); };
     const selected = () => {
+      previewSelection();
       if (busy || document.activeElement === button.current) return;
       const range = window.getSelection()?.rangeCount ? window.getSelection()!.getRangeAt(0) : null;
       if (!range || range.collapsed) { clear(); return; }
@@ -141,6 +142,8 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         formula.classList.toggle("reading-formula-selected", Boolean(range && range.intersectsNode(formula)));
       });
     };
+    const selecting = (event: PointerEvent) => { if (event.buttons === 1) previewSelection(); };
+    article.addEventListener("pointermove", selecting);
     document.addEventListener("selectionchange", previewSelection);
     const observer = new MutationObserver(clear);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
@@ -151,6 +154,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     window.addEventListener("scroll", reposition, { passive: true });
     window.addEventListener("resize", reposition);
     return () => {
+      article.removeEventListener("pointermove", selecting);
       document.removeEventListener("selectionchange", previewSelection);
       article.querySelectorAll(".reading-formula-selected").forEach((formula) => formula.classList.remove("reading-formula-selected"));
       article.removeEventListener("pointerup", selected);

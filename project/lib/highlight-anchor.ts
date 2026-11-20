@@ -17,7 +17,7 @@ export function indexHighlightText(root: HTMLElement, legacy = false) {
   let text = "";
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const value = node instanceof Text ? node.data
-      : "\ufffc" + (node.querySelector('annotation[encoding="application/x-tex"]')?.textContent ?? node.textContent) + "\ufffc";
+      : "\ufffc" + ((node as Element).querySelector('annotation[encoding="application/x-tex"]')?.textContent ?? node.textContent) + "\ufffc";
     if (!value.length) continue;
     const start = text.length;
     text += value;
@@ -69,7 +69,7 @@ export function resolveHighlight(text: string, mark: Anchor): number {
   return count === 1 ? first : match;
 }
 
-export function highlightRanges(index: ReturnType<typeof indexHighlightText>, mark: ReadingHighlight) {
+export function highlightRanges(index: ReturnType<typeof indexHighlightText>, mark: ReadingHighlight): Range[] {
   const start = resolveHighlight(index.text, mark);
   if (start < 0) return index.legacy ? [] : highlightRanges(indexHighlightText(index.root, true), mark);
   const end = start + mark.quote.length;

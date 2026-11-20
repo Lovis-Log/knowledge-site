@@ -3623,12 +3623,14 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 
 /* Render each selected formula as a complete unit, including scripts and fractions. */
 .prose .katex.reading-formula-highlight {
+  display: inline-block;
   border-radius: 3px;
   background: var(--reading-highlight-bg);
   color: var(--reading-highlight-ink);
   box-shadow: 0 0 0 2px var(--reading-highlight-bg);
 }
 .prose .katex.reading-formula-selected {
+  display: inline-block;
   border-radius: 3px;
   background: var(--accent-soft);
   box-shadow: 0 0 0 2px var(--accent-soft);
