@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState, type ComponentProps } from "react";
+import { RocketLoader } from "./rocket-loader";
 import { UiText } from "./ui-text";
 
 const navigationEvent = "lovismind:navigate";
@@ -28,6 +29,22 @@ export function scrollToAnchor(hash: string, document: AnchorDocument) {
   return true;
 }
 
+// Only chapter routes get the compact rocket; the book shelf and other
+// destinations keep the slim progress line.
+export function isReaderChapterHref(href: string, base: string) {
+  try {
+    const origin = new URL(base).origin;
+    const target = new URL(href, base);
+    return target.origin === origin && /^\/books\/[^/]+\/[^/]+\/?$/.test(target.pathname);
+  } catch {
+    return false;
+  }
+}
+
+export function isReaderChapterNavigation(href: string, base: string, fullDocument = false) {
+  return !fullDocument && isReaderChapterHref(href, base);
+}
+
 export function startNavigation(href: string, options: Omit<Navigation, "href"> = {}) {
   window.dispatchEvent(new CustomEvent<Navigation>(navigationEvent, { detail: { href, ...options } }));
 }
@@ -51,6 +68,7 @@ export function NavigationFeedback() {
   const pathname = usePathname();
   const [pending, setPending] = useState<Pending | null>(null);
   const [slow, setSlow] = useState(false);
+  const [rocket, setRocket] = useState(false);
   const current = useRef<Pending | null>(null);
   const previous = useRef(pathname);
 
@@ -59,9 +77,10 @@ export function NavigationFeedback() {
       const next: Pending = { ...(event as CustomEvent<Navigation>).detail, phase: "pending" };
       current.current = next;
       setSlow(false);
+      setRocket(false);
       setPending(next);
     };
-    const cancel = () => { current.current = null; setPending(null); setSlow(false); };
+    const cancel = () => { current.current = null; setPending(null); setSlow(false); setRocket(false); };
     // History traversal owns its scroll position; it must not inherit a click.
     window.addEventListener(navigationEvent, navigate);
     window.addEventListener("popstate", cancel);
@@ -83,6 +102,41 @@ export function NavigationFeedback() {
     return () => window.clearTimeout(timeout);
   }, [pending]);
 
+  // Reader chapters are the only navigation that earns the compact rocket.
+  // The delay keeps a fast prefetched transition from flashing it.
+  useEffect(() => {
+    if (
+      !pending ||
+      pending.phase !== "pending" ||
+      !isReaderChapterNavigation(pending.href, location.origin, pending.fullDocument) ||
+      document.querySelector("#main .route-loading .rocket-loader")
+    ) {
+      setRocket(false);
+      return;
+    }
+    const timeout = window.setTimeout(() => {
+      if (current.current !== pending) return;
+      setRocket(true);
+    }, 200);
+    return () => window.clearTimeout(timeout);
+  }, [pending]);
+
+  // The route-level loading fallback has its own rocket. Drop the compact one
+  // as soon as that fallback mounts instead of showing two at once; the CSS
+  // :has() guard covers the first frame before this observer runs.
+  useEffect(() => {
+    if (!rocket) return;
+    const main = document.querySelector("#main");
+    if (!main) return;
+    const dismiss = () => {
+      if (main.querySelector(".route-loading .rocket-loader")) setRocket(false);
+    };
+    dismiss();
+    const observer = new MutationObserver(dismiss);
+    observer.observe(main, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [rocket]);
+
   useLayoutEffect(() => {
     const changed = previous.current !== pathname;
     previous.current = pathname;
@@ -100,6 +154,7 @@ export function NavigationFeedback() {
         const complete: Pending = { ...navigation, phase: "complete" };
         current.current = complete;
         setSlow(false);
+        setRocket(false);
         setPending(complete);
       }
     }
@@ -113,6 +168,7 @@ export function NavigationFeedback() {
   if (!pending) return null;
   return <div className="navigation-feedback" data-phase={pending.phase}>
     <div className="navigation-feedback__line" aria-hidden="true" />
+    {rocket && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
     <span className={slow ? undefined : "reader-sr-only"} role="status">
       {pending.fullDocument ? <UiText zh="正在进入书库…" en="Opening your library…" /> : <UiText zh="正在打开页面…" en="Opening page…" />}
     </span>

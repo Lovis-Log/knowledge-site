@@ -3,7 +3,7 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import type { Lang } from "@/content/types";
 import {
   FONT_SIZE_STORAGE_KEY,
@@ -11,7 +11,12 @@ import {
   TOC_STORAGE_KEY,
   type FontSize,
 } from "@/lib/reading-preferences";
-import { LanguageToggle } from "./language-toggle";
+import { LanguageToggle, Segmented, type SegmentedOption } from "./language-toggle";
+
+type ReadingView = "notes" | "translation";
+type TocChoice = "open" | "closed";
+
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function setFontSize(size: FontSize) {
   document.documentElement.dataset.fontSize = size;
@@ -31,8 +36,30 @@ function setTocOpen(open: boolean) {
   }
 }
 
+function setReadingView(view: ReadingView) {
+  document.documentElement.dataset.readingView = view;
+}
+
+const READING_VIEW_OPTIONS: SegmentedOption<ReadingView>[] = [
+  { value: "notes", label: <UiText zh="原文与精读" />, attrs: { "data-view": "notes" } },
+  { value: "translation", label: <UiText zh="原文翻译" />, attrs: { "data-view": "translation" } },
+];
+
+const FONT_OPTIONS: SegmentedOption<FontSize>[] = FONT_SIZES.map((item) => ({
+  value: item.value,
+  label: <UiText zh={item.label} />,
+  attrs: { "data-size": item.value },
+}));
+
+const TOC_OPTIONS: SegmentedOption<TocChoice>[] = [
+  { value: "open", label: <UiText zh="显示" />, attrs: { "data-toc": "open" } },
+  { value: "closed", label: <UiText zh="隐藏" />, attrs: { "data-toc": "closed" } },
+];
+
 export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[]; hasTranslation?: boolean }) {
-  useEffect(() => {
+  // Commit the default reading view before paint; the cleanup must also run
+  // before the next chapter mounts so a closed translation view never leaks in.
+  useIsomorphicLayoutEffect(() => {
     if (!hasTranslation) return;
     document.documentElement.dataset.readingView = "notes";
     return () => { delete document.documentElement.dataset.readingView; };
@@ -42,48 +69,31 @@ export function ReadingToolbar({ langs, hasTranslation = false }: { langs: Lang[
       {hasTranslation ? (
         <div className="control-group" role="group" {...uiLabel("阅读视图")}>
           <span className="control-label"><UiText zh="阅读" /></span>
-          <div className="segmented">
-            <button type="button" className="segmented__btn" data-view="notes" onClick={() => { document.documentElement.dataset.readingView = "notes"; }}><UiText zh="原文与精读" /></button>
-            <button type="button" className="segmented__btn" data-view="translation" onClick={() => { document.documentElement.dataset.readingView = "translation"; }}><UiText zh="原文翻译" /></button>
-          </div>
+          <Segmented
+            preference="readingView"
+            fallback="notes"
+            options={READING_VIEW_OPTIONS}
+            onChange={setReadingView}
+          />
         </div>
       ) : <LanguageToggle langs={langs} />}
       <div className="control-group" role="group" {...uiLabel("正文字号")}>
         <span className="control-label"><UiText zh="字号" /></span>
-        <div className="segmented">
-          {FONT_SIZES.map((item) => (
-            <button
-              key={item.value}
-              type="button"
-              className="segmented__btn"
-              data-size={item.value}
-              onClick={() => setFontSize(item.value)}
-            >
-              <UiText zh={item.label} />
-            </button>
-          ))}
-        </div>
+        <Segmented
+          preference="fontSize"
+          fallback="md"
+          options={FONT_OPTIONS}
+          onChange={setFontSize}
+        />
       </div>
       <div className="control-group toc-toggle" role="group" {...uiLabel("目录显示")}>
         <span className="control-label"><UiText zh="目录" /></span>
-        <div className="segmented">
-          <button
-            type="button"
-            className="segmented__btn"
-            data-toc="open"
-            onClick={() => setTocOpen(true)}
-          >
-            <UiText zh="显示" />
-          </button>
-          <button
-            type="button"
-            className="segmented__btn"
-            data-toc="closed"
-            onClick={() => setTocOpen(false)}
-          >
-            <UiText zh="隐藏" />
-          </button>
-        </div>
+        <Segmented
+          preference="toc"
+          fallback="open"
+          options={TOC_OPTIONS}
+          onChange={(value) => setTocOpen(value === "open")}
+        />
       </div>
     </div>
   );

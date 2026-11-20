@@ -260,3 +260,93 @@ html body :is(button, input[type="submit"], input[type="button"], .feature-tabs 
   .brand__tip, .site-header .donate__tip { transition: none; }
   .about__email + .copy-control button, .library-search form { transition: none; animation: none !important; }
 }
+
+/* Reader preferences: one pill slides between options of different widths. */
+.segmented { position: relative; }
+.segmented__btn { position: relative; z-index: 1; }
+.segmented__pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: var(--segmented-pill-w, 0px);
+  height: var(--segmented-pill-h, 0px);
+  border-radius: 999px;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(var(--segmented-pill-x, 0px), var(--segmented-pill-y, 0px));
+}
+.segmented[data-pill] .segmented__pill { opacity: 1; }
+.segmented[data-pill="ready"] .segmented__pill {
+  transition: transform 220ms var(--ease), width 220ms var(--ease), height 220ms var(--ease);
+}
+.segmented__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: translate 180ms var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  html body .segmented__btn:hover:not(:disabled) .segmented__label { translate: 0 -2px; }
+}
+html body .segmented__btn:focus-visible .segmented__label { translate: 0 -2px; }
+html body .segmented__btn:active:not(:disabled) .segmented__label { translate: 0 0; }
+/* The text lifts; the control itself must stay put despite the global hover rule. */
+html body .reading-toolbar .segmented .segmented__btn:hover:not(:disabled),
+html body .reading-toolbar .segmented .segmented__btn:focus-visible,
+html body .reading-toolbar .segmented .segmented__btn:active:not(:disabled) {
+  translate: 0 0;
+  box-shadow: none;
+}
+/* Once the pill exists, selection color comes from it instead of a per-button fill. */
+html body .segmented[data-pill] > .segmented__btn {
+  background: transparent;
+  color: var(--muted);
+}
+html body .segmented[data-pill] > .segmented__btn:hover { color: var(--ink); }
+html body .segmented[data-pill] > .segmented__btn[aria-pressed="true"],
+html body .segmented[data-pill] > .segmented__btn[aria-pressed="true"]:hover {
+  background: transparent;
+  color: var(--paper);
+}
+/* Keep the keyboard ring visible inside the rounded control. */
+.reading-toolbar .segmented { overflow: visible; }
+html body .reading-toolbar .segmented__btn:focus-visible { outline-offset: 2px; }
+
+/* Reader navigation: the compact rocket only appears after a slow chapter link. */
+.navigation-feedback__rocket {
+  position: fixed;
+  top: calc(var(--header-h) + 14px);
+  left: 50%;
+  z-index: 1;
+  width: min(210px, calc(100vw - 32px));
+  padding: 2px 10px 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 14px;
+  background: var(--page-sheet);
+  box-shadow: var(--lift-1);
+  translate: -50% 0;
+  pointer-events: none;
+  animation: navigation-rocket-in 160ms ease-out;
+}
+.navigation-feedback__rocket .rocket-loader { margin: 0 auto; }
+/* The route-level fallback already contains a rocket; never show two. */
+html:has(#main .route-loading .rocket-loader) .navigation-feedback__rocket { display: none; }
+@keyframes navigation-rocket-in {
+  from { opacity: 0; translate: -50% 6px; }
+  to { opacity: 1; translate: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented__pill,
+  .segmented[data-pill="ready"] .segmented__pill { transition: none; }
+  .segmented__label,
+  html body .segmented__btn:hover:not(:disabled) .segmented__label,
+  html body .segmented__btn:focus-visible .segmented__label,
+  html body .segmented__btn:active:not(:disabled) .segmented__label {
+    translate: none !important;
+    transition: none;
+  }
+  .navigation-feedback__rocket { animation: none; }
+}
