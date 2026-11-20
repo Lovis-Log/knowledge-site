@@ -1,6 +1,7 @@
 import { AboutTabs } from "@/components/changelog-view";
 import updates from "@/content/updates.json";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { PageEntry } from "@/components/page-entry";
 import { site } from "@/lib/site";
@@ -12,6 +13,10 @@ export const metadata: Metadata = {
   title: "关于",
   description: `关于 ${site.name} 的学习笔记、阅读功能与联系方式。`,
 };
+
+function HomeLink({ href, children }: { href: string; children: ReactNode }) {
+  return <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>;
+}
 
 export default function AboutPage() {
   return <PageEntry className="shell about">
@@ -38,9 +43,13 @@ export default function AboutPage() {
       <p className="about-tech"><strong><UiText zh="技术架构：" en="Built with: " /></strong>{['Next.js', 'React', 'TypeScript', 'Cloudflare Pages', 'Cloudflare Workers', 'Cloudflare D1'].map(technology => <span key={technology}>{technology}</span>)}</p>
 
       <p><strong><UiText zh="联系与致谢：" en="Contact & credits: " /></strong><UiText zh="邮箱联系站主：" en="Email the site owner: " /><span className="about__email">aspiration653@gmail.com</span>{" "}<CopyButton value="aspiration653@gmail.com" /></p>
-      <p><UiPair
-        zh={<>界面灵感来自 <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil 的书 ↗</a>。源码见 <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>。</>}
-        en={<>Interface inspired by <a href="https://book.oiloil.org/" target="_blank" rel="noopener noreferrer">oiloil’s book ↗</a>. Source on <a href="https://github.com/Lovis-Log/knowledge-site.git" target="_blank" rel="noopener noreferrer">GitHub ↗</a>.</>} /></p>
+      <p className="about__source"><UiText zh="源码：" en="Source: " /><HomeLink href="https://github.com/Lovis-Log/knowledge-site.git">GitHub ↗</HomeLink></p>
+      <p className="about__links"><UiPair
+        zh={<>常去的网站：<HomeLink href="https://www.youtube.com/">YouTube</HomeLink>、<HomeLink href="https://www.douyin.com/">抖音</HomeLink>、<HomeLink href="https://www.bilibili.com/">哔哩哔哩</HomeLink>、<HomeLink href="https://x.com/">X</HomeLink>、<HomeLink href="https://book.oiloil.org/">book.oiloil.org</HomeLink>、<HomeLink href="https://onsin.top/">onsin.top</HomeLink>，<span className="about__more">等等</span>。</>}
+        en={<>Sites I visit: <HomeLink href="https://www.youtube.com/">YouTube</HomeLink>, <HomeLink href="https://www.douyin.com/">Douyin</HomeLink>, <HomeLink href="https://www.bilibili.com/">Bilibili</HomeLink>, <HomeLink href="https://x.com/">X</HomeLink>, <HomeLink href="https://book.oiloil.org/">book.oiloil.org</HomeLink>, <HomeLink href="https://onsin.top/">onsin.top</HomeLink>, <span className="about__more">and more</span>.</>} /></p>
+      <p className="about__note"><UiPair
+        zh={<>内容来源与版权：本站笔记基于公开课程、公开资料与个人学习整理，版权归原作者所有；如版权方要求，请来信联系删除。</>}
+        en={<>Sources &amp; copyright: These notes draw on public courses, documentation, and my own study. Copyright remains with the original authors; rights holders may contact me for removal.</>} /></p>
       <p className="about__back"><Link className="text-link" href="/library/"><UiText zh="← 回到书库" /></Link></p>
     </AboutTabs></div>
   </PageEntry>;

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import localFont from "next/font/local";
 import { ReaderLink as Link } from "../navigation-feedback";
 import { AccountIcon } from "@/components/account-icon";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { UiLanguageToggle } from "@/components/ui-language-toggle";
 import { UiText } from "@/components/ui-text";
 import { api } from "@/lib/api";
@@ -139,7 +140,7 @@ export function LandingPage() {
             <a href="#reflection"><UiText zh="关于本站" en="About this site" /></a>
           </nav>
           <div className={styles.headerActions}>
-            <div className={styles.languageSlot}>{hydrated && <UiLanguageToggle />}</div>
+            <div className={styles.headerToggles}>{hydrated && <><ThemeToggle /><UiLanguageToggle /></>}</div>
             {signedIn
               ? <Link href="/library/" className={styles.account}><AccountIcon /><UiText zh="书库" en="Library" /></Link>
               : <button type="button" className={styles.account} onClick={() => openAuth("login")}><AccountIcon /><UiText zh="登录" en="Sign in" /></button>}

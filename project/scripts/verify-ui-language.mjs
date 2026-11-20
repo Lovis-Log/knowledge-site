@@ -11,17 +11,29 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const content = join(root, "..", "Knowledge Site");
 const layout = await readFile(join(root, "app/layout.tsx"), "utf8");
 const bootstrap = layout.match(/const bootstrap = `([^`]+)`;/)?.[1];
+const themeBootstrap = layout.match(/const themeBootstrap = `([^`]+)`;/)?.[1];
 assert(bootstrap, "Language bootstrap must be available for the static export");
+assert(themeBootstrap, "Theme bootstrap must be available for the static export");
+
+// Static HTML ships the English interface and light theme by default; the head
+// script only replaces those defaults when a saved preference (or the OS theme
+// for colour) exists. Content language remains a separate preference.
+assert.match(layout, /lang="en"/, "Server-rendered interface language defaults to English");
+assert.match(layout, /data-ui-lang="en"/, "Server-rendered UI language defaults to English");
+assert.match(layout, /data-lang="zh"/, "Server-rendered content language stays Chinese");
+assert.match(layout, /data-theme="light"/, "Server-rendered theme defaults to light");
+assert.equal(bootstrap.includes("navigator"), false, "New visitors get English even in a Chinese browser");
 
 for (const test of [
-  { browser: "zh-CN", expected: "zh" },
-  { browser: "zh-TW", expected: "zh" },
-  { browser: "en-US", expected: "en" },
-  { browser: "fr-FR", expected: "en" },
-  { browser: "en-US", saved: "zh", expected: "zh" },
-  { browser: "zh-CN", saved: "en", expected: "en" },
-  { browser: "zh-CN", saved: "invalid", expected: "zh" },
-  { browser: "en-US", blocked: true, expected: "en" },
+  { browser: "zh-CN", expected: "en", contentLang: "zh" },
+  { browser: "zh-TW", expected: "en", contentLang: "zh" },
+  { browser: "en-US", expected: "en", contentLang: "zh" },
+  { browser: "fr-FR", expected: "en", contentLang: "zh" },
+  { browser: "en-US", saved: "zh", expected: "zh", contentLang: "zh" },
+  { browser: "zh-CN", saved: "en", expected: "en", contentLang: "en" },
+  { browser: "zh-CN", saved: "invalid", expected: "en", contentLang: "zh" },
+  { browser: "en-US", blocked: true, expected: "en", contentLang: "zh" },
+  { browser: "zh-CN", saved: "zh", expected: "zh", contentLang: "en" },
 ]) {
   const html = { dataset: { lang: "zh" }, lang: "zh-CN" };
   runInNewContext(bootstrap, {
@@ -30,13 +42,37 @@ for (const test of [
     localStorage: { getItem(key) {
       if (test.blocked) throw new Error("Storage unavailable");
       if (key === "shufang:ui-lang") return test.saved ?? null;
-      if (key === "shufang:lang") return "en";
+      if (key === "shufang:lang") return test.contentLang ?? null;
       return null;
     } },
   });
   assert.equal(html.dataset.uiLang, test.expected);
   assert.equal(html.lang, test.expected === "zh" ? "zh-CN" : "en");
-  assert.equal(html.dataset.lang, test.blocked ? "zh" : "en", "System language must not override the content preference");
+  assert.equal(html.dataset.lang, test.contentLang, "Content language must stay independent of the UI language");
+}
+
+for (const test of [
+  { saved: "dark", system: "light", expected: "dark" },
+  { saved: "light", system: "dark", expected: "light" },
+  { saved: null, system: "dark", expected: "dark" },
+  { saved: null, system: "light", expected: "light" },
+  { saved: "invalid", system: "dark", expected: "dark" },
+  { saved: null, system: "dark", blocked: true, expected: "dark" },
+]) {
+  const html = { dataset: {} };
+  html.style = {};
+  runInNewContext(themeBootstrap, {
+    document: { documentElement: html },
+    localStorage: { getItem(key) {
+      if (test.blocked) throw new Error("Storage unavailable");
+      return key === "shufang:theme" ? test.saved : null;
+    } },
+    matchMedia(query) {
+      return { matches: test.system === "dark" && /prefers-color-scheme:\s*dark/.test(query) };
+    },
+  });
+  assert.equal(html.dataset.theme, test.expected, "Theme follows the saved override, then the system preference");
+  assert.equal(html.style.colorScheme, test.expected, "Native controls and scrollbars follow the theme");
 }
 
 const taxonomy = JSON.parse(await readFile(join(content, "taxonomy.json"), "utf8"));
@@ -60,4 +96,4 @@ async function checkBooks(dir) {
 }
 await checkBooks(content);
 assert.equal(englishText("原文"), "Original");
-console.log(`UI language verification passed: 8 preference scenarios, ${taxonomy.sections.length + taxonomy.categories.length} categories, ${bookCount} book translations.`);
+console.log(`UI language verification passed: 9 preference scenarios, 6 theme scenarios, ${taxonomy.sections.length + taxonomy.categories.length} categories, ${bookCount} book translations.`);

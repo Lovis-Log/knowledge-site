@@ -1,0 +1,524 @@
+/* Global light / dark theme for LovisMind.
+   The theme is applied early by the inline head script in app/layout.tsx.
+   Light mode keeps the existing paper palette; dark mode overrides the same
+   tokens and only patches surfaces that used hard-coded light colours. */
+
+:root {
+  --reader-highlight-bg: rgba(224, 184, 120, 0.42);
+  --reader-highlight-ink: #3a290f;
+  --reader-note-bg: var(--accent-soft);
+  --reader-note-border: var(--gold);
+  --code-ink: #24292e;
+  --theme-overlay: rgba(18, 16, 12, 0.52);
+}
+
+html {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* LovisMind dark: warm charcoal paper, off-white ink, muted gold. */
+  --gold: #d9b878;
+  --cream: #f3ecdc;
+
+  --paper: #15130e;
+  --surface: #1c1811;
+  --page-sheet: #1f1a13;
+  --paper-raised: var(--page-sheet);
+  --hover: #272117;
+  --pill: #282116;
+  --action-bg: #221d15;
+  --action-hover: #2c251a;
+  --action-border: #493e2c;
+  --cover-bg: #2a2218;
+
+  --ink: #f2e9d7;
+  --muted: #c9bda5;
+  --faint: #a89a82;
+  --fainter: #93876f;
+
+  --accent: #d9b878;
+  --accent-ink: #e6c98f;
+  --accent-soft: rgba(216, 184, 120, 0.14);
+
+  --rule: #362e22;
+  --rule-soft: rgba(238, 228, 208, 0.09);
+  --line-strong: #4a3f2f;
+  --code-bg: #201b13;
+
+  --lift-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.28);
+  --book-shadow:
+    1px 0 0 rgba(255, 255, 255, 0.04),
+    2px 0 0 #6b5c45,
+    3px 0 0 rgba(0, 0, 0, 0.5),
+    0 1px 1px rgba(0, 0, 0, 0.5),
+    0 9px 15px -9px rgba(0, 0, 0, 0.7),
+    0 23px 34px -20px rgba(0, 0, 0, 0.72);
+  --book-shadow-hover:
+    1px 0 0 rgba(255, 255, 255, 0.04),
+    2px 0 0 #74644b,
+    3px 0 0 rgba(0, 0, 0, 0.5),
+    0 2px 2px rgba(0, 0, 0, 0.5),
+    0 16px 24px -14px rgba(0, 0, 0, 0.72),
+    0 34px 46px -24px rgba(0, 0, 0, 0.78);
+
+  --reader-highlight-bg: rgba(216, 184, 120, 0.3);
+  --reader-highlight-ink: #fff4de;
+  --code-ink: #ded6c6;
+  --theme-overlay: rgba(5, 4, 3, 0.66);
+}
+
+mark {
+  padding: 0 0.12em;
+  border-radius: 2px;
+  background: var(--reader-highlight-bg);
+  color: var(--reader-highlight-ink);
+}
+
+/* ---------- theme toggle ---------- */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  background: var(--hover);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle__sun {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle__sun {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-toggle__moon {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .site-header .site-nav > .theme-toggle {
+    box-sizing: border-box;
+    width: 28px;
+    min-width: 0;
+    height: 34px;
+    min-height: 34px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 350px) {
+  .site-header .site-nav > .theme-toggle {
+    width: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle {
+    transition: none !important;
+    translate: none !important;
+  }
+}
+
+/* ---------- dark surfaces: atmosphere and chrome ---------- */
+
+html[data-theme="dark"] ::selection {
+  background: rgba(216, 184, 120, 0.34);
+  color: #fff7e8;
+}
+
+html[data-theme="dark"] .atmosphere__grid {
+  background-image:
+    linear-gradient(rgba(232, 218, 190, 0.045) 1px, transparent 0),
+    linear-gradient(90deg, rgba(232, 218, 190, 0.04) 1px, transparent 0);
+}
+
+html[data-theme="dark"] .atmosphere__glow {
+  background:
+    radial-gradient(ellipse 550px 410px at 5% 19%, rgba(216, 184, 120, 0.1), transparent 78%),
+    radial-gradient(ellipse 510px 430px at 97% 38%, rgba(216, 184, 120, 0.09), transparent 79%),
+    radial-gradient(80% 50% at 50% -10%, rgba(216, 184, 120, 0.06), transparent 70%);
+}
+
+html[data-theme="dark"] .atmosphere__noise {
+  opacity: 0.11;
+  filter: invert(1);
+}
+
+html[data-theme="dark"] .atmosphere__blob {
+  opacity: 0.13;
+}
+
+html[data-theme="dark"] .site-header {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .donate__tip {
+  color: var(--paper);
+}
+
+html[data-theme="dark"] .donate-methods button[aria-pressed="true"],
+html[data-theme="dark"] .donate-note button {
+  color: var(--paper);
+}
+
+html[data-theme="dark"] .donate-modal {
+  background: var(--theme-overlay);
+}
+
+html[data-theme="dark"] .donate-modal__panel {
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .donate-modal__pay {
+  color: var(--paper);
+}
+
+html[data-theme="dark"] .donate-modal__pay:hover {
+  background: var(--accent);
+  color: #1d1810;
+}
+
+/* A scannable payment code must stay on white paper. */
+html[data-theme="dark"] .donate-modal__qr {
+  background: #fff;
+}
+
+html[data-theme="dark"] .hero__rule {
+  background: linear-gradient(90deg, #3b3225 0%, #332b20 68%, transparent);
+}
+
+/* ---------- cards, paper edges and controls ---------- */
+
+html[data-theme="dark"] .continue {
+  box-shadow:
+    inset 4px 0 0 var(--gold),
+    2px 3px 0 #2c251b,
+    0 8px 20px rgba(0, 0, 0, 0.28);
+}
+
+html[data-theme="dark"] .continue:focus-within,
+html[data-theme="dark"] .continue:hover {
+  box-shadow:
+    inset 4px 0 0 var(--gold),
+    2px 3px 0 #332b1f,
+    0 16px 30px rgba(0, 0, 0, 0.38);
+}
+
+html[data-theme="dark"] .badge {
+  border-color: rgba(238, 228, 208, 0.16);
+  background: rgba(238, 228, 208, 0.08);
+}
+
+html[data-theme="dark"] .library-search button {
+  color: var(--paper);
+}
+
+html[data-theme="dark"] .library-search li[aria-selected="true"] {
+  background: rgba(216, 184, 120, 0.14);
+}
+
+html[data-theme="dark"] .guestbook-form__submit:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1d1810;
+}
+
+html[data-theme="dark"] .guestbook-page [class*="writeButton"]:hover:not(:disabled),
+html[data-theme="dark"] .guestbook-page [class*="publish"]:hover:not(:disabled) {
+  background: var(--accent);
+  color: #1d1810;
+}
+
+html[data-theme="dark"] .guestbook-page dialog::backdrop {
+  background: var(--theme-overlay);
+}
+
+/* ---------- reader: prose, code, math and figure chrome ---------- */
+
+html[data-theme="dark"] .prose h2 {
+  border-bottom-color: #383024;
+}
+
+html[data-theme="dark"] .prose pre {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.34);
+}
+
+html[data-theme="dark"] .prose pre code.hljs,
+html[data-theme="dark"] .prose code.hljs {
+  color: var(--code-ink);
+  background: transparent;
+}
+
+html[data-theme="dark"] .hljs-doctag,
+html[data-theme="dark"] .hljs-keyword,
+html[data-theme="dark"] .hljs-meta .hljs-keyword,
+html[data-theme="dark"] .hljs-template-tag,
+html[data-theme="dark"] .hljs-template-variable,
+html[data-theme="dark"] .hljs-type,
+html[data-theme="dark"] .hljs-variable.language_ {
+  color: #f0a58e;
+}
+
+html[data-theme="dark"] .hljs-title,
+html[data-theme="dark"] .hljs-title.class_,
+html[data-theme="dark"] .hljs-title.class_.inherited__,
+html[data-theme="dark"] .hljs-title.function_ {
+  color: #d7b57e;
+}
+
+html[data-theme="dark"] .hljs-attr,
+html[data-theme="dark"] .hljs-attribute,
+html[data-theme="dark"] .hljs-literal,
+html[data-theme="dark"] .hljs-meta,
+html[data-theme="dark"] .hljs-number,
+html[data-theme="dark"] .hljs-operator,
+html[data-theme="dark"] .hljs-variable,
+html[data-theme="dark"] .hljs-selector-attr,
+html[data-theme="dark"] .hljs-selector-class,
+html[data-theme="dark"] .hljs-selector-id {
+  color: #a9c7b8;
+}
+
+html[data-theme="dark"] .hljs-regexp,
+html[data-theme="dark"] .hljs-string,
+html[data-theme="dark"] .hljs-meta .hljs-string {
+  color: #b9cf9a;
+}
+
+html[data-theme="dark"] .hljs-built_in,
+html[data-theme="dark"] .hljs-symbol {
+  color: #e6c78d;
+}
+
+html[data-theme="dark"] .hljs-comment,
+html[data-theme="dark"] .hljs-code,
+html[data-theme="dark"] .hljs-formula {
+  color: #948872;
+}
+
+html[data-theme="dark"] .hljs-name,
+html[data-theme="dark"] .hljs-quote,
+html[data-theme="dark"] .hljs-selector-tag,
+html[data-theme="dark"] .hljs-selector-pseudo {
+  color: #b7c8a0;
+}
+
+html[data-theme="dark"] .hljs-subst {
+  color: var(--code-ink);
+}
+
+html[data-theme="dark"] .zoomable {
+  box-shadow: 2px 3px 0 #2b241a;
+}
+
+html[data-theme="dark"] .zoomable:hover {
+  box-shadow: 3px 5px 0 #332b1f;
+}
+
+html[data-theme="dark"] .zoomable__icon {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .lightbox__controls {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .pager__link {
+  box-shadow:
+    inset 4px 0 0 #332b1f,
+    2px 3px 0 #2b241a;
+}
+
+html[data-theme="dark"] .pager__link:hover {
+  box-shadow:
+    inset 4px 0 0 var(--gold),
+    3px 5px 0 #332b1f,
+    0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .pager__link--next {
+  box-shadow:
+    inset -4px 0 0 #332b1f,
+    -2px 3px 0 #2b241a;
+}
+
+html[data-theme="dark"] .pager__link--next:hover {
+  box-shadow:
+    inset -4px 0 0 var(--gold),
+    -3px 5px 0 #332b1f,
+    0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .reading-progress span {
+  box-shadow: 0 0 8px rgba(216, 184, 120, 0.45);
+}
+
+/* ---------- account, auth, admin and error surfaces ---------- */
+
+html[data-theme="dark"] .auth-card {
+  border-color: var(--line-strong);
+}
+
+html[data-theme="dark"] .auth-form input,
+html[data-theme="dark"] .auth-form textarea,
+html[data-theme="dark"] .review-panel textarea,
+html[data-theme="dark"] .secret-result input,
+html[data-theme="dark"] .admin-filter select {
+  background: var(--page-sheet);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+html[data-theme="dark"] .auth-form input::placeholder,
+html[data-theme="dark"] .auth-form textarea::placeholder,
+html[data-theme="dark"] .review-panel textarea::placeholder {
+  color: var(--faint);
+}
+
+html[data-theme="dark"] .form-error,
+html[data-theme="dark"] .guestbook-page [class*="error"],
+html[data-theme="dark"] .copy-control__error,
+html[data-theme="dark"] .account-pop__error,
+html[data-theme="dark"] .submissions-page [class*="error"] {
+  color: #f0b4a2;
+}
+
+html[data-theme="dark"] .form-error {
+  border-color: #6b3a2c;
+  background: #2a1813;
+}
+
+html[data-theme="dark"] .auth-result,
+html[data-theme="dark"] .secret-result {
+  background: #1e2a22;
+  color: #cfe3d2;
+}
+
+html[data-theme="dark"] .admin-table th,
+html[data-theme="dark"] .admin-table td {
+  border-bottom-color: var(--rule);
+}
+
+html[data-theme="dark"] .admin-table th {
+  background: var(--action-bg);
+}
+
+html[data-theme="dark"] .review-panel {
+  border-color: var(--line-strong);
+  background: var(--page-sheet);
+}
+
+html[data-theme="dark"] .review-log {
+  border-bottom-color: var(--rule);
+}
+
+html[data-theme="dark"] .account-settings__danger button[type="submit"],
+html[data-theme="dark"] .account-settings button.account-settings__delete-trigger {
+  border-color: #6d3a38;
+  background: #3a1e1e;
+  color: #f0c9c4;
+}
+
+/* ---------- About page additions ---------- */
+
+.about__source {
+  color: var(--muted);
+}
+
+.about__source a {
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
+  padding-bottom: 1px;
+}
+
+.about__source a:hover {
+  color: var(--accent-ink);
+  border-bottom-color: var(--accent-ink);
+}
+
+.about__links {
+  color: var(--muted);
+}
+
+.about__links a {
+  color: var(--accent);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  padding-bottom: 1px;
+}
+
+.about__links a:hover {
+  color: var(--accent-ink);
+  border-bottom-color: var(--accent-ink);
+}
+
+.about__more {
+  color: var(--faint);
+}
+
+.about__note {
+  color: var(--muted);
+  font-size: 0.92em;
+  line-height: 1.85;
+}
+
+/* ---------- reduced transparency ---------- */
+
+@media (prefers-reduced-transparency: reduce) {
+  html[data-theme="dark"] .site-header {
+    background: var(--paper);
+    backdrop-filter: none;
+  }
+}
+
+/* ---------- print from dark mode ---------- */
+
+@media print {
+  html[data-theme="dark"] {
+    color-scheme: light;
+    --paper: #fff;
+    --surface: #fff;
+    --page-sheet: #fff;
+    --hover: #f2ece1;
+    --ink: #1b2b45;
+    --muted: #57534c;
+    --faint: #746e64;
+    --rule: #e7e1d6;
+    --line-strong: #d8d0c1;
+    --code-bg: #f5efe3;
+  }
+
+  html[data-theme="dark"] .hljs,
+  html[data-theme="dark"] .hljs * {
+    color: #24292e !important;
+    background: transparent !important;
+  }
+}
