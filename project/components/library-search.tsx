@@ -7,6 +7,7 @@ import { searchEntries } from '@/lib/search';
 import { uiLabel, uiPlaceholder } from '@/lib/ui-language';
 import { bookTitle } from '@/lib/book-titles';
 import { UiText } from './ui-text';
+import { startNavigation } from './navigation-feedback';
 import './library-search.css';
 
 export function LibrarySearch() {
@@ -32,7 +33,9 @@ export function LibrarySearch() {
     const entry = results[index];
     if (!entry) { setOpen(true); input.current?.focus(); return; }
     setOpen(false);
-    router.push(`/books/${entry.book}/${entry.chapter}/`);
+    const href = `/books/${entry.book}/${entry.chapter}/`;
+    startNavigation(href, { resetScroll: true });
+    router.push(href, { scroll: false });
   }
   return <div className="library-search" onBlur={event => {
     if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(false);
