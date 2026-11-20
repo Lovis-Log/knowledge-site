@@ -1,6 +1,7 @@
 import { UiText } from "@/components/ui-text";
 import { uiLabel } from "@/lib/ui-language";
 import { UiLanguageToggle } from "./ui-language-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import type { Crumb } from "@/lib/crumbs";
 import { site } from "@/lib/site";
@@ -49,7 +50,10 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
-          <AccountMenu><UiLanguageToggle /></AccountMenu>
+          <AccountMenu>
+            <ThemeToggle />
+            <UiLanguageToggle />
+          </AccountMenu>
           <DonateButton />
         </nav>
       </div>
