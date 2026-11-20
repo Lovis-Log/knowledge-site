@@ -7,6 +7,7 @@ import { site } from "@/lib/site";
 import { HeaderBreadcrumb } from "./header-breadcrumb";
 import { DonateButton } from "./donate-button";
 import { AccountMenu } from "./account-menu";
+import { SubmissionDialog } from "./submission-dialog";
 
 function NavLink({ item }: { item: (typeof site.nav)[number] }) {
   return (
@@ -49,10 +50,7 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
-          <Link href="/submissions/" prefetch={false} className="site-nav__submission" {...uiLabel('投稿', 'Submit')}>
-            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
-            <UiText zh="投稿" en="Submit" />
-          </Link>
+          <SubmissionDialog />
           <AccountMenu><UiLanguageToggle /></AccountMenu>
           <DonateButton />
         </nav>

@@ -5,9 +5,7 @@ import { api } from "@/lib/api";
 import { errorMessage, isAuthError, SessionRecovery } from "./session-recovery";
 import { UiText } from "./ui-text";
 import { uiPlaceholder } from "@/lib/ui-language";
-import { PageEntry } from "./page-entry";
 import styles from "./submissions.module.css";
-import { PageHeading } from "./page-heading";
 import { RocketLoader } from "./rocket-loader";
 
 type Item = {
@@ -52,6 +50,7 @@ export function nextSubmissionRequestId(current: string, make: () => string) {
   return current || make();
 }
 
+/** Board, composer and moderation list rendered inside the member submission dialog. */
 export function Submissions() {
   const [board, setBoard] = useState<Board | null>(null);
   const [admin, setAdmin] = useState(false);
@@ -161,23 +160,14 @@ export function Submissions() {
   }
 
   return (
-    <PageEntry className={`shell reader-interactions submissions-page ${styles.page}`}>
-      <header className={styles.header}>
-        <p className={styles.eyebrow}>LOVISMIND / SUBMISSIONS</p>
-        <PageHeading kind="submissions" zh="投稿" en="Submissions" />
-        <p className={styles.lede}><UiText
-          zh="留下想分享的文字或链接。投稿仅你和管理员可见；已采用表示决定使用素材，不会自动发布，管理员会另行整理与复核。"
-          en="Leave a note or a link you would like to share. Only you and administrators can see submissions. Adoption means the material will be used, not published automatically; an administrator will review it separately."
-        /></p>
-      </header>
-
+    <>
       <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ""; setNotice(false); }} className={styles.form} noValidate>
         <label className={styles.field} htmlFor="submission-message">
           <span className={styles.label}>
             <UiText zh="正文" en="Text" />
             <span className={styles.optional}><UiText zh="可选" en="Optional" /></span>
           </span>
-          <textarea id="submission-message" name="message" rows={5} maxLength={2000} disabled={busy}
+          <textarea id="submission-message" name="message" rows={4} maxLength={2000} disabled={busy}
             {...uiPlaceholder("想分享的内容、推荐理由，或希望补充的资料……", "Something worth sharing, why you recommend it, or material we could add…")}
             value={message} onChange={(event) => edit(event.target.value, setMessage)} />
         </label>
@@ -301,6 +291,6 @@ export function Submissions() {
             </div>
           </>}
       </section>
-    </PageEntry>
+    </>
   );
 }
