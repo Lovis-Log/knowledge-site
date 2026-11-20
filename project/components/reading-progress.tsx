@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { changeReadingState, saveReadingPosition } from "@/lib/reading-state-client";
 import type { ReadingProgressEntry } from "@/lib/reading-state-types";
 import { uiLabel } from "@/lib/ui-language";
@@ -23,6 +23,7 @@ export function ReadingProgress({ book, chapter, account, entry }: {
   entry?: ReadingProgressEntry;
 }) {
   const [percent, setPercent] = useState(0);
+  const earlyScroll = useRef(false);
 
   useEffect(() => {
     const article = document.querySelector(".reading-main");
@@ -30,8 +31,7 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     let frame = 0;
     let restore = 0;
     let saveTimer = 0;
-    let changed = false;
-    let ready = !account;
+    let ready = false;
     let lastScrollY = window.scrollY;
     let current = currentPercent(max);
     let lastRecorded = current;
@@ -47,19 +47,21 @@ export function ReadingProgress({ book, chapter, account, entry }: {
       saveReadingPosition(account, { book, chapter, resume: lastRecorded, furthest, observedAt, lastReadAt: observedAt });
     };
 
-    const update = (scroll: boolean) => {
+    const update = (scroll: boolean, includeEarlyScroll = false) => {
       current = currentPercent(max);
       setPercent(current);
       const newScrollY = window.scrollY;
-      if (scroll && newScrollY !== lastScrollY) changed = true;
-      if (scroll && ready && changed && account && newScrollY !== lastScrollY) {
+      if (!scroll) return;
+      const moved = newScrollY !== lastScrollY || includeEarlyScroll;
+      lastScrollY = newScrollY;
+      if (moved && (!ready || !account)) earlyScroll.current = true;
+      if (moved && ready && account) {
         lastRecorded = current;
         furthest = Math.max(furthest, current);
         observedAt = Math.max(Date.now(), observedAt + 1);
         dirty = true;
         if (!saveTimer) saveTimer = window.setTimeout(flush, 3500);
       }
-      lastScrollY = newScrollY;
     };
 
     const onScroll = () => {
@@ -82,11 +84,15 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     if (account) {
       void changeReadingState(account, book, chapter, { action: "open" }).catch(() => {});
       restore = requestAnimationFrame(() => {
-        if (!changed && !window.location.hash && window.scrollY < 3 && entry && entry.resume > 2) {
+        const mayRestore = !earlyScroll.current && !window.location.hash && window.scrollY < 3;
+        const restorePosition = mayRestore && entry && entry.resume > 2;
+        if (restorePosition) {
           window.scrollTo({ top: max * entry.resume / 100, behavior: "instant" });
+          lastScrollY = window.scrollY;
         }
-        update(false);
         ready = true;
+        update(!restorePosition, earlyScroll.current);
+        earlyScroll.current = false;
       });
     }
 

@@ -64,7 +64,7 @@ export default function ChapterView({
       data-reading-preset={campusReading ? "campus-notes" : undefined}
     >
       <ReadingLayout
-        progress={<ReadingProgress book={book.slug} chapter={chapter.slug} account={state?.account} entry={state?.progress[0]} />}
+        progress={<ReadingProgress key={book.slug + "/" + chapter.slug} book={book.slug} chapter={chapter.slug} account={state?.account} entry={state?.progress[0]} />}
         aside={
           <>
             <div data-reading-block="notes">
