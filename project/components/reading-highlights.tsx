@@ -10,8 +10,14 @@ import { UiText } from "./ui-text";
 
 const registryName = "lovismind-reading-highlight";
 
-type Target = { mark: ReadingHighlight; remove: boolean; rect: DOMRect };
+type Target = { mark: ReadingHighlight; remove: boolean; rect: DOMRect; range: Range };
 type PaintedMark = { mark: ReadingHighlight; ranges: Range[] };
+
+function visibleSelectionRect(range: Range) {
+  return Array.from(range.getClientRects()).findLast((box) =>
+    box.width > 0 && box.height > 0 && box.bottom > 0 && box.top < innerHeight &&
+    box.right > 0 && box.left < innerWidth);
+}
 
 function matchingMark(ranges: Range[], range: Range) {
   return ranges.some((candidate) =>
@@ -76,23 +82,29 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       const container = range.startContainer;
       const element = (container instanceof Element ? container : container.parentElement)?.closest<HTMLElement>("[data-highlight-view]");
       if (!element || !article.contains(element) || !element.contains(range.endContainer)) { clear(); return; }
-      const rect = Array.from(range.getClientRects()).findLast((box) => box.width > 0 && box.height > 0);
+      const rect = visibleSelectionRect(range);
       if (!rect) { clear(); return; }
       const existing = painted.current.find((item) => item.mark.view === element.dataset.highlightView && matchingMark(item.ranges, range));
       const mark = existing?.mark ?? highlightSelection(element, range, element.dataset.highlightView as HighlightView);
       if (mark) {
         setError(false);
-        setTarget({ mark, rect, remove: Boolean(existing) });
+        setTarget({ mark, rect, remove: Boolean(existing), range: range.cloneRange() });
       }
     };
     const clickMark = (event: MouseEvent) => {
       if (busy || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
         event.target.closest("a, button")) return;
-      const item = painted.current.find(({ ranges }) => ranges.some((range) => Array.from(range.getClientRects()).some(
-        (rect) => rect.width > 0 && event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom)));
-      if (item) {
-        setError(false);
-        setTarget({ mark: item.mark, rect: new DOMRect(event.clientX, event.clientY, 0, 0), remove: true });
+      for (const { mark, ranges } of painted.current) {
+        const range = ranges.find((candidate) => Array.from(candidate.getClientRects()).some(
+          (rect) => rect.width > 0 && event.clientX >= rect.left && event.clientX <= rect.right &&
+            event.clientY >= rect.top && event.clientY <= rect.bottom));
+        if (!range) continue;
+        const rect = visibleSelectionRect(range);
+        if (rect) {
+          setError(false);
+          setTarget({ mark, rect, range, remove: true });
+        }
+        return;
       }
     };
     const onKey = (event: KeyboardEvent) => {
@@ -100,21 +112,35 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       else if (event.shiftKey) selected();
     };
     const dismissOutside = (event: PointerEvent) => { if (!button.current?.contains(event.target as Node)) clear(); };
+    let frame = 0;
+    const reposition = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setTarget((value) => {
+          if (!value) return value;
+          const rect = visibleSelectionRect(value.range);
+          if (!rect) return null;
+          return rect.top === value.rect.top && rect.right === value.rect.right ? value : { ...value, rect };
+        });
+      });
+    };
     const observer = new MutationObserver(clear);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
     article.addEventListener("pointerup", selected);
     article.addEventListener("click", clickMark);
     document.addEventListener("pointerdown", dismissOutside);
     document.addEventListener("keyup", onKey);
-    window.addEventListener("scroll", clear, { passive: true });
-    window.addEventListener("resize", clear);
+    window.addEventListener("scroll", reposition, { passive: true });
+    window.addEventListener("resize", reposition);
     return () => {
       article.removeEventListener("pointerup", selected);
       article.removeEventListener("click", clickMark);
       document.removeEventListener("pointerdown", dismissOutside);
       document.removeEventListener("keyup", onKey);
-      window.removeEventListener("scroll", clear);
-      window.removeEventListener("resize", clear);
+      window.removeEventListener("scroll", reposition);
+      window.removeEventListener("resize", reposition);
+      cancelAnimationFrame(frame);
       observer.disconnect();
     };
   }, [root, busy]);
