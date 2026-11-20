@@ -1,9 +1,9 @@
 import { NavigationFeedback } from "@/components/navigation-feedback";
 import { UiText } from "@/components/ui-text";
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import "katex/dist/katex.min.css";
 import "highlight.js/styles/github.css";
+import "./fonts/plus-jakarta-sans/font.css";
 import "./globals.css";
 import "./reader-refinements.css";
 import "./campus-notes.css";
@@ -11,12 +11,6 @@ import "./theme.css";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";
-
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ["latin", "latin-ext"],
-  display: "swap",
-  variable: "--font-jakarta",
-});
 
 export const metadata: Metadata = {
   title: { default: site.title, template: `%s · ${site.name}` },
@@ -45,7 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-font-size="md"
       data-scroll-behavior="smooth"
       data-toc="open"
-      className={jakarta.variable}
       suppressHydrationWarning
     >
       <head>
