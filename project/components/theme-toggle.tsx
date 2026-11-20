@@ -92,7 +92,6 @@ export function ThemeToggle() {
       ref={button}
       type="button"
       className="theme-toggle"
-      suppressHydrationWarning
       {...uiLabel("切换深浅色主题", "Toggle color theme")}
       onClick={toggle}
     >

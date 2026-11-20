@@ -131,10 +131,10 @@ export function LandingPage() {
     <div ref={root} id="lovismind-landing" className={`${headingSerif.variable} ${styles.landing}`} data-motion="on" data-intro={hydrated ? "ready" : undefined}>
       <header className={styles.header}>
         <div className={`${styles.shell} ${styles.headerInner}`}>
-          <a href="#top" className={styles.brand} suppressHydrationWarning {...uiLabel("LovisMind 首页", "LovisMind home")}>
+          <a href="#top" className={styles.brand} {...uiLabel("LovisMind 首页", "LovisMind home")}>
             <img src="/brand/lovismind-mark.png" width={36} height={36} alt="" /><span>LovisMind</span><span className={styles.brandDescription}><UiText zh="个人知识笔记" en="Lovis’s personal knowledge notes" /></span>
           </a>
-          <nav className={styles.sectionNav} suppressHydrationWarning {...uiLabel("页面导航", "Page navigation")}>
+          <nav className={styles.sectionNav} {...uiLabel("页面导航", "Page navigation")}>
             <a href="#vault-preview"><UiText zh="阅读方式" en="How to read" /></a>
             <a href="#collections"><UiText zh="藏书" en="The collection" /></a>
             <a href="#reflection"><UiText zh="关于本站" en="About this site" /></a>
@@ -193,8 +193,8 @@ export function LandingPage() {
               </figure>
             );
             return signedIn
-              ? <Link href={volume.href} className={styles.collectionCard} key={volume.href} suppressHydrationWarning {...label}>{card}</Link>
-              : <a href={volume.href} className={styles.collectionCard} key={volume.href} suppressHydrationWarning {...label} onClick={(event) => { event.preventDefault(); openAuth("login", volume.href); }}>{card}</a>;
+              ? <Link href={volume.href} className={styles.collectionCard} key={volume.href} {...label}>{card}</Link>
+              : <a href={volume.href} className={styles.collectionCard} key={volume.href} {...label} onClick={(event) => { event.preventDefault(); openAuth("login", volume.href); }}>{card}</a>;
           })}
         </div>
         <Link href="/library/" className={styles.collectionLink} onClick={(event) => { if (!signedIn) { event.preventDefault(); openAuth("login", "/library/"); } }}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></Link>
