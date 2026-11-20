@@ -38,9 +38,11 @@ export function englishText(zh: string): string {
 }
 
 export function uiLabel(zh: string, en = englishText(zh)) {
-  return { "aria-label": zh, "data-ui-aria-zh": zh, "data-ui-aria-en": en };
+  // The language toggle applies a saved preference to these attributes before
+  // some route boundaries finish hydrating; use English for static markup.
+  return { "aria-label": en, "data-ui-aria-zh": zh, "data-ui-aria-en": en, suppressHydrationWarning: true };
 }
 
 export function uiPlaceholder(zh: string, en: string) {
-  return { placeholder: zh, "data-ui-placeholder-zh": zh, "data-ui-placeholder-en": en };
+  return { placeholder: en, "data-ui-placeholder-zh": zh, "data-ui-placeholder-en": en, suppressHydrationWarning: true };
 }
