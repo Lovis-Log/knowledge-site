@@ -108,7 +108,7 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql", "0007_reading_state.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
     for (const statement of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
@@ -454,7 +454,7 @@ test("admin account totals include every status independently of the filter", as
 
 test("static segment prefetch aliases resolve only after the original route is authorized", async () => {
   const anonymous = client();
-  for (const route of ["about", "guestbook", "library", "submissions"]) {
+  for (const route of ["about", "guestbook", "library"]) {
     const alias = `/${route}/__next.${route}.__PAGE__.txt`;
     assert.equal((await anonymous.call(alias)).status, 401);
     const response = await admin.call(alias + "?_rsc=qa");
@@ -1223,4 +1223,57 @@ test("legacy image-generation-workflows favorites resolve under the merged book"
   assert.equal((await device.call("/api/favorites", "POST", { book: "agent-engineering", chapter: "01-image-prompting", saved: false })).status, 200);
   assert.equal((await db.prepare("SELECT count(*) AS n FROM favorites WHERE user_id=? AND chapter='01-image-prompting'")
     .bind(id).first<{ n: number }>())!.n, 0);
+});
+
+test("reading state syncs across sessions, keeps furthest progress and protects account data", async () => {
+  const access = await invite();
+  const first = client(), second = client(), anonymous = client();
+  const username = "reading_sync_reader";
+  assert.equal((await first.call("/api/auth/register", "POST", registration(username, access.code))).status, 201);
+  for (const device of [first, second])
+    assert.equal((await device.call("/api/auth/login", "POST", { username, password })).status, 200);
+  const account = (await user(username))!.id;
+  const book = "llm-knowledge-base";
+  const chapter = "01-karpathy-llm-wiki";
+  const endpoint = "/api/reading-state";
+  const detail = endpoint + "?book=" + book + "&chapter=" + chapter;
+  const read = async (device: ReturnType<typeof client>, path = detail) =>
+    await (await device.call(path)).json() as import("../../lib/reading-state-types").ReadingState;
+  const post = (device: ReturnType<typeof client>, action: object) =>
+    device.call(endpoint, "POST", { account, book, chapter, ...action });
+
+  assert.equal((await anonymous.call(detail)).status, 401);
+  assert.equal((await post(admin, { action: "open" })).status, 409);
+  assert.equal((await post(first, { action: "open", chapter: "missing-chapter" })).status, 404);
+  assert.equal((await post(first, { action: "open" })).status, 200);
+  const at = Date.now() - 1000;
+  assert.equal((await post(first, { action: "progress", resume: 38, furthest: 48, observedAt: at })).status, 200);
+  assert.equal((await post(second, { action: "progress", resume: 41, furthest: 41, observedAt: at + 1 })).status, 200);
+  assert.equal((await post(first, { action: "progress", resume: 20, furthest: 70, observedAt: at - 1 })).status, 200);
+  assert.equal((await post(first, { action: "import", entries: [{ book, chapter, percent: 80, openedAt: 0 }] })).status, 200);
+  assert.equal((await post(first, { action: "progress", resume: 120, furthest: 120, observedAt: at })).status, 400);
+  const mark = {
+    id: "09a17acd-319b-4006-9d78-ca7cf9598abd",
+    view: "en", start: 10, quote: "a highlighted passage", prefix: "Before ", suffix: " after",
+  };
+  assert.equal((await post(first, { action: "highlight", mark })).status, 200);
+  assert.equal((await post(first, { action: "highlight", mark })).status, 200);
+  const otherDevice = await read(second);
+  assert.deepEqual(otherDevice.highlights, [mark]);
+  assert.equal(otherDevice.progress[0].resume, 41);
+  assert.equal(otherDevice.progress[0].furthest, 80);
+  assert.equal((await read(second, endpoint)).progress[0].chapter, chapter);
+  assert.deepEqual((await read(second, endpoint + "?book=" + book)).highlights, []);
+  assert.deepEqual((await read(admin)).progress, []);
+  assert.deepEqual((await read(admin)).highlights, []);
+  assert.equal((await post(second, { action: "remove-highlight", id: mark.id })).status, 200);
+  assert.deepEqual((await read(first)).highlights, []);
+});
+
+test("old submissions links redirect authenticated readers to the library dialog", async () => {
+  for (const path of ["/submissions/", "/submissions/index.html"]) {
+    const response = await admin.call(path);
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get("Location"), "/library/?submit=1");
+  }
 });

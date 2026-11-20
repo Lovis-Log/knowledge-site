@@ -57,6 +57,7 @@ async function send<T>(
   method: string,
   data: unknown,
   token?: string,
+  keepalive = false,
 ): Promise<T> {
   const headers: Record<string, string> = {};
   if (token) {
@@ -68,6 +69,7 @@ async function send<T>(
     headers,
     credentials: "same-origin",
     cache: "no-store",
+    keepalive,
     body: data === undefined ? undefined : JSON.stringify(data),
   });
   const result = await responseJson(response);
@@ -94,16 +96,17 @@ export async function api<T>(
   path: string,
   method = "GET",
   data?: unknown,
+  options?: { keepalive?: boolean },
 ): Promise<T> {
   if (method === "GET") return send<T>(path, method, data);
   const token = getCsrf();
   try {
-    return await send<T>(path, method, data, await token);
+    return await send<T>(path, method, data, await token, options?.keepalive);
   } catch (error) {
     // Only retry a request rejected before the server ran the mutation.
     if (!(error instanceof ApiError) || error.code !== "CSRF_FAILED") throw error;
     if (csrfToken === token) csrfToken = undefined;
-    return send<T>(path, method, data, await getCsrf());
+    return send<T>(path, method, data, await getCsrf(), options?.keepalive);
   }
 }
 export function safeNext(value: string | null) {

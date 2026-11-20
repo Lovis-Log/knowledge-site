@@ -63,7 +63,6 @@ for (const book of books) {
 for (const route of [
   "index.html",
   "library/index.html",
-  "submissions/index.html",
   "login/index.html",
   "register/index.html",
   "reset-password/index.html",
@@ -73,6 +72,7 @@ for (const route of [
   "admin/invites/index.html",
 ])
   assert.ok((await stat("out/" + route)).isFile());
+await assert.rejects(stat("out/submissions"), { code: "ENOENT" }, "The standalone submissions page must not be exported");
 const routes = JSON.parse(await readFile("out/_routes.json", "utf8"));
 assert.deepEqual(routes, { version: 1, include: ["/*"], exclude: [] });
 assert.ok(

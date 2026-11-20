@@ -7,7 +7,7 @@ import { UiText } from "./ui-text";
 
 type Group = ChapterGroup & { chapters: Chapter[] };
 
-export function ChapterGroupTabs({ book, groups }: { book: Book; groups: Group[] }) {
+export function ChapterGroupTabs({ book, groups, progress }: { book: Book; groups: Group[]; progress: ReadonlyMap<string, number> }) {
   const [selection, setSelection] = useState({ book: book.slug, group: groups[0]?.id });
   const active = groups.find((group) => selection.book === book.slug && group.id === selection.group) ?? groups[0];
   if (!active) return null;
@@ -54,7 +54,7 @@ export function ChapterGroupTabs({ book, groups }: { book: Book; groups: Group[]
           hidden={active.id !== group.id}
           tabIndex={0}
         >
-          <ChapterList book={book} chapters={group.chapters} />
+          <ChapterList book={book} chapters={group.chapters} progress={progress} />
         </div>
       ))}
     </>

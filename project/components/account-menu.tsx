@@ -1,5 +1,7 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+import { SubmissionDialog } from "./submission-dialog";
 import { ReaderLink as Link } from "@/components/navigation-feedback";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { UiText } from "@/components/ui-text";
@@ -19,6 +21,8 @@ type Account = {
 };
 
 export function AccountMenu({ children }: { children?: ReactNode }) {
+  const pathname = usePathname();
+  const inLibrary = Boolean(pathname && !/^\/(?:login|register|reset-password)?\/?$/.test(pathname));
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<Account | null>(null);
   const [ready, setReady] = useState(false);
@@ -97,6 +101,7 @@ export function AccountMenu({ children }: { children?: ReactNode }) {
           <UiText zh="留言板" en="Guestbook" />
         </Link>
       )}
+      {user && inLibrary && <SubmissionDialog key={user.id} />}
       {children}
       <div className="account-menu" ref={rootRef}>
         <button

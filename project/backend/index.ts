@@ -1,3 +1,4 @@
+import { getReadingState, importReadingProgress, saveReadingState } from "./reading-state";
 import {
   digest,
   equal,
@@ -573,6 +574,42 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
   }
   if (!["GET", "HEAD"].includes(method)) csrf(request);
   if (path === "/api/submissions" || path === "/api/admin/submissions") return submissionsApi(request,db,path);
+  if (path === "/api/reading-state") {
+    const user = await requireUser(request, db);
+    const query = new URL(request.url).searchParams;
+    if (method === "GET") {
+      if (!query.has("book") && !query.has("chapter")) return json(await getReadingState(db, user.id, null));
+      const target = favoriteTarget(query.get("book"), query.get("chapter") ?? "");
+      return json(await getReadingState(db, user.id, { ...target, book: canonicalBook(target.book) }));
+    }
+    if (method === "POST") {
+      const data = await body(request);
+      if (data.action === "import") {
+        if (data.account !== user.id) fail(409, "ACCOUNT_CHANGED", "????? / Account changed");
+        if (!Array.isArray(data.entries) || data.entries.length > 32)
+          fail(400, "INVALID_READING_STATE", "?????? / Invalid reading state");
+        const entries = data.entries.flatMap((item: unknown) => {
+          if (!item || typeof item !== "object") return [];
+          const entry = item as Record<string, unknown>;
+          const { book: key, chapter, percent, openedAt } = entry;
+          if (typeof key !== "string" || typeof chapter !== "string" || !chapter ||
+            typeof percent !== "number" || !Number.isFinite(percent) || percent < 0 || percent > 100 ||
+            typeof openedAt !== "number" || !Number.isSafeInteger(openedAt) || openedAt < 0) return [];
+          const book = canonicalBook(key);
+          if (!Object.hasOwn(FAVORITE_TITLES, favoritePath(book, chapter))) return [];
+          return [{ book, chapter, percent, openedAt: Math.min(openedAt, Date.now()) }];
+        });
+        await importReadingProgress(db, user.id, entries);
+        return json({ ok: true });
+      }
+      const target = favoriteTarget(data.book, data.chapter);
+      const book = canonicalBook(target.book);
+      if (!target.chapter || !Object.hasOwn(FAVORITE_TITLES, favoritePath(book, target.chapter)))
+        fail(404, "NOT_FOUND", "????? / Content unavailable");
+      return json(await saveReadingState(db, user.id, { book, chapter: target.chapter }, data, fail));
+    }
+    fail(405, "METHOD_NOT_ALLOWED", "?????? / Method not allowed");
+  }
   if (path.startsWith("/api/account/")) return accountApi(request,db,path,env);
   if (path === "/api/guestbook" || path === "/api/admin/guestbook")
     return guestbookApi(request, db, path);
@@ -1045,10 +1082,7 @@ export default {
       )
         return json({ code: "INVALID_PATH" }, 400);
       // The allowlist contains only data-free shells, framework code and decorative assets.
-      // The submissions page and its prefetch payloads are member-only. Keep
-      // this negative guard so widening the public allowlist can never expose it.
-      const memberOnlyPath = path === "/submissions" || path.startsWith("/submissions/");
-      const publicPath = !memberOnlyPath && (
+      const publicPath = (
         [
           "/",
           "/index.html",
@@ -1125,6 +1159,8 @@ export default {
           });
         return json({ code: "UNAUTHENTICATED" }, 401);
       }
+      if (path === "/submissions" || path === "/submissions/index.html")
+        return new Response(null, { status: 308, headers: { Location: "/library/?submit=1", "Cache-Control": "no-store" } });
       // The image-generation-workflows book was merged into agent-engineering.
       // Authenticated readers keep stable links while old bookmarks resolve.
       const movedBook = legacyBookRedirect(path);

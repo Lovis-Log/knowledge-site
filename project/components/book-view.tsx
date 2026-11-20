@@ -8,12 +8,15 @@ import { ChapterList } from "@/components/chapter-list";
 import { ChapterGroupTabs } from "@/components/chapter-group-tabs";
 import { FavoriteButton } from "@/components/favorites";
 import { useContent } from "@/content/client";
+import { useReadingState } from "@/lib/reading-state-client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
 import { bookTitle } from "@/lib/book-titles";
 
 export default function BookView({ slug }: { slug: string }) {
   const { getBook, getLibrarySections, taxonomyEnglish, bookEnglish } =
     useContent();
+  const { state } = useReadingState(slug);
+  const progress = new Map(state?.progress.map((entry) => [entry.chapter, entry.furthest]));
   const book = getBook(slug);
   if (!book) notFound();
   const section = getLibrarySections().find((item) =>
@@ -101,15 +104,15 @@ export default function BookView({ slug }: { slug: string }) {
         </h2>
         {groups?.length ? (
           <>
-            <ChapterGroupTabs book={book} groups={groups} />
+            <ChapterGroupTabs book={book} progress={progress} groups={groups} />
             {ungrouped.length > 0 && (
               <div className="chapter-group">
-                <ChapterList book={book} chapters={ungrouped} />
+                <ChapterList book={book} progress={progress} chapters={ungrouped} />
               </div>
             )}
           </>
         ) : (
-          <ChapterList book={book} />
+          <ChapterList book={book} progress={progress} />
         )}
       </section>
     </div>

@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { ChapterPager } from "@/components/chapter-pager";
 import { InlineMarkdown, Markdown } from "@/components/markdown";
 import { ReadingLayout } from "@/components/reading-layout";
+import { useRef } from "react";
+import { useReadingState } from "@/lib/reading-state-client";
+import { ReadingHighlights } from "@/components/reading-highlights";
 import { ReadingProgress } from "@/components/reading-progress";
 import { ReadingToolbar } from "@/components/reading-toolbar";
 import { SourceList } from "@/components/source-list";
@@ -25,6 +28,8 @@ export default function ChapterView({
   bookSlug: string;
   chapterSlug: string;
 }) {
+  const article = useRef<HTMLDivElement>(null);
+  const { state, failed, refresh } = useReadingState(bookSlug, chapterSlug);
   const { getBook, getChapter, getAdjacentChapters } = useContent();
   const book = getBook(bookSlug);
   const chapter = getChapter(bookSlug, chapterSlug);
@@ -58,9 +63,8 @@ export default function ChapterView({
       className="shell shell--reading"
       data-reading-preset={campusReading ? "campus-notes" : undefined}
     >
-      <ReadingProgress bookSlug={book.slug} chapterSlug={chapter.slug} />
-
       <ReadingLayout
+        progress={<ReadingProgress book={book.slug} chapter={chapter.slug} account={state?.account} entry={state?.progress[0]} />}
         aside={
           <>
             <div data-reading-block="notes">
@@ -178,22 +182,27 @@ export default function ChapterView({
           )}
         </details>
 
-        <div data-reading-block="notes">
-          {langs.map((lang) => (
-            <div key={lang} className="prose lang-block" {...langBlock(lang)}>
-              <Markdown markdown={chapter.versions[lang]!.body} lang={lang} />
-            </div>
-          ))}
-        </div>
-        {hasTranslation && (
-          <div
-            data-reading-block="translation"
-            className="prose lang-block"
-            lang="zh-CN"
-          >
-            <Markdown markdown={chapter.translation!.body} lang="en" />
+        <div ref={article}>
+          <div data-reading-block="notes">
+            {langs.map((lang) => (
+              <div key={lang} className="prose lang-block" data-highlight-view={lang} {...langBlock(lang)}>
+                <Markdown markdown={chapter.versions[lang]!.body} lang={lang} />
+              </div>
+            ))}
           </div>
-        )}
+          {hasTranslation && (
+            <div
+              data-reading-block="translation"
+              data-highlight-view="translation"
+              className="prose lang-block"
+              lang="zh-CN"
+            >
+              <Markdown markdown={chapter.translation!.body} lang="en" />
+            </div>
+          )}
+        </div>
+        <ReadingHighlights key={book.slug + "/" + chapter.slug} root={article} book={book.slug}
+          chapter={chapter.slug} state={state} failed={failed} refresh={refresh} />
         <SourceList sources={chapter.sources} />
         <ChapterPager
           bookSlug={book.slug}

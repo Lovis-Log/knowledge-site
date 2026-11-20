@@ -7,7 +7,6 @@ import { site } from "@/lib/site";
 import { HeaderBreadcrumb } from "./header-breadcrumb";
 import { DonateButton } from "./donate-button";
 import { AccountMenu } from "./account-menu";
-import { SubmissionDialog } from "./submission-dialog";
 
 function NavLink({ item }: { item: (typeof site.nav)[number] }) {
   return (
@@ -50,7 +49,6 @@ export function SiteHeader({ crumbs }: { crumbs: Record<string, Crumb[]> }) {
           {site.nav.filter((item) => item.href !== "/about/").map((item) => (
             <NavLink key={item.href} item={item} />
           ))}
-          <SubmissionDialog />
           <AccountMenu><UiLanguageToggle /></AccountMenu>
           <DonateButton />
         </nav>

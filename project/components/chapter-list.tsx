@@ -10,9 +10,11 @@ import { InlineMarkdown } from "@/components/markdown";
 export function ChapterList({
   book,
   chapters = book.chapters,
+  progress,
 }: {
   book: Book;
   chapters?: Chapter[];
+  progress: ReadonlyMap<string, number>;
 }) {
   return (
     <ol className="chapter-list">
@@ -21,6 +23,7 @@ export function ChapterList({
         const en = chapter.versions.en ?? zh;
         const bilingual = Boolean(chapter.versions.zh && chapter.versions.en);
         const meta = book.studyPeriod ?? (chapter.publishedAt ? formatDate(chapter.publishedAt) : "");
+        const percent = Math.floor(progress.get(chapter.slug) ?? 0);
         return (
           <li
             key={chapter.slug}
@@ -39,7 +42,14 @@ export function ChapterList({
                 )}
               </span>
               <span className="chapter-row__meta">
-                {meta}
+                {meta && <span>{meta}</span>}
+                {percent > 0 && (
+                  <span className="chapter-row__progress" data-complete={percent === 100 || undefined}>
+                    {percent === 100
+                      ? <><span aria-hidden="true">?</span><span className="reader-sr-only"><UiText zh="???" en="Completed" /></span></>
+                      : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`?? ${percent}%`} en={`${percent}% read`} /></span></>}
+                  </span>
+                )}
               </span>
             </Link>
           </li>

@@ -115,3 +115,12 @@ test("submission failures keep the action that failed instead of only refreshing
   assert.equal(expired.authExpired, true);
   assert.equal(expired.message, "sign in");
 });
+
+test("highlight anchors follow surrounding edits without choosing an ambiguous repeated quote", async () => {
+  const { resolveHighlight } = await import("../../lib/highlight-anchor");
+  const anchor = { start: 4, quote: "text", prefix: "one ", suffix: " end" };
+  assert.equal(resolveHighlight("one text end", anchor), 4);
+  assert.equal(resolveHighlight("edited one text end two text", anchor), 11);
+  assert.equal(resolveHighlight("two text gap three text", anchor), -1);
+  assert.equal(resolveHighlight("now text", anchor), 4);
+});

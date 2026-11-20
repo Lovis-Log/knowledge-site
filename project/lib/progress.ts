@@ -27,16 +27,6 @@ export function readProgress(): ProgressMap {
   }
 }
 
-export function writeProgress(key: string, percent: number): void {
-  try {
-    const map = readProgress();
-    map[key] = Math.min(100, Math.max(0, percent));
-    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(map));
-  } catch {
-    // localStorage 不可用时静默降级，不影响阅读
-  }
-}
-
 export function readLastRead(): LastRead | null {
   try {
     const raw = localStorage.getItem(LAST_READ_STORAGE_KEY);
@@ -50,13 +40,5 @@ export function readLastRead(): LastRead | null {
     };
   } catch {
     return null;
-  }
-}
-
-export function writeLastRead(entry: LastRead): void {
-  try {
-    localStorage.setItem(LAST_READ_STORAGE_KEY, JSON.stringify(entry));
-  } catch {
-    // 忽略
   }
 }

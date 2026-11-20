@@ -1,68 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { api } from "@/lib/api";
 import { uiLabel } from "@/lib/ui-language";
 import { Submissions } from "./submissions";
 import { UiText } from "./ui-text";
 import styles from "./submissions.module.css";
 
-type Account = { id: string; username: string };
-
-/**
- * Member submission entry in the site header. The trigger stays hidden until
- * `/api/auth/me` confirms an approved session, so public and anonymous readers
- * never see the submission UI. The dialog is mounted once and opened from
- * `/library/?submit=1` without a reload after the same check.
- */
 export function SubmissionDialog() {
-  const [member, setMember] = useState(false);
   const [open, setOpen] = useState(false);
+  const [started, setStarted] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const consumedLegacyEntry = useRef(false);
+  const show = useCallback(() => { setStarted(true); setOpen(true); }, []);
 
   useEffect(() => {
-    let live = true;
-    const load = () => {
-      api<{ user: Account | null }>("/api/auth/me")
-        .then((result) => {
-          if (!live) return;
-          const signedIn = Boolean(result.user);
-          setMember(signedIn);
-          if (!signedIn) setOpen(false);
-        })
-        .catch(() => {
-          // An unknown session must not expose the trigger; a later account
-          // event or reload retries the check.
-          if (!live) return;
-          setMember(false);
-          setOpen(false);
-        });
-    };
-    load();
-    window.addEventListener("account:updated", load);
-    return () => {
-      live = false;
-      window.removeEventListener("account:updated", load);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!member || consumedLegacyEntry.current) return;
     const url = new URL(window.location.href);
-    if (url.pathname !== "/library/" && url.pathname !== "/library") return;
-    if (url.searchParams.get("submit") !== "1") return;
-    consumedLegacyEntry.current = true;
+    if (!/^\/library\/?$/.test(url.pathname) || url.searchParams.get("submit") !== "1") return;
     url.searchParams.delete("submit");
-    // Consume the legacy destination in place so refreshes and history stay clean.
-    window.history.replaceState(
-      window.history.state,
-      "",
-      url.pathname + url.search + url.hash,
-    );
-    setOpen(true);
-  }, [member]);
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    show();
+  }, [show]);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -82,23 +39,21 @@ export function SubmissionDialog() {
 
   return (
     <>
-      {member && (
-        <button
-          ref={triggerRef}
-          type="button"
-          className={`site-nav__submission ${styles.trigger}`}
-          aria-haspopup="dialog"
-          aria-expanded={open}
-          onClick={() => setOpen(true)}
-          {...uiLabel("投稿", "Submit")}
-        >
-          <svg className={`site-nav__icon ${styles.triggerIcon}`} aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-            <rect x="3" y="5" width="18" height="14" rx="2" />
-            <path d="m3 6 9 7 9-7" />
-          </svg>
-          <UiText zh="投稿" en="Submit" />
-        </button>
-      )}
+      <button
+        ref={triggerRef}
+        type="button"
+        className={`site-nav__submission ${styles.trigger}`}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={show}
+        {...uiLabel("投稿", "Submit")}
+      >
+        <svg className={`site-nav__icon ${styles.triggerIcon}`} aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="m3 6 9 7 9-7" />
+        </svg>
+        <UiText zh="投稿" en="Submit" />
+      </button>
       <dialog
         ref={dialogRef}
         className={styles.dialog}
@@ -114,7 +69,6 @@ export function SubmissionDialog() {
         <div className={styles.panel}>
           <header className={styles.head}>
             <div className={styles.headText}>
-              <p className={styles.eyebrow}>LOVISMIND / SUBMISSIONS</p>
               <h2 id="submission-dialog-title" className={styles.title}>
                 <UiText zh="投稿" en="Submissions" />
               </h2>
@@ -136,7 +90,7 @@ export function SubmissionDialog() {
               </svg>
             </button>
           </header>
-          {open && <Submissions />}
+          {started && <Submissions />}
         </div>
       </dialog>
     </>

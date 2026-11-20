@@ -1,110 +1,122 @@
-"use client";
+﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
-import { readProgress, writeLastRead, writeProgress } from "@/lib/progress";
+import { useEffect, useState } from "react";
+import { changeReadingState, saveReadingPosition } from "@/lib/reading-state-client";
+import type { ReadingProgressEntry } from "@/lib/reading-state-types";
+import { uiLabel } from "@/lib/ui-language";
+import { UiText } from "./ui-text";
 
-interface ReadingProgressProps {
-  bookSlug: string;
-  chapterSlug: string;
-}
-
-function scrollMax(): number {
+function scrollMax() {
   return document.documentElement.scrollHeight - window.innerHeight;
 }
 
-function currentPercent(): number {
+function currentPercent() {
   const max = scrollMax();
-  if (max <= 0) return 0;
-  return Math.min(100, Math.max(0, (window.scrollY / max) * 100));
+  return max <= 0 ? 100 : Math.min(100, Math.max(0, window.scrollY / max * 100));
 }
 
-export function ReadingProgress({ bookSlug, chapterSlug }: ReadingProgressProps) {
+export function ReadingProgress({ book, chapter, account, entry }: {
+  book: string;
+  chapter: string;
+  account?: string;
+  entry?: ReadingProgressEntry;
+}) {
   const [percent, setPercent] = useState(0);
-  const key = `${bookSlug}/${chapterSlug}`;
-  const lastSaved = useRef(0);
-  const lastPercent = useRef(0);
-  // 恢复滚动位置之前不写进度，避免初始的 scrollY=0 覆盖已保存的位置
-  const ready = useRef(false);
-
-  useEffect(() => {
-    ready.current = false;
-    lastPercent.current = 0;
-    writeLastRead({ book: bookSlug, chapter: chapterSlug, updatedAt: new Date().toISOString() });
-
-    const saved = readProgress()[key];
-    const shouldRestore = !window.location.hash && typeof saved === "number" && saved > 2 && saved < 98;
-
-    if (!shouldRestore) {
-      ready.current = true;
-      return;
-    }
-
-    let restoreFrame = 0;
-    let readyFrame = 0;
-    const first = requestAnimationFrame(() => {
-      restoreFrame = requestAnimationFrame(() => {
-        const max = scrollMax();
-        if (max <= 0) {
-          ready.current = true;
-          return;
-        }
-        window.scrollTo({ top: (saved / 100) * max, behavior: "instant" });
-        lastPercent.current = saved;
-        readyFrame = requestAnimationFrame(() => {
-          ready.current = true;
-        });
-      });
-    });
-
-    return () => {
-      cancelAnimationFrame(first);
-      cancelAnimationFrame(restoreFrame);
-      cancelAnimationFrame(readyFrame);
-    };
-  }, [bookSlug, chapterSlug, key]);
 
   useEffect(() => {
     let frame = 0;
+    let restore = 0;
+    let saveTimer = 0;
+    let changed = false;
+    let ready = !account;
+    let lastScrollY = window.scrollY;
+    let current = currentPercent();
+    let lastRecorded = current;
+    let furthest = entry?.furthest ?? 0;
+    let observedAt = entry?.observedAt ?? 0;
+    let dirty = false;
 
-    const update = () => {
-      frame = 0;
-      const next = currentPercent();
-      setPercent(next);
+    const flush = () => {
+      window.clearTimeout(saveTimer);
+      saveTimer = 0;
+      if (!account || !dirty) return;
+      dirty = false;
+      saveReadingPosition(account, { book, chapter, resume: lastRecorded, furthest, observedAt, lastReadAt: observedAt });
+    };
 
-      if (!ready.current) return;
-      lastPercent.current = next;
-      const now = Date.now();
-      if (now - lastSaved.current > 400) {
-        lastSaved.current = now;
-        writeProgress(key, next);
+    const update = (scroll: boolean) => {
+      current = currentPercent();
+      setPercent(current);
+      const newScrollY = window.scrollY;
+      if (scroll && newScrollY !== lastScrollY) changed = true;
+      if (scroll && ready && changed && account && newScrollY !== lastScrollY) {
+        lastRecorded = current;
+        furthest = Math.max(furthest, current);
+        observedAt = Math.max(Date.now(), observedAt + 1);
+        dirty = true;
+        if (!saveTimer) saveTimer = window.setTimeout(flush, 3500);
       }
+      lastScrollY = newScrollY;
     };
 
     const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      if (!frame) frame = requestAnimationFrame(() => {
+        frame = 0;
+        update(true);
+      });
     };
-
-    update();
+    const onResize = () => update(false);
+    const onLeavingPage = () => { update(true); flush(); };
+    const onHidden = () => { if (document.visibilityState === "hidden") onLeavingPage(); };
+    const observer = new ResizeObserver(onResize);
+    const article = document.querySelector(".reading-main");
+    if (article) observer.observe(article);
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("pagehide", onLeavingPage);
+    document.addEventListener("visibilitychange", onHidden);
+    update(false);
+
+    if (account) {
+      void changeReadingState(account, book, chapter, { action: "open" }).catch(() => {});
+      restore = requestAnimationFrame(() => {
+        if (!changed && !window.location.hash && window.scrollY < 3 && entry && entry.resume > 2) {
+          window.scrollTo({ top: scrollMax() * entry.resume / 100, behavior: "instant" });
+        }
+        update(false);
+        ready = true;
+      });
+    }
+
     return () => {
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(restore);
+      flush();
+      observer.disconnect();
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("pagehide", onLeavingPage);
+      document.removeEventListener("visibilitychange", onHidden);
     };
-  }, [key]);
+    // Restore only on entering the chapter, without interrupting reading on a background refresh.
+  }, [account, book, chapter]);
 
-  useEffect(() => {
-    return () => {
-      if (!ready.current) return;
-      // The destination may already have reset the document scroll position.
-      writeProgress(key, lastPercent.current);
-    };
-  }, [key]);
-
+  const shown = percent >= 100 ? 100 : Math.floor(percent);
   return (
-    <div className="reading-progress" aria-hidden="true">
-      <span style={{ width: `${percent}%` }} />
+    <div className="chapter-progress">
+      <div className="chapter-progress__label" aria-hidden="true">
+        <UiText zh="阅读进度" en="Reading progress" /><span>{shown}%</span>
+      </div>
+      <div
+        className="chapter-progress__track"
+        role="progressbar"
+        {...uiLabel("阅读进度", "Reading progress")}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={shown}
+      >
+        <span style={{ width: shown + "%" }} />
+      </div>
     </div>
   );
 }
