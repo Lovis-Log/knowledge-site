@@ -91,7 +91,8 @@ export function ReadingProgress({ book, chapter, account, entry }: {
           lastScrollY = window.scrollY;
         }
         ready = true;
-        update(!restorePosition, earlyScroll.current);
+        const positionAlreadyVisible = !window.location.hash && window.scrollY > 3;
+        update(!restorePosition, earlyScroll.current || positionAlreadyVisible);
         earlyScroll.current = false;
       });
     }
