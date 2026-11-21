@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "2.5"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "2.5 初等矩阵 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1KRd3NA2RBoey_ZC2nCKqScPtql8hJ58X/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 初等变换是对矩阵"做动作"，初等矩阵则是把这些动作本身写成矩阵。这样一来，"对 $A$ 作一次行变换"就变成"用某个矩阵左乘 $A$"，变换的复合也就变成矩阵的乘法。由此得到本节最实用的结论：$A$ 可逆时，用行变换把 $(A,E)$ 化成 $(E,A^{-1})$，即可同时求出逆矩阵。
@@ -195,25 +199,13 @@ $$
 A^{-1}=P_s\cdots P_2P_1.
 $$
 
-**证明**：$A$ 可逆故 $r(A)=n$，其标准形为 $E$。由定理 5.2，存在初等矩阵使
+**证明**：$A$ 可逆故 $r(A)=n$，只用初等**行**变换就能把 $A$ 化为标准形 $E$（主元有 $n$ 个，没有零行，也不需要用列变换）。把每一步行变换对应成一个初等矩阵 $P_i$，按先后次序左乘，就得到
 
 $$
-P_s\cdots P_1\,A\,Q_1\cdots Q_t=E.
+P_s\cdots P_2P_1A=E.
 $$
 
-两边右乘 $Q_t^{-1}\cdots Q_1^{-1}$，得
-
-$$
-P_s\cdots P_1A=Q_t^{-1}\cdots Q_1^{-1}.
-$$
-
-再两边左乘 $Q_1\cdots Q_t$，得
-
-$$
-Q_1\cdots Q_tP_s\cdots P_1A=E.
-$$
-
-于是 $A^{-1}=Q_1\cdots Q_tP_s\cdots P_1$，它是初等矩阵的乘积。
+两边左乘 $A^{-1}$，得 $P_s\cdots P_2P_1=A^{-1}$。
 
 这个推论说明：**可逆矩阵可以分解为若干初等矩阵的乘积**。而 $P_s\cdots P_1A=E$ 同时说明 $A^{-1}=P_s\cdots P_1E$，即"对 $A$ 作的那些行变换，作用在 $E$ 上就得到 $A^{-1}$"，这正是下面求逆方法的原理。
 
@@ -409,7 +401,3 @@ $$
 - **推论**：可逆矩阵是初等矩阵的乘积；$r(A^{T})=r(A)$。
 - **求逆**：$(A,E)\to(E,A^{-1})$（行变换）；解 $AX=B$ 用 $(A,B)\to(E,X)$，比先求逆再乘更省。
 - **易错点**：左、右乘混淆；倍加型 $P(i,j(k))$ 中 $k$ 的位置（第 $i$ 行第 $j$ 列）；求逆过程中若左块出现零行，应立即判定不可逆，不要继续硬算。
-
-## 资料
-
-- 课件原件：[2.5 初等矩阵 (1).pptx](<https://docs.google.com/presentation/d/1KRd3NA2RBoey_ZC2nCKqScPtql8hJ58X/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

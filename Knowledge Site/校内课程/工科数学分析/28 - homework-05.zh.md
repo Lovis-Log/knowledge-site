@@ -23,6 +23,8 @@ sources:
 
 ## 第 1 题
 
+<!-- homework-topic: 用等价替换求三个极限（含 $1^\infty$ 型与 $\sqrt[n]{a}$） -->
+
 利用等价替换方法求下列极限，其中 $a>0,\ b>0$。
 
 (1) $\displaystyle\lim_{x\to0}\frac{\sqrt[3]{1+x^2}-\cos x}{(\mathrm e^x-1)\ln(1+x)}$；
@@ -111,6 +113,8 @@ $$
 
 ## 第 2 题
 
+<!-- homework-topic: 求同时与 $y=x^2$ 和 $y=x^2-2x$ 相切的直线 -->
+
 求一条直线，使它同时与 $f(x)=x^2$ 和 $g(x)=x^2-2x$ 的图形相切。
 
 **思路** 一条直线要同时是两条曲线的切线，需要两个条件：斜率等于两条曲线在各自切点处的导数；并且这条直线在两条曲线上是"同一条"，即截距相同。所以设两个切点，列出斜率和截距两组方程。
@@ -164,6 +168,8 @@ $$
 ---
 
 ## 第 3 题
+
+<!-- homework-topic: 由隐式方程 $e^y+xy=e$ 求 $y'$、$y''$ 及在点 $(0,1)$ 处的值 -->
 
 设 $y=y(x)$ 由方程 $\mathrm e^y+xy=\mathrm e$ 确定。
 
@@ -235,6 +241,8 @@ $$
 
 ## 第 4 题
 
+<!-- homework-topic: 求参数方程 $x=\ln(1+t^2),\ y=t-\arctan t$ 的一、二阶导数 -->
+
 设曲线由参数方程 $x=\ln(1+t^2),\ y=t-\arctan t\ (t\in\mathbb R)$ 确定。求 $\dfrac{\mathrm dy}{\mathrm dx}$ 与 $\dfrac{\mathrm d^2y}{\mathrm dx^2}$，结果用 $t$ 表示。
 
 **思路** 一阶导用 $\dfrac{\mathrm dy}{\mathrm dx}=\dfrac{\psi'(t)}{\varphi'(t)}$。二阶导不能对 $t$ 求两次导就完事，要把 $\dfrac{\mathrm dy}{\mathrm dx}$ 看成新的因变量，和 $x=\varphi(t)$ 组成新的参数方程，再对 $x$ 求一次导，分母仍是 $\varphi'(t)$。
@@ -258,6 +266,8 @@ $$
 ---
 
 ## 第 5 题
+
+<!-- homework-topic: 求极坐标曲线 $r=a(1+\cos\theta)$ 的 $\dfrac{dy}{dx}$ 及 $\theta=\dfrac\pi2$ 处的切线 -->
 
 设曲线 $C$ 的极坐标方程为 $r=a(1+\cos\theta)\ (a>0)$。
 
@@ -309,11 +319,11 @@ $$
 x=a(1+0)\cdot0=0,\qquad y=a(1+0)\cdot1=a,
 $$
 
-切点为 $(0,a)$，是心脏线的最高点。斜率
+切点为 $(0,a)$，即曲线与 $y$ 轴正半轴的交点（曲线最高点在 $\theta=\dfrac\pi3$ 处，此处不是最高点）。斜率
 
 
 $$
-k=-\cot\frac{3\pi}{4}=-\cot\frac{3\pi}{4}=1 .
+k=-\cot\frac{3\pi}{4}=1 .
 $$
 
 切线方程
@@ -326,6 +336,8 @@ $$
 ---
 
 ## 第 6 题
+
+<!-- homework-topic: 用 Leibniz 公式求 $y=x^2e^{2x}$ 的 $n$ 阶导数与 $y^{(10)}(0)$ -->
 
 设 $y=x^2\mathrm e^{2x}$。
 
@@ -371,6 +383,8 @@ $$
 ---
 
 ## 第 7 题
+
+<!-- homework-topic: 求抛物线上一点处切线与 $x$ 轴、$x=1$ 围成三角形面积的最大值 -->
 
 在抛物线 $y=x^2$ 上取一点 $P$（横坐标满足 $0<x\le1$），过 $P$ 作该抛物线的切线。若该切线与 $x$ 轴及直线 $x=1$ 围成一个三角形，求此三角形面积的最大值，并求取到最大值时点 $P$ 的坐标。
 
@@ -445,6 +459,8 @@ $$
 
 ## 第 8 题
 
+<!-- homework-topic: 由 $\sqrt{2.89}=1.7$ 用微分近似计算 $\sqrt3$ -->
+
 已知 $\sqrt{2.89}=1.7$，利用微分近似计算 $\sqrt3$（保留到小数点后第三位）。
 
 **思路** 取 $f(x)=\sqrt x$，在已知点 $x_0=2.89$ 处用线性近似 $f(x)\approx f(x_0)+f'(x_0)(x-x_0)$。$x_0$ 要尽量接近 $3$，且函数值和导数值都容易算，$2.89=1.7^2$ 正好满足。
@@ -480,6 +496,8 @@ $$
 ---
 
 ## 第 9 题
+
+<!-- homework-topic: 求灯塔光束与岸边成 $60^\circ$ 时沿岸边滑动的速度（相关变化率） -->
 
 在距海岸 $5\ \mathrm{km}$ 处有一灯塔，它的灯每分钟转动一周。求光束与岸边成 $60^\circ$ 角时，光束沿岸边滑动的速度（$\mathrm{km/min}$）。
 
@@ -518,6 +536,8 @@ $$
 ---
 
 ## 第 10 题
+
+<!-- homework-topic: 求六个函数的二阶导数 -->
 
 求下列函数的二阶导数：
 
@@ -607,8 +627,3 @@ y''=\frac{3x}{(1-x^2)^2}+\frac{(1+2x^2)\arcsin x}{(1-x^2)^{5/2}} .
 $$
 
 ---
-
-## 相关资料
-
-- 原题：[5.jpg](https://drive.google.com/file/d/1HRxPM6clRFCRP6yyu0Dvo_z3TymY9adL/view?usp=drivesdk)
-- 解答：[第5次作业解答.pdf](https://drive.google.com/file/d/1eE94yVSM2s1SNUBEV6Adw0pcmHMXB80I/view?usp=drivesdk)

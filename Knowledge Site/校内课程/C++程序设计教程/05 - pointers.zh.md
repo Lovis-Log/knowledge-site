@@ -8,8 +8,8 @@ group: "course"
 displayNumber: "5"
 sources:
   - kind: article
-    title: "第五章指针-雨.pdf"
-    url: "https://drive.google.com/file/d/1miPUG257YHEaGY1RClxiaYfFqR8mBo5r/view"
+    title: "第五章指针-雨.pptx"
+    url: "https://docs.google.com/presentation/d/1ajoa3fDX4yliBHgixOWf3XWg6VjfiRQU/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 # 第 5 章 指针
@@ -3129,7 +3129,7 @@ strcpy_s(buf, sizeof(buf), "Hello, world!");   // 目标容量 16，足够
 | 用 `strcmp` 当布尔值 | 返回负数/0/正数，正数不一定是 1 | 用 `strcmp(a, b) == 0` 判断相等，用 `< 0`、`> 0` 判断大小 |
 | 字符数组直接赋值 | `a = b;`、`a = "Hello";` 非法 | 逐元素复制并补 `'\0'`，或用 `strcpy_s` |
 | `cin >>` 读字符串 | 不知道数组容量，输入过长会溢出；遇到空白就停 | 用 `cin.width(n)` 限宽，或 `cin.getline(buf, n)` |
-| 修改字符串常量 | `char* p = "Hello"; p[0] = 'h';` 是未定义行为 | 用 `const char*`，需要修改时复制到字符数组 |
+| 修改字符串常量 | `char* p = "Hello";` 在 C++11 起不能通过编译；强转后写 `p[0] = 'h'` 仍是未定义行为 | 用 `const char*`，需要修改时复制到字符数组 |
 
 还要分清三个容易混的符号：`'\0'` 是码值为 0 的字符，用作字符串结束符；`'0'` 是数字字符 0，码值是 48，不是结束符；`nullptr` 是空指针值，不是字符。把 `'0'` 当成结束符，字符串就不会在预期位置停止；把 `nullptr` 当成字符，类型也不对。
 
@@ -5438,7 +5438,3 @@ int main()
 C 风格字符串是以 `'\0'` 结尾的字符数组，库函数依赖这个结束符，容量由调用方保证；动态内存用 `new`/`delete`、`new[]`/`delete[]` 成对管理。补充的 `vector` 和 `string` 把长度、容量与内存管理交给类对象，是裸数组和 C 风格字符串更安全的替代。
 
 算法部分把前面的工具串起来：选择排序和冒泡排序做比较与交换，矩阵相乘用三层循环完成“行乘列”的累加，杨辉三角用一维数组从右向左原地递推，字符串排序用 `strcmp` 比较、交换指针。易错点集中在：`*p++` 与 `(*p)++` 混淆、`const` 位置看反、数组名当指针赋值、`sizeof` 把指针当数组、`strcmp` 返回值当布尔、矩阵累加前忘记清零、杨辉三角递推方向写反、`new[]` 与 `delete` 不配对。看懂这些边界，后面的容器和算法才有稳定的基础。
-
-## 资料
-
-- [第五章指针-雨.pdf](https://drive.google.com/file/d/1miPUG257YHEaGY1RClxiaYfFqR8mBo5r/view)

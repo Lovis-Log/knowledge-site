@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "4.3"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "4.3 向量组的线性相关性 (1).pptx"
+    url: "https://docs.google.com/presentation/d/14hnaGBsC8TLSUxrIFBkRFMJXFiDeIBiv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 线性表示回答"一个向量能否由一组向量拼出来"，线性相关回答"这组向量里有没有多余的"。两者最终都归结为解线性方程组，因而都可以用秩来判定。本节的定义、定理是第 4 章后续内容（基、秩、解的结构）的全部基础。
@@ -410,7 +414,3 @@ $$
 - **三条定理**：相关 $\iff$ 至少一个向量可由其余表示；部分相关则整体相关，整体无关则部分无关；无关组加长仍无关，相关组缩短仍相关。
 - **典型方法**：判断相关性问题一律转化为齐次方程组或求秩；由无关组构造新组时，写出过渡矩阵并证其可逆。
 - **易错点**：把"存在一组系数"与"任意系数"混淆；忘记"不全为零"这一条件；判断线性表示时误用列变换；表示唯一时漏掉"秩 $=m$"这一半。
-
-## 资料
-
-- 课件原件：[4.3 向量组的线性相关性 (1).pptx](<https://docs.google.com/presentation/d/14hnaGBsC8TLSUxrIFBkRFMJXFiDeIBiv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

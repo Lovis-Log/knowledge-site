@@ -20,6 +20,8 @@ sources:
 
 ## 第 1 题
 
+<!-- homework-topic: 由 $x_1=10,\ x_{n+1}=\sqrt{6+x_n}$ 证明极限存在并求之 -->
+
 设 $x_1=10$，$x_{n+1}=\sqrt{6+x_n}\ (n=1,2,\cdots)$，证明 $\{x_n\}$ 极限存在，并求此极限。
 
 **补充解答** 递推式右边是平方根，只要 $6+x_n\ge0$ 就有定义；又 $x_1=10>0$，故各项都为正。
@@ -44,6 +46,8 @@ $$L=\sqrt{6+L}\iff L^2-L-6=0\iff L=3\ \text{或}\ L=-2 .$$
 
 ## 第 2 题
 
+<!-- homework-topic: 偶数子列与奇数子列都收敛于 $a$，用 $\varepsilon$-$N$ 语言证明整个数列收敛于 $a$ -->
+
 数列 $\{x_n\}$ 的子列 $\{x_{2k}\}$ 与 $\{x_{2k+1}\}$ 都收敛于 $a$，用"$\varepsilon$-$N$"语言证明 $\{x_n\}$ 也收敛于 $a$。
 
 **补充解答** 任给 $\varepsilon>0$。由 $x_{2k}\to a$，存在 $K_1$，当 $k>K_1$ 时
@@ -66,6 +70,8 @@ $$N=\max\{2K_1,\ 2K_2+1\}.$$
 
 ## 第 3 题
 
+<!-- homework-topic: 用柯西收敛原理证明 $x_n=\sum_{k=1}^n\dfrac{\sin k}{2^k}$ 收敛 -->
+
 证明数列 $x_n=\dfrac{\sin1}{2}+\dfrac{\sin2}{2^2}+\cdots+\dfrac{\sin n}{2^n}$，$n\ge1$ 收敛。
 
 **补充解答** 通项里含 $\sin k$，没有简单的求和公式，但每项都被几何级数控制，用柯西收敛原理最直接。
@@ -85,6 +91,8 @@ $$|x_m-x_n|<\frac{1}{2^n}<\varepsilon .$$
 ---
 
 ## 第 4 题
+
+<!-- homework-topic: 证明 $\{\sin n\}$ 中有无穷多项大于 $\dfrac{\sqrt2}{2}$、也有无穷多项小于 $-\dfrac{\sqrt2}{2}$，并证明其发散 -->
 
 证明数列 $\{x_n=\sin n,\ n\ge1\}$ 中有无穷多项大于 $\dfrac{\sqrt2}{2}$，也有无穷多项小于 $-\dfrac{\sqrt2}{2}$，并进一步证明数列 $\{x_n\}$ 发散。
 
@@ -128,6 +136,8 @@ $$|x_n-x_m|=\sin n-\sin m>\frac{\sqrt2}{2}+\frac{\sqrt2}{2}=\sqrt2 .$$
 
 ## 第 5 题
 
+<!-- homework-topic: 由 $|x-4|<\delta<1$ 推出 $|\sqrt x-2|<\dfrac\delta2$，并证明 $\lim\limits_{x\to4}\sqrt x=2$ -->
+
 证明：若 $0<\delta<1$，且 $|x-4|<\delta$，则 $|\sqrt x-2|<\dfrac\delta2$，并进一步证明 $\lim\limits_{x\to4}\sqrt x=2$。
 
 **补充解答** 有理化：
@@ -149,6 +159,8 @@ $$\delta=\min\{1,\ 2\varepsilon\},$$
 ---
 
 ## 第 6 题
+
+<!-- homework-topic: 用极限的精确定义证明 $\sin x\to\sin a$、有理式极限与 $x\to2^+$ 时的无穷极限 -->
 
 用极限的精确定义证明：
 
@@ -208,6 +220,8 @@ $$\frac{2x}{x^2-4}>\frac{4}{5(x-2)}>\frac{4}{5\delta}\ge G .$$
 
 ## 第 7 题
 
+<!-- homework-topic: 计算六个三角型函数的极限 -->
+
 计算下列极限
 
 (1) $\lim\limits_{x\to0}\dfrac{\sin3x}{5x}$；(2) $\lim\limits_{\theta\to0}\dfrac{1-\cos\theta}{\theta^2}$；(3) $\lim\limits_{x\to0}\dfrac{\sin^2x}{x^2}$；
@@ -262,6 +276,8 @@ $$\frac{\sin x-\sin a}{x-a}=\cos\frac{x+a}{2}\cdot\frac{\sin\frac{x-a}{2}}{\frac
 
 ## 第 8 题
 
+<!-- homework-topic: 由 $\lim\left(\dfrac{x^2+1}{x+1}-ax-b\right)=0$ 确定斜渐近线的 $a,b$ -->
+
 (1) 自学课本 2.3.2 渐近线部分（课本 P45-47）。
 
 (2) 设 $\lim\limits_{x\to\infty}\left(\dfrac{x^2+1}{x+1}-ax-b\right)=0$，试确定常数 $a$ 和 $b$。
@@ -287,6 +303,8 @@ $$-(1+b)\to0\ \Longrightarrow\ b=-1 .$$
 ---
 
 ## 第 9 题
+
+<!-- homework-topic: 用确界原理证明单调增函数在 $x_0$ 处的左右极限都存在 -->
 
 设 $f(x):[a,b]\to\mathbb{R}$ 为单调增函数，$x_0\in(a,b)$。证明：左右极限 $f(x_0^-)$，$f(x_0^+)$ 都存在。
 
@@ -329,7 +347,3 @@ $$f(x_0^-)\le f(x_0)\le f(x_0^+),$$
 中间的等号是否成立，正是判断 $x_0$ 处是否连续的依据，这一点下一讲会用到。
 
 ---
-
-## 资料
-
-- 原题：[3.png](https://drive.google.com/file/d/1KU3O5IUpxQVlDA9O9FpA6TUHMrLzt0JV/view?usp=drivesdk)

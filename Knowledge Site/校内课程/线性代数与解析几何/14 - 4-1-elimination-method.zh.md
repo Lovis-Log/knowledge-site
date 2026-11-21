@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "4.1"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "4.1 消元法 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1bdYiRF-AszsYkJPrRCrOhoMFebjZVZT-/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 第 1 章的克莱姆法则要求方程个数等于未知量个数、且系数行列式非零，遇到方程个数不等或行列式为零就失效。消元法（高斯消元法）没有这些限制：它只做"交换方程、乘非零数、把一方程的倍数加到另一方程"三类同解变形，把方程组化成阶梯形，再由秩判断解的存在性与个数。由于方程组的全部信息都在增广矩阵里，这一过程等价于对矩阵作初等行变换。
@@ -369,7 +373,7 @@ x_1+x_2-2x_3=4.
 \end{cases}
 $$
 
-解：先把第 2 行的 $2$ 倍加到第 1 行（$r_1+2r_2$），同时把第 2、3 行都加到第 1 行上并写入第 3 行（$r_3+r_2+r_1$）：
+解：先把第 2 行的 $2$ 倍加到第 1 行（$r_1+2r_2$），同时把第 1、2 行都加到第 3 行上（$r_3+r_2+r_1$，用的是变换前的第 1 行）：
 
 $$
 \tilde{A}=\begin{pmatrix}
@@ -613,12 +617,12 @@ D=\begin{vmatrix}
 \lambda & \lambda & 2\lambda+1\\
 1 & 2\lambda+1 & 2
 \end{vmatrix}
-=\lambda^2(2-\lambda).
+=-\lambda(2-\lambda).
 $$
 
 当 $\lambda\neq 0$ 且 $\lambda\neq 2$ 时 $D\neq 0$，由克莱姆法则立即判定唯一解；再把 $\lambda=0$、$\lambda=2$ 分别代回原方程组单独讨论。这样分段更清楚，也避免了在含参数的矩阵上做除法。
 
-**参数题的通用原则**：对含参数的矩阵作形如 $\dfrac{1}{f(\lambda)}r_i$ 的变换时，必须保证 $f(\lambda)\neq 0$；凡是可能为零的因式，都要先分离出来单独讨论，否则会丢解或凭空增解。
+> **参数题的通用原则**：对含参数的矩阵作形如 $\dfrac{1}{f(\lambda)}r_i$ 的变换时，必须保证 $f(\lambda)\neq 0$；凡是可能为零的因式，都要先分离出来单独讨论，否则会丢解或凭空增解。
 
 ## 八、一个几何判别例子
 
@@ -654,7 +658,3 @@ $$
 - **齐次方程组**：必有解；只有零解 $\iff r(A)=n$；有非零解 $\iff r(A)<n$；方程少于未知量时必有非零解。
 - **含参数**：先看哪些首元可能为零，按参数分段；除法前确认分母非零；也可先用克莱姆法则的 $D\neq 0$ 判定唯一解的范围。
 - **易错点**：把"$r(A)=r(\tilde{A})$"漏写成只看 $r(A)$；回代时符号出错；参数题在除零处不讨论。
-
-## 资料
-
-- 课件原件：[4.1 消元法 (1).pptx](<https://docs.google.com/presentation/d/1bdYiRF-AszsYkJPrRCrOhoMFebjZVZT-/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

@@ -25,6 +25,8 @@ sources:
 
 ## 第 1 题
 
+<!-- homework-topic: 用 $\varepsilon$-$N$ 语言证明三个数列极限 -->
+
 用极限定义，即 $\varepsilon$-$N$ 语言证明：
 
 (1) $\lim\limits_{n\to\infty}\dfrac{2n^2+6n+1}{n^2+2n+4}=2$；
@@ -78,6 +80,8 @@ $$\left|\sqrt{x_n}-\sqrt a\right|=\frac{|x_n-a|}{\sqrt{x_n}+\sqrt a}<\frac{|x_n-
 ---
 
 ## 第 2 题
+
+<!-- homework-topic: 用两边夹方法证明三个数列极限 -->
 
 用两边夹方法证明：
 
@@ -136,6 +140,8 @@ $$0<p_n<\frac{1}{\sqrt{2n+1}}\to0,$$
 ---
 
 ## 第 3 题
+
+<!-- homework-topic: 证明 $(1+1/n)^n$、$(1+1/n)^{n+1}$ 的单调性与 $e$，对数不等式及 $x_n=\sum 1/k-\ln n$ 收敛 -->
 
 证明：
 
@@ -223,6 +229,8 @@ $$x_n=\sum_{k=1}^{n}\frac1k-\ln n>\sum_{k=1}^{n}\big[\ln(k+1)-\ln k\big]-\ln n=\
 
 ## 第 4 题
 
+<!-- homework-topic: 由 $x_1=2,\ x_n=\sin x_{n-1}$ 证明 $\{x_n\}$ 为无穷小量 -->
+
 设 $x_1=2$，$x_n=\sin x_{n-1}$，$\forall n\ge2$。证明：数列 $\{x_n\}$ 为无穷小量。
 
 **补充解答** 先看前几项定位：$x_1=2$，$x_2=\sin2\approx0.909$。$2$ 落在 $(\frac\pi2,\pi)$ 内，但它的正弦落在 $(0,1)$ 内。所以从第二项起，各项都跑进了 $(0,1)$，而 $(0,1)\subset(0,\frac\pi2)$。
@@ -244,6 +252,8 @@ $$L=\sin L .$$
 ---
 
 ## 第 5 题
+
+<!-- homework-topic: 用 Stolz 定理求 $\dfrac{1+1/\sqrt2+\cdots+1/\sqrt n}{\sqrt n}$ 的极限 -->
 
 计算极限
 
@@ -268,9 +278,3 @@ $$\frac{x_n-x_{n-1}}{y_n-y_{n-1}}=\frac{1}{\sqrt n}\left(\sqrt n+\sqrt{n-1}\righ
 ## 说明
 
 本次作业的题目在流传过程中有过一次调整：较早的版本在第 4 题下设两问，第 (2) 问要求探索无穷小量的阶（求 $\alpha$ 使 $\lim n^\alpha x_n$ 为正实数，提示用 Stolz 定理），且没有第 5 题；当前版本删去了第 4 题第 (2) 问，并把"计算极限"作为新的第 5 题。上面按当前版本作答，不重复收录已删去的小问。
-
-## 资料
-
-- 原题（当前版）：[第二次.png](https://drive.google.com/file/d/14wzyBN9PoJj37a-ULmQGu2r2x0OBZODP/view?usp=drivesdk)
-
-- [第二次（改前）.png](https://drive.google.com/file/d/1bBzC38lrJIKXH2fJXyIBPEB8KfxzpUt4/view?usp=drivesdk)

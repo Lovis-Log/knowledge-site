@@ -745,7 +745,3 @@ $$
 - 间断点分类只看左右极限：左右极限都存在且相等但函数值不接上，是可去；都存在但不等，是跳跃；至少一个不存在，是第二类。无穷极限属于“不存在”。
 - 单调函数的不连续点只能是跳跃间断点。
 - 幂指函数的 $1^\infty$ 型极限，先取对数，再利用 $\left(1-\dfrac1t\right)^t\to\dfrac1e$ 与连续性。
-
-## 相关资料
-
-- [7连续与间断.pdf](https://drive.google.com/file/d/1ubT0Yuxkz2RePTbDVZCOQ7peoOtNO99T/view?usp=drivesdk)

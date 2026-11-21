@@ -9,6 +9,10 @@ displayNumber: "02"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "2.jpg，本次作业第 1—5 题"
+    url: "https://drive.google.com/file/d/1fpPLXO8zYVYQDnkF4olJUk4TtvJhrnHg/view?usp=drivesdk"
 ---
 
 本次作业为一张整张滚动截图，含第 1—5 道主观题。教师未提供参考答案，解答一律标注「补充解答」。
@@ -17,7 +21,11 @@ tags:
 
 ## 题 11　利用行列式的性质计算
 
+<!-- homework-topic: 利用行列式性质计算 -->
+
 ### 11.(2)
+
+<!-- homework-topic: 四阶数字行列式的消元降阶 -->
 
 $$
 \begin{vmatrix}
@@ -61,8 +69,11 @@ $$
 对三阶行列式再按它的第一行展开（该行首元为 $0$）：
 
 $$
-D=0-3(1\cdot9-5\cdot4)+(-7)(1\cdot7-3\cdot4)
-=-3(9-20)-7(7-12)=33+35=68 .
+\begin{aligned}
+D&=0-3(1\cdot9-5\cdot4)+(-7)(1\cdot7-3\cdot4)\\
+&=-3(9-20)-7(7-12)\\
+&=33+35=68 .
+\end{aligned}
 $$
 
 故 $D=68$。
@@ -71,6 +82,8 @@ $$
 $1\begin{vmatrix}6&12&5\\1&3&5\\4&7&9\end{vmatrix}-3\begin{vmatrix}2&3&4\\1&3&5\\4&7&9\end{vmatrix}=1\cdot59-3\cdot(-3)=68$，两法一致。
 
 ### 11.(5)
+
+<!-- homework-topic: 副对角线为 a、其余为 x 的 n 阶行列式 -->
 
 $$
 D_n=\begin{vmatrix}
@@ -139,6 +152,8 @@ $$
 
 ### 11.(6)
 
+<!-- homework-topic: 首行与末列含 x 的 n 阶行列式 -->
+
 $$
 D_n=\begin{vmatrix}
 x&x&\cdots&x&a\\
@@ -181,7 +196,11 @@ $$
 
 ## 题 12　证明下列等式
 
+<!-- homework-topic: 证明两个行列式等式 -->
+
 ### 12.(2)
+
+<!-- homework-topic: 三行循环和行列式的倍值等式 -->
 
 $$
 \begin{vmatrix}
@@ -230,6 +249,8 @@ $$
 
 ### 12.(3)
 
+<!-- homework-topic: 对角元为 a+j−1 的 n 阶行列式 -->
+
 $$
 \begin{vmatrix}
 a&2&3&\cdots&n\\
@@ -275,7 +296,11 @@ $$
 
 ## 题 14　计算下列行列式
 
+<!-- homework-topic: 计算下列行列式 -->
+
 ### 14.(1)
+
+<!-- homework-topic: 含单个非零元的四阶行列式 -->
 
 $$
 \begin{vmatrix}
@@ -313,6 +338,8 @@ $$
 
 ### 14.(3)
 
+<!-- homework-topic: 主对角为 x、角上为 y 的 n 阶行列式 -->
+
 $$
 D_n=\begin{vmatrix}
 x&0&0&\cdots&0&y\\
@@ -342,6 +369,8 @@ $$
 **边界情形**：$x=y$ 时 $n$ 为偶数则 $D_n=0$（两行成比例类结构退化），$n$ 为奇数则 $D_n=2x^n$，公式均自动给出，无需另议。
 
 ### 14.(4)
+
+<!-- homework-topic: 三对角 x、y、z 行列式的递推与通项 -->
 
 $$
 D_n=\begin{vmatrix}
@@ -384,7 +413,11 @@ $$
 
 ## 题 18　解线性方程组
 
+<!-- homework-topic: 解线性方程组 -->
+
 ### 18.(2)
+
+<!-- homework-topic: 用消元法解四元线性方程组 -->
 
 $$
 \begin{cases}
@@ -433,7 +466,11 @@ $2\cdot\frac13+\frac13+0=1$ ✓。
 
 ## 题 20
 
+<!-- homework-topic: 齐次方程组有非零解的 λ 值 -->
+
 ### 20.
+
+<!-- homework-topic: 求使齐次方程组有非零解的 λ -->
 
 问 $\lambda$ 取何值时，齐次线性方程组
 
@@ -452,15 +489,16 @@ $$
 齐次方程组有非零解 $\iff$ 系数行列式为零。计算
 
 $$
-D(\lambda)=\begin{vmatrix}
+\begin{aligned}
+D(\lambda)&=\begin{vmatrix}
 \lambda&1&1\\
 1&\lambda&2\\
 \lambda^2&1&\lambda
-\end{vmatrix}
-=\lambda(\lambda^2-2)-1(\lambda-2\lambda^2)+1(1-\lambda^3)
-$$
-$$
-=\lambda^3-2\lambda-\lambda+2\lambda^2+1-\lambda^3=2\lambda^2-3\lambda+1=(2\lambda-1)(\lambda-1).
+\end{vmatrix}\\
+&=\lambda(\lambda^2-2)-1(\lambda-2\lambda^2)+1(1-\lambda^3)\\
+&=\lambda^3-2\lambda-\lambda+2\lambda^2+1-\lambda^3\\
+&=2\lambda^2-3\lambda+1=(2\lambda-1)(\lambda-1).
+\end{aligned}
 $$
 
 令 $D(\lambda)=0$，得
@@ -483,7 +521,3 @@ $$
 3. 12.(2) 不能直接说「行列式对每一列都可加——所以拆成 8 项后交叉项为零」；交叉项是两两相消，不是各自为零。
 4. 14.(4) 的递推是 $D_n=xD_{n-1}-yzD_{n-2}$，注意 $yz$ 前的负号，以及 $D_1=x,\ D_2=x^2-yz$ 这两个初值。
 5. 齐次方程组「有非零解」只要求 $D=0$，不要顺手把 $D\neq0$ 的情形也写进答案。
-
-## 资料
-
-- [原图](<https://drive.google.com/file/d/1fpPLXO8zYVYQDnkF4olJUk4TtvJhrnHg/view?usp=drivesdk>)（2.jpg，本次作业第 1—5 题）

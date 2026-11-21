@@ -4,6 +4,7 @@ import type { Book, Chapter } from "@/content/types";
 import { pickVersion } from "@/lib/language";
 import { formatDate } from "@/lib/format";
 import { chapterNumberLabel } from "@/lib/chapter-label";
+import { studyPeriodLabel } from "@/lib/study-period";
 import { UiPair, UiText } from "@/components/ui-text";
 import { InlineMarkdown } from "@/components/markdown";
 
@@ -22,7 +23,10 @@ export function ChapterList({
         const zh = pickVersion(chapter.versions);
         const en = chapter.versions.en ?? zh;
         const bilingual = Boolean(chapter.versions.zh && chapter.versions.en);
-        const meta = book.studyPeriod ?? (chapter.publishedAt ? formatDate(chapter.publishedAt) : "");
+        const grade = studyPeriodLabel(book);
+        const rowMeta = grade
+          ? <UiText zh={grade.zh} en={grade.en} />
+          : book.studyPeriod ?? (chapter.publishedAt ? formatDate(chapter.publishedAt) : "");
         const percent = Math.floor(progress.get(chapter.slug) ?? 0);
         return (
           <li
@@ -49,7 +53,7 @@ export function ChapterList({
                       : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`已读 ${percent}%`} en={`${percent}% read`} /></span></>}
                   </span>
                 )}
-                {meta && <span className="chapter-row__date">{meta}</span>}
+                {rowMeta && <span className="chapter-row__date">{rowMeta}</span>}
               </span>
             </Link>
           </li>

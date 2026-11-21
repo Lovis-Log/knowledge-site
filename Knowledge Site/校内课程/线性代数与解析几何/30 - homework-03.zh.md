@@ -9,6 +9,10 @@ displayNumber: "03"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "3.jpg，本次作业第 1—8 题"
+    url: "https://drive.google.com/file/d/1lsatNhZx8CkTK1NUNdKJXhUfvByZqzNi/view?usp=drivesdk"
 ---
 
 本次作业为滚动截图，含第 1—8 道主观题。解答均为新增，标注「补充解答」。
@@ -16,6 +20,8 @@ tags:
 
 
 ## 1.(5)
+
+<!-- homework-topic: 旋转矩阵的 n 次幂 -->
 
 $$
 A=\begin{pmatrix}\cos\alpha&-\sin\alpha\\ \sin\alpha&\cos\alpha\end{pmatrix},\qquad \text{求 }A^n .
@@ -63,6 +69,8 @@ $$
 ---
 
 ## 3.(1)
+
+<!-- homework-topic: 三阶矩阵的多项式 f(A) -->
 
 $$
 A=\begin{pmatrix}0&1&0\\0&0&1\\-2&0&1\end{pmatrix},\qquad
@@ -117,6 +125,8 @@ $$
 
 ## 4.
 
+<!-- homework-topic: 与二阶矩阵可交换的全部矩阵 -->
+
 求与 $A=\begin{pmatrix}3&1\\-2&2\end{pmatrix}$ 可交换的所有矩阵。
 
 **补充解答**
@@ -159,6 +169,8 @@ $MA=\begin{pmatrix}1&1\\-2&0\end{pmatrix}\begin{pmatrix}3&1\\-2&2\end{pmatrix}=\
 
 ## 6.
 
+<!-- homework-topic: 与任意 n 阶矩阵可交换者为数量矩阵 -->
+
 证明：与任意 $n$ 阶矩阵都可交换的矩阵只能是数量矩阵。
 
 **补充解答**
@@ -189,6 +201,8 @@ $$
 
 ## 9.
 
+<!-- homework-topic: 实对称矩阵 A²=0 推出 A=0 -->
+
 证明：若 $A$ 是实对称矩阵且 $A^2=0$，则 $A=0$。
 
 **补充解答**
@@ -209,6 +223,8 @@ $$
 ---
 
 ## 11.
+
+<!-- homework-topic: 方阵分解为对称与反对称矩阵之和 -->
 
 证明：任一方阵都可以表示成一个对称矩阵与一个反对称矩阵之和。
 
@@ -237,6 +253,8 @@ $$
 ---
 
 ## 14.(1)
+
+<!-- homework-topic: 行变换化阶梯形并求秩 -->
 
 将下列矩阵化为阶梯形矩阵：
 
@@ -303,6 +321,8 @@ $$
 
 ## 20.
 
+<!-- homework-topic: 分块对角矩阵的平方 -->
+
 设 $A=\begin{pmatrix}B&0\\0&C\end{pmatrix}$，其中
 
 $$
@@ -359,7 +379,3 @@ $1+6-5=2$，$2+8+3=13$，$-1-4-1=-6$ ✓，与所填一致。
 3. $A^2=0\Rightarrow A=0$ 只在实对称（或更一般的「可对角化于实特征值」）情形成立，一般矩阵有反例，答题时要写出迹为正平方和这一步。
 4. 求阶梯形时用到的行变换必须是「某行加上另一行的倍数」，不要把某行乘以 $0$ 或直接把两行相加后覆盖（乘非零数会改变行列式，但得到「阶梯形」通常允许；写「等价」时要清楚自己用的是哪一类变换）。
 5. 分块矩阵乘法要求内维匹配，本题是分块对角，交叉块直接为零矩阵，不能把 $B\cdot0$ 与 $0\cdot C$ 混成非零。
-
-## 资料
-
-- [原图](<https://drive.google.com/file/d/1lsatNhZx8CkTK1NUNdKJXhUfvByZqzNi/view?usp=drivesdk>)（3.jpg，本次作业第 1—8 题）

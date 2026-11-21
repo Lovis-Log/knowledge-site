@@ -8,8 +8,8 @@ group: "course"
 displayNumber: "4"
 sources:
   - kind: article
-    title: "第四章函数-雨.pdf"
-    url: "https://drive.google.com/file/d/1FexSSNA9dpocRBQcskE4nB81zuUgHJgJ/view"
+    title: "第四章函数-雨.pptx"
+    url: "https://docs.google.com/presentation/d/1mpmriGVVb6_szBLbdJjAwY54ME5tzPyc/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 ## 4.1 函数的定义、声明与调用
@@ -1753,9 +1753,9 @@ int main()
 有两点需要注意：
 
 1. `cout << ch` 在 `if` 之外，哨兵 `!` 也会被输出。如果只想得到 `cba`，应把输出放进 `if`：`if (ch != '!') { reverse(); cout << ch; }`。这时读到 `!` 的层既不递归也不输出，返回后依次输出 `c`、`b`、`a`。
-2. `cin >> ch` 默认跳过空白字符，所以这个方法不能原样反序带空格的句子；需要保留空格时用 `cin.get(ch)`。输入必须以 `!` 结束，否则程序会一直等待或读到输入结束，行为不可靠。
+2. `cin >> ch` 默认跳过空白字符，所以这个方法不能原样反序带空格的句子；需要保留空格时用 `cin.get(ch)`。输入必须以 `!` 结束：若输入结束前都没有 `!`，`cin >> ch` 会失败而 `ch` 的值不会变成 `!`，递归会继续下去，直到调用栈耗尽；这个程序只适用于带哨兵的输入。
 
-函数名 `reverse` 与标准库的 `std::reverse` 同名。本例没有包含 `<algorithm>`，不会冲突；如果同时包含，需要改名为 `reversePrint` 之类，或加命名空间限定。
+函数名 `reverse` 与标准库的 `std::reverse` 同名。本例没有包含 `<algorithm>`；即使包含了，零参数的 `reverse()` 调用也会匹配这个全局函数，不会自动产生二义。只是同名容易让读者混淆，实际工程中可改名为 `reversePrint` 之类。
 
 #### 反序输出（二）：递归输出正整数的数字串
 
@@ -4111,7 +4111,3 @@ C++ 程序可以由多个源文件组成。头文件放声明、宏和类型定�
 命名空间把名字分组，避免命名冲突。`std` 是标准命名空间；访问其中的名字可以直接写 `std::cin`，用 using 声明引入单个名字，或用 using 指令引入整个命名空间。`using` 只影响名字查找，不改变实体的定义归属和链接性。命名空间可以嵌套、可以重新打开，同名的命名空间会合并。
 
 本章的易错点主要有：把函数声明当成定义，或把函数定义放进头文件导致重复定义；以为值传递能修改实参；递归缺少终止条件或不向终止条件推进；重载只改返回类型；宏参数不加括号；在头文件中写 `using namespace ...;`；把 `using` 当成“把名字搬到当前命名空间”。
-
-## 资料
-
-- [第四章函数-雨.pdf](https://drive.google.com/file/d/1FexSSNA9dpocRBQcskE4nB81zuUgHJgJ/view)

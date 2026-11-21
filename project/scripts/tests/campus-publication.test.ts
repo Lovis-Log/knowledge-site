@@ -251,6 +251,19 @@ test("every strict course chapter needs a normal Drive preview link", () => {
   );
 });
 
+test("linear algebra homework 01 uses a single Drive folder for its original screenshots", () => {
+  const snapshot = validSnapshot();
+  const chapter = findBook(snapshot, "campus-linear-algebra-analytic-geometry").chapters[0];
+  chapter.slug = "homework-01";
+  chapter.sources = [{ url: "https://drive.google.com/file/d/screenshot/view" }];
+  assert.ok(validateCampusPublication(snapshot).some((issue) =>
+    issue.includes("homework-01: missing Google Drive folder"),
+  ));
+
+  chapter.sources = [{ url: "https://drive.google.com/drive/folders/originals?usp=drive_link" }];
+  assert.deepEqual(validateCampusPublication(snapshot), []);
+});
+
 test("the strict course needs a book-level Drive course folder", () => {
   const snapshot = validSnapshot();
   findBook(snapshot, "campus-linear-algebra-analytic-geometry").links = [];

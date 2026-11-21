@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "4.6"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "4.6 线性方程组解的结构 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1tLqOmccVE8KsOwoFCsF24DXnDT66ZsX6/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 4.1 节解决了"有没有解、有多少解"，本节回答最后一个问题：**无穷多解时，这些解之间是什么关系？** 结论很整齐：齐次方程组的解集是一个"向量空间"，由有限个线性无关的解（基础解系）张成；非齐次方程组的通解等于"一个特解 + 导出组的通解"。于是所有解都可以用 $n-r$ 个自由参数写出。
@@ -512,7 +516,3 @@ $$
 - **三个秩结论**：同解 $\Rightarrow$ 秩相等；$AB=0\Rightarrow r(A)+r(B)\leq n$；$r(A^{T}A)=r(A)$。
 - **解的写法不唯一**：特解、基础解系都可换，只要解集相同；考试中写出通解后应回代验算。
 - **易错点**：把自由变量数写成 $n$ 而非 $n-r$；主变量选错（看列号而非首元列）；非齐次通解漏加特解；把"基础解系唯一"当成结论；$r(A)=r(\tilde{A})$ 与 $r(A)=n$ 混淆。
-
-## 资料
-
-- 课件原件：[4.6 线性方程组解的结构 (1).pptx](<https://docs.google.com/presentation/d/1tLqOmccVE8KsOwoFCsF24DXnDT66ZsX6/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

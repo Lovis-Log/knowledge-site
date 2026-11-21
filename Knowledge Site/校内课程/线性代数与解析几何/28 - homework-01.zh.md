@@ -9,6 +9,10 @@ displayNumber: "01"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "第 1 次作业原图（Google Drive）"
+    url: "https://drive.google.com/drive/folders/1cFE7W2kawr3Tx4k4p7cso0xMaWYwVS2B?usp=drive_link"
 ---
 
 本次作业为 6 张截图，对应 6 道主观题的原题。教师未提供参考答案，凡解答一律标注「补充解答」，不是教师答案。
@@ -17,7 +21,11 @@ tags:
 
 ## 题 1　计算下列行列式
 
+<!-- homework-topic: 计算下列二阶、三阶行列式 -->
+
 ### 1.(1)
+
+<!-- homework-topic: 含 sin x、cos x 的二阶行列式 -->
 
 $$
 \begin{vmatrix}
@@ -41,6 +49,8 @@ $$
 要点是把 $-\cos x$ 与 $\cos x$ 的乘积号看清楚：对角线法则是「主对角线之积减副对角线之积」，副对角线上的两个元素是 $-\cos x$ 与 $\cos x$，其积为 $-\cos^2x$，被减后变号，于是两项同号相加。
 
 ### 1.(3)
+
+<!-- homework-topic: 1 到 9 三阶行列式（各行等差） -->
 
 $$
 \begin{vmatrix}
@@ -71,6 +81,8 @@ $$
 （也可直接按第一行展开：$1\cdot(45-48)-2\cdot(36-42)+3\cdot(32-35)=-3+12-9=0$。）
 
 ### 1.(5)
+
+<!-- homework-topic: 对角元同、非对角元同的三阶行列式 -->
 
 $$
 \begin{vmatrix}
@@ -116,7 +128,11 @@ $$
 
 ## 题 2　证明下列等式
 
+<!-- homework-topic: 证明两个行列式等式 -->
+
 ### 2.(1)
+
+<!-- homework-topic: 二阶行列式按一列拆分的可加性 -->
 
 $$
 \begin{vmatrix}
@@ -164,6 +180,8 @@ $$
 
 ### 2.(2)
 
+<!-- homework-topic: 按第一列展开含单个 1 的三阶行列式 -->
+
 $$
 \begin{vmatrix}
 0&b&a\\
@@ -203,7 +221,11 @@ $$
 
 ## 题 3　借助行列式的知识解线性方程组
 
+<!-- homework-topic: 用克拉默法则解三元方程组 -->
+
 ### 3.(1)
+
+<!-- homework-topic: 用克拉默法则解三元线性方程组 -->
 
 $$
 \begin{cases}
@@ -218,12 +240,15 @@ $$
 系数行列式
 
 $$
-D=\begin{vmatrix}
+\begin{aligned}
+D&=\begin{vmatrix}
 3&2&-4\\
 1&2&-1\\
 2&-1&1
-\end{vmatrix}
-=3(2\cdot1-1)-2(1\cdot1+2)+(-4)(-1-4)=3-6+20=17\neq0,
+\end{vmatrix}\\
+&=3(2\cdot1-1)-2\bigl(1\cdot1-(-1)\cdot2\bigr)+(-4)\bigl(1\cdot(-1)-2\cdot2\bigr)\\
+&=3-6+20=17\neq0,
+\end{aligned}
 $$
 
 故可用 Cramer 法则，方程组有唯一解。把各列依次换成常数列 $(-6,3,17)^{\mathrm T}$：
@@ -252,6 +277,8 @@ $2\cdot6-2+7=17$。三式全部成立。
 
 ## 题 5
 
+<!-- homework-topic: 反序排列的逆序数 -->
+
 如果排列 $i_1i_2\cdots i_n$ 的逆序数为 $m$，求排列 $i_ni_{n-1}\cdots i_2i_1$ 的逆序数。
 
 **补充解答**
@@ -279,7 +306,11 @@ $$
 
 ## 题 6　排列的逆序数与奇偶性
 
+<!-- homework-topic: 求排列的逆序数并判断奇偶性 -->
+
 ### 6.(1)
+
+<!-- homework-topic: 求排列 26538417 的逆序数与奇偶性 -->
 
 求排列 $26538417$ 的逆序数，并判断奇偶性。
 
@@ -302,6 +333,8 @@ $\tau=13$ 为奇数，故 $26538417$ 是**奇排列**。
 （易漏的是首元素 $2$ 与末尾 $1$ 构成的那一个逆序；只数相邻对或只数「大于后一项」的相邻情况都会得到错误结果。）
 
 ### 6.(3)
+
+<!-- homework-topic: 偶奇分排排列的逆序数与奇偶性 -->
 
 求排列 $2n\,(2n-2)\cdots 4\,2\,(2n-1)(2n-3)\cdots 3\,1$ 的逆序数，并判断奇偶性。
 
@@ -331,7 +364,11 @@ $$
 
 ## 题 10　用行列式的定义计算行列式
 
+<!-- homework-topic: 用行列式定义计算行列式 -->
+
 ### 10.(1)
+
+<!-- homework-topic: 按定义计算含零较多的四阶行列式 -->
 
 $$
 \begin{vmatrix}
@@ -370,6 +407,8 @@ $$
 
 ### 10.(4)
 
+<!-- homework-topic: 按定义计算 n 阶特殊零分布行列式 -->
+
 按原图的零元省略规律，首行只有第一列可能非零，第二行只有第 $n$ 列可能非零；第 $3$ 至第 $n-1$ 行在主对角线左侧为零，末行从第 $2$ 列起为一般元素：
 
 $$
@@ -404,6 +443,8 @@ $$
 ---
 
 ### 10.(5)
+
+<!-- homework-topic: 按定义计算首行一般的 n 阶行列式 -->
 
 $$
 \begin{vmatrix}
@@ -442,12 +483,3 @@ $\begin{vmatrix}a_1&a_2&a_3\\1&0&0\\0&1&0\end{vmatrix}=a_3$，与 $(-1)^{2}a_3=a
 2. 逆序数与反序排列的逆序数之和恒为 $\binom{n}{2}$，不是 $n^2$ 或 $n(n-1)$。
 3. 用定义算行列式，先排除含零元素的取法，符号只看**列指标排列**的逆序数；符号 $(-1)^{i+j}$ 是展开时的余子式符号，两套符号不能混用。
 4. 含参数的行列式提公因子时，要单独说明公因子为零（如 1.(5) 中 $x=y$）时等式是否仍成立——本题因右侧恰含 $(x-y)^2$ 因子而自然成立。
-
-## 资料
-
-- [原图](<https://drive.google.com/file/d/1Q8iM433pIhtNJtP4UTU_xdyJu-ohz18A/view?usp=drivesdk>)（Screenshot_20261115_123402.jpg，第1题）
-- [原图](<https://drive.google.com/file/d/1laBPCiQMykoEqPGTaKud_mjB3EvDitA6/view?usp=drivesdk>)（Screenshot_20261115_123406.jpg，第2题）
-- [原图](<https://drive.google.com/file/d/1xln7d-PHDHuutMhcW9oiDYyQU2ahU2m7/view?usp=drivesdk>)（Screenshot_20261115_123410.jpg，第3题）
-- [原图](<https://drive.google.com/file/d/1hIxtFxFCW4pIKwsTIl-py2jwbGcwpIII/view?usp=drivesdk>)（Screenshot_20261115_123414.jpg，主观题第4题，对应教材第5题）
-- [原图](<https://drive.google.com/file/d/1-s806MyiJR2B8Sqr41bqpT-8UKSn7Q4_/view?usp=drivesdk>)（Screenshot_20261115_123418.jpg，第5题）
-- [原图](<https://drive.google.com/file/d/1H6nIOaN0mLDGjRquxS0XT0f8IMnVicOz/view?usp=drivesdk>)（Screenshot_20261115_123423.jpg，第6题）

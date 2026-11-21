@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "3.4"
 tags:
   - "解析几何"
+sources:
+  - kind: article
+    title: "3.4 空间直线及其方程 (1).pptx"
+    url: "https://docs.google.com/presentation/d/11gGFzwABrsjnxfCjjrP90IEPGMzPw30O/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 空间直线可以由"一个点 + 一个方向"确定，得到点向式（对称式）与参数式；也可以看成两个不平行的平面的交线，得到一般方程。本节还讨论直线与平面、两条直线之间的位置关系，以及夹角和距离。
@@ -715,7 +719,3 @@ $$
 ## 课堂小结
 
 空间直线有两套常用方程：点向式（对称式）$\frac{x-x_0}{m}=\frac{y-y_0}{n}=\frac{z-z_0}{p}$ 与参数式，适合已知点和方向；一般方程是两个平面的交线，方向向量为两法向量的外积。直线与平面的位置关系看 $\vec d$ 与 $\vec n$ 是否垂直，再代点区分"在面内"与"平行"；两直线先看方向是否平行，再用混合积判断共面，共面且不平行即相交，否则异面。夹角公式统一用绝对值取锐角，但线线、面面用 $\cos$，线面用 $\sin$。距离方面，点到直线用平行四边形面积 $d=\frac{|\vec s\times\overrightarrow{P_1P_0}|}{|\vec s|}$，点到平面用投影 $d=\frac{|Ax_0+By_0+Cz_0+D|}{\sqrt{A^2+B^2+C^2}}$；平行线、平行平面、线面平行的距离都化归为点线或点面距离。
-
-## 资料
-
-[课件原件：3.4 空间直线及其方程 (1).pptx](<https://docs.google.com/presentation/d/11gGFzwABrsjnxfCjjrP90IEPGMzPw30O/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

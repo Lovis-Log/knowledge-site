@@ -11,6 +11,7 @@ import { useContent } from "@/content/client";
 import { useReadingState } from "@/lib/reading-state-client";
 import { formatAuthors, paddedNumber } from "@/lib/format";
 import { bookTitle } from "@/lib/book-titles";
+import { studyPeriodLabel } from "@/lib/study-period";
 
 export default function BookView({ slug }: { slug: string }) {
   const { getBook, getLibrarySections, taxonomyEnglish, bookEnglish } =
@@ -19,6 +20,7 @@ export default function BookView({ slug }: { slug: string }) {
   const progress = new Map(state?.progress.map((entry) => [entry.chapter, entry.furthest]));
   const book = getBook(slug);
   if (!book) notFound();
+  const grade = studyPeriodLabel(book);
   const section = getLibrarySections().find((item) =>
     item.books.some((itemBook) => itemBook.slug === book.slug),
   );
@@ -44,7 +46,9 @@ export default function BookView({ slug }: { slug: string }) {
       <header className="book-header">
         <BookCover book={book} size="sm" priority />
         <div className="book-header__heading">
-          {book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
+          {grade ? (
+            <p className="eyebrow"><UiText {...grade} /></p>
+          ) : book.subtitle && <p className="eyebrow">{book.subtitle}</p>}
           <h1 className="book-title"><UiText {...bookTitle(book)} /></h1>
         </div>
         <div className="book-header__body">

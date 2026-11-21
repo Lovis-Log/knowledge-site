@@ -475,6 +475,15 @@ export function validateCampusPublication(
         );
       }
       for (const chapter of book.chapters) {
+        if (
+          book.slug === "campus-linear-algebra-analytic-geometry" &&
+          chapter.slug === "homework-01"
+        ) {
+          if (!(chapter.sources ?? []).some((source) => isDriveFolderUrl(source.url))) {
+            issues.push(`${book.slug}/${chapter.slug}: missing Google Drive folder for the original screenshots`);
+          }
+          continue;
+        }
         const links = [
           ...(chapter.sources ?? []).map((source) => source.url),
           ...(chapter.bodies ?? []).flatMap(extractMarkdownLinkTargets),

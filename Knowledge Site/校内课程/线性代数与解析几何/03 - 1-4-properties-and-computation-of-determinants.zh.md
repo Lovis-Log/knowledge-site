@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "1.4"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "1.4 n阶行列式的性质及计算.pptx"
+    url: "https://docs.google.com/presentation/d/1SPT8NjxVQ7djlY9FVFE16M9XpZ8fiprv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 当 $n\ge 4$ 时，按定义展开 $n$ 阶行列式要处理 $n!$ 项，计算量迅速增大，实际上很难直接算。本节用行列式的性质把一般行列式化成三角形行列式，使计算变成“主对角线元素相乘”。性质本身不难，关键是记准每条性质改变了什么、不改变什么，并在具体行列式中看出该用哪一条。
@@ -1031,7 +1035,3 @@ $$
 - **先看结构再动手**：各行和相同可把各列加到第一列；出现两行相同或成比例应立即判零；逐行作差适合“累积和”型行列式。
 - **常见结果**：对角线为 $a$、其余为 $b$ 的 $n$ 阶行列式等于 $[a+(n-1)b](a-b)^{n-1}$；$abcd=1$ 的对称四阶行列式可用拆分加列置换化为 $(abcd-1)\Delta$。
 - **易错点**：拆分行列式时一次拆两行；换行后忘记添负号；提取公因子后外系数丢失；把“两行成比例”误判为“两行元素和相等”。
-
-## 资料
-
-- 课件原件：[1.4 n阶行列式的性质及计算.pptx](<https://docs.google.com/presentation/d/1SPT8NjxVQ7djlY9FVFE16M9XpZ8fiprv/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

@@ -249,7 +249,3 @@ $$\text{确界原理}\Rightarrow\text{单调有界}\Rightarrow\text{闭区间套
 二是子列的下标必须严格增加，因此 $n_k\ge k$ 才能用；证明中"取下标更大的项"这一步要说明剩余项仍有无穷多个。
 
 三是柯西收敛原理的充分性证明顺序不能颠倒：先有界、再取收敛子列、最后用柯西条件收尾，"基本列必有界"与"致密性定理"缺一不可。
-
-## 资料
-
-- 原讲义：[5实数基本定理.pdf](https://drive.google.com/file/d/1VFeSY-upg2lEBoNCBR8VfBBxPetVPti2/view?usp=drivesdk)

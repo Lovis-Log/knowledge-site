@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "4.4"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "4.4 Rⁿ的基、向量在基下的坐标 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1U3IjT-NAugyNKvO6gurF8uhkDeNAD6pd/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 同一栋楼可以用不同的坐标系测量，换一套坐标轴，点的"坐标"变了，点本身没变。向量空间也一样：选定一组基，每个向量就有了唯一的坐标；换一组基，坐标按一个可逆矩阵变换。本节把"基""坐标""过渡矩阵""坐标变换公式"这四件事说清楚。
@@ -588,7 +592,3 @@ $$
 - **求过渡矩阵**：从标准基中转，$A^{-1}B$；实用算法是对 $(A,B)$ 作行变换化为 $(E,A^{-1}B)$。
 - **应用**：坐标轴旋转的公式就是坐标变换公式的几何版本。
 - **易错点**：把过渡矩阵的列写成行（$\beta_i$ 的坐标应竖排为第 $i$ 列）；坐标变换时误乘 $A$；忘记验证过渡矩阵可逆；把"向量坐标"与"向量本身"混为一谈。
-
-## 资料
-
-- 课件原件：[4.4 Rⁿ的基、向量在基下的坐标 (1).pptx](<https://docs.google.com/presentation/d/1U3IjT-NAugyNKvO6gurF8uhkDeNAD6pd/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

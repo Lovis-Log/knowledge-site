@@ -610,7 +610,3 @@ $$
 - **余项**：Peano 余项是局部的、定性的，一般不能求导；需要误差的具体大小或需要余项求导时，应改用 Lagrange 余项。
 - **常见展开**：$e^x$、$\sin x$、$\cos x$、$\ln(1+x)$、$(1+x)^\lambda$、$\arctan x$ 的展开式要连同余项的阶一起记住。
 - **易错点**：分母是 $x^n$ 时，分子要展开到 $x^n$；差式不能随便用等价无穷小替换；$\sin x$、$\cos x$、$\arctan x$ 的余项阶数会比“最后一项的次数”多一阶，因为中间有一次项系数为零。
-
-## 相关资料
-
-- [原件](https://drive.google.com/file/d/1CWosQB7h1gJAvl15nAqAvQCi9wwT11lS/view?usp=drivesdk)

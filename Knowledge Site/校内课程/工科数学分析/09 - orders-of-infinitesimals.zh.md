@@ -748,7 +748,3 @@ $$
   $$
 - 等价替换只适用于乘除中的因子；加减中要先因式分解或展开到足够高阶，否则会把主导项抵消掉，得到错误的 $0$。
 - 幂指函数的极限，先取对数，再用等价量或连续函数的性质；$1^\infty$ 型常化成 $\ln(1+t)\sim t$ 与 $1-\cos x\sim\dfrac{x^2}{2}$ 的组合。
-
-## 相关资料
-
-- [9无穷小量与无穷大量的阶.pdf](https://drive.google.com/file/d/1apFmGpbniHvaz6L6i37-b6jF_fLIXFXJ/view?usp=drivesdk)

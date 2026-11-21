@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "4.2"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "4.2 n维向量 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1F6800EPcqcQKEnbduDrogzsuou_zzBFj/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 第 3 章把平面、空间中的有向线段叫向量，用三个坐标刻画。把"三个坐标"推广成"$n$ 个有序数"，就得到 $n$ 维向量。它本质上是一个 $n\times 1$ 或 $1\times n$ 矩阵，因此 2.1 节的加法、数乘规则可以整体搬过来；但把向量单独拿出来研究，是为了后面讨论"线性组合""线性相关""基"这些矩阵运算不便直接表达的性质。
@@ -118,7 +122,3 @@ $$
 - **运算**：相等要求同维且分量全同；加法、数乘逐分量进行；八条运算律与矩阵线性运算一致。
 - **向量空间**：全体 $n$ 维向量加上加法、数乘两种封闭运算，构成 $n$ 维向量空间；$\mathbb{R}^{n}$、$\mathbb{C}^{n}$ 是最常用的两个。
 - **易错点**：不同维的向量不能相加、不能比较相等；行向量与列向量在不作转置时不是同一个对象，相乘时要看阶数是否匹配；数乘要作用于每个分量。
-
-## 资料
-
-- 课件原件：[4.2 n维向量 (1).pptx](<https://docs.google.com/presentation/d/1F6800EPcqcQKEnbduDrogzsuou_zzBFj/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

@@ -557,7 +557,3 @@ $$
 第三，参数方程的二阶导数是 $\dfrac{\psi''\varphi'-\psi'\varphi''}{(\varphi')^3}$，分母是三次方，不是 $\varphi''$。
 
 第四，隐函数二阶导数要把 $y'$ 代回，且代回前要先整理成 $y''$ 的显式，否则容易在求导时把 $y'$ 当常数。
-
-## 相关资料
-
-- 课件：[14高阶导数和高阶微分.pdf](https://drive.google.com/file/d/1w-zxonwxUwuA5gUANhx90LGlNhQ6RTGc/view?usp=drivesdk)

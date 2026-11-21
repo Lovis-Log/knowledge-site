@@ -68,6 +68,21 @@
   color: var(--ink);
 }
 
+/* Supplemental proofs use a double vertical rule instead of the key card, so
+   they read as an aside in both light and dark themes without a second fill. */
+[data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="proof"] {
+  padding: 0.35em 0 0.35em 1.1em;
+  border-left: 3px double color-mix(in srgb, var(--accent) 68%, var(--gold));
+  border-radius: 0;
+  background: color-mix(in srgb, var(--accent-soft) 42%, transparent);
+  color: var(--ink);
+}
+
+html[data-theme="dark"] [data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="proof"] {
+  border-left-color: color-mix(in srgb, var(--accent) 82%, var(--line-strong));
+  background: color-mix(in srgb, var(--accent-soft) 64%, transparent);
+}
+
 [data-reading-preset="campus-notes"] .prose .katex-display {
   margin-block: 1.7em;
   max-width: 100%;

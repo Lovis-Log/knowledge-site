@@ -1369,7 +1369,8 @@ button {
 }
 
 .book-card__badge,
-.book-card__author {
+.book-card__author,
+.book-card__grade {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1394,6 +1395,13 @@ button {
   background: color-mix(in srgb, var(--pill) 46%, var(--page-sheet));
   color: var(--muted);
   font-weight: 500;
+}
+
+.book-card__grade {
+  border: 1px solid color-mix(in srgb, var(--gold) 58%, var(--rule));
+  background: color-mix(in srgb, var(--gold) 16%, var(--page-sheet));
+  color: var(--accent-ink);
+  font-weight: 600;
 }
 
 .book-card__icon {
@@ -2628,7 +2636,8 @@ html[data-toc="closed"] .toc-toggle .segmented__btn[data-toc="closed"] {
   }
 
   .library-preview .book-card__badge,
-  .library-preview .book-card__author {
+  .library-preview .book-card__author,
+  .library-preview .book-card__grade {
     padding: 2px 6px;
     font-size: 0.6rem;
   }

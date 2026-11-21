@@ -581,7 +581,21 @@ $$
 \frac{\mathrm d}{\mathrm dt}\sum_i\vec L_i=\sum_i\left[\vec r_i\times\left(\vec F_i+\vec f_i\right)\right]=\sum_i\vec r_i\times\vec F_i+\sum_i\vec r_i\times\vec f_i
 $$
 
-第二项是内力矩之和。由牛顿第三定律，内力成对且沿同一直线，$\sum_i\vec r_i\times\vec f_i=0$。故
+第二项是内力矩之和。由牛顿第三定律，内力成对且沿同一直线，$\sum_i\vec r_i\times\vec f_i=0$。
+
+> **补充证明**（内力矩成对抵消）
+>
+> 取任意一对质点 $i$、$j$，设 $j$ 对 $i$ 的力为 $\vec f_{ij}$、$i$ 对 $j$ 的力为 $\vec f_{ji}$。由牛顿第三定律 $\vec f_{ij}=-\vec f_{ji}$，且二者沿 $i$、$j$ 的连线，即 $\vec f_{ij}\parallel(\vec r_j-\vec r_i)$。这一对力对同一点 $O$ 的力矩之和为
+>
+> $$
+> \vec r_i\times\vec f_{ij}+\vec r_j\times\vec f_{ji}
+> =\vec r_i\times\vec f_{ij}-\vec r_j\times\vec f_{ij}
+> =(\vec r_i-\vec r_j)\times\vec f_{ij}=0,
+> $$
+>
+> 最后一个等号是因为 $(\vec r_i-\vec r_j)$ 与 $\vec f_{ij}$ 共线叉乘为零。所有内力矩都按这样的成对方式相加，故内力矩总和为零。这一步用的是"内力沿连线"这个条件；它与"内力不改变总动量"所依据的 $\vec f_{ij}=-\vec f_{ji}$ 是同一条定律的两个不同侧面。
+
+故
 
 $$
 \frac{\mathrm d\vec L}{\mathrm dt}=\vec M_{\text{合外}},\qquad \vec L=\sum_i\vec L_i

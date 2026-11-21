@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "3.3"
 tags:
   - "解析几何"
+sources:
+  - kind: article
+    title: "3.3 空间平面及其方程 (1).pptx"
+    url: "https://docs.google.com/presentation/d/14lgTyid0uvPrIbnb0jkIR6xi1ipUvqhz/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 平面是空间中最简单的曲面。确定一个平面最自然的方式是"一个点 + 一个垂直于平面的方向"，这就是点法式方程；把它展开得到一般式，再根据系数是否为零判断平面的特殊位置。本节还给出截距式、三点式、两平面位置关系与平面束。
@@ -421,7 +425,3 @@ $$
 ## 课堂小结
 
 平面的核心是法向量：点法式 $A(x-x_0)+B(y-y_0)+C(z-z_0)=0$ 是所有求平面问题的基础；一般式 $Ax+By+Cz+D=0$ 的法向量为 $(A,B,C)$，系数为零对应平面平行于坐标轴或坐标平面，常数项为零对应过原点。截距式 $\frac xa+\frac yb+\frac zc=1$ 便于画图，但要求三个截距非零；三点式本质是三向量共面。两平面的平行、重合、垂直都用法向量判断，注意平行与重合只差常数项比例。过两平面交线的平面可统一写成平面束，用一个参数代替两个平面方程，是求过交线平面的简捷工具。易错点：法向量必须非零；用比例式判断重合时注意分母为零；平面束中 $\lambda_1,\lambda_2$ 不能同时为零。
-
-## 资料
-
-[课件原件：3.3 空间平面及其方程 (1).pptx](<https://docs.google.com/presentation/d/14lgTyid0uvPrIbnb0jkIR6xi1ipUvqhz/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

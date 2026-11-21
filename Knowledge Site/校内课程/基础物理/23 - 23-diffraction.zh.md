@@ -342,7 +342,16 @@ $$
 I_k=N^2I_a(\theta)=0\ \Longrightarrow\ \text{第 }k\text{ 级缺级}
 $$
 
-于是得**缺级条件（缺级公式）**
+把上面两式中的 $\sin\theta$ 消去，就得到级次的对应关系。由 $(a+b)\sin\theta=k\lambda$ 与 $a\sin\theta=k'\lambda$ 相除：
+
+$$
+\frac{k\lambda}{k'\lambda}=\frac{(a+b)\sin\theta}{a\sin\theta}
+=\frac{a+b}{a}
+\ \Longrightarrow\
+k=k'\frac{a+b}{a}.
+$$
+
+也就是说，单缝的第 $k'$ 个极小恰好落在光栅的第 $k$ 级主极大上。于是得**缺级条件（缺级公式）**
 
 $$
 k=k'\frac{a+b}{a},\qquad k'=\pm1,\pm2,\cdots

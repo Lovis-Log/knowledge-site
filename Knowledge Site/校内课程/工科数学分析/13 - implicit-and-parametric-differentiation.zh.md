@@ -279,7 +279,3 @@ $$\frac{\mathrm dy}{\mathrm dt}=\frac{4A}{\pi R^2}.$$
 第三，参数方程求导的分母是 $\varphi'(t)$，不是 $\varphi(t)$；在 $\varphi'(t)=0$ 处公式失效，曲线可能出现竖直切线或尖点，要单独看。
 
 第四，极坐标求导不能把 $\dfrac{\mathrm dy}{\mathrm dx}$ 写成 $\dfrac{r'(\theta)\sin\theta}{r'(\theta)\cos\theta}=\tan\theta$，必须用完整的参数式公式，因为 $r$ 也随 $\theta$ 变化。
-
-## 相关资料
-
-- 课件：[13隐函数的导数和参数式求导.pdf](https://drive.google.com/file/d/1srUBmxgCHBzozP2MIAUOnnEkPOv4nt-5/view?usp=drivesdk)

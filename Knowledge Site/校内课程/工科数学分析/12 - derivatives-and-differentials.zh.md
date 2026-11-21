@@ -252,7 +252,3 @@ $$f'(0+)=\lim_{x\to0^+}\left(2x\sin\frac1x-\cos\frac1x\right),$$
 这一讲的主线是：把"以直代曲"写成 $\Delta y=g(x_0)\Delta x+o(\Delta x)$，得到微分的定义；证明可微与可导等价，从而 $\mathrm dy=f'(x)\mathrm dx$，导数就是微商；由此得到线性近似与切线近似，以及一整套微分法则；一阶微分具有形式不变性，所以可以不分自变量与中间变量地使用 $\mathrm dy=f'(u)\mathrm du$。
 
 容易出错的地方有四处。第一，$\Delta y$ 与 $\mathrm dy$ 不是一回事：$\Delta y$ 是函数的真实增量，$\mathrm dy$ 是它的线性主要部分，二者相差 $o(\Delta x)$。第二，可微必连续，连续不一定可微；判断不可微要看差商是否趋于有限数，$\sqrt[3]{x^2}$ 在 $0$ 处差商趋于无穷，$|x|$ 在 $0$ 处左右差商不等，都不行。第三，$f'(x_0-)$ 是导函数的左极限，$f'_-(x_0)$ 是左导数，$x^2\sin\frac1x$ 说明前者可以不存在而后者存在。第四，形式不变性只对一阶微分成立，二阶微分没有这个性质，下一讲会看到具体的反例。
-
-## 相关资料
-
-- 课件：[12导数和微分.pdf](https://drive.google.com/file/d/1db9iqFF__E3xz4GoCUg_i_0cJa4uo__s/view?usp=drivesdk)

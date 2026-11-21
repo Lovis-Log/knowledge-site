@@ -9,6 +9,10 @@ displayNumber: "04"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "4.jpg，本次作业第 1—9 题"
+    url: "https://drive.google.com/file/d/1CK6u8VVHsHkh0Zljr2ZXSFNd5LBx4wks/view?usp=drivesdk"
 ---
 
 本次作业为滚动截图，含第 1—9 道主观题。解答均为新增，标注「补充解答」。
@@ -16,6 +20,8 @@ tags:
 
 
 ## 15.(1)
+
+<!-- homework-topic: 分块对角矩阵的秩与逆 -->
 
 计算矩阵的秩；若为满秩，求其逆矩阵：
 
@@ -56,6 +62,8 @@ $$
 ---
 
 ## 16.
+
+<!-- homework-topic: 循环移位矩阵的逆 -->
 
 求 $n$ 阶矩阵
 
@@ -115,6 +123,8 @@ $$
 ---
 
 ## 17.
+
+<!-- homework-topic: 解矩阵方程 AX=B（A 为上三角） -->
 
 设
 
@@ -191,6 +201,8 @@ $$
 
 ## 18.(1)
 
+<!-- homework-topic: 用克拉默法则解三元线性方程组 -->
+
 解线性方程组
 
 $$
@@ -235,6 +247,8 @@ $-2(-\tfrac{17}{20})+3(\tfrac16)+2(\tfrac{9}{10})=\tfrac{17}{10}+\tfrac12+\tfrac
 ---
 
 ## 19.(1)
+
+<!-- homework-topic: 求 A⁻¹B（B 为 A 的行循环置换） -->
 
 设
 
@@ -282,6 +296,8 @@ $$
 
 ## 21.
 
+<!-- homework-topic: 分块上三角单位阵的逆 -->
+
 求 $\begin{pmatrix}E_k&B\\0&E_l\end{pmatrix}$ 的逆矩阵，其中 $E_k,E_l$ 为单位阵，$B$ 为 $k\times l$ 矩阵。
 
 **补充解答**
@@ -313,6 +329,8 @@ $\begin{pmatrix}E_k&B\\0&E_l\end{pmatrix}\begin{pmatrix}E_k&-B\\0&E_l\end{pmatri
 ---
 
 ## 22.
+
+<!-- homework-topic: 分块矩阵 (0 A; B C) 的逆 -->
 
 设 $A,B,C$ 为同阶可逆方阵，求 $D=\begin{pmatrix}0&A\\B&C\end{pmatrix}$ 的逆矩阵。
 
@@ -348,6 +366,8 @@ $$
 
 ## 23.
 
+<!-- homework-topic: 幂零矩阵下 (E−A)⁻¹ 的有限和 -->
+
 如果 $A^k=0$（$k$ 为正整数），证明
 
 $$
@@ -376,6 +396,8 @@ $$
 ---
 
 ## 24.
+
+<!-- homework-topic: 伴随矩阵行列式 |A*|=|A|^{n−1} -->
 
 证明：$|A^*|=|A|^{n-1}$，其中 $A^*$ 为 $n$ 阶方阵 $A$ 的伴随矩阵。
 
@@ -411,7 +433,3 @@ $$
 3. 16 题的逆在**次对角线**上，不在主对角线；同时别忘了可逆条件 $a_i\ne0$ 与 $|A|=(-1)^{n-1}a_1\cdots a_n$。
 4. 23 题必须写「双侧」乘积都为 $E$，只证 $(E-A)S=E$ 还需说明 $S$ 与 $E-A$ 可交换（本题中 $S$ 是 $A$ 的多项式，显然可交换，但要写出来）。
 5. 24 题在 $|A|=0$ 时不能沿用 $|A||A^*|=|A|^n$ 直接相除，必须用秩或连续性论证补上。
-
-## 资料
-
-- [原图](<https://drive.google.com/file/d/1CK6u8VVHsHkh0Zljr2ZXSFNd5LBx4wks/view?usp=drivesdk>)（4.jpg，本次作业第 1—9 题）

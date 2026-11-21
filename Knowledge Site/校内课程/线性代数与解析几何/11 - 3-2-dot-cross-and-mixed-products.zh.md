@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "3.2"
 tags:
   - "解析几何"
+sources:
+  - kind: article
+    title: "3.2 向量的内积、外积及混合积 (1).pptx"
+    url: "https://docs.google.com/presentation/d/173b8yZ-2gcXXE0DZwxq2plHSFZ9e2ouK/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 本节引入三种乘积：内积把两个向量变成一个数，外积把两个向量变成一个向量，混合积再与第三个向量做内积得到一个数。三者的几何意义分别是投影、面积与体积，也是后面求平面方程、直线方程和判断共面、垂直、平行的主要工具。
@@ -223,6 +227,8 @@ $$
 
 但交换任意两个向量会变号，例如 $(\vec b,\vec a,\vec c)=-(\vec a,\vec b,\vec c)$。
 
+> **补充证明**：把混合积写成行列式 $(\vec a,\vec b,\vec c)=\begin{vmatrix}a_1&a_2&a_3\\ b_1&b_2&b_3\\ c_1&c_2&c_3\end{vmatrix}$。轮换 $(\vec a,\vec b,\vec c)\to(\vec b,\vec c,\vec a)$ 相当于对三行作一个 $3$-轮换，而 $3$-轮换可分解为两次对换、是偶置换，故行列式不变；交换任意两行是一次对换、是奇置换，故行列式变号。这就是“轮换不变、对换变号”的由来。
+
 ### 例：求平行六面体体积
 
 设 $\vec a=\vec i+\vec j$，$\vec b=\vec j+\vec k$，$\vec c=\vec k+\vec i$，三向量起点同为 $O$，求以它们为棱的平行六面体的体积 $V$。
@@ -285,7 +291,3 @@ $$
 ## 课堂小结
 
 内积的结果是数，核心公式 $\vec a\cdot\vec b=|\vec a||\vec b|\cos\theta=a_1b_1+a_2b_2+a_3b_3$，用来算夹角、投影、长度和判断垂直。外积的结果是向量，长度是以两向量为邻边的平行四边形面积，方向由右手系确定，坐标计算用行列式记号最方便；它用来求面积、找同时垂直于两个向量的方向、判断平行。混合积 $(\vec a,\vec b,\vec c)=(\vec a\times\vec b)\cdot\vec c$ 的结果是数，绝对值是平行六面体体积，等于三阶行列式，用来判断三向量（或四点）共面。易错点：外积反交换，交换次序要变号；面积、体积最后取绝对值；判断四点共面必须先化成同起点的三个向量。
-
-## 资料
-
-[课件原件：3.2 向量的内积、外积及混合积 (1).pptx](<https://docs.google.com/presentation/d/173b8yZ-2gcXXE0DZwxq2plHSFZ9e2ouK/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

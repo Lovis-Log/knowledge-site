@@ -1,13 +1,13 @@
 ---
 slug: campus-basic-physics
 title: 基础物理
-subtitle: 大一上
-description: 大一上基础物理的课堂笔记与作业解析。
+subtitle: 大一
+description: 大一基础物理的课堂笔记与作业解析。
 longDescription: 九章课堂笔记涵盖质点力学、刚体力学、机械振动、机械波和波动光学。九份作业收录 121 道原题与解析。
 category: campus-courses
 coverImage: /covers/editorial-campus-basic-physics-v1.webp
 updatedAt: "2026-11-19"
-studyPeriod: 大一上
+studyPeriod: 大一
 content_type: reference
 groups:
   - id: course

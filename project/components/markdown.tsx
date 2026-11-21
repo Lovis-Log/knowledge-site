@@ -5,6 +5,8 @@ import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import type { Lang } from "@/content/types";
+import { dropHomeworkTopicComments } from "@/lib/homework-topic";
+import { noteEmphasis } from "@/lib/note-emphasis";
 import { ZoomImage } from "./zoom-image";
 import { CodeBlock } from "./code-block";
 
@@ -44,6 +46,15 @@ function rehypeLangIds(options: { lang: string }) {
   };
 }
 
+/**
+ * `<!-- homework-topic: ... -->` feeds the homework table of contents.
+ * ReactMarkdown keeps raw HTML nodes as text by default; drop this one comment
+ * so it never prints above the question.
+ */
+function rehypeDropHomeworkTopics() {
+  return (tree: unknown) => dropHomeworkTopicComments(tree);
+}
+
 const components: Options["components"] = {
   blockquote: ({ node, children, ...props }) => {
     // Explicit editorial labels distinguish key takeaways from ordinary quotes.
@@ -56,9 +67,8 @@ const components: Options["components"] = {
     const label = first?.type === "element" && first.tagName === "strong"
       ? codeText(first)
       : "";
-    const emphasized = /^(关键结论|理解关键|注意|易错点|易混点)$/.test(label);
     return (
-      <blockquote {...props} data-note-emphasis={emphasized ? "key" : undefined}>
+      <blockquote {...props} data-note-emphasis={noteEmphasis(label)}>
         {children}
       </blockquote>
     );
@@ -101,6 +111,7 @@ export function InlineMarkdown({ children }: { children: string }) {
 
 export function Markdown({ markdown, lang }: { markdown: string; lang: Lang }) {
   const rehypePlugins: Options["rehypePlugins"] = [
+    rehypeDropHomeworkTopics,
     rehypeSlug,
     [rehypeLangIds, { lang }],
     [rehypeHighlight, { detect: false, ignoreMissing: true }],

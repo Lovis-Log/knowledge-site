@@ -435,7 +435,3 @@ $$|f(x')-f(x'')|<\varepsilon .$$
 三是 Heine 定理的否命题量词要写对（$\exists\varepsilon_0\forall\delta\exists x$），否定写错则整个反证无效。
 
 四是含 $\infty$ 的运算：保序性与夹逼性对未定号的 $\infty$ 不成立，四则运算碰到待定型必须另作处理。
-
-## 资料
-
-- 原讲义：[6函数极限.pdf](https://drive.google.com/file/d/1xJXvGSsiikyRMeEFEu1_PahjOdFks_gR/view?usp=drivesdk)

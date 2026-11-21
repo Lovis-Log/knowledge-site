@@ -97,7 +97,7 @@ $$
 由于
 
 $$
-f'(x_0)=\lim_{x\to x_0^-}\frac{f(x)-f(x_0)}{x-x_0}\ge0,
+f'_-(x_0)=\lim_{x\to x_0^-}\frac{f(x)-f(x_0)}{x-x_0}\ge0,
 \qquad
 f'_+(x_0)=\lim_{x\to x_0^+}\frac{f(x)-f(x_0)}{x-x_0}\le0,
 $$
@@ -546,7 +546,7 @@ $$
 {b_mx^m+b_{m-1}x^{m-1}+\cdots+b_1x+b_0}
 =
 \begin{cases}
-\dfrac{a_n}{b_n}, & n=m,\\[6pt]
+\dfrac{a_n}{b_m}, & n=m,\\[6pt]
 0, & n<m,\\[4pt]
 \infty, & n>m.
 \end{cases}
@@ -1070,10 +1070,5 @@ $$
 - **易错点**：驻点不一定是极值点；严格递增不代表处处导数大于零；不能把两次中值定理得到的点当作同一个点。
 - **极限计算**：导数比极限不存在时，不能据此断定原极限不存在；等价无穷小通常用于乘除，不能随意替换差中的某一项。
 
-## 相关资料
-
-- [原课件](https://drive.google.com/file/d/1dXV9c4dyPsljgpFj7dk1WWlVjN9jUPev/view?usp=drivesdk)
 - [第6次作业解析](/books/campus-mathematical-analysis/30-homework-06/)
 - [返回课程目录](/books/campus-mathematical-analysis/)
-
-> 原始资料已备份至云盘，知道链接的人可查看。

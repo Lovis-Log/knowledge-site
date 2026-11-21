@@ -7,6 +7,7 @@ import type { Book } from "@/content/types";
 import { contentTypeLabel } from "@/lib/content-labels";
 import { formatAuthors } from "@/lib/format";
 import { bookTitle } from "@/lib/book-titles";
+import { studyPeriodLabel } from "@/lib/study-period";
 import { uiLabel } from "@/lib/ui-language";
 
 function CollectionIcon() {
@@ -54,6 +55,7 @@ export function BookCard({ book, index = 0, priority = false }: { book: Book; in
       : "";
   const byline = book.author ? formatAuthors(book.author) : "";
   const bylineEn = book.author ? formatAuthors(book.author, 2, "en") : "";
+  const grade = studyPeriodLabel(book);
 
   return (
     <article className="book-card" style={{ "--i": index } as CSSProperties}>
@@ -62,12 +64,17 @@ export function BookCard({ book, index = 0, priority = false }: { book: Book; in
       </Link>
       <div className="book-card__body">
         <h3 className="book-card__title"><Link href={href} prefetch={false}><UiText zh={title.zh} en={title.en} /></Link></h3>
-        {(badge || byline) && (
+        {(badge || byline || grade) && (
           <div className="book-card__top">
             {badge && (
               <span className="book-card__badge">
                 {book.collection ? <CollectionIcon /> : <TagIcon />}
                 <UiText zh={badge} />
+              </span>
+            )}
+            {grade && (
+              <span className="book-card__grade">
+                <UiText zh={grade.zh} en={grade.en} />
               </span>
             )}
             {byline && (

@@ -107,7 +107,7 @@ $$
 $$
 f(x_k)=f'(x_k)(x_k-x_{k+1})
 $$
-中令 $k\to\infty$：左端 $f(x_k)\to f(L)$，右端因 $f'$ 有正下界而迫使 $x_k-x_{k+1}\to 0$，于是 $f(L)=0$，即 $L=x^*$。
+中令 $k\to\infty$：左端 $f(x_k)\to f(L)$；而 $\{x_k\}$ 收敛，故 $x_k-x_{k+1}\to0$，又 $f'$ 在 $[x^*,x_0]$ 上连续从而有界，所以右端 $f'(x_k)(x_k-x_{k+1})\to0$。于是 $f(L)=0$，即 $L=x^*$。
 
 ![牛顿切线法：切线与 $x$ 轴的交点逼近根](/images/campus-mathematical-analysis/22-newton-tangent.png)
 

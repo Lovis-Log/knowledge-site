@@ -75,7 +75,7 @@ $$\forall \varepsilon>0,\ \exists N\ge 1,\ \text{s.t.}\ n>N\ \text{时}\ |x_n-a|
 
 **三、先有 $\varepsilon$，后有 $N$。** 只有 $\varepsilon$ 定了，才谈得上找相应的 $N$，而且一般 $\varepsilon$ 越小，$N$ 越大。若 $N_0$ 已经满足 $|x_n-a|<\varepsilon\ (n>N_0)$，那么 $N_0+1,N_0+2,\cdots$ 也都满足。所以不必去找满足条件的最小 $N$，只要 $N$ 存在。
 
-证明中真正要照顾的是**可解性和式子的简洁**：为了解出 $n$ 的范围，把 $|x_n-a|$ 放大地放大是常规手段，只要放大后的式子仍能任意小，证明就成立。
+证明中真正要照顾的是**可解性和式子的简洁**：为了解出 $n$ 的范围，把 $|x_n-a|$ 逐步放大是常规手段，只要放大后的式子仍能任意小，证明就成立。
 
 **四、右端可以换成 $2\varepsilon$、$M\varepsilon$。** 因为"$\varepsilon$ 取遍所有正数"与"$M\varepsilon$ 取遍所有正数"（$M>0$ 固定）是同一件事，所以
 
@@ -101,7 +101,7 @@ $$O(a,\varepsilon)=\{x\mid a-\varepsilon<x<a+\varepsilon\},$$
 
 $$\left|x_n-\frac13\right|=\frac{|3(n^2-n+2)-(3n^2+2n-4)|}{3(3n^2+2n-4)}=\frac{|10-5n|}{3(3n^2+2n-4)} .$$
 
-分子里 $5n-10<5n$；分母当 $n\ge 2$ 时 $3n^2+2n-4>3n^2$，故分母 $>9n^2$。于是当 $n\ge2$ 时
+分子里 $5n-10<5n$；分母当 $n\ge 3$ 时 $3n^2+2n-4>3n^2$，故分母 $>9n^2$。于是当 $n\ge3$ 时
 
 $$\left|x_n-\frac13\right|<\frac{5n}{9n^2}=\frac{5}{9n}.$$
 
@@ -181,9 +181,9 @@ $$M=\max\{|x_1|,|x_2|,\cdots,|x_N|,|a|+1\},$$
 
 > **易错点**：第 2 条为什么只能得到 $\le$？取 $x_n=0$，$y_n=\frac1n$，处处有 $x_n<y_n$，但两个极限都等于 $0$。严格不等式在取极限后会"退化"成非严格不等式，这是最容易出错的地方。
 
-**性质 4（两边夹定理）** 设 $\lim\limits_{n\to\infty}x_n=\lim\limits_{n\to\infty}z_n=a$，且存在 $N$，使 $n\ge N$ 时 $x_n\le y_n\le z_n$，则 $\lim\limits_{n\to\infty}y_n=a$。
+**性质 4（两边夹定理）** 设 $\lim\limits_{n\to\infty}x_n=\lim\limits_{n\to\infty}z_n=a$，且存在 $N_0$，使 $n>N_0$ 时 $x_n\le y_n\le z_n$，则 $\lim\limits_{n\to\infty}y_n=a$。
 
-**证明** 任给 $\varepsilon>0$，存在 $N_1,N_2$，使 $n>N_1$ 时 $x_n>a-\varepsilon$，$n>N_2$ 时 $z_n<a+\varepsilon$。取 $N=\max\{N_1,N_2,N\}$，当 $n>N$ 时
+**证明** 任给 $\varepsilon>0$，存在 $N_1,N_2$，使 $n>N_1$ 时 $x_n>a-\varepsilon$，$n>N_2$ 时 $z_n<a+\varepsilon$。取 $N=\max\{N_0,N_1,N_2\}$，当 $n>N$ 时
 
 $$a-\varepsilon<x_n\le y_n\le z_n<a+\varepsilon,$$
 
@@ -580,7 +580,3 @@ $$\frac{1}{x_{n+1}}-\frac{1}{x_n}=\frac{1}{x_n(1-x_n)}-\frac{1}{x_n}=\frac{1-(1-
 第二处是保序性：由 $x_n<y_n$ 只能推出 $a\le b$，严格不等号在取极限后会退化。
 
 第三处是无穷大量：$\lim x_n=\infty$ 不表示收敛；四则运算碰到 $(+\infty)-(+\infty)$、$0\cdot\infty$、$\frac{\infty}{\infty}$ 都是待定型，不能照搬法则；用 Stolz 定理前必须确认分母是严格单调增加的正无穷大量，且要处理的是"差分比"而不是原比。
-
-## 资料
-
-- 原讲义：[4数列与数列极限.pdf](https://drive.google.com/file/d/1hKb_9kvTo66taRZDSRlFHwi9SLYL7ayD/view?usp=drivesdk)

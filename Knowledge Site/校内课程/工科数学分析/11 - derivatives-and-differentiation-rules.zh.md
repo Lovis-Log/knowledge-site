@@ -777,7 +777,3 @@ $$
 第四，链式法则要逐层乘到底，$\left(\mathrm e^{\sqrt{1+\cos x}}\right)'$ 有三层，漏一层就错；而 $(uv)'=u'v+uv'$ 不能写成 $u'v'$。
 
 第五，反函数求导公式 $\left(f^{-1}\right)'(y)=1/f'(x)$ 中，分母的导数在 $x$ 处取值，结果再用 $y=f(x)$ 换回 $y$ 表示。
-
-## 相关资料
-
-- 课件：[11导数概念与求导法则.pdf](https://drive.google.com/file/d/1Qeldw5H7bbVVAaBLfH2rnR-KZh8gdYCv/view?usp=drivesdk)

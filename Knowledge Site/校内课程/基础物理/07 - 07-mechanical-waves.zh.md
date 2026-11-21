@@ -380,7 +380,7 @@ $$
 \theta_P=\frac{\pi}{2}\times2+\varphi_P=\pi+\varphi_P
 $$
 
-平衡位置给出 $\cos\theta_P=0$，即 $\theta_P=\pm\pi/2$；"上升"对应 $\sin\theta_P>0$（沿 $+x$ 传播时，斜率与 $\sin\theta$ 同号），故取 $\theta_P=\pi/2$。于是
+平衡位置给出 $\cos\theta_P=0$，即 $\theta_P=\pm\pi/2$；这里说的"上升"指**波形曲线随 $x$ 增大而上翘**，即 $\partial y/\partial x>0$，并不表示该质点正在向上运动。沿 $+x$ 传播时 $\partial y/\partial x=Ak\sin\theta_P$，斜率与 $\sin\theta_P$ 同号，故 $\sin\theta_P>0$，取 $\theta_P=\pi/2$（此时质点实际向下运动，与 $v_y=-u\,\partial y/\partial x<0$ 一致）。于是
 
 $$
 \pi+\varphi_P=\frac{\pi}{2}\ \Rightarrow\ \varphi_P=-\frac{\pi}{2}

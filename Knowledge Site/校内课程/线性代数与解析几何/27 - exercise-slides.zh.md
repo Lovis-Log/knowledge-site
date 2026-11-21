@@ -9,6 +9,10 @@ displayNumber: "习题"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "习题.pptx"
+    url: "https://docs.google.com/presentation/d/192fFRvysb8Vxr7PkLakde-Km-U1TgUeW/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 本页整理课件中的习题（共 12 页）。
@@ -17,9 +21,13 @@ tags:
 
 ## 1. 判断题
 
+<!-- homework-topic: 判断八个向量运算命题 -->
+
 判断下列结论是否正确，并说明理由（第 1—2 页，共 8 小题）。
 
 **(1) 若 $|\vec a|>|\vec b|$，则 $\vec a>\vec b$。**
+
+<!-- homework-topic: 向量能否比较大小 -->
 
 **判断：错。**
 
@@ -27,11 +35,15 @@ tags:
 
 **(2) 若 $\vec a\cdot\vec b=\vec c\cdot\vec b$，且 $\vec b\ne\vec 0$，则 $\vec a=\vec c$。**
 
+<!-- homework-topic: 数量积的消去律 -->
+
 **判断：错。**
 
 **补充解答**：移项得 $(\vec a-\vec c)\cdot\vec b=0$，这只说明 $\vec a-\vec c$ 与 $\vec b$ 垂直，即「$\vec a,\vec c$ 在 $\vec b$ 方向上的投影相同」，而非二者相等。反例：取 $\vec b=(1,0)$，$\vec a=(1,1)$，$\vec c=(1,2)$，则 $\vec a\cdot\vec b=\vec c\cdot\vec b=1$，但 $\vec a\ne\vec c$。数量积不能「约去」非零向量，这是与实数乘法最关键的区别。
 
 **(3) $(\vec a\cdot\vec b)\vec c=\vec a(\vec b\cdot\vec c)$。**
+
+<!-- homework-topic: 数量积与数乘的结合顺序 -->
 
 **判断：错。**
 
@@ -39,17 +51,23 @@ tags:
 
 **(4) $(\vec a\times\vec b)\cdot\vec a=(\vec a\times\vec b)\cdot\vec b=0$。**
 
+<!-- homework-topic: 叉积与两向量垂直 -->
+
 **判断：对。**
 
 **补充解答**：$\vec a\times\vec b$ 按定义同时垂直于 $\vec a$ 与 $\vec b$，故与二者的数量积都为零。这也可以由混合积的行列式性质看出：$\vec a,\vec a,\vec b$ 中有两列相同，行列式为零，即 $(\vec a\times\vec b)\cdot\vec a=0$，同理另一式为零。
 
 **(5) 若 $\vec a=\lambda\vec b$，则 $\lambda=\dfrac{\vec a}{\vec b}$。**
 
+<!-- homework-topic: 向量不能作除数 -->
+
 **判断：错。**
 
 **补充解答**：向量不能作除数，写 $\vec a/\vec b$ 没有定义。正确的说法是：若 $\vec b\ne\vec 0$ 且 $\vec a\parallel\vec b$，则存在**唯一**实数 $\lambda$ 使 $\vec a=\lambda\vec b$；该 $\lambda$ 只能由分量比或 $\lambda=\pm|\vec a|/|\vec b|$（同向取正、反向取负）得到。
 
 **(6) 若 $\vec a\perp\vec b$，$\vec a\perp\vec c$，则 $\vec a\parallel(\vec b\times\vec c)$。**
+
+<!-- homework-topic: 两向量同垂直于第三向量与叉积 -->
 
 **判断：对（需 $\vec b,\vec c$ 不共线）。**
 
@@ -59,11 +77,15 @@ tags:
 
 **(7) $\vec a=(1,1,1)$ 是单位向量。**
 
+<!-- homework-topic: 判断单位向量 -->
+
 **判断：错。**
 
 **补充解答**：$|\vec a|=\sqrt{1^2+1^2+1^2}=\sqrt3\ne1$。与它同向的单位向量是 $\vec a^0=\frac{1}{\sqrt3}(1,1,1)$。
 
 **(8) 若 $|\vec a+\vec b|=|\vec a-\vec b|$，则 $\vec a\perp\vec b$。**
+
+<!-- homework-topic: |a+b|=|a−b| 与垂直 -->
 
 **判断：对。**
 
@@ -79,6 +101,8 @@ $$
 ---
 
 ## 2.
+
+<!-- homework-topic: 求两点间向量的投影、模、方向余弦与单位向量 -->
 
 对于空间两点 $P(2,-2,5)$ 和 $Q(-1,6,7)$，求：
 
@@ -123,6 +147,8 @@ $$
 ---
 
 ## 3.
+
+<!-- homework-topic: 求三角形的投影、面积、高与中线长 -->
 
 给定三点 $A(4,0,0)$、$B(0,2,0)$、$C(0,0,2)$，对于三角形 $\triangle ABC$，求
 
@@ -199,6 +225,8 @@ $$
 
 ## 4.
 
+<!-- homework-topic: 求两向量和、差之间的夹角与平行四边形面积 -->
+
 若 $|\vec a|=\sqrt3$，$|\vec b|=1$，$\langle\vec a,\vec b\rangle=\dfrac{\pi}{6}$。
 
 (1) 求 $\langle\vec a+\vec b,\ \vec a-\vec b\rangle$；
@@ -265,6 +293,8 @@ $$
 
 ## 5.
 
+<!-- homework-topic: 用数量积证明三角形三高共点 -->
+
 用数量积证明三角形的三条高交于一点。
 
 **课件解答**
@@ -314,6 +344,8 @@ $$
 ---
 
 ## 6.
+
+<!-- homework-topic: 求两异面直线的公垂线方程 -->
 
 已知两条异面直线
 
@@ -411,6 +443,8 @@ $$
 
 ## 特例 S₆—S₁₀
 
+<!-- homework-topic: 判断五个空间点集的图形 -->
+
 指出下列空间点集所代表的几何图形。
 
 **课件解答**
@@ -421,11 +455,15 @@ $$
 
 ——$xOy$ 面内的单位圆周上下无限移动产生的**圆柱面**。
 
+<!-- homework-topic: 方程 x²+y²=1 表示的圆柱面 -->
+
 $$
 S_7=\{(x,y,z)\mid x+y+z=1\}
 $$
 
 ——过三点 $(1,0,0)$、$(0,1,0)$、$(0,0,1)$ 的**平面**。
+
+<!-- homework-topic: 平面 x+y+z=1 -->
 
 $$
 S_8=\{(x,y,z)\mid x+y+z=1,\ x^2+y^2+z^2=1\}
@@ -433,17 +471,23 @@ $$
 
 ——上述平面与单位球面的**交线**（一个圆）。
 
+<!-- homework-topic: 平面与球面的交线 -->
+
 $$
 S_9=\{(x,y,z)\mid x=\cos\theta,\ y=\sin\theta,\ z=\theta,\ 0\le\theta<+\infty\}
 $$
 
 ——从 $(1,0,0)$ 出发，沿圆柱面 $x^2+y^2=1$ 等速上升的**螺旋线**。
 
+<!-- homework-topic: 圆柱螺旋线 -->
+
 $$
 S_{10}=\{(x,y,z)\mid 1\le x^2+y^2+z^2\le4\}
 $$
 
 ——以 $O$ 为心、半径为 $1$ 和 $2$ 的两个球面所夹的**球壳**。
+
+<!-- homework-topic: 两球面之间的球壳 -->
 
 **补充解答（为什么是这些图形）**
 
@@ -463,7 +507,3 @@ $$
 4. 与已知向量平行的单位向量有两个（$\pm$），只写一个会丢解。
 5. 用叉积求面积时不要漏 $\frac12$；用「等腰三角形中线即高」这类几何直觉时，必须先确认等腰的顶角在哪里（本题 $CE$ 并非高）。
 6. 求公垂线时，两平面都必须是「含一条已知直线且平行于公垂方向」的平面，最后取交线；只写一个平面或凭印象取点都会出错。
-
-## 资料
-
-- [课件原件：习题.pptx](<https://docs.google.com/presentation/d/192fFRvysb8Vxr7PkLakde-Km-U1TgUeW/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)（第 1—12 页）

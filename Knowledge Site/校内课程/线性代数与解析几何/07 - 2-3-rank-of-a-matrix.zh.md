@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "2.3"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "2.3 矩阵的秩 (1).pptx"
+    url: "https://docs.google.com/presentation/d/1U9EGVedqidzfyxgCpq1Jq3bWRVZH1m-x/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 矩阵的秩衡量一张数表"真正含有多少条独立的信息"。它由子式的非零性定义，但实际计算靠初等变换化阶梯形：变换不改变秩，阶梯形的非零行数就是秩。本节先建立初等变换与等价，再给出秩的定义、性质和求法。
@@ -238,11 +242,13 @@ $$
 \xrightarrow{c_3\leftrightarrow c_4}
 \begin{pmatrix}
 1 & 0 & 0 & \frac12 & \frac72\\
-0 & 1 & -\frac34 & 0 & -\frac14\\
+0 & 1 & 0 & -\frac34 & -\frac14\\
 0 & 0 & 1 & 0 & -2\\
 0 & 0 & 0 & 0 & 0
 \end{pmatrix}.
 $$
+
+> **易错点**：交换 $c_3\leftrightarrow c_4$ 后，第 2 行原来的 $-\frac34$ 已随第 3 列移到第 4 列。读“首元列”和写标准形时都必须以变换后的矩阵为准，不能沿用交换前的列号。
 
 最后用第 3 列消去第 4、5 列中的相应元素：
 
@@ -459,7 +465,3 @@ $$
 - **秩的定义**：最高阶非零子式的阶数；$0\leq r(A)\leq\min\{m,n\}$；方阵满秩等价于行列式非零。
 - **求秩**：行变换化阶梯形，数非零行。这是本章最需要熟练掌握的计算。
 - **易错点**：初等变换第 II 类必须 $k\neq 0$；化阶梯形时只用行变换；参数题要把"多余行全零"的条件写全；不要把矩阵等价写成相等。
-
-## 资料
-
-- 课件原件：[2.3 矩阵的秩 (1).pptx](<https://docs.google.com/presentation/d/1U9EGVedqidzfyxgCpq1Jq3bWRVZH1m-x/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

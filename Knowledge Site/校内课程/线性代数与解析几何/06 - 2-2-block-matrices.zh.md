@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "2.2"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "2.2 矩阵的分块.pptx"
+    url: "https://docs.google.com/presentation/d/1u-M6VIv-SJJKUNmqMTJ21tfvg7GIVZ8H/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 行数、列数较大的矩阵，直接按元素做乘法既繁琐又看不清结构。分块法把大矩阵切成若干小块，把每个子块当成一个"元素"参与运算，形式上与普通矩阵运算完全一致。它不是新的运算，而是一种**组织计算的策略**：分块不改变结果，只改变计算的次序与规模。
@@ -405,7 +409,7 @@ D\ \longrightarrow\ D_1=\begin{pmatrix}A & C\\ -E & O\end{pmatrix},
 \lvert D\rvert=\lvert D_1\rvert.
 $$
 
-再对 $D_1$ 用拉普拉斯展开：把后 $n$ 行整体移到前 $n$ 行之前，需要交换 $n$ 次相邻块行，符号为 $(-1)^{n}$（严格说是 $(-1)^{n^2}=(-1)^n$），得到分块上三角行列式
+再对 $D_1$ 用拉普拉斯展开：把后 $n$ 行整体移到前 $n$ 行之前，每一行都要跨过前 $n$ 行，共需 $n^2$ 次相邻行交换，符号为 $(-1)^{n^2}=(-1)^n$，得到分块上三角行列式
 
 $$
 \lvert D_1\rvert=(-1)^{n}
@@ -444,7 +448,3 @@ $$
 - **准对角矩阵**：行列式逐块相乘；乘法、求逆可逐块处理，是大矩阵计算"降维"的主要手段。
 - **定理 2.1**：$\lvert AB\rvert=\lvert A\rvert\lvert B\rvert$，证明靠构造 $\begin{pmatrix}A&O\\-E&B\end{pmatrix}$ 并用不改变行列式的列变换把 $O$ 变成 $AB$。
 - **易错点**：$\lvert A+B\rvert\neq\lvert A\rvert+\lvert B\rvert$；分块乘法中子块顺序不能交换；转置时漏掉子块本身的转置。
-
-## 资料
-
-- 课件原件：[2.2 矩阵的分块.pptx](<https://docs.google.com/presentation/d/1u-M6VIv-SJJKUNmqMTJ21tfvg7GIVZ8H/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

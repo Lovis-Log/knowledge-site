@@ -19,6 +19,7 @@ import { tagLabel } from "@/lib/tag-labels";
 import { formatDate, paddedNumber } from "@/lib/format";
 import { chapterGroupOf, chapterHeading } from "@/lib/chapter-label";
 import { availableLangs, pickVersion } from "@/lib/language";
+import { studyPeriodLabel } from "@/lib/study-period";
 import { buildToc, buildHomeworkToc } from "@/lib/toc";
 
 export default function ChapterView({
@@ -40,7 +41,9 @@ export default function ChapterView({
 
   const bilingual = langs.length > 1;
   const hasTranslation = Boolean(chapter.translation) && !bilingual;
-  const toc = chapter.group === "homework" ? buildHomeworkToc : buildToc;
+  const hasHomeworkToc = chapter.group === "homework" ||
+    (book.slug === "campus-linear-algebra-analytic-geometry" && chapter.slug === "exercise-slides");
+  const toc = hasHomeworkToc ? buildHomeworkToc : buildToc;
   const translationToc = hasTranslation
     ? toc(chapter.translation!.body, "en")
     : [];
@@ -48,6 +51,7 @@ export default function ChapterView({
   const grouped = Boolean(chapterGroupOf(chapter, book.groups));
   const heading = chapterHeading(chapter, book.groups);
   const campusReading = book.category === "campus-courses";
+  const grade = studyPeriodLabel(book);
   const tocs = langs.map((lang) => ({
     lang,
     items: toc(chapter.versions[lang]!.body, lang),
@@ -102,9 +106,13 @@ export default function ChapterView({
               </div>
             );
           })}
-          {(chapter.publishedAt || bilingual || book.studyPeriod) && (
+          {(chapter.publishedAt || bilingual || grade || book.studyPeriod) && (
             <div className="chapter-meta">
-              {book.studyPeriod ? (
+              {grade ? (
+                <span>
+                  <UiText zh={grade.zh} en={grade.en} />
+                </span>
+              ) : book.studyPeriod ? (
                 <span>
                   <UiText zh={book.studyPeriod} en={book.studyPeriod} />
                 </span>

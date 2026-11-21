@@ -658,7 +658,3 @@ $$
 - **常见展开**：$e^x$、$\sin x$、$\cos x$、$\ln(1+x)$、$(1+x)^\lambda$ 的 Lagrange 余项要会写；注意 $\sin x$、$\cos x$ 的余项下标比多项式次数多一。
 - **应用套路**：近似计算看误差界；证明导数估计时，把函数在任意点向两端展开再相减；证明极限为零时，用两阶展开消去低阶项。
 - **易错点**：Lagrange 余项要求区间上有 $n+1$ 阶导数；$\theta$ 依赖于 $h$，不能当作常数；$\sin x$、$\cos x$ 的余项阶数容易写错；例 11 中必须用 $f^{(n+1)}(x_0)\ne0$ 才能除以它。
-
-## 相关资料
-
-- [原件](https://drive.google.com/file/d/1D6LGXF0v5rrjM2idTU3mKXlVowx17Z5M/view?usp=drivesdk)

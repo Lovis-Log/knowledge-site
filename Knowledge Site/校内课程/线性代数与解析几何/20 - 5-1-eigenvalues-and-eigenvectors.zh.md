@@ -8,6 +8,10 @@ group: "course"
 displayNumber: "5.1"
 tags:
   - "线性代数"
+sources:
+  - kind: article
+    title: "5.1 矩阵特征值与特征向量 (1).pptx"
+    url: "https://docs.google.com/presentation/d/14QoRBYXp65h8sJFeuykf8mKjBCbHXaHu/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true"
 ---
 
 本章讨论方阵的特征值、特征向量，以及矩阵在相似意义下能否化为对角形。特征值与特征向量把矩阵、行列式、线性方程组联系起来：求特征值归结为解特征方程，求特征向量归结为解齐次线性方程组。
@@ -148,13 +152,20 @@ $$
 **解** 第一步，计算特征多项式：
 
 $$
-\det(\lambda E-A)=
-\begin{vmatrix}
+\begin{aligned}
+\det(\lambda E-A)
+&=\begin{vmatrix}
 \lambda-1 & -2 & -2\\
 -2 & \lambda+2 & 4\\
 -2 & 4 & \lambda+2
-\end{vmatrix}
-=(\lambda-2)^2(\lambda+7).
+\end{vmatrix}\\
+&=(\lambda-1)\bigl[(\lambda+2)^2-16\bigr]
++2\bigl[-2(\lambda+2)+8\bigr]
+-2\bigl[-8+2(\lambda+2)\bigr]\\
+&=(\lambda-1)(\lambda+6)(\lambda-2)-8(\lambda-2)\\
+&=(\lambda-2)\bigl[(\lambda-1)(\lambda+6)-8\bigr]\\
+&=(\lambda-2)(\lambda^2+5\lambda-14)=(\lambda-2)^2(\lambda+7).
+\end{aligned}
 $$
 
 第二步，解特征方程：
@@ -407,7 +418,3 @@ $$
 ## 课堂小结
 
 特征值与特征向量由 $A\alpha=\lambda\alpha$（$\alpha\ne0$）定义。求法固定为三步：算特征多项式 $\det(\lambda E-A)$，解特征方程得全部特征值，再对每个特征值解 $(\lambda E-A)X=0$ 求基础解系，特征向量取基础解系的非零线性组合。检验时利用两条性质：特征值之和等于迹，之积等于行列式。转置不改变特征值；$A^k$、多项式 $f(A)$、可逆矩阵 $A^{-1}$ 的特征值分别是 $\lambda^k$、$f(\lambda)$、$\frac1\lambda$，且特征向量不变。不同特征值的特征向量线性无关，且各特征值对应的线性无关特征向量组合并后仍线性无关。易错点：特征向量不能取零向量；求特征向量时不要漏掉"系数不全为零"；用特征值之积判断可逆性时，只要有一个特征值为零，矩阵就不可逆。
-
-## 资料
-
-[课件原件：5.1 矩阵特征值与特征向量 (1).pptx](<https://docs.google.com/presentation/d/14QoRBYXp65h8sJFeuykf8mKjBCbHXaHu/edit?usp=drivesdk&ouid=109132636810390340175&rtpof=true&sd=true>)

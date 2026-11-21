@@ -9,6 +9,10 @@ displayNumber: "06"
 tags:
   - "线性代数"
   - "解析几何"
+sources:
+  - kind: article
+    title: "6.jpg，本次作业第 1—8 题"
+    url: "https://drive.google.com/file/d/1PmNuamYKsG5CIToZEbKedAgLsgWc2XZu/view?usp=drivesdk"
 ---
 
 本次作业为滚动截图，含第 1—8 道主观题。解答均为新增，标注「补充解答」。
@@ -16,6 +20,8 @@ tags:
 
 
 ## 1.(1)
+
+<!-- homework-topic: 解五元近三角形线性方程组 -->
 
 解线性方程组
 
@@ -77,6 +83,8 @@ $$
 
 ## 2.
 
+<!-- homework-topic: 将 β 表为 Hadamard 型向量组的组合 -->
+
 设
 
 $$
@@ -126,6 +134,8 @@ $$
 
 ## 3.
 
+<!-- homework-topic: 判断四个三维向量的相关性与部分组无关性 -->
+
 设
 
 $$
@@ -166,6 +176,8 @@ $$
 ---
 
 ## 4.
+
+<!-- homework-topic: 证明 α₁、α₁+α₂、α₁+α₂+α₃ 无关 -->
 
 设向量组 $\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_3$ 线性无关。证明：向量组
 
@@ -208,6 +220,8 @@ $$
 ---
 
 ## 6.
+
+<!-- homework-topic: 求两组基之间的过渡矩阵 -->
 
 在 $\mathbb{R}^3$ 中，求由基
 
@@ -263,6 +277,8 @@ $=(\frac58+\frac32-\frac18,\ \frac54-\frac32+\frac14,\ -\frac58+\frac32+\frac18)
 
 ## 7.
 
+<!-- homework-topic: 求过渡矩阵及向量在两组基下的坐标 -->
+
 已知
 
 $$
@@ -316,6 +332,8 @@ $$
 
 
 ## 8.
+
+<!-- homework-topic: 求向量在给定基下的坐标 -->
 
 在 $\mathbb{R}^3$ 中求向量 $\boldsymbol\alpha=(3,7,1)$ 在基
 
@@ -376,6 +394,8 @@ $$
 ---
 
 ## 9.
+
+<!-- homework-topic: 求两组基下坐标相同的向量 -->
 
 在 $\mathbb{R}^4$ 中找一个向量 $\boldsymbol\gamma$，使它在标准基 $\boldsymbol\varepsilon_1,\boldsymbol\varepsilon_2,\boldsymbol\varepsilon_3,\boldsymbol\varepsilon_4$ 和基
 
@@ -448,7 +468,3 @@ $$
 3. 证明「$\boldsymbol\alpha_1,\boldsymbol\alpha_1+\boldsymbol\alpha_2,\boldsymbol\alpha_1+\boldsymbol\alpha_2+\boldsymbol\alpha_3$ 无关」时，必须把组合系数化到 $\boldsymbol\alpha_i$ 的系数再比较，不能凭「看起来像三角形」直接下结论。
 4. 求极大无关组时，题目若指定「包含某几个向量」，必须逐一检查这些向量是否真在组内且线性无关，不能只按秩的最大性挑选。
 5. 找「两组基下坐标相同」的向量，本质是解 $(E-B)x=0$；只有当 $|E-B|=0$ 时才有非零解，若算出 $|E-B|\ne0$ 应立刻回查矩阵是否抄错。
-
-## 资料
-
-- [原图](<https://drive.google.com/file/d/1PmNuamYKsG5CIToZEbKedAgLsgWc2XZu/view?usp=drivesdk>)（6.jpg，本次作业第 1—8 题）
