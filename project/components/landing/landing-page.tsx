@@ -75,6 +75,7 @@ export function LandingPage() {
   const closeAuth = useCallback(() => { setAuthView(null); setAuthNext(undefined); }, []);
   const openAuth = useCallback((view: AuthView, next?: string) => { setAuthNext(next); setAuthView(view); }, []);
   const root = useRef<HTMLDivElement>(null);
+  const openLibraryLogin = useCallback(() => openAuth("login", "/library/"), [openAuth]);
 
   useEffect(() => {
     // The shared header translates DOM attributes before this page hydrates.
@@ -94,21 +95,24 @@ export function LandingPage() {
   useEffect(() => {
     const items = [...(root.current?.querySelectorAll<HTMLElement>("[data-landing-reveal]") ?? [])];
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    let live = true;
     let observer: IntersectionObserver | undefined;
-    function setup() {
+    function disconnect() {
       observer?.disconnect();
+      observer = undefined;
+    }
+    function setup() {
+      disconnect();
       if (reduced.matches || !("IntersectionObserver" in window)) {
         items.forEach((item) => { item.dataset.landingReveal = "visible"; });
         return;
       }
-      observer = new IntersectionObserver((entries) => {
+      const current = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const item = entry.target as HTMLElement;
-          observer?.unobserve(item);
+          current.unobserve(item);
           void Promise.all([...item.querySelectorAll("img")].map((image) => image.decode().catch(() => {}))).then(() => {
-            if (live) item.dataset.landingReveal = "visible";
+            if (observer === current) item.dataset.landingReveal = "visible";
           });
         });
       }, { threshold: .14 });
@@ -121,13 +125,15 @@ export function LandingPage() {
       ));
       items.forEach((item) => { item.dataset.landingReveal = wiping.has(item) ? "pending" : "visible"; });
       if (wiping.size) void root.current?.offsetHeight;
-      items.forEach((item) => observer?.observe(item));
+      observer = current;
+      items.forEach((item) => current.observe(item));
     }
     // A page restored from the back/forward cache keeps its finished DOM, so
     // reset it and let the observer wipe the covers again. Closing the covers
     // before the page is frozen keeps the restored frame from flashing open.
     const suspend = (event: PageTransitionEvent) => {
       if (!event.persisted) return;
+      disconnect();
       items.forEach((item) => { if (item.hasAttribute("data-landing-volume")) item.dataset.landingReveal = "pending"; });
     };
     const resume = (event: PageTransitionEvent) => { if (event.persisted) setup(); };
@@ -136,8 +142,7 @@ export function LandingPage() {
     window.addEventListener("pagehide", suspend);
     window.addEventListener("pageshow", resume);
     return () => {
-      live = false;
-      observer?.disconnect();
+      disconnect();
       reduced.removeEventListener("change", setup);
       window.removeEventListener("pagehide", suspend);
       window.removeEventListener("pageshow", resume);
@@ -145,11 +150,8 @@ export function LandingPage() {
   }, []);
 
 
-  // Access always goes through the sign-in form, even when a session is still
-  // valid, so returning readers can unlock their password manager and submit
-  // deliberately instead of being sent straight into the library.
   function entrance(className: string) {
-    return <button type="button" className={className} onClick={() => openAuth("login", "/library/")}><UiText {...copy.enter} /><Arrow /></button>;
+    return <button type="button" className={className} onClick={openLibraryLogin}><UiText {...copy.enter} /><Arrow /></button>;
   }
 
   return (
@@ -166,9 +168,9 @@ export function LandingPage() {
           </nav>
           <div className={styles.headerActions}>
             <div className={styles.headerToggles}>{hydrated && <><ThemeToggle /><UiLanguageToggle /></>}</div>
-            {signedIn
-              ? <Link href="/library/" className={styles.account}><AccountIcon /><UiText zh="书库" en="Library" /></Link>
-              : <button type="button" className={styles.account} onClick={() => openAuth("login")}><AccountIcon /><UiText zh="登录" en="Sign in" /></button>}
+            <button type="button" className={styles.account} onClick={openLibraryLogin}>
+              <AccountIcon /><UiText zh={signedIn ? "书库" : "登录"} en={signedIn ? "Library" : "Sign in"} />
+            </button>
           </div>
         </div>
       </header>
@@ -222,7 +224,7 @@ export function LandingPage() {
               : <a href={volume.href} className={styles.collectionCard} key={volume.href} {...label} onClick={(event) => { event.preventDefault(); openAuth("login", volume.href); }}>{card}</a>;
           })}
         </div>
-        <Link href="/library/" className={styles.collectionLink} onClick={(event) => { if (!signedIn) { event.preventDefault(); openAuth("login", "/library/"); } }}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></Link>
+        <button type="button" className={styles.collectionLink} onClick={openLibraryLogin}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></button>
       </section>
 
       <section id="reflection" className={styles.reflection} aria-labelledby="reflection-title">

@@ -81,7 +81,7 @@
 .volume:hover .coverWell img { transform: translateY(-6px) rotate(0); }
 .volume h3 { font: 500 clamp(19px, 1.7vw, 26px)/1.4 var(--serif); margin: 24px 0 10px; }
 .volume p { color: var(--lm-ink); font-size: .875rem; line-height: 1.8; max-width: 28em; margin: 0; }
-.collectionLink { display: inline-flex; align-items: center; gap: 24px; margin-top: 45px; padding-bottom: 8px; border-bottom: 1px solid #c7b89f; font-size: .9375rem; }
+.landing .collectionLink { display: flex; align-items: center; gap: 24px; width: fit-content; margin: 40px 0 0 auto; padding: 0 0 8px; border: 0; border-bottom: 1px solid #c7b89f; background: transparent; color: inherit; font-size: .9375rem; }
 .collectionLink svg { width: 19px; height: 19px; }
 .reflection { position: relative; overflow: clip; background: #eee6d8; }
 .reflectionInner { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 8%; min-height: 650px; padding-block: 80px; }
@@ -159,7 +159,6 @@
   .coverWell { min-height: 0; padding: 25px 22%; }
   .volume h3 { font-size: 20px; margin-top: 0; }
   .volume p { font-size: .875rem; }
-  .collectionLink { margin-top: 35px; }
   .reflectionInner { grid-template-columns: 1fr; gap: 25px; padding-block: 55px 70px; }
   .reflectionArt { margin: 0 -15%; }
   .reflectionArt img { width: 100%; }
@@ -376,7 +375,6 @@
 .volume p { font-size: .875rem; }
 .collectionCard figcaption svg { width: 23px; height: 23px; flex: none; transform: rotate(45deg); }
 .collectionCard:hover .collectionPreview img { transform: scale(1.035); }
-.collectionLink { display: flex; width: fit-content; margin-left: auto; margin-top: 40px; }
 
 /* Global reader controls lift whole rows. FAQ only moves its text. */
 :global(#lovismind-landing) .questionList summary,
@@ -420,7 +418,7 @@
   .volume { display: block; }
   .collectionPreview { aspect-ratio: 1.28; }
   .volume h3 { font-size: 21px; }
-  .collectionLink { margin-top: 30px; }
+  .landing .collectionLink { margin-top: 30px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sectionNav a:hover, .questionList summary:hover .questionText, .questionList summary:focus-visible .questionText { translate: var(--faq-row-position, 0px 0px); }
