@@ -533,7 +533,9 @@ $$
 >
 > 取 $W$ 的标准正交基 $q_2,\dots,q_n$，则 $T_1=(q_1,q_2,\dots,q_n)$ 为正交矩阵，且
 >
-> $$T_1^{T}AT_1=\begin{pmatrix}\lambda_1&0\\0&B\end{pmatrix},$$
+> $$
+> T_1^{T}AT_1=\begin{pmatrix}\lambda_1&0\\0&B\end{pmatrix},
+> $$
 >
 > 其中 $B$ 是 $W$ 上的实对称矩阵。由归纳假设，存在 $n-1$ 阶正交矩阵 $Q$ 使 $Q^{T}BQ$ 为对角矩阵。取 $T=T_1\begin{pmatrix}1&0\\0&Q\end{pmatrix}$，则 $T$ 正交，且 $T^{T}AT$ 为对角矩阵。
 

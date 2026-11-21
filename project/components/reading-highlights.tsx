@@ -34,50 +34,58 @@ function formulaForRange(range: Range) {
   return node instanceof HTMLElement && node.matches(".katex") ? node : null;
 }
 
-/** A range over rendered KaTeX glyphs, which the browser paints fragment by fragment. */
-function glyphRange(range: Range) {
-  return range.startContainer instanceof Text &&
-    Boolean(range.startContainer.parentElement?.closest(".katex-html"));
+function glyphFormula(range: Range) {
+  return range.startContainer instanceof Text
+    ? range.startContainer.parentElement?.closest<HTMLElement>(".katex-html")
+    : null;
 }
 
-function formulaFontSize(node: Node, sizes: Map<Element, number>) {
-  const formula = (node instanceof Element ? node : node.parentElement)?.closest(".katex");
-  if (!formula) return 16;
-  let size = sizes.get(formula);
-  if (size === undefined) {
-    size = Number.parseFloat(getComputedStyle(formula).fontSize) || 16;
-    sizes.set(formula, size);
-  }
-  return size;
-}
-
-function addBoxes(range: Range, size: number, boxes: HighlightBox[]) {
-  for (const rect of range.getClientRects()) {
-    if (rect.width > 0 && rect.height > 0) {
-      boxes.push({ top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, size });
+function measureFormulaBands(formula: HTMLElement, ranges: readonly Range[]) {
+  const boxes: HighlightBox[] = [];
+  const size = Number.parseFloat(getComputedStyle(formula).fontSize) || 16;
+  // The overlays are portaled to the viewport, so apply the formula's scroll clip here.
+  const scrollBox = formula.closest<HTMLElement>(".katex-display, .table-wrap");
+  const bounds = scrollBox?.getBoundingClientRect();
+  const minX = bounds && scrollBox ? bounds.left + scrollBox.clientLeft : -Infinity;
+  const maxX = scrollBox ? minX + scrollBox.clientWidth : Infinity;
+  const minY = bounds && scrollBox ? bounds.top + scrollBox.clientTop : -Infinity;
+  const maxY = scrollBox ? minY + scrollBox.clientHeight : Infinity;
+  for (const range of ranges) {
+    for (const rect of range.getClientRects()) {
+      const left = Math.max(rect.left, minX);
+      const right = Math.min(rect.right, maxX);
+      const top = Math.max(rect.top, minY);
+      const bottom = Math.min(rect.bottom, maxY);
+      if (right > left && bottom > top) boxes.push({ top, left, right, bottom, size });
     }
   }
+  return groupHighlightBands(boxes);
 }
 
-/** Glyph boxes for ranges that already resolved to text inside formulas. */
-function formulaBoxes(ranges: readonly Range[]) {
-  const boxes: HighlightBox[] = [];
-  const sizes = new Map<Element, number>();
+/** Keep saved marks and distinct formulas separate, even when they share a prose line. */
+function formulaBands(ranges: readonly Range[]) {
+  const byFormula = new Map<HTMLElement, Range[]>();
   for (const range of ranges) {
-    if (!glyphRange(range)) continue;
-    addBoxes(range, formulaFontSize(range.startContainer, sizes), boxes);
+    const formula = glyphFormula(range);
+    if (!formula) continue;
+    const group = byFormula.get(formula);
+    if (group) group.push(range);
+    else byFormula.set(formula, [range]);
   }
-  return boxes;
+  return [...byFormula].flatMap(([formula, group]) => measureFormulaBands(formula, group));
 }
 
-/** Glyph boxes for the formula part of a live drag selection. */
-function selectionBoxes(range: Range, view: HTMLElement) {
-  const boxes: HighlightBox[] = [];
-  const sizes = new Map<Element, number>();
-  // Read the view each time: the reader reuses the block while chapters change.
-  for (const formula of view.querySelectorAll<HTMLElement>(".katex-html")) {
+/** Only inspect formulas in the live selection's common ancestor. */
+function selectionBands(range: Range) {
+  const ancestor = range.commonAncestorContainer;
+  const parent = ancestor instanceof Element ? ancestor : ancestor.parentElement;
+  if (!parent) return [];
+  const containing = parent.closest<HTMLElement>(".katex-html");
+  const formulas = containing ? [containing] : parent.querySelectorAll<HTMLElement>(".katex-html");
+  const bands: HighlightBand[] = [];
+  for (const formula of formulas) {
     if (!range.intersectsNode(formula)) continue;
-    const size = formulaFontSize(formula, sizes);
+    const pieces: Range[] = [];
     const walker = document.createTreeWalker(formula, NodeFilter.SHOW_TEXT);
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       if (!range.intersectsNode(node)) continue;
@@ -85,10 +93,11 @@ function selectionBoxes(range: Range, view: HTMLElement) {
       piece.selectNodeContents(node);
       if (node === range.startContainer) piece.setStart(node, range.startOffset);
       if (node === range.endContainer) piece.setEnd(node, range.endOffset);
-      if (!piece.collapsed) addBoxes(piece, size, boxes);
+      if (!piece.collapsed) pieces.push(piece);
     }
+    bands.push(...measureFormulaBands(formula, pieces));
   }
-  return boxes;
+  return bands;
 }
 
 function visibleBoxes(range: Range) {
@@ -180,12 +189,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     }
     const ranges = painted.current.flatMap((item) => item.ranges);
     // Per mark, so two separate highlights on one math row never merge into one band.
-    const groups = painted.current.map((item) => item.ranges.filter(glyphRange));
+    const groups = painted.current.map((item) => item.ranges.filter(glyphFormula));
     const whole: Range[] = [];
     const text: Range[] = [];
     for (const range of ranges) {
       if (formulaForRange(range)) whole.push(range);
-      else if (!glyphRange(range)) text.push(range);
+      else if (!glyphFormula(range)) text.push(range);
     }
     const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
     formulas.forEach((element) => element.classList.add("reading-formula-highlight"));
@@ -199,7 +208,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     // Formula glyphs are painted as row bands: fragment rects would leave gaps
     // where KaTeX keeps its spacing, and each fraction row would get its own strip.
     const paint = () => {
-      const next = groups.flatMap((group) => group.length ? groupHighlightBands(formulaBoxes(group)) : []);
+      const next = groups.flatMap((group) => formulaBands(group));
       setBands((current) => sameBands(current, next) ? current : next);
       paintFallback?.();
     };
@@ -208,7 +217,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(() => { frame = 0; paint(); });
     };
-    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("scroll", schedule, { capture: true, passive: true });
     window.addEventListener("resize", schedule);
     // A font-size or reading-view switch reflows the article without a resize event.
     const flow = typeof ResizeObserver === "function" ? new ResizeObserver(schedule) : null;
@@ -218,7 +227,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       CSS.highlights?.delete(registryName);
       flow?.disconnect();
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
     };
   }, [root, state, pending, hidden, revision]);
@@ -237,8 +246,8 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
 
   useEffect(() => {
     if (!target) {
-      setActiveBands([]);
-      delete document.documentElement.dataset.readingFormulaBand;
+      setActiveBands((current) => current.length ? [] : current);
+      setActiveFallback((current) => current.length ? [] : current);
       return;
     }
     const ranges = target.ranges;
@@ -247,7 +256,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const text: Range[] = [];
     for (const range of ranges) {
       if (formulaForRange(range)) whole.push(range);
-      else if (glyphRange(range)) glyphs.push(range);
+      else if (glyphFormula(range)) glyphs.push(range);
       else text.push(range);
     }
     const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
@@ -264,15 +273,9 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     // The bands replace the native selection inside formulas: browser selection
     // over KaTeX paint cannot merge glyph fragments or skip invisible spacing.
     const paint = () => {
-      const boxes = ranges.length ? formulaBoxes(glyphs) : selectionBoxes(target.range, target.element);
-      const next = groupHighlightBands(boxes);
+      const next = ranges.length ? formulaBands(glyphs) : selectionBands(target.range);
       setActiveBands((current) => sameBands(current, next) ? current : next);
-      const html = document.documentElement;
-      if (next.length) {
-        if (!html.hasAttribute("data-reading-formula-band")) html.dataset.readingFormulaBand = "";
-      } else if (html.hasAttribute("data-reading-formula-band")) {
-        delete html.dataset.readingFormulaBand;
-      }
+      target.element.toggleAttribute("data-reading-formula-band", Boolean(next.length));
       if (!supported) {
         setActiveFallback(text.flatMap((range) => Array.from(range.getClientRects())));
       }
@@ -282,14 +285,14 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(() => { frame = 0; paint(); });
     };
-    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("scroll", schedule, { capture: true, passive: true });
     window.addEventListener("resize", schedule);
     return () => {
       clearFormulas();
       CSS.highlights?.delete(activeRegistryName);
-      delete document.documentElement.dataset.readingFormulaBand;
+      target.element.removeAttribute("data-reading-formula-band");
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
     };
   }, [target]);
@@ -382,7 +385,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     article.addEventListener("click", clickMark);
     document.addEventListener("pointerdown", dismissOutside);
     document.addEventListener("keyup", onKey);
-    window.addEventListener("scroll", reposition, { passive: true });
+    window.addEventListener("scroll", reposition, { capture: true, passive: true });
     window.addEventListener("resize", reposition);
     const observer = new MutationObserver(() => {
       clear();
@@ -395,7 +398,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       article.removeEventListener("click", clickMark);
       document.removeEventListener("pointerdown", dismissOutside);
       document.removeEventListener("keyup", onKey);
-      window.removeEventListener("scroll", reposition);
+      window.removeEventListener("scroll", reposition, true);
       window.removeEventListener("resize", reposition);
       cancelAnimationFrame(queued);
       cancelAnimationFrame(frame);

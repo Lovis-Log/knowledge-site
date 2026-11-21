@@ -422,8 +422,10 @@ $$
 **（3）屏上可观察的条纹级次有限**
 
 $$
-\theta<\frac{\pi}{2}\ \Longrightarrow\ k_{\max}<\frac{a+b}{\lambda}\qquad(\text{取不超过该值的最大整数})
+\theta<\frac{\pi}{2}\ \Longrightarrow\ k_{\max}=\left\lceil\frac{a+b}{\lambda}\right\rceil-1.
 $$
+
+这里取严格小于 $(a+b)/\lambda$ 的最大整数。若比值恰为整数，最高可见级次还要减一，因为 $\theta=\pi/2$ 的极大不落在屏上。
 
 ### 23.5.7 光强分布的定量分析（了解）
 

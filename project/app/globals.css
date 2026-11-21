@@ -3615,7 +3615,7 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 
 /* While those bands replace the selection over formula glyphs, the browser's own
    fragment-by-fragment selection paint would still show through underneath. */
-:root[data-reading-formula-band] .prose .katex-html ::selection {
+.prose[data-reading-formula-band] .katex-html ::selection {
   background: transparent;
   color: inherit;
 }

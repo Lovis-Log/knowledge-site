@@ -423,7 +423,7 @@ $$
 4. $0A=0$，$A0=0$；
 5. $E_mA_{m\times n}=A_{m\times n}$，$A_{m\times n}E_n=A_{m\times n}$。
 
-> **补充证明（结合律）**：设 $A=(a_{ij})_{m\times s}$，$B=(b_{jk})_{s\times t}$，$C=(c_{kl})_{t\times n}$。逐元素计算：
+> **补充证明**（结合律）：设 $A=(a_{ij})_{m\times s}$，$B=(b_{jk})_{s\times t}$，$C=(c_{kl})_{t\times n}$。逐元素计算：
 >
 > $$
 > ((AB)C)_{il}=\sum_{k=1}^{t}\Bigl(\sum_{j=1}^{s}a_{ij}b_{jk}\Bigr)c_{kl}
