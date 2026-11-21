@@ -33,6 +33,29 @@ type PaintedMark = {
 
 const textBlock = "pre, p, li, dt, dd, td, th, h1, h2, h3, h4, h5, h6, blockquote";
 const tableRow = ".mtable > [class^='col-align-'] > .vlist-t > .vlist-r > .vlist > span";
+const leftFence = ":scope > .mopen:not(.nulldelimiter)";
+const rightFence = ":scope > .mclose:not(.nulldelimiter)";
+
+function matrixFrame(table: Element) {
+  // KaTeX also uses .mtable for aligned equations and cases. In particular,
+  // cases has a null right delimiter and keeps its independent rows.
+  const fenced = table.closest(".minner");
+  if (fenced?.querySelector(leftFence) && fenced.querySelector(rightFence)) return fenced;
+  const centered = !table.querySelector(":scope > .col-align-l, :scope > .col-align-r");
+  return centered && table.querySelector(":scope > .arraycolsep, :scope > .vertical-separator") ? table : null;
+}
+
+function coversMatrix(table: Element, selected: ReadonlyMap<Node, Range>) {
+  const cells = document.createTreeWalker(table, NodeFilter.SHOW_TEXT);
+  let hasText = false;
+  for (let node = cells.nextNode(); node instanceof Text; node = cells.nextNode()) {
+    if (!node.data.trim()) continue;
+    const range = selected.get(node);
+    if (!range || range.startOffset !== 0 || range.endOffset !== node.length) return false;
+    hasText = true;
+  }
+  return hasText;
+}
 
 function selectedTextRanges(element: HTMLElement, selection: Range) {
   const pieces: Range[] = [];
@@ -88,7 +111,15 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
       area.top >= innerHeight || area.right <= 0 || area.left >= innerWidth) return [];
 
   const display = container.matches(".katex-display");
-  const hasMathRows = display && Boolean(container.querySelector(".katex-html .mtable"));
+  const matrices = new Map<Element, Element>();
+  let hasMathRows = false;
+  if (display) {
+    for (const table of container.querySelectorAll(".katex-html .mtable")) {
+      const frame = matrixFrame(table);
+      if (frame) matrices.set(table, frame);
+      else hasMathRows = true;
+    }
+  }
   // A single displayed equation can still have tall operators and stacked scripts.
   const equationCenter = display && !hasMathRows ? (area.top + area.bottom) / 2 : undefined;
   const font = display ? container.querySelector(".katex") ?? container : container;
@@ -103,12 +134,36 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
 
   const boxes: HighlightBox[] = [];
   const delimiters: HighlightBox[] = [];
+  const compactBands: HighlightBand[] = [];
   const lineCenters = new Map<Element, number>();
+  const addBox = (selected: HighlightBox[], rect: DOMRect, rowCenter?: number) => {
+    const left = Math.max(rect.left, minX);
+    const right = Math.min(rect.right, maxX);
+    const top = Math.max(rect.top, minY);
+    const bottom = Math.min(rect.bottom, maxY);
+    if (right > left && bottom > top) selected.push({ top, left, right, bottom, size, rowCenter });
+  };
+  if (matrices.size) {
+    const selected = new Map(fragments.map((range) => [range.startContainer, range]));
+    for (const [table, frame] of matrices) {
+      if (!coversMatrix(table, selected)) continue;
+      const outline = [table, frame.querySelector(leftFence), frame.querySelector(rightFence)];
+      const target = hasMathRows ? [] : boxes;
+      for (const part of outline) {
+        if (part) addBox(target, part.getBoundingClientRect(), equationCenter ?? 0);
+      }
+      if (hasMathRows) compactBands.push(...groupHighlightBands(target));
+    }
+  }
   for (const range of fragments) {
     const parent = range.startContainer.parentElement;
-    const anchor = hasMathRows
-      ? parent?.closest(tableRow)?.querySelector(":scope > .pstrut")
-      : !display ? parent?.closest(".katex-html .base")?.querySelector(":scope > .strut") : undefined;
+    let row = hasMathRows ? parent?.closest(tableRow) : null;
+    for (let table = row?.closest(".mtable"); table && matrices.has(table); table = row?.closest(".mtable")) {
+      row = table.parentElement?.closest(tableRow);
+    }
+    const anchor = display
+      ? row?.querySelector(":scope > .pstrut")
+      : parent?.closest(".katex-html .base")?.querySelector(":scope > .strut");
     let rowCenter = equationCenter;
     if (anchor) {
       rowCenter = lineCenters.get(anchor);
@@ -121,20 +176,14 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
     }
 
     const selected = hasMathRows && parent?.closest(".delimsizing.mult") ? delimiters : boxes;
-    for (const rect of range.getClientRects()) {
-      const left = Math.max(rect.left, minX);
-      const right = Math.min(rect.right, maxX);
-      const top = Math.max(rect.top, minY);
-      const bottom = Math.min(rect.bottom, maxY);
-      if (right > left && bottom > top) selected.push({ top, left, right, bottom, size, rowCenter });
-    }
+    for (const rect of range.getClientRects()) addBox(selected, rect, rowCenter);
   }
 
   const bands = groupHighlightBands(boxes.length ? boxes : delimiters, hasMathRows ? Math.max(2, size * 0.15) : 0);
-  if (!boxes.length || !delimiters.length) return bands;
+  if (!boxes.length || !delimiters.length) return [...bands, ...compactBands];
 
   // Pieces of a tall brace can extend a selected row, but cannot join two rows.
-  return bands.map((band) => {
+  const extended = bands.map((band) => {
     const y = band.top + band.height / 2;
     let left = band.left;
     let right = band.left + band.width;
@@ -146,6 +195,7 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
     }
     return { ...band, left, width: right - left };
   });
+  return [...extended, ...compactBands];
 }
 
 function visibleBoxes(range: Range) {

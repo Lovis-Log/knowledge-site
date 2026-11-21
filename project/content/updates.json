@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-22",
+    "version": "1.11.7",
+    "features": [
+      {
+        "zh": "矩阵、行列式等整块选中时使用连续底色，覆盖括号和内部行列间距。",
+        "en": "Full selections of matrices and determinants now use a continuous highlight across the delimiters and the spaces between entries."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-22",
     "version": "1.11.6",
     "features": [
       {
