@@ -144,7 +144,7 @@ $$g(x)<B+\varepsilon_0=\frac{A+B}{2}.$$
 
 注意"局部"二字：只能保证 $x_0$ 附近有界，在整个定义域内函数未必有界，$f(x)=\frac1x$ 在 $x=1$ 附近有界而在 $(0,1)$ 上无界。
 
-**性质 2（夹逼性）** 若存在 $r>0$，使 $0<|x-x_0|<r$ 时
+**性质 3（夹逼性）** 若存在 $r>0$，使 $0<|x-x_0|<r$ 时
 
 $$g(x)\le f(x)\le h(x),$$
 
@@ -354,17 +354,45 @@ $$\frac{x^2}{x-1}<\frac{1}{4(x-1)}<-\frac{1}{4\delta}\le-G .$$
 
 **例 8** 讨论
 
-$$L=\lim_{x\to\infty}\frac{a_nx^n+a_{n-1}x^{n-1}+\cdots+a_kx^k}{b_mx^m+b_{m-1}x^{m-1}+\cdots+b_jx^j},\qquad l=\lim_{x\to0}\frac{a_nx^n+a_{n-1}x^{n-1}+\cdots+a_kx^k}{b_mx^m+b_{m-1}x^{m-1}+\cdots+b_jx^j},$$
+$$
+L=\lim_{x\to\infty}\frac{a_nx^n+a_{n-1}x^{n-1}+\cdots+a_kx^k}{b_mx^m+b_{m-1}x^{m-1}+\cdots+b_jx^j},
+$$
+
+$$
+l=\lim_{x\to0}\frac{a_nx^n+a_{n-1}x^{n-1}+\cdots+a_kx^k}{b_mx^m+b_{m-1}x^{m-1}+\cdots+b_jx^j},
+$$
 
 其中 $a_n,a_k,b_m,b_j$ 都是非零实数。
 
 **解（$x\to\infty$ 的情形）** 分子分母同除以分母的最高次幂 $x^m$：
 
-$$L=\lim_{x\to\infty}x^{n-m}\cdot\frac{a_n+\frac{a_{n-1}}{x}+\cdots+\frac{a_k}{x^{n-k}}}{b_m+\frac{b_{m-1}}{x}+\cdots+\frac{b_j}{x^{m-j}}}=\begin{cases}\dfrac{a_n}{b_m}, & n=m,\\[6pt] 0, & n<m,\\[4pt] \infty, & n>m.\end{cases}$$
+$$
+\begin{aligned}
+L&=\lim_{x\to\infty}x^{n-m}\cdot
+\frac{a_n+\frac{a_{n-1}}{x}+\cdots+\frac{a_k}{x^{n-k}}}
+{b_m+\frac{b_{m-1}}{x}+\cdots+\frac{b_j}{x^{m-j}}}\\
+&=\begin{cases}
+\dfrac{a_n}{b_m}, & n=m,\\[6pt]
+0, & n<m,\\[4pt]
+\infty, & n>m.
+\end{cases}
+\end{aligned}
+$$
 
 **解（$x\to0$ 的情形）** 分子分母同除以分母的最低次幂 $x^j$：
 
-$$l=\lim_{x\to0}x^{k-j}\cdot\frac{a_nx^{n-k}+a_{n-1}x^{n-k-1}+\cdots+a_k}{b_mx^{m-j}+b_{m-1}x^{m-j-1}+\cdots+b_j}=\begin{cases}\dfrac{a_k}{b_j}, & k=j,\\[6pt] 0, & k>j,\\[4pt] \infty, & k<j.\end{cases}$$
+$$
+\begin{aligned}
+l&=\lim_{x\to0}x^{k-j}\cdot
+\frac{a_nx^{n-k}+a_{n-1}x^{n-k-1}+\cdots+a_k}
+{b_mx^{m-j}+b_{m-1}x^{m-j-1}+\cdots+b_j}\\
+&=\begin{cases}
+\dfrac{a_k}{b_j}, & k=j,\\[6pt]
+0, & k>j,\\[4pt]
+\infty, & k<j.
+\end{cases}
+\end{aligned}
+$$
 
 两句话总结：**$x\to\infty$ 时看最高次项系数，$x\to0$ 时看最低次项系数。** 原因很直接：$x$ 很大时最高次项压倒其他项，$x$ 很小时最低次项（次数最小的那个）压倒其他项。这与数列里多项式之比的结论（例 21）是同一件事。
 
@@ -386,7 +414,16 @@ $$\lim_{x\to+\infty}\left(1+\frac1x\right)^x=e .$$
 
 再证 $x\to-\infty$ 的情形。令 $y=-x$，则 $x\to-\infty$ 时 $y\to+\infty$，且
 
-$$\left(1+\frac1x\right)^x=\left(1-\frac1y\right)^{-y}=\left(\frac{y}{y-1}\right)^{y}=\left(1+\frac{1}{y-1}\right)^{y}=\left(1+\frac{1}{y-1}\right)^{y-1}\cdot\left(1+\frac{1}{y-1}\right)\longrightarrow e\cdot1=e .$$
+$$
+\begin{aligned}
+\left(1+\frac1x\right)^x
+&=\left(1-\frac1y\right)^{-y}
+=\left(\frac{y}{y-1}\right)^{y}
+=\left(1+\frac{1}{y-1}\right)^{y}\\
+&=\left(1+\frac{1}{y-1}\right)^{y-1}\cdot\left(1+\frac{1}{y-1}\right)
+\longrightarrow e\cdot1=e .
+\end{aligned}
+$$
 
 两情形合并得 $\lim\limits_{x\to\infty}\left(1+\frac1x\right)^x=e$。
 

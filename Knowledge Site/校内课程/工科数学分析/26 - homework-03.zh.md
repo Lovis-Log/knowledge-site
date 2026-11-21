@@ -1,6 +1,6 @@
 ---
 slug: "26-homework-03"
-title: "第 3 次作业与解析"
+title: "第 3 次作业（数列收敛与函数极限）"
 summary: "第 3 次作业的原题与解析。"
 updatedAt: "2026-11-15"
 content_type: "reference"
@@ -78,7 +78,14 @@ $$N=\max\{2K_1,\ 2K_2+1\}.$$
 
 对任意正整数 $m>n$，
 
-$$|x_m-x_n|=\left|\frac{\sin(n+1)}{2^{n+1}}+\cdots+\frac{\sin m}{2^m}\right|\le\frac{1}{2^{n+1}}+\frac{1}{2^{n+2}}+\cdots+\frac{1}{2^{m}}<\frac{1}{2^{n+1}}\cdot\frac{1}{1-\frac12}=\frac{1}{2^n}.$$
+$$
+\begin{aligned}
+|x_m-x_n|
+&=\left|\frac{\sin(n+1)}{2^{n+1}}+\cdots+\frac{\sin m}{2^m}\right|\\
+&\le\frac{1}{2^{n+1}}+\frac{1}{2^{n+2}}+\cdots+\frac{1}{2^{m}}\\
+&<\frac{1}{2^{n+1}}\cdot\frac{1}{1-\frac12}=\frac{1}{2^n}.
+\end{aligned}
+$$
 
 任给 $\varepsilon>0$，取 $N=\left[\log_2\dfrac1\varepsilon\right]+1$，当 $m>n>N$ 时
 
@@ -100,7 +107,7 @@ $$|x_m-x_n|<\frac{1}{2^n}<\varepsilon .$$
 
 > 若开区间 $(c,d)$ 满足 $d-c>1$，则其中必有整数。取 $m=[c]+1$，则 $m>c$ 且 $m\le c+1<d$。
 
-**第一步：无穷多项大于 $\frac{\sqrt2}{2}$。** 对每个整数 $k$，考虑开区间
+**第一步：无穷多项大于 $\frac{\sqrt2}{2}$。** 对每个整数 $k\ge0$，考虑开区间
 
 $$I_k=\left(2k\pi+\frac\pi4,\ 2k\pi+\frac{3\pi}{4}\right),$$
 
@@ -110,7 +117,7 @@ $$\sin n_k=\sin t>\sin\frac\pi4=\frac{\sqrt2}{2}.$$
 
 不同的 $k$ 对应的区间 $I_k$ 互不相交，所以挑出的 $n_k$ 互不相同，个数无穷。
 
-**第二步：无穷多项小于 $-\frac{\sqrt2}{2}$。** 同理，对每个 $k$ 取
+**第二步：无穷多项小于 $-\frac{\sqrt2}{2}$。** 同理，对每个 $k\ge1$ 取
 
 $$J_k=\left(2k\pi-\frac{3\pi}{4},\ 2k\pi-\frac{\pi}{4}\right),$$
 
@@ -236,7 +243,13 @@ $$\lim_{x\to0}\frac{\sin3x}{5x}=\lim_{x\to0}\frac35\cdot\frac{\sin3x}{3x}=\frac3
 
 **(2)** 用半角公式 $1-\cos\theta=2\sin^2\dfrac\theta2$：
 
-$$\lim_{\theta\to0}\frac{1-\cos\theta}{\theta^2}=\lim_{\theta\to0}\frac{2\sin^2\frac\theta2}{\theta^2}=\frac12\lim_{\theta\to0}\left(\frac{\sin\frac\theta2}{\frac\theta2}\right)^2=\frac12 .$$
+$$
+\begin{aligned}
+\lim_{\theta\to0}\frac{1-\cos\theta}{\theta^2}
+&=\lim_{\theta\to0}\frac{2\sin^2\frac\theta2}{\theta^2}\\
+&=\frac12\lim_{\theta\to0}\left(\frac{\sin\frac\theta2}{\frac\theta2}\right)^2=\frac12 .
+\end{aligned}
+$$
 
 **(3)** 直接是平方：
 

@@ -1,6 +1,6 @@
 ---
 slug: "25-homework-02"
-title: "第 2 次作业与解析"
+title: "第 2 次作业（极限定义、夹逼与 e）"
 summary: "第 2 次作业的原题与解析。"
 updatedAt: "2026-11-15"
 content_type: "reference"

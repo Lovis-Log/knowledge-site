@@ -1,6 +1,6 @@
 ---
 slug: "24-homework-01"
-title: "第 1 次作业与解析"
+title: "第 1 次作业（确界、函数性质与双射）"
 summary: "第 1 次作业的原题与解析。"
 updatedAt: "2026-11-15"
 content_type: "reference"

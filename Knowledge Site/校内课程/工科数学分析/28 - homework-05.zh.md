@@ -1,6 +1,6 @@
 ---
 slug: "28-homework-05"
-title: "第 5 次作业与解析"
+title: "第 5 次作业（导数、微分与相关变化率）"
 summary: "第 5 次作业的原题与解析。"
 updatedAt: "2026-11-15"
 content_type: "reference"
@@ -142,11 +142,11 @@ $$
 -x_1^2=-x_2^2\ \Longrightarrow\ x_1=\pm x_2 . \tag{2}
 $$
 
-由 (1)，$x_1=x_2-1$。若 $x_1=x_2$，则 $x_2=x_2-1$，矛盾；故 $x_1=-x_2$，代入 (1)：
+由 (1)，$x_1=x_2-1$。若 $x_1=x_2$，则 $x_2=x_2-1$，矛盾；故 $x_1=-x_2$，代入 (1) 得 $-2x_2=2x_2-2$，即
 
 
 $$
--x_2=2x_2-2\ \Longrightarrow\ x_2=\frac12,\qquad x_1=-\frac12 .
+x_2=\frac12,\qquad x_1=-\frac12 .
 $$
 
 斜率为 $k=2x_1=-1$。切点为
@@ -251,7 +251,12 @@ $$
 
 
 $$
-\frac{\mathrm dy}{\mathrm dx}=\frac{(t-\arctan t)'}{(\ln(1+t^2))'}=\frac{1-\dfrac1{1+t^2}}{\dfrac{2t}{1+t^2}}=\frac{\dfrac{t^2}{1+t^2}}{\dfrac{2t}{1+t^2}}=\frac t2 .
+\begin{aligned}
+\frac{\mathrm dy}{\mathrm dx}
+&=\frac{(t-\arctan t)'}{(\ln(1+t^2))'}
+=\frac{1-\dfrac1{1+t^2}}{\dfrac{2t}{1+t^2}}\\
+&=\frac{\dfrac{t^2}{1+t^2}}{\dfrac{2t}{1+t^2}}=\frac t2 .
+\end{aligned}
 $$
 
 再对 $\begin{cases}x=\ln(1+t^2),\\ \dfrac{\mathrm dy}{\mathrm dx}=\dfrac t2\end{cases}$ 求导：
