@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { SubmissionDialog } from "./submission-dialog";
-import { ReaderLink as Link } from "@/components/navigation-feedback";
+import { ReaderLink as Link, navigateDocument } from "@/components/navigation-feedback";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { UiText } from "@/components/ui-text";
 import { AccountIcon } from "@/components/account-icon";
@@ -81,7 +81,7 @@ export function AccountMenu({ children }: { children?: ReactNode }) {
     setError("");
     try {
       await api("/api/auth/logout", "POST", {});
-      window.location.assign("/");
+      navigateDocument("/");
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "退出失败 / Unable to sign out",

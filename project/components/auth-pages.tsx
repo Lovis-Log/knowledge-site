@@ -1,5 +1,5 @@
 "use client";
-import { ReaderLink as Link, startNavigation } from "./navigation-feedback";
+import { ReaderLink as Link, navigateDocument } from "./navigation-feedback";
 import { useEffect, useState, type FormEvent } from "react";
 import { api, ApiError, safeNext } from "@/lib/api";
 import { UiText } from "./ui-text";
@@ -61,8 +61,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
         await api("/api/auth/login", "POST", values);
         const target = safeNext(new URLSearchParams(window.location.search).get("next"));
         setEntering(true);
-        startNavigation(target, { fullDocument: true });
-        window.location.assign(target);
+        navigateDocument(target);
         leaving = true;
       } else if (mode === "register") {
         const result = await api<{ status: string }>(

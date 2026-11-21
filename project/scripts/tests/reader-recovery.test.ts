@@ -4,7 +4,7 @@ import { registerHooks } from "node:module";
 
 import {
   anchorIdFromHash,
-  navigationRocket,
+  pageNavigationTarget,
   scrollToAnchor,
 } from "../../components/navigation-feedback";
 import { isAuthError, loginRedirectHref } from "../../components/session-recovery";
@@ -55,17 +55,15 @@ test("reader links scroll only to headings that exist in the committed page", ()
   assert.equal(lookups, beforeMalformed, "a malformed hash must not be looked up");
 });
 
-test("reader navigation feedback distinguishes book covers and chapter links", () => {
-  const base = "https://example.test";
-  assert.equal(navigationRocket("/books/cpp/01/", base), "chapter");
-  assert.equal(navigationRocket("/books/cpp/01", base), "chapter");
-  assert.equal(navigationRocket("/books/cpp/01/?from=library#top", base), "chapter");
-  assert.equal(navigationRocket("/books/cpp/", base), "book");
-  assert.equal(navigationRocket("/books/cpp/01/extra/", base), null);
-  assert.equal(navigationRocket("/library/", base), null);
-  assert.equal(navigationRocket("https://other.test/books/cpp/01/", base), null);
-  assert.equal(navigationRocket("/books/cpp/", base, true), null);
-  assert.equal(navigationRocket("/books/cpp/01/", base, true), null);
+test("navigation feedback accepts any same-site destination page", () => {
+  const base = "https://example.test/books/cpp/01/";
+  for (const path of ["/", "/books/cpp/", "/library/", "/guestbook/?from=nav#top", "/settings/", "/future-page/"]) {
+    assert.equal(pageNavigationTarget(path, base)?.href, "https://example.test" + path);
+  }
+  assert.equal(pageNavigationTarget("#top", base), null);
+  assert.equal(pageNavigationTarget("/books/cpp/01#top", base), null);
+  assert.equal(pageNavigationTarget("https://other.test/guestbook/", base), null);
+  assert.equal(pageNavigationTarget("mailto:hello@example.test", base), null);
 });
 
 test("session recovery returns to the exact page, query and hash", () => {

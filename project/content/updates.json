@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-22",
+    "version": "1.11.8",
+    "features": [
+      {
+        "zh": "加深阅读高亮的暖金色底色，把英文年级标签改为 First Year 等写法，并在站内页面跳转较慢时统一显示小火箭。",
+        "en": "Deepened the gold reading highlights, switched campus badges to labels such as First Year, and show the rocket during slow navigation across the site."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-22",
     "version": "1.11.7",
     "features": [
       {

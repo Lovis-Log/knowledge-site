@@ -314,7 +314,7 @@ html body .segmented[data-pill] > .segmented__btn[aria-pressed="true"]:hover {
 .reading-toolbar .segmented { overflow: visible; }
 html body .reading-toolbar .segmented__btn:focus-visible { outline-offset: 2px; }
 
-/* Compact loading feedback floats above the current book or chapter. */
+/* Compact loading feedback floats above the current page. */
 .navigation-feedback__rocket {
   position: fixed;
   top: calc(var(--header-h) + 14px);

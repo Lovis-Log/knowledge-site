@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import type { Book, Chapter } from "./types";
 import type { LibrarySection } from "./index";
 import { api } from "@/lib/api";
+import { navigateDocument } from "@/components/navigation-feedback";
 
 export type Catalog = {
   books: Book[];
@@ -66,7 +67,7 @@ export function ProtectedContent({
       try {
         const { user } = await api<{ user: unknown }>("/api/auth/me");
         if (active && !user) {
-          window.location.replace("/login/?next=" + encodeURIComponent(path));
+          navigateDocument("/login/?next=" + encodeURIComponent(path), "replace");
         }
       } catch {
         // A temporary connection failure can be retried on the next foreground visit.

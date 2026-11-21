@@ -18,15 +18,15 @@ export interface StudyPeriodLabel {
 }
 
 const YEAR_LABELS: Record<string, StudyPeriodLabel> = {
-  一: { zh: "大一", en: "Year 1" },
-  二: { zh: "大二", en: "Year 2" },
-  三: { zh: "大三", en: "Year 3" },
-  四: { zh: "大四", en: "Year 4" },
+  一: { zh: "大一", en: "First Year" },
+  二: { zh: "大二", en: "Second Year" },
+  三: { zh: "大三", en: "Third Year" },
+  四: { zh: "大四", en: "Fourth Year" },
 };
 
 /**
  * Normalise the course metadata once for the card, chapter list and chapter
- * header. `大一上` and `大一` both read as 大一 / Year 1.
+ * header. `大一上` and `大一` both read as 大一 / First Year.
  */
 export function studyPeriodLabel(
   book: Pick<Book, "slug" | "studyPeriod">,

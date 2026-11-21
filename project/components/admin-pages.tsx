@@ -1,6 +1,6 @@
 "use client";
 import { RocketLoader } from "./rocket-loader";
-import { ReaderLink as Link } from "@/components/navigation-feedback";
+import { ReaderLink as Link, navigateDocument } from "@/components/navigation-feedback";
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
@@ -65,8 +65,9 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
     reviewSequence = useRef(0);
   function handleError(e: unknown) {
     if (e instanceof ApiError && e.status === 401) {
-      window.location.replace(
+      navigateDocument(
         "/login/?next=" + encodeURIComponent(window.location.pathname),
+        "replace",
       );
       return;
     }

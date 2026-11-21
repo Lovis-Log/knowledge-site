@@ -7,6 +7,7 @@ import { AccountAvatar } from '@/components/account-avatar';
 import { PageHeading } from '@/components/page-heading';
 import { PasswordInput } from '@/components/password-input';
 import { RocketLoader } from '@/components/rocket-loader';
+import { navigateDocument } from '@/components/navigation-feedback';
 
 type Settings = { username: string; role: string; features: { changePassword: boolean; deleteAccount: boolean } };
 type Action = 'profile' | 'password' | 'delete';
@@ -34,7 +35,7 @@ export function AccountSettings() {
     }).catch(caught => {
       if (!live) return;
       if (caught instanceof ApiError && caught.status === 401) {
-        window.location.replace('/login/?next=%2Fsettings%2F');
+        navigateDocument('/login/?next=%2Fsettings%2F', 'replace');
         return;
       }
       setError(caught.message);
@@ -65,7 +66,7 @@ export function AccountSettings() {
         if (action === 'delete') {
           try { localStorage.removeItem('shufang:progress'); localStorage.removeItem('shufang:last-read'); } catch { /* Storage may be unavailable. */ }
         }
-        window.location.assign('/login/');
+        navigateDocument('/login/');
       }
     } catch (caught) { setError((caught as Error).message); }
     finally { lock.current = false; setBusy(null); }

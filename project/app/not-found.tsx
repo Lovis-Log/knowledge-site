@@ -1,5 +1,5 @@
 import { UiText } from "@/components/ui-text";
-import Link from "next/link";
+import { ReaderLink as Link } from "@/components/navigation-feedback";
 
 export default function NotFound() {
   return (

@@ -7,9 +7,14 @@ import { RocketLoader } from "./rocket-loader";
 import { UiText } from "./ui-text";
 
 const navigationEvent = "lovismind:navigate";
-type Navigation = { href: string; resetScroll?: boolean; fullDocument?: boolean };
-type Pending = Navigation & { phase: "pending" | "complete"; startedAt: number; rocket: "book" | "chapter" | null };
+type Navigation = { href: string; resetScroll?: boolean };
+type Pending = Navigation & { phase: "pending" | "complete" };
 type AnchorDocument = { getElementById(id: string): { scrollIntoView(): void } | null };
+const rocketDelay = 200;
+
+function pagePath(pathname: string) {
+  return pathname.replace(/\/$/, "");
+}
 
 // Hash values come from links and may be malformed; a bad escape must not break navigation.
 export function anchorIdFromHash(hash: string) {
@@ -29,14 +34,12 @@ export function scrollToAnchor(hash: string, document: AnchorDocument) {
   return true;
 }
 
-export function navigationRocket(href: string, base: string, fullDocument = false) {
-  if (fullDocument) return null;
+export function pageNavigationTarget(href: string, base: string) {
   try {
-    const origin = new URL(base).origin;
+    const current = new URL(base);
     const target = new URL(href, base);
-    if (target.origin !== origin) return null;
-    if (/^\/books\/[^/]+\/?$/.test(target.pathname)) return "book";
-    if (/^\/books\/[^/]+\/[^/]+\/?$/.test(target.pathname)) return "chapter";
+    if (target.origin === current.origin && target.protocol === current.protocol &&
+        pagePath(target.pathname) !== pagePath(current.pathname)) return target;
   } catch {
     return null;
   }
@@ -47,6 +50,11 @@ export function startNavigation(href: string, options: Omit<Navigation, "href"> 
   window.dispatchEvent(new CustomEvent<Navigation>(navigationEvent, { detail: { href, ...options } }));
 }
 
+export function navigateDocument(href: string, mode: "assign" | "replace" = "assign") {
+  startNavigation(href);
+  window.location[mode](href);
+}
+
 export function ReaderLink({ href, onNavigate, scroll, ...props }: Omit<ComponentProps<typeof Link>, "href"> & { href: string }) {
   return <Link {...props} href={href} scroll={scroll ?? false} onNavigate={(event) => {
     let cancelled = false;
@@ -54,7 +62,7 @@ export function ReaderLink({ href, onNavigate, scroll, ...props }: Omit<Componen
     if (cancelled) return;
     const target = new URL(href, location.href);
     if (target.origin !== location.origin) return;
-    if (target.pathname.replace(/\/$/, "") === location.pathname.replace(/\/$/, "")) {
+    if (pagePath(target.pathname) === pagePath(location.pathname)) {
       if (target.hash && scroll !== false) scrollToAnchor(target.hash, document);
       return;
     }
@@ -71,27 +79,40 @@ export function NavigationFeedback() {
   const previous = useRef(pathname);
 
   useEffect(() => {
-    const navigate = (event: Event) => {
-      const navigation = (event as CustomEvent<Navigation>).detail;
-      const next: Pending = {
-        ...navigation,
-        phase: "pending",
-        startedAt: performance.now(),
-        rocket: navigationRocket(navigation.href, location.origin, navigation.fullDocument),
-      };
+    const begin = (navigation: Navigation, base = location.href) => {
+      const target = pageNavigationTarget(navigation.href, base);
+      if (!target) return;
+      const href = target.pathname + target.search + target.hash;
+      if (current.current?.phase === "pending" && current.current.href === href) return;
+      const next: Pending = { ...navigation, href, phase: "pending" };
       current.current = next;
       setSlow(false);
       setRocket(false);
       setPending(next);
     };
     const cancel = () => { current.current = null; setPending(null); setSlow(false); setRocket(false); };
-    // History traversal owns its scroll position; it must not inherit a click.
+    const navigate = (event: Event) => begin((event as CustomEvent<Navigation>).detail);
+    const nativeLink = (event: MouseEvent) => {
+      // Next links have already handled their click by the time it reaches window.
+      if (event.defaultPrevented || event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
+          !(event.target instanceof Element)) return;
+      const link = event.target.closest<HTMLAnchorElement>("a[href]:not([download])");
+      if (!link || (link.target && link.target.toLowerCase() !== "_self")) return;
+      begin({ href: link.href });
+    };
+    const history = () => {
+      cancel();
+      // Start from the last rendered route and let history restore its own scroll.
+      begin({ href: location.href }, new URL(previous.current, location.origin).href);
+    };
     window.addEventListener(navigationEvent, navigate);
-    window.addEventListener("popstate", cancel);
+    window.addEventListener("click", nativeLink);
+    window.addEventListener("popstate", history);
     window.addEventListener("pageshow", cancel);
     return () => {
       window.removeEventListener(navigationEvent, navigate);
-      window.removeEventListener("popstate", cancel);
+      window.removeEventListener("click", nativeLink);
+      window.removeEventListener("popstate", history);
       window.removeEventListener("pageshow", cancel);
     };
   }, []);
@@ -102,44 +123,18 @@ export function NavigationFeedback() {
       if (current.current !== pending) return;
       if (pending.phase === "pending") setSlow(true);
       else { current.current = null; setPending(null); }
-    }, pending.phase === "pending" ? 8000 : Math.max(160,
-      pending.rocket === "book" ? 450 - (performance.now() - pending.startedAt) : 0));
+    }, pending.phase === "pending" ? 8000 : 160);
     return () => window.clearTimeout(timeout);
   }, [pending]);
 
-  // Give chapter links a short grace period to avoid flashing on fast transitions.
   useEffect(() => {
-    if (
-      !pending ||
-      pending.phase !== "pending" ||
-      pending.rocket !== "chapter" ||
-      document.querySelector("#main .route-loading .rocket-loader")
-    ) {
-      setRocket(false);
-      return;
-    }
+    if (pending?.phase !== "pending") return;
     const timeout = window.setTimeout(() => {
       if (current.current !== pending) return;
       setRocket(true);
-    }, 200);
+    }, rocketDelay);
     return () => window.clearTimeout(timeout);
   }, [pending]);
-
-  // The route-level loading fallback has its own rocket. Drop the compact one
-  // as soon as that fallback mounts instead of showing two at once; the CSS
-  // :has() guard covers the first frame before this observer runs.
-  useEffect(() => {
-    if (!rocket) return;
-    const main = document.querySelector("#main");
-    if (!main) return;
-    const dismiss = () => {
-      if (main.querySelector(".route-loading .rocket-loader")) setRocket(false);
-    };
-    dismiss();
-    const observer = new MutationObserver(dismiss);
-    observer.observe(main, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, [rocket]);
 
   useLayoutEffect(() => {
     const changed = previous.current !== pathname;
@@ -147,7 +142,7 @@ export function NavigationFeedback() {
     const navigation = current.current;
     if (changed && navigation) {
       const destination = new URL(navigation.href, location.origin);
-      if (destination.pathname.replace(/\/$/, "") === pathname.replace(/\/$/, "")) {
+      if (pagePath(destination.pathname) === pagePath(pathname)) {
         // The destination route has committed, so its headings are in the DOM.
         // Run before article effects restore reading progress, preserve anchors,
         // and let the browser handle back/forward restoration.
@@ -177,9 +172,9 @@ export function NavigationFeedback() {
   if (!pending) return null;
   return <div className="navigation-feedback" data-phase={pending.phase}>
     <div className="navigation-feedback__line" aria-hidden="true" />
-    {(rocket || pending.rocket === "book") && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
+    {rocket && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
     <span className={slow ? undefined : "reader-sr-only"} role="status">
-      {pending.fullDocument ? <UiText zh="正在进入书库…" en="Opening your library…" /> : <UiText zh="正在打开页面…" en="Opening page…" />}
+      <UiText zh="正在打开页面…" en="Opening page…" />
     </span>
     {slow && <a href={pending.href}><UiText zh="直接打开" en="Open directly" /></a>}
   </div>;

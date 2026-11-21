@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { UiText } from "@/components/ui-text";
 import { PasswordInput } from "@/components/password-input";
 import { api, ApiError, safeNext } from "@/lib/api";
-import { startNavigation } from "../navigation-feedback";
+import { navigateDocument } from "../navigation-feedback";
 import { PASSWORD_MAX_LENGTH, PASSWORD_MIN_LENGTH } from "@/lib/password-policy";
 import { uiLabel } from "@/lib/ui-language";
 import styles from "./landing.module.css";
@@ -146,8 +146,7 @@ export function AuthModal({
         });
         const target = safeNext(next ?? new URLSearchParams(window.location.search).get("next"));
         setEntering(true);
-        startNavigation(target, { fullDocument: true });
-        window.location.assign(target);
+        navigateDocument(target);
         leaving = true;
         return;
       }
