@@ -3602,6 +3602,24 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
   background: color-mix(in srgb, var(--reading-highlight-bg) 40%, var(--accent));
 }
 
+/* Formula glyphs become one band per math row, so the mark stays continuous
+   across KaTeX's own spacing instead of breaking into per-symbol strips. */
+.reading-highlight-overlay--formula {
+  border-radius: 2px;
+  background: var(--reading-highlight-bg);
+}
+
+.reading-highlight-overlay--formula.reading-highlight-overlay--active {
+  background: color-mix(in srgb, var(--reading-highlight-bg) 55%, var(--accent));
+}
+
+/* While those bands replace the selection over formula glyphs, the browser's own
+   fragment-by-fragment selection paint would still show through underneath. */
+:root[data-reading-formula-band] .prose .katex-html ::selection {
+  background: transparent;
+  color: inherit;
+}
+
 :root[data-theme="dark"] .reading-highlight-overlay { mix-blend-mode: screen; }
 
 .reading-highlight-action {

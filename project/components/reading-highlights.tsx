@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { highlightRanges, highlightSelection, indexHighlightText } from "@/lib/highlight-anchor";
 import type { HighlightIndex, HighlightIndexMode } from "@/lib/highlight-anchor";
+import { groupHighlightBands } from "@/lib/highlight-geometry";
+import type { HighlightBand, HighlightBox } from "@/lib/highlight-geometry";
 import { changeReadingState } from "@/lib/reading-state-client";
 import type { HighlightView, ReadingHighlight, ReadingState } from "@/lib/reading-state-types";
 import { uiLabel } from "@/lib/ui-language";
@@ -30,6 +32,63 @@ function formulaForRange(range: Range) {
   if (!(container instanceof Element)) return null;
   const node = container.childNodes[range.startOffset];
   return node instanceof HTMLElement && node.matches(".katex") ? node : null;
+}
+
+/** A range over rendered KaTeX glyphs, which the browser paints fragment by fragment. */
+function glyphRange(range: Range) {
+  return range.startContainer instanceof Text &&
+    Boolean(range.startContainer.parentElement?.closest(".katex-html"));
+}
+
+function formulaFontSize(node: Node, sizes: Map<Element, number>) {
+  const formula = (node instanceof Element ? node : node.parentElement)?.closest(".katex");
+  if (!formula) return 16;
+  let size = sizes.get(formula);
+  if (size === undefined) {
+    size = Number.parseFloat(getComputedStyle(formula).fontSize) || 16;
+    sizes.set(formula, size);
+  }
+  return size;
+}
+
+function addBoxes(range: Range, size: number, boxes: HighlightBox[]) {
+  for (const rect of range.getClientRects()) {
+    if (rect.width > 0 && rect.height > 0) {
+      boxes.push({ top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, size });
+    }
+  }
+}
+
+/** Glyph boxes for ranges that already resolved to text inside formulas. */
+function formulaBoxes(ranges: readonly Range[]) {
+  const boxes: HighlightBox[] = [];
+  const sizes = new Map<Element, number>();
+  for (const range of ranges) {
+    if (!glyphRange(range)) continue;
+    addBoxes(range, formulaFontSize(range.startContainer, sizes), boxes);
+  }
+  return boxes;
+}
+
+/** Glyph boxes for the formula part of a live drag selection. */
+function selectionBoxes(range: Range, view: HTMLElement) {
+  const boxes: HighlightBox[] = [];
+  const sizes = new Map<Element, number>();
+  // Read the view each time: the reader reuses the block while chapters change.
+  for (const formula of view.querySelectorAll<HTMLElement>(".katex-html")) {
+    if (!range.intersectsNode(formula)) continue;
+    const size = formulaFontSize(formula, sizes);
+    const walker = document.createTreeWalker(formula, NodeFilter.SHOW_TEXT);
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+      if (!range.intersectsNode(node)) continue;
+      const piece = document.createRange();
+      piece.selectNodeContents(node);
+      if (node === range.startContainer) piece.setStart(node, range.startOffset);
+      if (node === range.endContainer) piece.setEnd(node, range.endOffset);
+      if (!piece.collapsed) addBoxes(piece, size, boxes);
+    }
+  }
+  return boxes;
 }
 
 function visibleBoxes(range: Range) {
@@ -60,6 +119,14 @@ function sameBoundaries(first: Range, second: Range) {
     first.endContainer === second.endContainer && first.endOffset === second.endOffset;
 }
 
+function sameBands(first: readonly HighlightBand[], second: readonly HighlightBand[]) {
+  return first.length === second.length && first.every((band, index) => {
+    const other = second[index];
+    return Math.abs(band.top - other.top) < 0.5 && Math.abs(band.left - other.left) < 0.5 &&
+      Math.abs(band.width - other.width) < 0.5 && Math.abs(band.height - other.height) < 0.5;
+  });
+}
+
 export function ReadingHighlights({ root, book, chapter, state, failed, refresh }: {
   root: RefObject<HTMLDivElement | null>;
   book: string;
@@ -75,6 +142,11 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   const [error, setError] = useState(false);
   const [fallback, setFallback] = useState<DOMRect[]>([]);
   const [activeFallback, setActiveFallback] = useState<DOMRect[]>([]);
+  const [bands, setBands] = useState<HighlightBand[]>([]);
+  const [activeBands, setActiveBands] = useState<HighlightBand[]>([]);
+  // Bumped when the reader switches language, view or font size: the formula
+  // geometry must be measured again even if the article's size is unchanged.
+  const [revision, setRevision] = useState(0);
   const button = useRef<HTMLButtonElement>(null);
   const painted = useRef<PaintedMark[]>([]);
 
@@ -107,28 +179,49 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       }
     }
     const ranges = painted.current.flatMap((item) => item.ranges);
-    const formulas = ranges.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
+    // Per mark, so two separate highlights on one math row never merge into one band.
+    const groups = painted.current.map((item) => item.ranges.filter(glyphRange));
+    const whole: Range[] = [];
+    const text: Range[] = [];
+    for (const range of ranges) {
+      if (formulaForRange(range)) whole.push(range);
+      else if (!glyphRange(range)) text.push(range);
+    }
+    const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
     formulas.forEach((element) => element.classList.add("reading-formula-highlight"));
     const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-highlight"));
+    let paintFallback: (() => void) | null = null;
     if (typeof Highlight === "function" && CSS.highlights) {
-      CSS.highlights.set(registryName, new Highlight(...ranges.filter((range) => !formulaForRange(range))));
-      return () => { CSS.highlights.delete(registryName); clearFormulas(); };
+      CSS.highlights.set(registryName, new Highlight(...text));
+    } else {
+      paintFallback = () => setFallback(text.flatMap((range) => Array.from(range.getClientRects())));
     }
-    const update = () => setFallback(ranges.flatMap((range) => Array.from(range.getClientRects())));
+    // Formula glyphs are painted as row bands: fragment rects would leave gaps
+    // where KaTeX keeps its spacing, and each fraction row would get its own strip.
+    const paint = () => {
+      const next = groups.flatMap((group) => group.length ? groupHighlightBands(formulaBoxes(group)) : []);
+      setBands((current) => sameBands(current, next) ? current : next);
+      paintFallback?.();
+    };
+    paint();
     let frame = 0;
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(() => { frame = 0; update(); });
+      if (!frame) frame = requestAnimationFrame(() => { frame = 0; paint(); });
     };
-    update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
+    // A font-size or reading-view switch reflows the article without a resize event.
+    const flow = typeof ResizeObserver === "function" ? new ResizeObserver(schedule) : null;
+    flow?.observe(article);
     return () => {
       clearFormulas();
+      CSS.highlights?.delete(registryName);
+      flow?.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [root, state, pending, hidden]);
+  }, [root, state, pending, hidden, revision]);
 
   useEffect(() => {
     if (!state) return;
@@ -143,29 +236,58 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   }, [state]);
 
   useEffect(() => {
-    const ranges = target?.ranges ?? [];
-    const formulas = ranges.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
+    if (!target) {
+      setActiveBands([]);
+      delete document.documentElement.dataset.readingFormulaBand;
+      return;
+    }
+    const ranges = target.ranges;
+    const whole: Range[] = [];
+    const glyphs: Range[] = [];
+    const text: Range[] = [];
+    for (const range of ranges) {
+      if (formulaForRange(range)) whole.push(range);
+      else if (glyphRange(range)) glyphs.push(range);
+      else text.push(range);
+    }
+    const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
     formulas.forEach((element) => element.classList.add("reading-formula-active"));
     const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-active"));
-    if (typeof Highlight === "function" && CSS.highlights) {
-      const textRanges = ranges.filter((range) => !formulaForRange(range));
-      if (textRanges.length) {
-        const highlight = new Highlight(...textRanges);
+    const supported = typeof Highlight === "function" && Boolean(CSS.highlights);
+    if (supported) {
+      if (text.length) {
+        const highlight = new Highlight(...text);
         highlight.priority = 1;
         CSS.highlights.set(activeRegistryName, highlight);
       }
-      return () => { CSS.highlights.delete(activeRegistryName); clearFormulas(); };
     }
-    const update = () => setActiveFallback(ranges.flatMap((range) => Array.from(range.getClientRects())));
-    update();
+    // The bands replace the native selection inside formulas: browser selection
+    // over KaTeX paint cannot merge glyph fragments or skip invisible spacing.
+    const paint = () => {
+      const boxes = ranges.length ? formulaBoxes(glyphs) : selectionBoxes(target.range, target.element);
+      const next = groupHighlightBands(boxes);
+      setActiveBands((current) => sameBands(current, next) ? current : next);
+      const html = document.documentElement;
+      if (next.length) {
+        if (!html.hasAttribute("data-reading-formula-band")) html.dataset.readingFormulaBand = "";
+      } else if (html.hasAttribute("data-reading-formula-band")) {
+        delete html.dataset.readingFormulaBand;
+      }
+      if (!supported) {
+        setActiveFallback(text.flatMap((range) => Array.from(range.getClientRects())));
+      }
+    };
+    paint();
     let frame = 0;
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(() => { frame = 0; update(); });
+      if (!frame) frame = requestAnimationFrame(() => { frame = 0; paint(); });
     };
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => {
       clearFormulas();
+      CSS.highlights?.delete(activeRegistryName);
+      delete document.documentElement.dataset.readingFormulaBand;
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
@@ -262,7 +384,10 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     document.addEventListener("keyup", onKey);
     window.addEventListener("scroll", reposition, { passive: true });
     window.addEventListener("resize", reposition);
-    const observer = new MutationObserver(clear);
+    const observer = new MutationObserver(() => {
+      clear();
+      setRevision((value) => value + 1);
+    });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
     return () => {
       document.removeEventListener("selectionchange", schedule);
@@ -327,15 +452,24 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     }
   }
 
-  if (!target && !fallback.length && !activeFallback.length) return null;
+  if (!target && !fallback.length && !activeFallback.length && !bands.length && !activeBands.length) return null;
   return createPortal(<>
     {fallback.map((rect, index) => (
       <span key={index} className="reading-highlight-overlay" aria-hidden="true"
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
     ))}
+    {bands.map((band, index) => (
+      <span key={`formula-${index}`} className="reading-highlight-overlay reading-highlight-overlay--formula"
+        aria-hidden="true" style={{ top: band.top, left: band.left, width: band.width, height: band.height }} />
+    ))}
     {activeFallback.map((rect, index) => (
       <span key={index} className="reading-highlight-overlay reading-highlight-overlay--active" aria-hidden="true"
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
+    ))}
+    {activeBands.map((band, index) => (
+      <span key={`active-formula-${index}`}
+        className="reading-highlight-overlay reading-highlight-overlay--formula reading-highlight-overlay--active"
+        aria-hidden="true" style={{ top: band.top, left: band.left, width: band.width, height: band.height }} />
     ))}
     {target && (
       <div className="reading-highlight-action" style={{
