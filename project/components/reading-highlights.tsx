@@ -88,6 +88,9 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
       area.top >= innerHeight || area.right <= 0 || area.left >= innerWidth) return [];
 
   const display = container.matches(".katex-display");
+  const hasMathRows = display && Boolean(container.querySelector(".katex-html .mtable"));
+  // A single displayed equation can still have tall operators and stacked scripts.
+  const equationCenter = display && !hasMathRows ? (area.top + area.bottom) / 2 : undefined;
   const font = display ? container.querySelector(".katex") ?? container : container;
   const size = Number.parseFloat(getComputedStyle(font).fontSize) || 16;
   // A viewport overlay still has to respect the code, formula, or table scrollport.
@@ -103,10 +106,10 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
   const lineCenters = new Map<Element, number>();
   for (const range of fragments) {
     const parent = range.startContainer.parentElement;
-    const anchor = display
+    const anchor = hasMathRows
       ? parent?.closest(tableRow)?.querySelector(":scope > .pstrut")
-      : parent?.closest(".katex-html .base")?.querySelector(":scope > .strut");
-    let rowCenter: number | undefined;
+      : !display ? parent?.closest(".katex-html .base")?.querySelector(":scope > .strut") : undefined;
+    let rowCenter = equationCenter;
     if (anchor) {
       rowCenter = lineCenters.get(anchor);
       if (rowCenter === undefined) {
@@ -117,7 +120,7 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
       }
     }
 
-    const selected = display && parent?.closest(".delimsizing.mult") ? delimiters : boxes;
+    const selected = hasMathRows && parent?.closest(".delimsizing.mult") ? delimiters : boxes;
     for (const rect of range.getClientRects()) {
       const left = Math.max(rect.left, minX);
       const right = Math.min(rect.right, maxX);
@@ -127,7 +130,7 @@ function measureBands(container: HTMLElement, fragments: readonly Range[]) {
     }
   }
 
-  const bands = groupHighlightBands(boxes.length ? boxes : delimiters, display ? Math.max(2, size * 0.15) : 0);
+  const bands = groupHighlightBands(boxes.length ? boxes : delimiters, hasMathRows ? Math.max(2, size * 0.15) : 0);
   if (!boxes.length || !delimiters.length) return bands;
 
   // Pieces of a tall brace can extend a selected row, but cannot join two rows.

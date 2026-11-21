@@ -1,5 +1,16 @@
 [
   {
+    "date": "2026-11-22",
+    "version": "1.11.6",
+    "features": [
+      {
+        "zh": "修复求和符号、指数和上下标把单行公式高亮切断的问题。多行公式仍按实际行留出间隔。",
+        "en": "Fixed split highlights around summation signs, exponents and subscripts in single-line equations. Multi-line equations keep a gap between their rows."
+      }
+    ],
+    "content": []
+  },
+  {
     "date": "2026-11-21",
     "version": "1.11.5",
     "features": [
