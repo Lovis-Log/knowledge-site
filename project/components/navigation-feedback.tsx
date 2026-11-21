@@ -8,7 +8,7 @@ import { UiText } from "./ui-text";
 
 const navigationEvent = "lovismind:navigate";
 type Navigation = { href: string; resetScroll?: boolean; fullDocument?: boolean };
-type Pending = Navigation & { phase: "pending" | "complete" };
+type Pending = Navigation & { phase: "pending" | "complete"; startedAt: number; rocket: "book" | "chapter" | null };
 type AnchorDocument = { getElementById(id: string): { scrollIntoView(): void } | null };
 
 // Hash values come from links and may be malformed; a bad escape must not break navigation.
@@ -29,20 +29,18 @@ export function scrollToAnchor(hash: string, document: AnchorDocument) {
   return true;
 }
 
-// Only chapter routes get the compact rocket; the book shelf and other
-// destinations keep the slim progress line.
-export function isReaderChapterHref(href: string, base: string) {
+export function navigationRocket(href: string, base: string, fullDocument = false) {
+  if (fullDocument) return null;
   try {
     const origin = new URL(base).origin;
     const target = new URL(href, base);
-    return target.origin === origin && /^\/books\/[^/]+\/[^/]+\/?$/.test(target.pathname);
+    if (target.origin !== origin) return null;
+    if (/^\/books\/[^/]+\/?$/.test(target.pathname)) return "book";
+    if (/^\/books\/[^/]+\/[^/]+\/?$/.test(target.pathname)) return "chapter";
   } catch {
-    return false;
+    return null;
   }
-}
-
-export function isReaderChapterNavigation(href: string, base: string, fullDocument = false) {
-  return !fullDocument && isReaderChapterHref(href, base);
+  return null;
 }
 
 export function startNavigation(href: string, options: Omit<Navigation, "href"> = {}) {
@@ -74,7 +72,13 @@ export function NavigationFeedback() {
 
   useEffect(() => {
     const navigate = (event: Event) => {
-      const next: Pending = { ...(event as CustomEvent<Navigation>).detail, phase: "pending" };
+      const navigation = (event as CustomEvent<Navigation>).detail;
+      const next: Pending = {
+        ...navigation,
+        phase: "pending",
+        startedAt: performance.now(),
+        rocket: navigationRocket(navigation.href, location.origin, navigation.fullDocument),
+      };
       current.current = next;
       setSlow(false);
       setRocket(false);
@@ -98,17 +102,17 @@ export function NavigationFeedback() {
       if (current.current !== pending) return;
       if (pending.phase === "pending") setSlow(true);
       else { current.current = null; setPending(null); }
-    }, pending.phase === "pending" ? 8000 : 160);
+    }, pending.phase === "pending" ? 8000 : Math.max(160,
+      pending.rocket === "book" ? 450 - (performance.now() - pending.startedAt) : 0));
     return () => window.clearTimeout(timeout);
   }, [pending]);
 
-  // Reader chapters are the only navigation that earns the compact rocket.
-  // The delay keeps a fast prefetched transition from flashing it.
+  // Give chapter links a short grace period to avoid flashing on fast transitions.
   useEffect(() => {
     if (
       !pending ||
       pending.phase !== "pending" ||
-      !isReaderChapterNavigation(pending.href, location.origin, pending.fullDocument) ||
+      pending.rocket !== "chapter" ||
       document.querySelector("#main .route-loading .rocket-loader")
     ) {
       setRocket(false);
@@ -173,7 +177,7 @@ export function NavigationFeedback() {
   if (!pending) return null;
   return <div className="navigation-feedback" data-phase={pending.phase}>
     <div className="navigation-feedback__line" aria-hidden="true" />
-    {rocket && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
+    {(rocket || pending.rocket === "book") && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
     <span className={slow ? undefined : "reader-sr-only"} role="status">
       {pending.fullDocument ? <UiText zh="正在进入书库…" en="Opening your library…" /> : <UiText zh="正在打开页面…" en="Opening page…" />}
     </span>

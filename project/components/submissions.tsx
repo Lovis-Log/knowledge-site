@@ -167,7 +167,7 @@ export function Submissions() {
             <UiText zh="正文" en="Text" />
             <span className={styles.optional}><UiText zh="可选" en="Optional" /></span>
           </span>
-          <textarea id="submission-message" name="message" rows={4} maxLength={2000} disabled={busy}
+          <textarea id="submission-message" name="message" rows={2} maxLength={2000} disabled={busy}
             {...uiPlaceholder("想分享的内容、推荐理由，或希望补充的资料……", "Something worth sharing, why you recommend it, or material we could add…")}
             value={message} onChange={(event) => edit(event.target.value, setMessage)} />
         </label>
@@ -219,7 +219,7 @@ export function Submissions() {
           )}
         </div>
         {loading && !board
-          ? <div className={styles.loading}><RocketLoader /></div>
+          ? <div className={styles.loading}><RocketLoader compact /></div>
           : board && <>
             {board.items.length === 0 && <p className={styles.empty}><UiText zh="暂无投稿" en="No submissions yet" /></p>}
             <ul className={styles.list}>

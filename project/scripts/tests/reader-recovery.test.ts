@@ -4,8 +4,7 @@ import { registerHooks } from "node:module";
 
 import {
   anchorIdFromHash,
-  isReaderChapterHref,
-  isReaderChapterNavigation,
+  navigationRocket,
   scrollToAnchor,
 } from "../../components/navigation-feedback";
 import { isAuthError, loginRedirectHref } from "../../components/session-recovery";
@@ -56,19 +55,17 @@ test("reader links scroll only to headings that exist in the committed page", ()
   assert.equal(lookups, beforeMalformed, "a malformed hash must not be looked up");
 });
 
-test("reader navigation feedback only targets chapter routes", () => {
+test("reader navigation feedback distinguishes book covers and chapter links", () => {
   const base = "https://example.test";
-  assert.equal(isReaderChapterHref("/books/cpp/01/", base), true);
-  assert.equal(isReaderChapterHref("/books/cpp/01", base), true);
-  assert.equal(isReaderChapterHref("/books/cpp/01/?from=library#top", base), true);
-  assert.equal(isReaderChapterHref("/books/cpp/", base), false);
-  assert.equal(isReaderChapterHref("/books/cpp/01/extra/", base), false);
-  assert.equal(isReaderChapterHref("/library/", base), false);
-  assert.equal(isReaderChapterHref("https://other.test/books/cpp/01/", base), false);
-
-  assert.equal(isReaderChapterNavigation("/books/cpp/01/", base), true);
-  assert.equal(isReaderChapterNavigation("/books/cpp/01/", base, true), false);
-  assert.equal(isReaderChapterNavigation("/books/cpp/", base), false);
+  assert.equal(navigationRocket("/books/cpp/01/", base), "chapter");
+  assert.equal(navigationRocket("/books/cpp/01", base), "chapter");
+  assert.equal(navigationRocket("/books/cpp/01/?from=library#top", base), "chapter");
+  assert.equal(navigationRocket("/books/cpp/", base), "book");
+  assert.equal(navigationRocket("/books/cpp/01/extra/", base), null);
+  assert.equal(navigationRocket("/library/", base), null);
+  assert.equal(navigationRocket("https://other.test/books/cpp/01/", base), null);
+  assert.equal(navigationRocket("/books/cpp/", base, true), null);
+  assert.equal(navigationRocket("/books/cpp/01/", base, true), null);
 });
 
 test("session recovery returns to the exact page, query and hash", () => {

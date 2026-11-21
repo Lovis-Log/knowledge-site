@@ -4,6 +4,17 @@ import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
+
+test('release features have readable Chinese translations', async () => {
+    const releases = JSON.parse(await readFile(new URL('../../content/updates.json', import.meta.url), 'utf8')) as {
+        version: string;
+        features: { zh: string }[];
+    }[];
+    for (const { version, features } of releases) {
+        for (const { zh } of features) assert.match(zh, /\p{Script=Han}/u, `v${version}: ${zh}`);
+    }
+});
+
 test('announcement baseline, metadata-only edits, bilingual revision and removal', async () => {
     const dir = await mkdtemp(join(tmpdir(), 'lovismind-updates-')), book = join(dir, 'vault', 'book');
     try {
