@@ -40,7 +40,11 @@ function glyphFormula(range: Range) {
     : null;
 }
 
-function measureFormulaBands(formula: HTMLElement, ranges: readonly Range[]) {
+function measureFormulaBands(formula: HTMLElement, fragments: readonly Range[]) {
+  const formulaBounds = formula.getBoundingClientRect();
+  if (!formulaBounds.width || !formulaBounds.height || formulaBounds.bottom <= 0 ||
+      formulaBounds.top >= innerHeight || formulaBounds.right <= 0 || formulaBounds.left >= innerWidth) return [];
+
   const boxes: HighlightBox[] = [];
   const size = Number.parseFloat(getComputedStyle(formula).fontSize) || 16;
   // The overlays are portaled to the viewport, so apply the formula's scroll clip here.
@@ -50,8 +54,8 @@ function measureFormulaBands(formula: HTMLElement, ranges: readonly Range[]) {
   const maxX = scrollBox ? minX + scrollBox.clientWidth : Infinity;
   const minY = bounds && scrollBox ? bounds.top + scrollBox.clientTop : -Infinity;
   const maxY = scrollBox ? minY + scrollBox.clientHeight : Infinity;
-  for (const range of ranges) {
-    for (const rect of range.getClientRects()) {
+  for (const fragment of fragments) {
+    for (const rect of fragment.getClientRects()) {
       const left = Math.max(rect.left, minX);
       const right = Math.min(rect.right, maxX);
       const top = Math.max(rect.top, minY);
@@ -63,7 +67,7 @@ function measureFormulaBands(formula: HTMLElement, ranges: readonly Range[]) {
 }
 
 /** Keep saved marks and distinct formulas separate, even when they share a prose line. */
-function formulaBands(ranges: readonly Range[]) {
+function groupFormulaRanges(ranges: readonly Range[]) {
   const byFormula = new Map<HTMLElement, Range[]>();
   for (const range of ranges) {
     const formula = glyphFormula(range);
@@ -72,7 +76,7 @@ function formulaBands(ranges: readonly Range[]) {
     if (group) group.push(range);
     else byFormula.set(formula, [range]);
   }
-  return [...byFormula].flatMap(([formula, group]) => measureFormulaBands(formula, group));
+  return [...byFormula];
 }
 
 /** Only inspect formulas in the live selection's common ancestor. */
@@ -107,6 +111,11 @@ function visibleBoxes(range: Range) {
 }
 
 function visibleSelectionRect(range: Range, atStart = false) {
+  const edge = range.cloneRange();
+  edge.collapse(atStart);
+  const caret = edge.getBoundingClientRect();
+  if (caret.height > 0 && caret.bottom > 0 && caret.top < innerHeight &&
+      caret.right >= 0 && caret.left <= innerWidth) return caret;
   const boxes = visibleBoxes(range);
   return atStart ? boxes[0] : boxes.at(-1);
 }
@@ -136,6 +145,11 @@ function sameBands(first: readonly HighlightBand[], second: readonly HighlightBa
   });
 }
 
+function bandPath(bands: readonly HighlightBand[]) {
+  return bands.map(({ left, top, width, height }) =>
+    `M${left},${top}h${width}v${height}h${-width}Z`).join("");
+}
+
 export function ReadingHighlights({ root, book, chapter, state, failed, refresh }: {
   root: RefObject<HTMLDivElement | null>;
   book: string;
@@ -158,12 +172,16 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   const [revision, setRevision] = useState(0);
   const button = useRef<HTMLButtonElement>(null);
   const painted = useRef<PaintedMark[]>([]);
+  const savedHighlights = state?.highlights;
+  const activeRange = target?.range;
+  const activeElement = target?.element;
+  const activeRanges = target?.ranges;
 
   useEffect(() => {
     const article = root.current;
     if (!article) return;
     painted.current = [];
-    const saved = state?.highlights ?? [];
+    const saved = savedHighlights ?? [];
     const marks = saved.filter((mark) => !hidden.has(mark.id));
     for (const mark of pending) {
       if (hidden.has(mark.id) || saved.some((item) => item.id === mark.id)) continue;
@@ -189,7 +207,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     }
     const ranges = painted.current.flatMap((item) => item.ranges);
     // Per mark, so two separate highlights on one math row never merge into one band.
-    const groups = painted.current.map((item) => item.ranges.filter(glyphFormula));
+    const groups = painted.current.flatMap((item) => groupFormulaRanges(item.ranges));
     const whole: Range[] = [];
     const text: Range[] = [];
     for (const range of ranges) {
@@ -208,7 +226,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     // Formula glyphs are painted as row bands: fragment rects would leave gaps
     // where KaTeX keeps its spacing, and each fraction row would get its own strip.
     const paint = () => {
-      const next = groups.flatMap((group) => formulaBands(group));
+      const next = groups.flatMap(([formula, ranges]) => measureFormulaBands(formula, ranges));
       setBands((current) => sameBands(current, next) ? current : next);
       paintFallback?.();
     };
@@ -230,7 +248,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
     };
-  }, [root, state, pending, hidden, revision]);
+  }, [root, savedHighlights, pending, hidden, revision]);
 
   useEffect(() => {
     if (!state) return;
@@ -245,12 +263,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   }, [state]);
 
   useEffect(() => {
-    if (!target) {
+    if (!activeRange || !activeElement || !activeRanges) {
       setActiveBands((current) => current.length ? [] : current);
       setActiveFallback((current) => current.length ? [] : current);
       return;
     }
-    const ranges = target.ranges;
+    const ranges = activeRanges;
     const whole: Range[] = [];
     const glyphs: Range[] = [];
     const text: Range[] = [];
@@ -260,6 +278,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       else text.push(range);
     }
     const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
+    const groups = groupFormulaRanges(glyphs);
     formulas.forEach((element) => element.classList.add("reading-formula-active"));
     const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-active"));
     const supported = typeof Highlight === "function" && Boolean(CSS.highlights);
@@ -273,9 +292,11 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     // The bands replace the native selection inside formulas: browser selection
     // over KaTeX paint cannot merge glyph fragments or skip invisible spacing.
     const paint = () => {
-      const next = ranges.length ? formulaBands(glyphs) : selectionBands(target.range);
+      const next = ranges.length
+        ? groups.flatMap(([formula, group]) => measureFormulaBands(formula, group))
+        : selectionBands(activeRange);
       setActiveBands((current) => sameBands(current, next) ? current : next);
-      target.element.toggleAttribute("data-reading-formula-band", Boolean(next.length));
+      activeElement.toggleAttribute("data-reading-formula-band", Boolean(next.length));
       if (!supported) {
         setActiveFallback(text.flatMap((range) => Array.from(range.getClientRects())));
       }
@@ -290,12 +311,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     return () => {
       clearFormulas();
       CSS.highlights?.delete(activeRegistryName);
-      target.element.removeAttribute("data-reading-formula-band");
+      activeElement.removeAttribute("data-reading-formula-band");
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
     };
-  }, [target]);
+  }, [activeRange, activeElement, activeRanges]);
 
   useEffect(() => {
     const article = root.current;
@@ -331,18 +352,41 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
           view, element, ranges: existing?.ranges ?? [], atStart };
       });
     };
+    let pointer: number | null = null;
     let queued = 0;
+    let settle = 0;
+    const cancelSelection = () => {
+      window.clearTimeout(settle);
+      cancelAnimationFrame(queued);
+      queued = 0;
+    };
+    const queueSelection = () => {
+      cancelSelection();
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        if (pointer === null) selected();
+      });
+    };
     const schedule = () => {
-      if (queued) return;
-      queued = requestAnimationFrame(() => { queued = 0; selected(); });
+      // Mouse drags stay entirely native. Keyboard selection and touch handles
+      // also get a quiet interval before any formula geometry is measured.
+      if (pointer !== null || queued) return;
+      cancelSelection();
+      settle = window.setTimeout(queueSelection, 120);
     };
     const clickMark = (event: MouseEvent) => {
       if (busy.current || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
         event.target.closest("a, button")) return;
+      const view = viewFor(event.target);
+      const formula = event.target.closest(".katex");
       for (const { mark, ranges, element } of painted.current) {
-        const range = ranges.find((candidate) => Array.from(candidate.getClientRects()).some(
-          (box) => box.width > 0 && event.clientX >= box.left && event.clientX <= box.right &&
-            event.clientY >= box.top && event.clientY <= box.bottom));
+        if (element !== view) continue;
+        const range = ranges.find((candidate) => {
+          const owner = formulaForRange(candidate) ?? glyphFormula(candidate)?.closest(".katex") ?? null;
+          return owner === formula && Array.from(candidate.getClientRects()).some((box) =>
+            box.width > 0 && event.clientX >= box.left && event.clientX <= box.right &&
+            event.clientY >= box.top && event.clientY <= box.bottom);
+        });
         if (!range) continue;
         const bounds = range.getBoundingClientRect();
         const rect = visibleSelectionRect(range) ?? (bounds.width > 0 && bounds.height > 0 ? bounds : null);
@@ -353,18 +397,28 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         return;
       }
     };
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") clear();
-      else if (event.shiftKey) selected();
-    };
-    const dismissOutside = (event: PointerEvent) => { if (!button.current?.contains(event.target as Node)) clear(); };
-    const onPointerUp = () => {
-      // Let the committed target win over a preview frame that was queued mid-drag.
-      if (queued) {
-        cancelAnimationFrame(queued);
-        queued = 0;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        cancelSelection();
+        clear();
+      } else if (event.shiftKey && !event.repeat && /^(Arrow|Home$|End$|Page)/.test(event.key)) {
+        clear();
       }
-      selected();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (button.current?.contains(event.target as Node)) return;
+      cancelSelection();
+      clear();
+      if (event.isPrimary && event.button === 0 && article.contains(event.target as Node)) pointer = event.pointerId;
+    };
+    const onPointerUp = (event: PointerEvent) => {
+      if (event.pointerId !== pointer) return;
+      pointer = null;
+      queueSelection();
+    };
+    const onBlur = () => {
+      pointer = null;
+      cancelSelection();
     };
     let frame = 0;
     const reposition = () => {
@@ -381,10 +435,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       });
     };
     document.addEventListener("selectionchange", schedule);
-    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointerup", onPointerUp, true);
+    document.addEventListener("pointercancel", onPointerUp, true);
     article.addEventListener("click", clickMark);
-    document.addEventListener("pointerdown", dismissOutside);
-    document.addEventListener("keyup", onKey);
+    document.addEventListener("pointerdown", onPointerDown, true);
+    document.addEventListener("keydown", onKeyDown);
+    window.addEventListener("blur", onBlur);
     window.addEventListener("scroll", reposition, { capture: true, passive: true });
     window.addEventListener("resize", reposition);
     const observer = new MutationObserver(() => {
@@ -394,13 +450,15 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
     return () => {
       document.removeEventListener("selectionchange", schedule);
-      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointerup", onPointerUp, true);
+      document.removeEventListener("pointercancel", onPointerUp, true);
       article.removeEventListener("click", clickMark);
-      document.removeEventListener("pointerdown", dismissOutside);
-      document.removeEventListener("keyup", onKey);
+      document.removeEventListener("pointerdown", onPointerDown, true);
+      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("blur", onBlur);
       window.removeEventListener("scroll", reposition, true);
       window.removeEventListener("resize", reposition);
-      cancelAnimationFrame(queued);
+      cancelSelection();
       cancelAnimationFrame(frame);
       observer.disconnect();
     };
@@ -461,18 +519,14 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       <span key={index} className="reading-highlight-overlay" aria-hidden="true"
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
     ))}
-    {bands.map((band, index) => (
-      <span key={`formula-${index}`} className="reading-highlight-overlay reading-highlight-overlay--formula"
-        aria-hidden="true" style={{ top: band.top, left: band.left, width: band.width, height: band.height }} />
-    ))}
+    {(bands.length > 0 || activeBands.length > 0) && (
+      <svg className="reading-highlight-formulas" aria-hidden="true">
+        <path d={bandPath([...bands, ...activeBands])} />
+      </svg>
+    )}
     {activeFallback.map((rect, index) => (
       <span key={index} className="reading-highlight-overlay reading-highlight-overlay--active" aria-hidden="true"
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
-    ))}
-    {activeBands.map((band, index) => (
-      <span key={`active-formula-${index}`}
-        className="reading-highlight-overlay reading-highlight-overlay--formula reading-highlight-overlay--active"
-        aria-hidden="true" style={{ top: band.top, left: band.left, width: band.width, height: band.height }} />
     ))}
     {target && (
       <div className="reading-highlight-action" style={{

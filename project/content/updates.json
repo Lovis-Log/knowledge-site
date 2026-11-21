@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-21",
+    "version": "1.11.2",
+    "features": [
+      {
+        "zh": "拖选含数学符号的笔记时沿用浏览器选区，松手后再绘制连续高亮。分式和上下标交叠处只着色一次。",
+        "en": "Selecting math now uses the browser's selection while dragging, then paints the highlight on release without darkening overlapping fractions or scripts."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-21",
     "version": "1.11.1",
     "features": [
       {
