@@ -3602,8 +3602,8 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
   background: color-mix(in srgb, var(--reading-highlight-bg) 40%, var(--accent));
 }
 
-/* One path paints the union of the formula bands at a single opacity. */
-.reading-highlight-formulas {
+/* One path paints the union of measured bands at a single opacity. */
+.reading-highlight-bands {
   position: fixed;
   inset: 0;
   z-index: 2;
@@ -3614,11 +3614,11 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
   pointer-events: none;
 }
 
-:root[data-theme="dark"] .reading-highlight-formulas { fill: rgb(216 184 120 / 30%); }
+:root[data-theme="dark"] .reading-highlight-bands { fill: rgb(216 184 120 / 30%); }
 
-/* While those bands replace the selection over formula glyphs, the browser's own
-   fragment-by-fragment selection paint would still show through underneath. */
-.prose[data-reading-formula-band] .katex-html ::selection {
+/* Avoid painting two backgrounds over the measured selection. */
+.prose[data-reading-formula-band] .katex-html ::selection,
+.prose :is([data-reading-code-band], [data-reading-code-band] *)::selection {
   background: transparent;
   color: inherit;
 }
@@ -3661,7 +3661,7 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 
 @media print {
   .reading-highlight-overlay,
-  .reading-highlight-formulas,
+  .reading-highlight-bands,
   .reading-highlight-action { display: none; }
 }
 

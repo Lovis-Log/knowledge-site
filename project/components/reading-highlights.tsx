@@ -40,15 +40,15 @@ function glyphFormula(range: Range) {
     : null;
 }
 
-function measureFormulaBands(formula: HTMLElement, fragments: readonly Range[]) {
-  const formulaBounds = formula.getBoundingClientRect();
-  if (!formulaBounds.width || !formulaBounds.height || formulaBounds.bottom <= 0 ||
-      formulaBounds.top >= innerHeight || formulaBounds.right <= 0 || formulaBounds.left >= innerWidth) return [];
+function measureBands(container: HTMLElement, fragments: readonly Range[]) {
+  const area = container.getBoundingClientRect();
+  if (!area.width || !area.height || area.bottom <= 0 ||
+      area.top >= innerHeight || area.right <= 0 || area.left >= innerWidth) return [];
 
   const boxes: HighlightBox[] = [];
-  const size = Number.parseFloat(getComputedStyle(formula).fontSize) || 16;
-  // The overlays are portaled to the viewport, so apply the formula's scroll clip here.
-  const scrollBox = formula.closest<HTMLElement>(".katex-display, .table-wrap");
+  const size = Number.parseFloat(getComputedStyle(container).fontSize) || 16;
+  // Viewport overlays need the same clipping as the selected content.
+  const scrollBox = container.closest<HTMLElement>("pre, .katex-display, .table-wrap");
   const bounds = scrollBox?.getBoundingClientRect();
   const minX = bounds && scrollBox ? bounds.left + scrollBox.clientLeft : -Infinity;
   const maxX = scrollBox ? minX + scrollBox.clientWidth : Infinity;
@@ -64,6 +64,58 @@ function measureFormulaBands(formula: HTMLElement, fragments: readonly Range[]) 
     }
   }
   return groupHighlightBands(boxes);
+}
+
+type BandGroup = [HTMLElement, Range[]];
+const codeBlock = "pre, p, li, dt, dd, td, th, h1, h2, h3, h4, h5, h6";
+
+function separateCodeRanges(ranges: readonly Range[]) {
+  const blocks = new Map<HTMLElement, Range[]>();
+  for (const range of ranges) {
+    const block = range.startContainer.parentElement?.closest("code")?.closest<HTMLElement>(codeBlock);
+    if (block && !blocks.has(block)) blocks.set(block, []);
+  }
+  if (!blocks.size) return { code: [], text: ranges };
+
+  const text: Range[] = [];
+  for (const range of ranges) {
+    const block = range.startContainer.parentElement?.closest<HTMLElement>(codeBlock);
+    const group = block && blocks.get(block);
+    if (group) group.push(range);
+    else text.push(range);
+  }
+  return { code: [...blocks], text };
+}
+
+function selectedTextRanges(element: HTMLElement, selection: Range, accepts?: (node: Text) => boolean) {
+  const pieces: Range[] = [];
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode() as Text | null; node; node = walker.nextNode() as Text | null) {
+    if (!selection.intersectsNode(node) || (accepts && !accepts(node))) continue;
+    const piece = document.createRange();
+    piece.selectNodeContents(node);
+    if (node === selection.startContainer) piece.setStart(node, selection.startOffset);
+    if (node === selection.endContainer) piece.setEnd(node, selection.endOffset);
+    if (!piece.collapsed) pieces.push(piece);
+  }
+  return pieces;
+}
+
+function codeSelectionGroups(selection: Range, parent: Element): BandGroup[] {
+  const containing = parent.closest<HTMLElement>("code");
+  const codes = containing ? [containing] : parent.querySelectorAll<HTMLElement>("code");
+  const blocks = new Set<HTMLElement>();
+  for (const code of codes) {
+    const block = code.closest<HTMLElement>(codeBlock);
+    if (block && selection.intersectsNode(code)) blocks.add(block);
+  }
+  return [...blocks].flatMap((block): BandGroup[] => {
+    const ranges = selectedTextRanges(block, selection, (node) => {
+      const element = node.parentElement;
+      return element?.closest(codeBlock) === block && !element.closest(".katex, button, [hidden]");
+    });
+    return ranges.some((range) => range.startContainer.parentElement?.closest("code")) ? [[block, ranges]] : [];
+  });
 }
 
 /** Keep saved marks and distinct formulas separate, even when they share a prose line. */
@@ -89,17 +141,7 @@ function selectionBands(range: Range) {
   const bands: HighlightBand[] = [];
   for (const formula of formulas) {
     if (!range.intersectsNode(formula)) continue;
-    const pieces: Range[] = [];
-    const walker = document.createTreeWalker(formula, NodeFilter.SHOW_TEXT);
-    for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-      if (!range.intersectsNode(node)) continue;
-      const piece = document.createRange();
-      piece.selectNodeContents(node);
-      if (node === range.startContainer) piece.setStart(node, range.startOffset);
-      if (node === range.endContainer) piece.setEnd(node, range.endOffset);
-      if (!piece.collapsed) pieces.push(piece);
-    }
-    bands.push(...measureFormulaBands(formula, pieces));
+    bands.push(...measureBands(formula, selectedTextRanges(formula, range)));
   }
   return bands;
 }
@@ -205,14 +247,19 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         if (ranges.length) painted.current.push({ mark, ranges, element });
       }
     }
-    const ranges = painted.current.flatMap((item) => item.ranges);
-    // Per mark, so two separate highlights on one math row never merge into one band.
-    const groups = painted.current.flatMap((item) => groupFormulaRanges(item.ranges));
+    // Resolve each mark separately so a gap between separate selections stays clear.
+    const groups: BandGroup[] = [];
     const whole: Range[] = [];
     const text: Range[] = [];
-    for (const range of ranges) {
-      if (formulaForRange(range)) whole.push(range);
-      else if (!glyphFormula(range)) text.push(range);
+    for (const { ranges } of painted.current) {
+      const prose: Range[] = [];
+      for (const range of ranges) {
+        if (formulaForRange(range)) whole.push(range);
+        else if (!glyphFormula(range)) prose.push(range);
+      }
+      const separated = separateCodeRanges(prose);
+      text.push(...separated.text);
+      groups.push(...groupFormulaRanges(ranges), ...separated.code);
     }
     const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
     formulas.forEach((element) => element.classList.add("reading-formula-highlight"));
@@ -223,10 +270,8 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     } else {
       paintFallback = () => setFallback(text.flatMap((range) => Array.from(range.getClientRects())));
     }
-    // Formula glyphs are painted as row bands: fragment rects would leave gaps
-    // where KaTeX keeps its spacing, and each fraction row would get its own strip.
     const paint = () => {
-      const next = groups.flatMap(([formula, ranges]) => measureFormulaBands(formula, ranges));
+      const next = groups.flatMap(([container, ranges]) => measureBands(container, ranges));
       setBands((current) => sameBands(current, next) ? current : next);
       paintFallback?.();
     };
@@ -271,12 +316,16 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const ranges = activeRanges;
     const whole: Range[] = [];
     const glyphs: Range[] = [];
-    const text: Range[] = [];
+    const prose: Range[] = [];
     for (const range of ranges) {
       if (formulaForRange(range)) whole.push(range);
       else if (glyphFormula(range)) glyphs.push(range);
-      else text.push(range);
+      else prose.push(range);
     }
+    const { code, text } = separateCodeRanges(prose);
+    const ancestor = activeRange.commonAncestorContainer;
+    const parent = ancestor instanceof Element ? ancestor : ancestor.parentElement;
+    const codeGroups = ranges.length || !parent ? code : codeSelectionGroups(activeRange, parent);
     const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
     const groups = groupFormulaRanges(glyphs);
     formulas.forEach((element) => element.classList.add("reading-formula-active"));
@@ -289,14 +338,16 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         CSS.highlights.set(activeRegistryName, highlight);
       }
     }
-    // The bands replace the native selection inside formulas: browser selection
-    // over KaTeX paint cannot merge glyph fragments or skip invisible spacing.
+    // Replace native selection paint only where the overlay covers selected content.
     const paint = () => {
-      const next = ranges.length
-        ? groups.flatMap(([formula, group]) => measureFormulaBands(formula, group))
+      const math = ranges.length
+        ? groups.flatMap(([formula, group]) => measureBands(formula, group))
         : selectionBands(activeRange);
+      const codeBands = codeGroups.map(([block, ranges]) => measureBands(block, ranges));
+      const next = math.concat(codeBands.flat());
       setActiveBands((current) => sameBands(current, next) ? current : next);
-      activeElement.toggleAttribute("data-reading-formula-band", Boolean(next.length));
+      codeGroups.forEach(([block], index) => block.toggleAttribute("data-reading-code-band", Boolean(codeBands[index].length)));
+      activeElement.toggleAttribute("data-reading-formula-band", Boolean(math.length));
       if (!supported) {
         setActiveFallback(text.flatMap((range) => Array.from(range.getClientRects())));
       }
@@ -312,6 +363,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       clearFormulas();
       CSS.highlights?.delete(activeRegistryName);
       activeElement.removeAttribute("data-reading-formula-band");
+      codeGroups.forEach(([block]) => block.removeAttribute("data-reading-code-band"));
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
@@ -520,7 +572,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
     ))}
     {(bands.length > 0 || activeBands.length > 0) && (
-      <svg className="reading-highlight-formulas" aria-hidden="true">
+      <svg className="reading-highlight-bands" aria-hidden="true">
         <path d={bandPath([...bands, ...activeBands])} />
       </svg>
     )}

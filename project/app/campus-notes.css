@@ -78,9 +78,13 @@
   color: var(--ink);
 }
 
+html[data-theme="dark"] [data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="key"] {
+  background: color-mix(in srgb, var(--accent) 19%, var(--page-sheet));
+}
+
 html[data-theme="dark"] [data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="proof"] {
   border-left-color: color-mix(in srgb, var(--accent) 82%, var(--line-strong));
-  background: color-mix(in srgb, var(--accent-soft) 64%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--page-sheet));
 }
 
 [data-reading-preset="campus-notes"] .prose .katex-display {

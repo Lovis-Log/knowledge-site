@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-21",
+    "version": "1.11.4",
+    "features": [
+      {
+        "zh": "恢复深色阅读中的代码、表头和提示框底色。选区跨过行内代码或代码语法标记时，松手后按实际选区连续绘制高亮。",
+        "en": "Restored distinct dark reading surfaces for code, table headings and callouts. Highlights now connect across inline code and syntax tokens after selection settles."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-21",
     "version": "1.11.3",
     "features": [
       {
