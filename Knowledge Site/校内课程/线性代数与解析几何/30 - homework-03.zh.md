@@ -1,6 +1,6 @@
 ---
 slug: "homework-03"
-title: "第 3 次作业（习题三）"
+title: "第 3 次作业（矩阵运算与秩）"
 summary: "第 3 次作业 8 道题的题面与补充解答。"
 updatedAt: "2026-11-17"
 content_type: "reference"
@@ -156,8 +156,11 @@ $$
 (1,1) 与 (2,2) 给出同一条件 $c=-2b$；(2,1) 在代入 $c=-2b,\ d=a-b$ 后也化为 $c=2(a-b)-2a=-2b$，自动满足。所以
 
 $$
-M=\begin{pmatrix}a&b\\-2b&a-b\end{pmatrix}=aE+b\begin{pmatrix}0&1\\-2&-1\end{pmatrix},\qquad a,b\in\mathbb{R}.
+M=\begin{pmatrix}a&b\\-2b&a-b\end{pmatrix}
+=aE+b\begin{pmatrix}0&1\\-2&-1\end{pmatrix},
 $$
+
+其中 $a,b\in\mathbb{R}$。
 
 即全体可交换矩阵是 $E$ 与 $A-3E$ 的线性组合（注意 $\begin{pmatrix}0&1\\-2&-1\end{pmatrix}=A-3E$），这与「$A$ 的特征值互异，其交换化子是 $A$ 的多项式全体」这一结论相符（由 $A^2=5A-8E$ 知高次项都可降阶）。
 

@@ -1,6 +1,6 @@
 ---
 slug: "homework-02"
-title: "第 2 次作业（习题二）"
+title: "第 2 次作业（行列式的性质与计算）"
 summary: "第 2 次作业 5 道题的题面与补充解答。"
 updatedAt: "2026-11-17"
 content_type: "reference"
@@ -326,12 +326,15 @@ $$
 三阶行列式按第一行展开：
 
 $$
+\begin{aligned}
 \begin{vmatrix}
-7&1&1\\-3&-1&5\\-2&-3&1\end{vmatrix}
-=7\bigl((-1)\cdot1-5\cdot(-3)\bigr)-1\bigl((-3)\cdot1-5\cdot(-2)\bigr)+1\bigl((-3)(-3)-(-1)(-2)\bigr)
-$$
-$$
-=7(14)-1(7)+1(7)=98 .
+7&1&1\\-3&-1&5\\-2&-3&1
+\end{vmatrix}
+={}&7\bigl((-1)\cdot1-5\cdot(-3)\bigr)\\
+&-1\bigl((-3)\cdot1-5\cdot(-2)\bigr)\\
+&+1\bigl((-3)(-3)-(-1)(-2)\bigr)\\
+={}&7(14)-1(7)+1(7)=98 .
+\end{aligned}
 $$
 
 故 $D=20\times98=1960$。
@@ -453,7 +456,7 @@ $$
 即 $11x_1+x_3=3$。与 (B) 联立：$x_3=3-11x_1$，代入 $5x_1+4(3-11x_1)=-1$，得 $-39x_1=-13$，故
 
 $$
-x_1=\frac13,\qquad x_3=3-\frac{11}{3}=-\frac23,\qquad x_4=1+\frac13-\frac43=0,\qquad x_2=1-\frac23-0=\frac13 .
+x_1=\frac13,\qquad x_2=\frac13,\qquad x_3=-\frac23,\qquad x_4=0 .
 $$
 
 **验算（代回原方程组）**：

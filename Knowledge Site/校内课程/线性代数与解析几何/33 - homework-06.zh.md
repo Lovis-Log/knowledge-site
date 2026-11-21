@@ -125,7 +125,10 @@ c_1=\frac54,\quad c_2=\frac14,\quad c_3=-\frac14,\quad c_4=-\frac14,
 $$
 
 $$
-\boldsymbol\beta=\frac54\boldsymbol\alpha_1+\frac14\boldsymbol\alpha_2-\frac14\boldsymbol\alpha_3-\frac14\boldsymbol\alpha_4 .
+\begin{aligned}
+\boldsymbol\beta={}&\frac54\boldsymbol\alpha_1+\frac14\boldsymbol\alpha_2\\
+&-\frac14\boldsymbol\alpha_3-\frac14\boldsymbol\alpha_4 .
+\end{aligned}
 $$
 
 **验算**：右边第一个分量为 $\frac14(5+1-1-1)=1$，第二个为 $\frac14(5+1+1+1)=2$，第三个为 $\frac14(5-1-1+1)=1$，第四个为 $\frac14(5-1+1-1)=1$，恰为 $\boldsymbol\beta$ ✓。
@@ -192,7 +195,10 @@ $$
 设有数 $x_1,x_2,x_3$ 使
 
 $$
-x_1\boldsymbol\alpha_1+x_2(\boldsymbol\alpha_1+\boldsymbol\alpha_2)+x_3(\boldsymbol\alpha_1+\boldsymbol\alpha_2+\boldsymbol\alpha_3)=\boldsymbol 0 .
+\begin{aligned}
+&x_1\boldsymbol\alpha_1+x_2(\boldsymbol\alpha_1+\boldsymbol\alpha_2)\\
+&\quad+x_3(\boldsymbol\alpha_1+\boldsymbol\alpha_2+\boldsymbol\alpha_3)=\boldsymbol 0 .
+\end{aligned}
 $$
 
 按 $\boldsymbol\alpha_i$ 合并同类项：

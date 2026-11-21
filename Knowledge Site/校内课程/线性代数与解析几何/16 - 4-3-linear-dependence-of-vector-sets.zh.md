@@ -284,7 +284,7 @@ $$
 **例 2（用秩重做）**
 
 $$
-(\alpha_1^{T},\alpha_2^{T},\alpha_3^{T})=\begin{pmatrix}
+(\alpha_1,\alpha_2,\alpha_3)=\begin{pmatrix}
 1 & 2 & 2\\
 -1 & 0 & -1\\
 1 & -2 & 0
@@ -324,7 +324,11 @@ $$
 必要性。设存在不全为零的 $k_1,\dots,k_m$ 使 $k_1\alpha_1+\cdots+k_m\alpha_m=0$。不妨设 $k_1\neq 0$，则
 
 $$
-\alpha_1=\left(-\frac{k_2}{k_1}\right)\alpha_2+\left(-\frac{k_3}{k_1}\right)\alpha_3+\cdots+\left(-\frac{k_m}{k_1}\right)\alpha_m,
+\begin{aligned}
+\alpha_1={}&\left(-\frac{k_2}{k_1}\right)\alpha_2
++\left(-\frac{k_3}{k_1}\right)\alpha_3\\
+&+\cdots+\left(-\frac{k_m}{k_1}\right)\alpha_m,
+\end{aligned}
 $$
 
 即 $\alpha_1$ 可由其余向量表示。若 $k_1=0$，换一个系数非零的向量作同样的推导即可。

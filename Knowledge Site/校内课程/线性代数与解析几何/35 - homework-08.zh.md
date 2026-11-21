@@ -1,6 +1,6 @@
 ---
 slug: "homework-08"
-title: "第 8 次作业（习题五）"
+title: "第 8 次作业（特征值与相似对角化）"
 summary: "矩阵的特征值、特征向量与相似对角化，收录 6 道原题与补充解答。"
 updatedAt: "2026-11-21"
 content_type: "reference"
@@ -41,13 +41,22 @@ $$
 $$
 
 $$
-s_2=\begin{vmatrix}-2&2\\6&-1\end{vmatrix}+\begin{vmatrix}3&-1\\3&-1\end{vmatrix}+\begin{vmatrix}3&2\\-2&-2\end{vmatrix}
+\begin{aligned}
+s_2&=\begin{vmatrix}-2&2\\6&-1\end{vmatrix}
++\begin{vmatrix}3&-1\\3&-1\end{vmatrix}\\
+&\quad+\begin{vmatrix}3&2\\-2&-2\end{vmatrix}
 =(-10)+0+(-2)=-12,
+\end{aligned}
 $$
 
 $$
-|A|=3\bigl[(-2)(-1)-2\cdot6\bigr]-2\bigl[(-2)(-1)-2\cdot3\bigr]+(-1)\bigl[(-2)\cdot6-(-2)\cdot3\bigr]
-=3(2-12)-2(2-6)+(-1)(-12+6)=-16 .
+\begin{aligned}
+|A|={}&3\bigl[(-2)(-1)-2\cdot6\bigr]\\
+&-2\bigl[(-2)(-1)-2\cdot3\bigr]\\
+&+(-1)\bigl[(-2)\cdot6-(-2)\cdot3\bigr]\\
+={}&3(2-12)-2(2-6)+(-1)(-12+6)\\
+={}&-16 .
+\end{aligned}
 $$
 
 于是
@@ -92,7 +101,11 @@ $$
 **验算**（逐一代回 $A\boldsymbol p=\lambda\boldsymbol p$）：
 
 $$
-A(1,-2,3)^{\mathrm T}=(3-4-3,\ -2+4+6,\ 3-12-3)^{\mathrm T}=(-4,8,-12)^{\mathrm T}=-4(1,-2,3)^{\mathrm T}\ ✓
+\begin{aligned}
+A(1,-2,3)^{\mathrm T}
+&=(3-4-3,\ -2+4+6,\ 3-12-3)^{\mathrm T}\\
+&=(-4,8,-12)^{\mathrm T}=-4(1,-2,3)^{\mathrm T}\ ✓
+\end{aligned}
 $$
 
 $$
@@ -386,7 +399,11 @@ $$
 **第二步：确认 $t=1$ 确为二重特征值。** 此时
 
 $$
-A=\begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix}=E+\boldsymbol e\boldsymbol e^{\mathrm T},\qquad \boldsymbol e=(1,1,1)^{\mathrm T},
+\begin{aligned}
+A&=\begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix}
+=E+\boldsymbol e\boldsymbol e^{\mathrm T},\\
+\boldsymbol e&=(1,1,1)^{\mathrm T},
+\end{aligned}
 $$
 
 $$
@@ -397,7 +414,11 @@ $$
 故特征值为 $4$（一重，特征向量 $\boldsymbol e$）与 $1$（二重），且
 
 $$
-|\lambda E-A|=\bigl|(\lambda-1)E-\boldsymbol e\boldsymbol e^{\mathrm T}\bigr|=(\lambda-1)^2(\lambda-4).
+\begin{aligned}
+|\lambda E-A|
+&=\bigl|(\lambda-1)E-\boldsymbol e\boldsymbol e^{\mathrm T}\bigr|\\
+&=(\lambda-1)^2(\lambda-4).
+\end{aligned}
 $$
 
 **第三步：可对角化，并给出 $T$。** $A$ 是实对称矩阵，必可正交对角化（也可直接验算：$r(A-E)=1$，故 $\dim\ker(A-E)=3-1=2$，等于代数重数）。

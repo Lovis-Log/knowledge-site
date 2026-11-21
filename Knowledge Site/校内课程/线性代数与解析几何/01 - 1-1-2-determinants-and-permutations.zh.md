@@ -119,8 +119,7 @@ $$
 则当 $D\ne 0$ 时，方程组的解为
 
 $$
-x_1=\frac{D_1}{D}=\frac{\begin{vmatrix}b_1 & a_{12}\\ b_2 & a_{22}\end{vmatrix}}{\begin{vmatrix}a_{11} & a_{12}\\ a_{21} & a_{22}\end{vmatrix}},\qquad
-x_2=\frac{D_2}{D}=\frac{\begin{vmatrix}a_{11} & b_1\\ a_{21} & b_2\end{vmatrix}}{\begin{vmatrix}a_{11} & a_{12}\\ a_{21} & a_{22}\end{vmatrix}} .
+x_1=\frac{D_1}{D},\qquad x_2=\frac{D_2}{D}.
 $$
 
 两个分母都是原方程组的系数行列式，这一点在代入数值时最容易出错：分母始终不换，只有分子换列。

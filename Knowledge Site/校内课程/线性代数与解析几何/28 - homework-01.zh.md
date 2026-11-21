@@ -1,6 +1,6 @@
 ---
 slug: "homework-01"
-title: "第 1 次作业（习题一）"
+title: "第 1 次作业（行列式与逆序数）"
 summary: "第 1 次作业 6 道题的题面与补充解答。"
 updatedAt: "2026-11-17"
 content_type: "reference"

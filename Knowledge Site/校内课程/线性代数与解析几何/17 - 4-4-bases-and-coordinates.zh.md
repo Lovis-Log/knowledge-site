@@ -54,9 +54,13 @@ $$
 的列向量组也是 $\mathbb{R}^{3}$ 的一组基（上三角且对角元非零，行列式为 $1\neq 0$，三列线性无关）。同一个 $b=(2,3,7)^{T}$ 表示为
 
 $$
+\begin{aligned}
 \begin{pmatrix}2\\3\\7\end{pmatrix}
-=(-1)\begin{pmatrix}1\\0\\0\end{pmatrix}+(-4)\begin{pmatrix}1\\1\\0\end{pmatrix}+7\begin{pmatrix}1\\1\\1\end{pmatrix}
+&=(-1)\begin{pmatrix}1\\0\\0\end{pmatrix}
++(-4)\begin{pmatrix}1\\1\\0\end{pmatrix}\\
+&\quad+7\begin{pmatrix}1\\1\\1\end{pmatrix}
 =-\alpha_1-4\alpha_2+7\alpha_3,
+\end{aligned}
 $$
 
 故 $b$ 在这组基下的坐标是 $(-1,-4,7)$。

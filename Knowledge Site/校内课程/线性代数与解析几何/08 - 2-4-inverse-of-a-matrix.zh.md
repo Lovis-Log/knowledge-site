@@ -64,9 +64,12 @@ $$
 则
 
 $$
-AB=\begin{pmatrix}1 & -1\\1 & 1\end{pmatrix}\begin{pmatrix}\frac12 & \frac12\\-\frac12 & \frac12\end{pmatrix}
+AB=\begin{pmatrix}1 & -1\\1 & 1\end{pmatrix}
+\begin{pmatrix}\frac12 & \frac12\\-\frac12 & \frac12\end{pmatrix}
 =\begin{pmatrix}1 & 0\\0 & 1\end{pmatrix},
-\qquad
+$$
+
+$$
 BA=\begin{pmatrix}1 & 0\\0 & 1\end{pmatrix},
 $$
 
@@ -443,6 +446,8 @@ $$
 $$
 B^{-1}=\begin{pmatrix}A_{11}^{-1} & O\\ O & A_{22}^{-1}\end{pmatrix}.
 $$
+
+> **补充证明（必要性）**：上面的构造只证明了“两块可逆 $\Rightarrow A$ 可逆”。反过来，若 $A$ 可逆，由拉普拉斯展开（1.5 节）沿前 $n_1$ 行展开，得 $|A|=|A_{11}||A_{22}|$；于是 $|A_{11}||A_{22}|=|A|\ne0$，故 $|A_{11}|\ne0$、$|A_{22}|\ne0$，两块都可逆。分块对角情形同理。
 
 **副对角分块**：设 $A_{12}$ 为 $n_1$ 阶、$A_{21}$ 为 $n_2$ 阶可逆方阵，则类似可证
 

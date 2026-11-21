@@ -191,10 +191,14 @@ $$
 (3) 用勾股关系独立验算：$|\overrightarrow{BA}|=\sqrt{16+4}=2\sqrt5$，投影长为 $\sqrt2$，故
 
 $$
-|\overrightarrow{AD}|^2=|\overrightarrow{BA}|^2-\bigl(\Pi_{\overrightarrow{BC}}\overrightarrow{BA}\bigr)^2=20-2=18\Longrightarrow|\overrightarrow{AD}|=3\sqrt2\ \checkmark
+\begin{aligned}
+|\overrightarrow{AD}|^2
+&=|\overrightarrow{BA}|^2-\bigl(\Pi_{\overrightarrow{BC}}\overrightarrow{BA}\bigr)^2\\
+&=20-2=18,
+\end{aligned}
 $$
 
-与课件结论一致。也可直接用 $\{|AD|=2S/|BC|=12/(2\sqrt2)=3\sqrt2$ 核对。
+所以 $|\overrightarrow{AD}|=3\sqrt2$，与课件结论一致。也可直接用 $|AD|=2S/|BC|=12/(2\sqrt2)=3\sqrt2$ 核对。
 
 (2) 叉积核对：按分量展开，$\{-4,-8,-8\}$ 的模为 $\sqrt{16+64+64}=12$，故面积为 $6$ ✓；这也与 (3) 的 $S=\frac12|BC|\cdot|AD|=\frac12\cdot2\sqrt2\cdot3\sqrt2=6$ 相互印证。
 
@@ -247,7 +251,11 @@ $$
 (\vec a+\vec b)\cdot(\vec a-\vec b)=\vec a\cdot\vec a-\vec b\cdot\vec b=3-1=2,
 $$
 $$
-\vec a\cdot\vec b=|\vec a||\vec b|\cos\langle\vec a,\vec b\rangle=\sqrt3\cdot1\cdot\frac{\sqrt3}{2}=\frac32,
+\begin{aligned}
+\vec a\cdot\vec b
+&=|\vec a||\vec b|\cos\langle\vec a,\vec b\rangle\\
+&=\sqrt3\cdot1\cdot\frac{\sqrt3}{2}=\frac32,
+\end{aligned}
 $$
 $$
 |\vec a+\vec b|^2=|\vec a|^2+|\vec b|^2+2\vec a\cdot\vec b=3+1+3=7,
@@ -274,7 +282,11 @@ $$
 法二：
 
 $$
-(\vec a+\vec b)\times(\vec a-\vec b)=\vec a\times\vec a-\vec b\times\vec b+\vec b\times\vec a-\vec a\times\vec b=2(\vec b\times\vec a),
+\begin{aligned}
+(\vec a+\vec b)\times(\vec a-\vec b)
+&=\vec a\times\vec a-\vec b\times\vec b+\vec b\times\vec a-\vec a\times\vec b\\
+&=2(\vec b\times\vec a),
+\end{aligned}
 $$
 $$
 \bigl|(\vec a+\vec b)\times(\vec a-\vec b)\bigr|=2|\vec b\times\vec a|
