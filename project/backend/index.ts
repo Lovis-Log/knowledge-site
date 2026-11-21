@@ -585,9 +585,9 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     if (method === "POST") {
       const data = await body(request);
       if (data.action === "import") {
-        if (data.account !== user.id) fail(409, "ACCOUNT_CHANGED", "????? / Account changed");
+        if (data.account !== user.id) fail(409, "ACCOUNT_CHANGED", "账号已切换 / Account changed");
         if (!Array.isArray(data.entries) || data.entries.length > 32)
-          fail(400, "INVALID_READING_STATE", "?????? / Invalid reading state");
+          fail(400, "INVALID_READING_STATE", "阅读记录无效 / Invalid reading state");
         const entries = data.entries.flatMap((item: unknown) => {
           if (!item || typeof item !== "object") return [];
           const entry = item as Record<string, unknown>;
@@ -605,10 +605,10 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
       const target = favoriteTarget(data.book, data.chapter);
       const book = canonicalBook(target.book);
       if (!target.chapter || !Object.hasOwn(FAVORITE_TITLES, favoritePath(book, target.chapter)))
-        fail(404, "NOT_FOUND", "????? / Content unavailable");
+        fail(404, "NOT_FOUND", "内容已下架 / Content unavailable");
       return json(await saveReadingState(db, user.id, { book, chapter: target.chapter }, data, fail));
     }
-    fail(405, "METHOD_NOT_ALLOWED", "?????? / Method not allowed");
+    fail(405, "METHOD_NOT_ALLOWED", "不支持此操作 / Method not allowed");
   }
   if (path.startsWith("/api/account/")) return accountApi(request,db,path,env);
   if (path === "/api/guestbook" || path === "/api/admin/guestbook")
