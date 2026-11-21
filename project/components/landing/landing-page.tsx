@@ -219,9 +219,15 @@ export function LandingPage() {
                 <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
               </figure>
             );
-            return signedIn
-              ? <Link href={volume.href} className={styles.collectionCard} key={volume.href} {...label}>{card}</Link>
-              : <a href={volume.href} className={styles.collectionCard} key={volume.href} {...label} onClick={(event) => { event.preventDefault(); openAuth("login", volume.href); }}>{card}</a>;
+            return <Link href={volume.href} className={styles.collectionCard} key={volume.href} {...label}
+              prefetch={signedIn ? undefined : false}
+              onClick={(event) => {
+                if (signedIn) return;
+                event.preventDefault();
+                openAuth("login", volume.href);
+              }}>
+              {card}
+            </Link>;
           })}
         </div>
         <button type="button" className={styles.collectionLink} onClick={openLibraryLogin}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></button>
