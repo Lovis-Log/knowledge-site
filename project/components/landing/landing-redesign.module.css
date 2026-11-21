@@ -332,7 +332,7 @@
 .heroDesktopLayer, .heroMobileLayer, .heroResumeLayer { position: absolute; }
 .heroDesktopLayer { width: var(--desktop-width); left: calc((100% - var(--composition-width)) / 2); top: 38px; }
 .heroMobileLayer { width: var(--phone-width); left: calc((100% - var(--composition-width)) / 2 + var(--desktop-width) - 24px); top: 30px; z-index: 2; }
-.heroResumeLayer { width: clamp(245px, 27%, 360px); left: 48%; bottom: 27px; z-index: 3; }
+.heroResumeLayer { width: clamp(258px, 29%, 384px); left: 48%; bottom: 27px; z-index: 3; }
 .heroArt .heroDesktopLayer img, .heroArt .heroMobileLayer img, .heroArt .heroResumeLayer img { display: block; width: 100%; height: auto; max-width: 100%; max-height: none; margin: 0; border: 1px solid #d4c8b5; border-radius: 6px; filter: none; box-shadow: 0 13px 30px #473a2a25; }
 .heroDesktopLayer img { transform: rotate(-3deg); }
 .heroMobileLayer img { transform: rotate(5deg); }
@@ -403,8 +403,8 @@
   .heroArt { --stage-height: clamp(245px, 70vw, 350px); height: var(--stage-height); margin-top: 26px; }
   .heroStageNote { top: 13px; left: 14px; right: 14px; font-size: .6875rem; }
   .heroDesktopLayer { width: 77%; left: 3%; top: 27%; }
-  .heroMobileLayer { width: 27%; left: auto; right: 4%; top: 14%; }
-  .heroResumeLayer { width: 65%; left: 28%; bottom: 12%; }
+  .heroMobileLayer { width: min(27%, calc(var(--stage-height) * .33)); left: auto; right: 4%; top: 14%; }
+  .heroResumeLayer { width: min(54%, 290px); left: auto; right: 8%; bottom: 12%; }
   .features { grid-template-columns: 1fr; gap: 35px; padding-block: 65px; }
   .featureCopy h2 { font-size: 32px; margin-bottom: 18px; }
   .featureCopy > p { font-size: .875rem; }
@@ -442,7 +442,6 @@
   max-width: 1360px;
   margin-top: 42px;
 }
-.heroResumeLayer { width: clamp(258px, 29%, 384px); }
 .heroStageNote { top: 16px; left: 24px; }
 
 /* The story now lives on the same paper as the sections around it, and its

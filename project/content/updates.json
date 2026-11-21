@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-21",
+    "version": "1.11.3",
+    "features": [
+      {
+        "zh": "更新关于页的阅读功能与来源介绍，修复深色模式的「支持本站」提示，并缩小手机首页拼图里的「继续阅读」卡片。",
+        "en": "Updated the About page, restored the dark-mode support tooltip, and resized the Continue Reading card in the mobile homepage collage."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-21",
     "version": "1.11.2",
     "features": [
       {
