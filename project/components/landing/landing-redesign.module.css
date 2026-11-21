@@ -492,6 +492,11 @@
    then let the visible state wipe and rise with the stagger above. */
 .volume[data-landing-reveal="pending"] .collectionWell { clip-path: inset(0 0 100% 0); translate: 0 14px; transition: none; }
 .volume[data-landing-reveal="visible"] .collectionWell { clip-path: inset(0 0 0 0); translate: 0 0; }
+/* Covers ship closed so scroll restoration never flashes an unwiped card.
+   Without scripting nothing will reopen them, so keep the artwork visible. */
+@media (scripting: none) {
+  .volume[data-landing-reveal] .collectionWell { clip-path: none; translate: none; }
+}
 .collectionWell img {
   display: block;
   width: 69%;

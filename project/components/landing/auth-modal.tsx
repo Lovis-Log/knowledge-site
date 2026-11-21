@@ -327,7 +327,9 @@ export function AuthModal({
                   {error}
                 </p>
               )}
-              <form onSubmit={submit} noValidate>
+              {/* A real submit form with stable credential fields lets browser
+                  password managers offer username/current-password autofill. */}
+              <form onSubmit={submit} noValidate method="post" autoComplete="on">
                 <div className={styles.field}>
                   <label htmlFor="lm-username">
                     <UiText zh="用户名" en="Username" />

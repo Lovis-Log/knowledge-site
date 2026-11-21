@@ -98,8 +98,10 @@ export function LandingPage() {
     let observer: IntersectionObserver | undefined;
     function setup() {
       observer?.disconnect();
-      items.forEach((item) => { item.dataset.landingReveal = "visible"; });
-      if (reduced.matches || !("IntersectionObserver" in window)) return;
+      if (reduced.matches || !("IntersectionObserver" in window)) {
+        items.forEach((item) => { item.dataset.landingReveal = "visible"; });
+        return;
+      }
       observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
@@ -110,21 +112,44 @@ export function LandingPage() {
           });
         });
       }, { threshold: .14 });
-      items.forEach((item) => {
-        if (item.getBoundingClientRect().top > innerHeight * .95) item.dataset.landingReveal = "pending";
-        observer?.observe(item);
-      });
+      // The collection covers replay their wipe on every entry, including
+      // back/forward and restored scroll positions. Everything else keeps the
+      // natural scroll-triggered reveal and is only closed below the fold.
+      // Measure first, then write, so one style pass resolves every closed clip.
+      const wiping = new Set(items.filter((item) =>
+        item.hasAttribute("data-landing-volume") || item.getBoundingClientRect().top > innerHeight * .95,
+      ));
+      items.forEach((item) => { item.dataset.landingReveal = wiping.has(item) ? "pending" : "visible"; });
+      if (wiping.size) void root.current?.offsetHeight;
+      items.forEach((item) => observer?.observe(item));
     }
+    // A page restored from the back/forward cache keeps its finished DOM, so
+    // reset it and let the observer wipe the covers again. Closing the covers
+    // before the page is frozen keeps the restored frame from flashing open.
+    const suspend = (event: PageTransitionEvent) => {
+      if (!event.persisted) return;
+      items.forEach((item) => { if (item.hasAttribute("data-landing-volume")) item.dataset.landingReveal = "pending"; });
+    };
+    const resume = (event: PageTransitionEvent) => { if (event.persisted) setup(); };
     setup();
     reduced.addEventListener("change", setup);
-    return () => { live = false; observer?.disconnect(); reduced.removeEventListener("change", setup); };
+    window.addEventListener("pagehide", suspend);
+    window.addEventListener("pageshow", resume);
+    return () => {
+      live = false;
+      observer?.disconnect();
+      reduced.removeEventListener("change", setup);
+      window.removeEventListener("pagehide", suspend);
+      window.removeEventListener("pageshow", resume);
+    };
   }, []);
 
 
+  // Access always goes through the sign-in form, even when a session is still
+  // valid, so returning readers can unlock their password manager and submit
+  // deliberately instead of being sent straight into the library.
   function entrance(className: string) {
-    return signedIn
-      ? <Link href="/library/" className={className}><UiText {...copy.enter} /><Arrow /></Link>
-      : <button type="button" className={className} onClick={() => openAuth("login")}><UiText {...copy.enter} /><Arrow /></button>;
+    return <button type="button" className={className} onClick={() => openAuth("login", "/library/")}><UiText {...copy.enter} /><Arrow /></button>;
   }
 
   return (
@@ -185,7 +210,7 @@ export function LandingPage() {
           {landingVolumes.map((volume) => {
             const label = uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`);
             const card = (
-              <figure className={styles.volume} data-landing-reveal="visible">
+              <figure className={styles.volume} data-landing-reveal="pending" data-landing-volume>
                 <div className={styles.collectionWell}>
                   <img src={volume.cover} width={528} height={704} loading="lazy" decoding="async" alt="" />
                 </div>
