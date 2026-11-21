@@ -11,9 +11,6 @@ import type { HighlightView, ReadingHighlight, ReadingState } from "@/lib/readin
 import { uiLabel } from "@/lib/ui-language";
 import { UiText } from "./ui-text";
 
-const registryName = "lovismind-reading-highlight";
-const activeRegistryName = "lovismind-reading-highlight-active";
-
 type Target = {
   mark: ReadingHighlight | null;
   remove: boolean;
@@ -25,73 +22,32 @@ type Target = {
   /** The reader dragged right-to-left, so the pen follows the left/focus edge. */
   atStart: boolean;
 };
-type PaintedMark = { mark: ReadingHighlight; ranges: Range[]; element: HTMLElement };
-
-function formulaForRange(range: Range) {
-  const container = range.startContainer;
-  if (!(container instanceof Element)) return null;
-  const node = container.childNodes[range.startOffset];
-  return node instanceof HTMLElement && node.matches(".katex") ? node : null;
-}
-
-function glyphFormula(range: Range) {
-  return range.startContainer instanceof Text
-    ? range.startContainer.parentElement?.closest<HTMLElement>(".katex-html")
-    : null;
-}
-
-function measureBands(container: HTMLElement, fragments: readonly Range[]) {
-  const area = container.getBoundingClientRect();
-  if (!area.width || !area.height || area.bottom <= 0 ||
-      area.top >= innerHeight || area.right <= 0 || area.left >= innerWidth) return [];
-
-  const boxes: HighlightBox[] = [];
-  const size = Number.parseFloat(getComputedStyle(container).fontSize) || 16;
-  // Viewport overlays need the same clipping as the selected content.
-  const scrollBox = container.closest<HTMLElement>("pre, .katex-display, .table-wrap");
-  const bounds = scrollBox?.getBoundingClientRect();
-  const minX = bounds && scrollBox ? bounds.left + scrollBox.clientLeft : -Infinity;
-  const maxX = scrollBox ? minX + scrollBox.clientWidth : Infinity;
-  const minY = bounds && scrollBox ? bounds.top + scrollBox.clientTop : -Infinity;
-  const maxY = scrollBox ? minY + scrollBox.clientHeight : Infinity;
-  for (const fragment of fragments) {
-    for (const rect of fragment.getClientRects()) {
-      const left = Math.max(rect.left, minX);
-      const right = Math.min(rect.right, maxX);
-      const top = Math.max(rect.top, minY);
-      const bottom = Math.min(rect.bottom, maxY);
-      if (right > left && bottom > top) boxes.push({ top, left, right, bottom, size });
-    }
-  }
-  return groupHighlightBands(boxes);
-}
-
 type BandGroup = [HTMLElement, Range[]];
-const codeBlock = "pre, p, li, dt, dd, td, th, h1, h2, h3, h4, h5, h6";
+type PaintedMark = {
+  mark: ReadingHighlight;
+  ranges: Range[];
+  element: HTMLElement;
+  groups: BandGroup[];
+  bands: HighlightBand[];
+};
 
-function separateCodeRanges(ranges: readonly Range[]) {
-  const blocks = new Map<HTMLElement, Range[]>();
-  for (const range of ranges) {
-    const block = range.startContainer.parentElement?.closest("code")?.closest<HTMLElement>(codeBlock);
-    if (block && !blocks.has(block)) blocks.set(block, []);
-  }
-  if (!blocks.size) return { code: [], text: ranges };
+const textBlock = "pre, p, li, dt, dd, td, th, h1, h2, h3, h4, h5, h6, blockquote";
+const tableRow = ".mtable > [class^='col-align-'] > .vlist-t > .vlist-r > .vlist > span";
 
-  const text: Range[] = [];
-  for (const range of ranges) {
-    const block = range.startContainer.parentElement?.closest<HTMLElement>(codeBlock);
-    const group = block && blocks.get(block);
-    if (group) group.push(range);
-    else text.push(range);
-  }
-  return { code: [...blocks], text };
-}
-
-function selectedTextRanges(element: HTMLElement, selection: Range, accepts?: (node: Text) => boolean) {
+function selectedTextRanges(element: HTMLElement, selection: Range) {
   const pieces: Range[] = [];
-  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
-  for (let node = walker.nextNode() as Text | null; node; node = walker.nextNode() as Text | null) {
-    if (!selection.intersectsNode(node) || (accepts && !accepts(node))) continue;
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+    acceptNode(node) {
+      const parent = node instanceof Element ? node : node.parentElement;
+      if (!parent || !selection.intersectsNode(node) ||
+          parent.closest("button, svg, .reader-sr-only, [hidden], .katex-mathml") ||
+          (parent.closest("[aria-hidden='true']") && !parent.closest(".katex-html"))) {
+        return NodeFilter.FILTER_REJECT;
+      }
+      return node instanceof Text ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+    },
+  });
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const piece = document.createRange();
     piece.selectNodeContents(node);
     if (node === selection.startContainer) piece.setStart(node, selection.startOffset);
@@ -101,49 +57,92 @@ function selectedTextRanges(element: HTMLElement, selection: Range, accepts?: (n
   return pieces;
 }
 
-function codeSelectionGroups(selection: Range, parent: Element): BandGroup[] {
-  const containing = parent.closest<HTMLElement>("code");
-  const codes = containing ? [containing] : parent.querySelectorAll<HTMLElement>("code");
-  const blocks = new Set<HTMLElement>();
-  for (const code of codes) {
-    const block = code.closest<HTMLElement>(codeBlock);
-    if (block && selection.intersectsNode(code)) blocks.add(block);
-  }
-  return [...blocks].flatMap((block): BandGroup[] => {
-    const ranges = selectedTextRanges(block, selection, (node) => {
-      const element = node.parentElement;
-      return element?.closest(codeBlock) === block && !element.closest(".katex, button, [hidden]");
-    });
-    return ranges.some((range) => range.startContainer.parentElement?.closest("code")) ? [[block, ranges]] : [];
-  });
-}
-
-/** Keep saved marks and distinct formulas separate, even when they share a prose line. */
-function groupFormulaRanges(ranges: readonly Range[]) {
-  const byFormula = new Map<HTMLElement, Range[]>();
+function groupRanges(view: HTMLElement, ranges: readonly Range[]): BandGroup[] {
+  const groups = new Map<HTMLElement, Range[]>();
+  const add = (fragment: Range) => {
+    const parent = fragment.startContainer.parentElement;
+    const container = parent?.closest<HTMLElement>(".katex-display") ??
+      parent?.closest<HTMLElement>(textBlock) ?? view;
+    const group = groups.get(container);
+    if (group) group.push(fragment);
+    else groups.set(container, [fragment]);
+  };
   for (const range of ranges) {
-    const formula = glyphFormula(range);
-    if (!formula) continue;
-    const group = byFormula.get(formula);
-    if (group) group.push(range);
-    else byFormula.set(formula, [range]);
+    if (range.startContainer instanceof Text) {
+      add(range);
+    } else {
+      // Older marks store an entire KaTeX node. Paint its rendered glyphs by row too.
+      const node = range.startContainer.childNodes[range.startOffset];
+      const rendered = node instanceof Element
+        ? node.querySelector<HTMLElement>(".katex-html")
+        : null;
+      if (rendered) selectedTextRanges(rendered, range).forEach(add);
+    }
   }
-  return [...byFormula];
+  return [...groups];
 }
 
-/** Only inspect formulas in the live selection's common ancestor. */
-function selectionBands(range: Range) {
-  const ancestor = range.commonAncestorContainer;
-  const parent = ancestor instanceof Element ? ancestor : ancestor.parentElement;
-  if (!parent) return [];
-  const containing = parent.closest<HTMLElement>(".katex-html");
-  const formulas = containing ? [containing] : parent.querySelectorAll<HTMLElement>(".katex-html");
-  const bands: HighlightBand[] = [];
-  for (const formula of formulas) {
-    if (!range.intersectsNode(formula)) continue;
-    bands.push(...measureBands(formula, selectedTextRanges(formula, range)));
+function measureBands(container: HTMLElement, fragments: readonly Range[]) {
+  const area = container.getBoundingClientRect();
+  if (!area.width || !area.height || area.bottom <= 0 ||
+      area.top >= innerHeight || area.right <= 0 || area.left >= innerWidth) return [];
+
+  const display = container.matches(".katex-display");
+  const font = display ? container.querySelector(".katex") ?? container : container;
+  const size = Number.parseFloat(getComputedStyle(font).fontSize) || 16;
+  // A viewport overlay still has to respect the code, formula, or table scrollport.
+  const scroll = container.closest<HTMLElement>("pre, .katex-display, .table-wrap");
+  const bounds = scroll?.getBoundingClientRect();
+  const minX = bounds && scroll ? bounds.left + scroll.clientLeft : -Infinity;
+  const minY = bounds && scroll ? bounds.top + scroll.clientTop : -Infinity;
+  const maxX = scroll ? minX + scroll.clientWidth : Infinity;
+  const maxY = scroll ? minY + scroll.clientHeight : Infinity;
+
+  const boxes: HighlightBox[] = [];
+  const delimiters: HighlightBox[] = [];
+  const lineCenters = new Map<Element, number>();
+  for (const range of fragments) {
+    const parent = range.startContainer.parentElement;
+    const anchor = display
+      ? parent?.closest(tableRow)?.querySelector(":scope > .pstrut")
+      : parent?.closest(".katex-html .base")?.querySelector(":scope > .strut");
+    let rowCenter: number | undefined;
+    if (anchor) {
+      rowCenter = lineCenters.get(anchor);
+      if (rowCenter === undefined) {
+        // The KaTeX strut ends at the row baseline plus its descender offset.
+        const offset = parseFloat(getComputedStyle(anchor).verticalAlign) || 0;
+        rowCenter = anchor.getBoundingClientRect().bottom + offset - size * 0.34;
+        lineCenters.set(anchor, rowCenter);
+      }
+    }
+
+    const selected = display && parent?.closest(".delimsizing.mult") ? delimiters : boxes;
+    for (const rect of range.getClientRects()) {
+      const left = Math.max(rect.left, minX);
+      const right = Math.min(rect.right, maxX);
+      const top = Math.max(rect.top, minY);
+      const bottom = Math.min(rect.bottom, maxY);
+      if (right > left && bottom > top) selected.push({ top, left, right, bottom, size, rowCenter });
+    }
   }
-  return bands;
+
+  const bands = groupHighlightBands(boxes.length ? boxes : delimiters, display ? Math.max(2, size * 0.15) : 0);
+  if (!boxes.length || !delimiters.length) return bands;
+
+  // Pieces of a tall brace can extend a selected row, but cannot join two rows.
+  return bands.map((band) => {
+    const y = band.top + band.height / 2;
+    let left = band.left;
+    let right = band.left + band.width;
+    for (const piece of delimiters) {
+      if (piece.top <= y && piece.bottom >= y) {
+        left = Math.min(left, piece.left);
+        right = Math.max(right, piece.right);
+      }
+    }
+    return { ...band, left, width: right - left };
+  });
 }
 
 function visibleBoxes(range: Range) {
@@ -205,8 +204,6 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
   const busy = useRef(false);
   const [error, setError] = useState(false);
-  const [fallback, setFallback] = useState<DOMRect[]>([]);
-  const [activeFallback, setActiveFallback] = useState<DOMRect[]>([]);
   const [bands, setBands] = useState<HighlightBand[]>([]);
   const [activeBands, setActiveBands] = useState<HighlightBand[]>([]);
   // Bumped when the reader switches language, view or font size: the formula
@@ -244,36 +241,15 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       };
       for (const mark of viewMarks) {
         const ranges = highlightRanges(index, mark, fallbackIndex);
-        if (ranges.length) painted.current.push({ mark, ranges, element });
+        if (ranges.length) painted.current.push({ mark, ranges, element, groups: groupRanges(element, ranges), bands: [] });
       }
-    }
-    // Resolve each mark separately so a gap between separate selections stays clear.
-    const groups: BandGroup[] = [];
-    const whole: Range[] = [];
-    const text: Range[] = [];
-    for (const { ranges } of painted.current) {
-      const prose: Range[] = [];
-      for (const range of ranges) {
-        if (formulaForRange(range)) whole.push(range);
-        else if (!glyphFormula(range)) prose.push(range);
-      }
-      const separated = separateCodeRanges(prose);
-      text.push(...separated.text);
-      groups.push(...groupFormulaRanges(ranges), ...separated.code);
-    }
-    const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
-    formulas.forEach((element) => element.classList.add("reading-formula-highlight"));
-    const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-highlight"));
-    let paintFallback: (() => void) | null = null;
-    if (typeof Highlight === "function" && CSS.highlights) {
-      CSS.highlights.set(registryName, new Highlight(...text));
-    } else {
-      paintFallback = () => setFallback(text.flatMap((range) => Array.from(range.getClientRects())));
     }
     const paint = () => {
-      const next = groups.flatMap(([container, ranges]) => measureBands(container, ranges));
+      const next = painted.current.flatMap((item) => {
+        item.bands = item.groups.flatMap(([container, ranges]) => measureBands(container, ranges));
+        return item.bands;
+      });
       setBands((current) => sameBands(current, next) ? current : next);
-      paintFallback?.();
     };
     paint();
     let frame = 0;
@@ -286,8 +262,6 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const flow = typeof ResizeObserver === "function" ? new ResizeObserver(schedule) : null;
     flow?.observe(article);
     return () => {
-      clearFormulas();
-      CSS.highlights?.delete(registryName);
       flow?.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule, true);
@@ -310,47 +284,17 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   useEffect(() => {
     if (!activeRange || !activeElement || !activeRanges) {
       setActiveBands((current) => current.length ? [] : current);
-      setActiveFallback((current) => current.length ? [] : current);
       return;
     }
-    const ranges = activeRanges;
-    const whole: Range[] = [];
-    const glyphs: Range[] = [];
-    const prose: Range[] = [];
-    for (const range of ranges) {
-      if (formulaForRange(range)) whole.push(range);
-      else if (glyphFormula(range)) glyphs.push(range);
-      else prose.push(range);
-    }
-    const { code, text } = separateCodeRanges(prose);
     const ancestor = activeRange.commonAncestorContainer;
-    const parent = ancestor instanceof Element ? ancestor : ancestor.parentElement;
-    const codeGroups = ranges.length || !parent ? code : codeSelectionGroups(activeRange, parent);
-    const formulas = whole.map(formulaForRange).filter((element): element is HTMLElement => Boolean(element));
-    const groups = groupFormulaRanges(glyphs);
-    formulas.forEach((element) => element.classList.add("reading-formula-active"));
-    const clearFormulas = () => formulas.forEach((element) => element.classList.remove("reading-formula-active"));
-    const supported = typeof Highlight === "function" && Boolean(CSS.highlights);
-    if (supported) {
-      if (text.length) {
-        const highlight = new Highlight(...text);
-        highlight.priority = 1;
-        CSS.highlights.set(activeRegistryName, highlight);
-      }
-    }
-    // Replace native selection paint only where the overlay covers selected content.
+    const part = ancestor instanceof HTMLElement ? ancestor : ancestor.parentElement;
+    const root = part && activeElement.contains(part) ? part : activeElement;
+    const picked = activeRanges.length ? activeRanges : selectedTextRanges(root, activeRange);
+    const groups = groupRanges(activeElement, picked);
     const paint = () => {
-      const math = ranges.length
-        ? groups.flatMap(([formula, group]) => measureBands(formula, group))
-        : selectionBands(activeRange);
-      const codeBands = codeGroups.map(([block, ranges]) => measureBands(block, ranges));
-      const next = math.concat(codeBands.flat());
+      const next = groups.flatMap(([container, ranges]) => measureBands(container, ranges));
       setActiveBands((current) => sameBands(current, next) ? current : next);
-      codeGroups.forEach(([block], index) => block.toggleAttribute("data-reading-code-band", Boolean(codeBands[index].length)));
-      activeElement.toggleAttribute("data-reading-formula-band", Boolean(math.length));
-      if (!supported) {
-        setActiveFallback(text.flatMap((range) => Array.from(range.getClientRects())));
-      }
+      activeElement.toggleAttribute("data-reading-band-selection", Boolean(next.length));
     };
     paint();
     let frame = 0;
@@ -360,10 +304,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     window.addEventListener("scroll", schedule, { capture: true, passive: true });
     window.addEventListener("resize", schedule);
     return () => {
-      clearFormulas();
-      CSS.highlights?.delete(activeRegistryName);
-      activeElement.removeAttribute("data-reading-formula-band");
-      codeGroups.forEach(([block]) => block.removeAttribute("data-reading-code-band"));
+      activeElement.removeAttribute("data-reading-band-selection");
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
@@ -430,22 +371,16 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       if (busy.current || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
         event.target.closest("a, button")) return;
       const view = viewFor(event.target);
-      const formula = event.target.closest(".katex");
-      for (const { mark, ranges, element } of painted.current) {
+      for (const { mark, ranges, element, bands } of painted.current) {
         if (element !== view) continue;
-        const range = ranges.find((candidate) => {
-          const owner = formulaForRange(candidate) ?? glyphFormula(candidate)?.closest(".katex") ?? null;
-          return owner === formula && Array.from(candidate.getClientRects()).some((box) =>
-            box.width > 0 && event.clientX >= box.left && event.clientX <= box.right &&
-            event.clientY >= box.top && event.clientY <= box.bottom);
-        });
-        if (!range) continue;
-        const bounds = range.getBoundingClientRect();
-        const rect = visibleSelectionRect(range) ?? (bounds.width > 0 && bounds.height > 0 ? bounds : null);
-        if (rect) {
-          setError(false);
-          setTarget({ mark, remove: true, rect, range, view: mark.view, element, ranges, atStart: false });
-        }
+        const hit = bands.find((band) => event.clientX >= band.left && event.clientX <= band.left + band.width &&
+          event.clientY >= band.top && event.clientY <= band.top + band.height);
+        if (!hit) continue;
+        const selection = window.getSelection();
+        const range = selection?.rangeCount ? selection.getRangeAt(0).cloneRange() : ranges[0];
+        const rect = new DOMRect(event.clientX, hit.top, 0, hit.height);
+        setError(false);
+        setTarget({ mark, remove: true, rect, range, view: mark.view, element, ranges, atStart: false });
         return;
       }
     };
@@ -565,21 +500,13 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     }
   }
 
-  if (!target && !fallback.length && !activeFallback.length && !bands.length && !activeBands.length) return null;
+  if (!target && !bands.length && !activeBands.length) return null;
   return createPortal(<>
-    {fallback.map((rect, index) => (
-      <span key={index} className="reading-highlight-overlay" aria-hidden="true"
-        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
-    ))}
     {(bands.length > 0 || activeBands.length > 0) && (
       <svg className="reading-highlight-bands" aria-hidden="true">
         <path d={bandPath([...bands, ...activeBands])} />
       </svg>
     )}
-    {activeFallback.map((rect, index) => (
-      <span key={index} className="reading-highlight-overlay reading-highlight-overlay--active" aria-hidden="true"
-        style={{ top: rect.top, left: rect.left, width: rect.width, height: rect.height }} />
-    ))}
     {target && (
       <div className="reading-highlight-action" style={{
         top: Math.max(8, Math.min(innerHeight - 44, target.rect.top > 48 ? target.rect.top - 42 : target.rect.bottom + 8)),
@@ -589,8 +516,8 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
           onPointerDown={(event) => event.preventDefault()} onClick={() => void apply()}
           {...(target.remove ? uiLabel("移除高亮", "Remove highlight") : uiLabel("添加高亮", "Highlight text"))}>
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m5 14 5 5m-6 1h7m7.5-16.5 2 2a1.5 1.5 0 0 1 0 2.1L12 16l-5 2 2-5 8.4-8.5a1.5 1.5 0 0 1 2.1 0Z" />
-            {target.remove && <path d="M16 21h5" />}
+            {target.remove ? <path d="M6 6l12 12M18 6 6 18" /> :
+              <path d="m5 14 5 5m-6 1h7m7.5-16.5 2 2a1.5 1.5 0 0 1 0 2.1L12 16l-5 2 2-5 8.4-8.5a1.5 1.5 0 0 1 2.1 0Z" />}
           </svg>
         </button>
         {(error || (failed && !state)) && <span role="status" className="reading-highlight-error">

@@ -3579,29 +3579,6 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
   --reading-highlight-ink: #fff5df;
 }
 
-::highlight(lovismind-reading-highlight) {
-  background-color: var(--reading-highlight-bg);
-  color: var(--reading-highlight-ink);
-}
-
-/* The mark under the pen keeps an accent wash so a click is answered visually at once. */
-::highlight(lovismind-reading-highlight-active) {
-  background-color: color-mix(in srgb, var(--reading-highlight-bg) 55%, var(--accent));
-  color: var(--reading-highlight-ink);
-}
-
-.reading-highlight-overlay {
-  position: fixed;
-  z-index: 2;
-  background: color-mix(in srgb, var(--reading-highlight-bg) 68%, transparent);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.reading-highlight-overlay--active {
-  background: color-mix(in srgb, var(--reading-highlight-bg) 40%, var(--accent));
-}
-
 /* One path paints the union of measured bands at a single opacity. */
 .reading-highlight-bands {
   position: fixed;
@@ -3616,14 +3593,12 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 
 :root[data-theme="dark"] .reading-highlight-bands { fill: rgb(216 184 120 / 30%); }
 
-/* Avoid painting two backgrounds over the measured selection. */
-.prose[data-reading-formula-band] .katex-html ::selection,
-.prose :is([data-reading-code-band], [data-reading-code-band] *)::selection {
+/* The overlay replaces native paint once the selection settles. */
+.prose[data-reading-band-selection]::selection,
+.prose[data-reading-band-selection] *::selection {
   background: transparent;
   color: inherit;
 }
-
-:root[data-theme="dark"] .reading-highlight-overlay { mix-blend-mode: screen; }
 
 .reading-highlight-action {
   position: fixed;
@@ -3660,27 +3635,10 @@ html body .about__email+.copy-control button{background:var(--action-bg)}
 }
 
 @media print {
-  .reading-highlight-overlay,
   .reading-highlight-bands,
   .reading-highlight-action { display: none; }
 }
 
-/* Rendered formula glyphs are highlighted in place, so a highlight can stop on one symbol.
-   Whole-formula anchors keep the complete box so scripts and fractions stay legible. */
-.prose .katex.reading-formula-highlight {
-  display: inline-block;
-  border-radius: 3px;
-  background: var(--reading-highlight-bg);
-  color: var(--reading-highlight-ink);
-  box-shadow: 0 0 0 2px var(--reading-highlight-bg);
-}
-.prose .katex.reading-formula-active {
-  display: inline-block;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--reading-highlight-bg) 40%, var(--accent));
-  color: var(--reading-highlight-ink);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--reading-highlight-bg) 40%, var(--accent));
-}
 /* Keep the clipped MathML copy out of native selections so only visible glyphs are quoted. */
 .prose .katex .katex-mathml {
   -webkit-user-select: none;

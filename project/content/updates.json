@@ -1,6 +1,17 @@
 [
   {
     "date": "2026-11-21",
+    "version": "1.11.5",
+    "features": [
+      {
+        "zh": "正文、行内公式和代码在同一行使用连续、等高的高亮色带。多行公式逐行留缝，点击已保存的高亮即可从浮动按钮取消。",
+        "en": "Text, inline math and code share an even highlight band on each line. Display math keeps space between rows. Click a saved highlight to reveal its remove button."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-21",
     "version": "1.11.4",
     "features": [
       {
