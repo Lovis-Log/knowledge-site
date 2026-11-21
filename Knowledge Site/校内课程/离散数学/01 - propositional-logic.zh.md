@@ -19,6 +19,8 @@ sources:
 
 ### 1.1.1 命题的概念
 
+#### 命题与真值
+
 **定义（命题）**
 
 命题是用陈述句表示的一个或者为真、或者为假，但不能同时既为真又为假的判断语句。
@@ -26,6 +28,8 @@ sources:
 命题的真值是判断的结果，记为真（T 或 1）或假（F 或 0）。真值为真的命题称为真命题，真值为假的命题称为假命题。
 
 判断一个句子是不是命题，关键看两点：它必须是陈述句；它的真值必须唯一确定。至于这个真值是否已经被人们知道，并不影响它是不是命题。
+
+#### 例题：判断句子是否为命题
 
 **例** 判断下列句子哪些是命题；若是命题，指出其真值。
 
@@ -48,6 +52,8 @@ sources:
 6. 是命题。真值客观确定，只是目前未知。
 7. 不是命题，是感叹句。
 8. 不是命题。这是罗素悖论式的自指句，无法一致地赋予真值。
+
+#### 命题变元与复合命题
 
 表示命题的符号称为命题变量（命题变元），通常用 $p,q,r,\dots$ 或 $P,Q,R,\dots$ 表示。命题变量本身没有真值；只有用它表示一个确定的命题之后，才有真值。例如用 $p$ 表示“$2+3=6$”，此时 $p$ 的真值为 F；若用 $p$ 表示“$2+3=5$”，则 $p$ 的真值为 T。
 
@@ -146,9 +152,9 @@ $$
 
 #### 优先级与综合真值表
 
-五个基本联结词的优先级从高到低为
+括号的优先级最高，五个基本联结词从高到低为
 $$
-(\;),\quad \neg,\quad \land,\quad \lor,\quad \to,\quad \leftrightarrow.
+\neg,\quad \land,\quad \lor,\quad \to,\quad \leftrightarrow.
 $$
 括号可以省略时按上述优先级结合。例如 $\neg p\land q$ 表示 $(\neg p)\land q$，而不是 $\neg(p\land q)$。
 
@@ -267,6 +273,8 @@ $$
 
 ## 1.2 命题公式及其分类
 
+### 1.2.1 命题公式与赋值
+
 **命题常元**代表特定的简单命题；**命题变元**代表任意命题，是取值为 1（真）或 0（假）的变量。
 
 **定义1.2.1（命题公式）**
@@ -289,6 +297,8 @@ $$
 p_1=\alpha_1,\ p_2=\alpha_2,\ \dots,\ p_n=\alpha_n.
 $$
 当 $A$ 的全部命题变元为 $p,q,r,\dots$ 时，赋值 $\alpha_1\alpha_2\alpha_3\cdots$ 是指 $p=\alpha_1,q=\alpha_2,r=\alpha_3,\dots$。
+
+### 1.2.2 真值表
 
 真值表是命题公式在所有可能赋值下取值的列表。含 $n$ 个变元的公式有 $2^n$ 个赋值。
 
@@ -330,6 +340,8 @@ $$
 | 1 | 1 | 0 | 1 | 0 | 0 |
 
 $n$ 个命题变元可以产生 $2^{2^n}$ 个不同的真值表，因为每个公式在 $2^n$ 个赋值处各有 2 种取值。
+
+### 1.2.3 公式的分类
 
 **定义1.2.3（公式的分类）**
 
@@ -418,6 +430,8 @@ $$
 | 归谬论 | $(p\to q)\land(p\to\neg q)\Leftrightarrow\neg p$ |
 
 **置换规则** 若公式 $G$ 中的一部分 $A$（包含 $G$ 中几个连续的符号）是公式，称 $A$ 为 $G$ 的子公式；用与 $A$ 逻辑等价的公式 $B$ 置换 $A$，不改变 $G$ 的真值。
+
+> **适用条件**：置换要求替换前后的子公式**逻辑等价**（$\Leftrightarrow$）。若只用单向蕴涵 $A\Rightarrow B$ 把子公式 $A$ 换成 $B$，新公式只与原公式有蕴涵关系，一般不再等值。因此等值演算的每一步都应写 $\Leftrightarrow$，并注明所用的等值式；把 $\Rightarrow$ 混进等值链，是这一节最常见的错误。
 
 利用已知等值式，把子公式替换为与它等价的公式，可以推出其他等值式，这一过程称为命题的等价运算。等价运算可用于判断两个命题是否等价、判断公式类型、化简公式等。
 
@@ -509,20 +523,29 @@ $$
 $$
 F\Leftrightarrow(p\land q)\lor(\neg p\land\neg q)\lor(p\land\neg q).
 $$
-化简：
-
+先合并后两项：
 $$
 \begin{aligned}
-F
-&\Leftrightarrow (p\land q)\lor(\neg p\land\neg q)\lor(p\land\neg q)\\
-&\Leftrightarrow (p\land q)\lor\neg q &&\text{后两项合并为 }\neg q\\
-&\Leftrightarrow p\lor\neg q &&\text{吸收/分配}
+(\neg p\land\neg q)\lor(p\land\neg q)
+&\Leftrightarrow(\neg p\lor p)\land\neg q &&\text{分配律}\\
+&\Leftrightarrow1\land\neg q &&\text{排中律}\\
+&\Leftrightarrow\neg q &&\text{同一律}
 \end{aligned}
 $$
-
-其中 $(\neg p\land\neg q)\lor(p\land\neg q)\Leftrightarrow(\neg p\lor p)\land\neg q\Leftrightarrow\neg q$，而 $(p\land q)\lor\neg q\Leftrightarrow(p\lor\neg q)\land(q\lor\neg q)\Leftrightarrow p\lor\neg q$。
-
-因此只需一个或门和一个非门：
+再把结果与第一项合并：
+$$
+\begin{aligned}
+(p\land q)\lor\neg q
+&\Leftrightarrow(p\lor\neg q)\land(q\lor\neg q) &&\text{分配律}\\
+&\Leftrightarrow(p\lor\neg q)\land1 &&\text{排中律}\\
+&\Leftrightarrow p\lor\neg q &&\text{同一律}
+\end{aligned}
+$$
+因此
+$$
+F\Leftrightarrow p\lor\neg q,
+$$
+只需一个或门和一个非门：
 
 ![化简后的逻辑电路](/images/campus-discrete-mathematics/ch01-circuit-simplified.png)
 
@@ -602,6 +625,17 @@ $$
 A(\neg p_1,\neg p_2,\dots,\neg p_n)\Leftrightarrow\neg A^*(p_1,p_2,\dots,p_n).
 $$
 
+> **补充证明**（对偶式的基本性质）
+>
+> **假设**：$A$ 只含 $\neg,\land,\lor$ 及常元 $0,1$，$A^*$ 由互换 $\land$ 与 $\lor$、互换 $0$ 与 $1$ 得到，且 $A^*$ 中不出现其他符号。要证 $\neg A(p_1,\dots,p_n)\Leftrightarrow A^*(\neg p_1,\dots,\neg p_n)$。
+>
+> **推理**：对 $A$ 的结构归纳。基础情形：$A=p_i$ 时 $A^*=p_i$，两边都是 $\neg p_i$；$A=1$ 时 $A^*=0$，两边都是 $0$；$A=0$ 时两边都是 $1$。
+>
+> 归纳步分三种情形。若 $A=\neg B$，由归纳假设 $\neg B(p)\Leftrightarrow B^*(\neg p)$，两边否定得 $B(p)\Leftrightarrow\neg B^*(\neg p)$，于是 $\neg A(p)=\neg\neg B(p)\Leftrightarrow B(p)\Leftrightarrow\neg B^*(\neg p)=A^*(\neg p)$。若 $A=B\land C$，则 $A^*=B^*\lor C^*$，由归纳假设
+> $\neg A(p)=\neg B(p)\lor\neg C(p)\Leftrightarrow B^*(\neg p)\lor C^*(\neg p)=A^*(\neg p)$。若 $A=B\lor C$，则 $A^*=B^*\land C^*$，同理 $\neg A(p)=\neg B(p)\land\neg C(p)\Leftrightarrow B^*(\neg p)\land C^*(\neg p)=A^*(\neg p)$。
+>
+> **结论**：第一式对一切赋值成立。把第一式中的 $p_i$ 全部换成 $\neg p_i$，得 $\neg A(\neg p)\Leftrightarrow A^*(p)$，两边再否定即得 $A(\neg p)\Leftrightarrow\neg A^*(p)$，这就是第二式。
+
 **定理1.3.1（对偶定理）**
 
 设 $A$ 和 $B$ 为两个命题公式，$A$ 和 $A^*$、$B$ 和 $B^*$ 互为对偶式。若 $A\Leftrightarrow B$，则 $A^*\Leftrightarrow B^*$。
@@ -669,6 +703,14 @@ $$
 3. 利用分配律、交换律和结合律等，将公式整理为析取范式和合取范式。
 
 这三步得到的公式与原公式等价，所以任意命题公式都存在等值的析取范式和合取范式。上述步骤也是求析取范式和合取范式的步骤。
+
+> **补充证明**（三步为何总能终止并保持等值）
+>
+> **假设**：$G$ 是任意命题公式，允许使用全部五个基本联结词。
+>
+> **推理**：第一步用 $A\to B\Leftrightarrow\neg A\lor B$、$A\leftrightarrow B\Leftrightarrow(A\to B)\land(B\to A)$ 逐个消去 $\to,\leftrightarrow$。以数对（$\leftrightarrow$ 的个数，$\to$ 的个数）为度量：消去一个 $\leftrightarrow$ 会把它换成两个 $\to$，第一分量减一、第二分量加二；消去一个 $\to$ 时第一分量不变、第二分量减一。按字典序先比第一分量，度量严格下降，故第一步必在有限步终止。第二步把 $\neg$ 内移：$\neg\neg A\Leftrightarrow A$ 直接消去双重否定，$\neg(A\land B)\Leftrightarrow\neg A\lor\neg B$、$\neg(A\lor B)\Leftrightarrow\neg A\land\neg B$ 把最外层的 $\neg$ 下推一层；每步之后，仍需内移的 $\neg$ 所辖的子公式严格变小，必在有限步把 $\neg$ 压到命题变元上。第三步用分配律把 $\land$ 分配到 $\lor$ 之外（求析取范式），或把 $\lor$ 分配到 $\land$ 之外（求合取范式），交换律、结合律只用于调整次序；每次分配都使“析取套合取”或“合取套析取”的错位层数减少，故也必终止。
+>
+> **结论**：三步都能在有限步完成，且每一步都是等值置换，因此所得公式与原公式等值，并且具有所要求的范式形状。
 
 **例** 求 $(p\land(p\to q))\lor q$ 的析取范式和合取范式。
 
@@ -772,8 +814,10 @@ $$
 \Leftrightarrow{}&(\neg p\land(\neg q\lor\neg r))\lor(p\land q\land r)\\
 \Leftrightarrow{}&(\neg p\land\neg q)\lor(\neg p\land\neg r)\lor(p\land q\land r) &&\text{析取范式}\\
 \Leftrightarrow{}&((\neg p\land\neg q)\land(r\lor\neg r))\lor((\neg p\land\neg r)\land(q\lor\neg q))\lor(p\land q\land r)\\
-\Leftrightarrow{}&(\neg p\land\neg q\land r)\lor(\neg p\land\neg q\land\neg r)\lor(\neg p\land\neg r\land q)\lor(\neg p\land\neg r\land\neg q)\lor(p\land q\land r)\\
-\Leftrightarrow{}&(\neg p\land\neg q\land\neg r)\lor(\neg p\land\neg q\land r)\lor(\neg p\land q\land\neg r)\lor(p\land q\land r)\\
+\Leftrightarrow{}&(\neg p\land\neg q\land r)\lor(\neg p\land\neg q\land\neg r)\\
+&{}\lor(\neg p\land q\land\neg r)\lor(\neg p\land\neg q\land\neg r)\lor(p\land q\land r)\\
+\Leftrightarrow{}&(\neg p\land\neg q\land\neg r)\lor(\neg p\land\neg q\land r)\\
+&{}\lor(\neg p\land q\land\neg r)\lor(p\land q\land r)\\
 \Leftrightarrow{}&m_0\lor m_1\lor m_2\lor m_7\\
 \Leftrightarrow{}&\Sigma(0,1,2,7)
 \end{aligned}
@@ -830,22 +874,42 @@ $$
 
 **解**
 
-先化为合取范式。关键一步是把 $(\neg p\land(\neg q\lor\neg r))\lor(p\land q\land r)$ 看成 $(A\land B)\lor C$，用分配律展开，再分别化简两个因子：
+先化为合取范式。把 $(\neg p\land(\neg q\lor\neg r))\lor(p\land q\land r)$ 看成 $(A\land B)\lor C$，用分配律
 $$
-\neg p\lor(p\land q\land r)\Leftrightarrow\neg p\lor(q\land r)\Leftrightarrow(\neg p\lor q)\land(\neg p\lor r),
+(A\land B)\lor C\Leftrightarrow(A\lor C)\land(B\lor C)
 $$
+展开，得到两个因子。第一个因子是
 $$
-(\neg q\lor\neg r)\lor(p\land q\land r)\Leftrightarrow p\lor\neg q\lor\neg r.
+\begin{aligned}
+\neg p\lor(p\land q\land r)
+&\Leftrightarrow\neg p\lor(q\land r) &&\text{吸收掉多余的 }p\\
+&\Leftrightarrow(\neg p\lor q)\land(\neg p\lor r) &&\text{分配律}
+\end{aligned}
 $$
-于是得到合取范式，再把缺少变元的子句补成极大项：
+其中第一步的依据是，取 $S=q\land r$，有
+$$
+\neg p\lor(p\land S)\Leftrightarrow(\neg p\lor p)\land(\neg p\lor S)\Leftrightarrow1\land(\neg p\lor S)\Leftrightarrow\neg p\lor S.
+$$
+第二个因子是
+$$
+\begin{aligned}
+(\neg q\lor\neg r)\lor(p\land q\land r)
+&\Leftrightarrow(\neg q\lor\neg r\lor p)\land(\neg q\lor\neg r\lor q)\land(\neg q\lor\neg r\lor r)\\
+&\Leftrightarrow p\lor\neg q\lor\neg r,
+\end{aligned}
+$$
+后两个因子分别含 $\neg q\lor q$ 与 $\neg r\lor r$，都是重言式，可消去。于是得到合取范式，再把缺少变元的子句补成极大项：
 
 $$
 \begin{aligned}
 &(p\lor(q\land r))\to(p\land q\land r)\\
+\Leftrightarrow{}&\neg(p\lor(q\land r))\lor(p\land q\land r)\\
 \Leftrightarrow{}&(\neg p\land(\neg q\lor\neg r))\lor(p\land q\land r)\\
 \Leftrightarrow{}&(\neg p\lor q)\land(\neg p\lor r)\land(\neg q\lor\neg r\lor p) &&\text{合取范式}\\
-\Leftrightarrow{}&((\neg p\lor q)\lor(r\land\neg r))\land((\neg p\lor r)\lor(q\land\neg q))\land(p\lor\neg q\lor\neg r)\\
-\Leftrightarrow{}&(\neg p\lor q\lor r)\land(\neg p\lor q\lor\neg r)\land(\neg p\lor\neg q\lor r)\land(p\lor\neg q\lor\neg r)\\
+\Leftrightarrow{}&((\neg p\lor q)\lor(r\land\neg r))\land((\neg p\lor r)\lor(q\land\neg q))\\
+&{}\land(p\lor\neg q\lor\neg r)\\
+\Leftrightarrow{}&(\neg p\lor q\lor r)\land(\neg p\lor q\lor\neg r)\\
+&{}\land(\neg p\lor\neg q\lor r)\land(p\lor\neg q\lor\neg r)\\
 \Leftrightarrow{}&M_3\land M_4\land M_5\land M_6\\
 \Leftrightarrow{}&\Pi(3,4,5,6)
 \end{aligned}
@@ -945,13 +1009,14 @@ $$
 $$
 A\Leftrightarrow(\neg p\land q\land r)\lor(p\land\neg q\land r)\lor(p\land q\land\neg r)\lor(p\land q\land r).
 $$
-化简：
+化简时把四个极小项两两配对：含 $r$ 的两项合并为 $q\land r$，含 $p$ 的两项合并为 $p\land r$，含 $p\land q$ 的两项合并为 $p\land q$。
 
 $$
 \begin{aligned}
 A
-&\Leftrightarrow(p\land q)\lor(p\land r)\lor(q\land r)\\
-&\Leftrightarrow(p\land(q\lor r))\lor(q\land r).
+&\Leftrightarrow(\neg p\land q\land r)\lor(p\land\neg q\land r)\lor(p\land q\land\neg r)\lor(p\land q\land r)\\
+&\Leftrightarrow(q\land r)\lor(p\land r)\lor(p\land q) &&\text{两两合并}\\
+&\Leftrightarrow(p\land(q\lor r))\lor(q\land r) &&\text{分配律}
 \end{aligned}
 $$
 
@@ -1023,9 +1088,9 @@ $$
 1. $p\land(p\to q)\Rightarrow q$；
 2. $(p\to q)\land q\Rightarrow p$。
 
-**解** 写出 $p\land(p\to q)\to q$ 和 $(p\to q)\land q\to p$ 的真值表：
+**解** 写出 $(p\land(p\to q))\to q$ 和 $((p\to q)\land q)\to p$ 的真值表：
 
-| $p$ | $q$ | $p\land(p\to q)\to q$ | $(p\to q)\land q\to p$ |
+| $p$ | $q$ | $(p\land(p\to q))\to q$ | $((p\to q)\land q)\to p$ |
 |:---:|:---:|:---:|:---:|
 | 0 | 0 | 1 | 1 |
 | 0 | 1 | 1 | 0 |
@@ -1067,6 +1132,14 @@ $$
 | 9 | $p\to q,\ r\to s,\ p\lor r\Rightarrow q\lor s$ | 构造性二难 |
 | 10 | $p\lor q,\ \neg p\lor r\Rightarrow q\lor r$ | 归结式 |
 
+> **补充证明**（第 10 条：归结式）
+>
+> **假设**：在某个赋值下 $p\lor q$ 与 $\neg p\lor r$ 都为真。
+>
+> **推理**：若 $q$ 为真，则 $q\lor r$ 为真；若 $q$ 为假，则由 $p\lor q$ 为真得 $p$ 为真，再由 $\neg p\lor r$ 为真得 $r$ 为真，仍有 $q\lor r$ 为真。
+>
+> **结论**：凡使两前提都真的赋值都使 $q\lor r$ 真，故 $(p\lor q)\land(\neg p\lor r)\Rightarrow q\lor r$。归结消去的只是互补文字 $p$ 与 $\neg p$，其余文字 $q,r$ 原样保留。
+
 **定理（CP 规则）**
 
 若 $H_1,H_2,\dots,H_m$ 和 $P$ 推出 $Q$，则 $H_1,H_2,\dots,H_m$ 推出 $P\to Q$。
@@ -1077,12 +1150,12 @@ H_1\land H_2\land\cdots\land H_m\land P\Rightarrow Q,
 $$
 即
 $$
-H_1\land H_2\land\cdots\land H_m\land P\to Q\Leftrightarrow T.
+(H_1\land H_2\land\cdots\land H_m\land P)\to Q\Leftrightarrow T.
 $$
 令 $H\Leftrightarrow H_1\land H_2\land\cdots\land H_m$，则
 $$
 \begin{aligned}
-H\land P\to Q
+(H\land P)\to Q
 &\Leftrightarrow\neg(H\land P)\lor Q\\
 &\Leftrightarrow\neg H\lor\neg P\lor Q\\
 &\Leftrightarrow H\to(P\to Q)\\
@@ -1101,9 +1174,9 @@ $$
 
 **例** 证明前提 $p\lor q$ 和 $\neg p\lor r$ 可以推出结论 $q\lor r$。
 
-**证明** 根据定义1.5.1，只需证明 $(p\lor q)\land(\neg p\lor r)\to q\lor r$ 是重言式。列出真值表：
+**证明** 根据定义1.5.1，只需证明 $((p\lor q)\land(\neg p\lor r))\to(q\lor r)$ 是重言式。列出真值表：
 
-| $p$ | $q$ | $r$ | $p\lor q$ | $\neg p\lor r$ | $q\lor r$ | $(p\lor q)\land(\neg p\lor r)\to q\lor r$ |
+| $p$ | $q$ | $r$ | $p\lor q$ | $\neg p\lor r$ | $q\lor r$ | $((p\lor q)\land(\neg p\lor r))\to(q\lor r)$ |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 0 | 0 | 0 | 0 | 1 | 0 | 1 |
 | 0 | 0 | 1 | 0 | 1 | 1 | 1 |
@@ -1126,7 +1199,7 @@ $$
 
 $$
 \begin{aligned}
-\neg p\land(p\lor q)\to q
+(\neg p\land(p\lor q))\to q
 &\Leftrightarrow\neg(\neg p\land(p\lor q))\lor q\\
 &\Leftrightarrow p\lor(\neg p\land\neg q)\lor q\\
 &\Leftrightarrow p\lor\neg q\lor q\\
@@ -1240,7 +1313,12 @@ $$
 
 先把 $(p\lor q)\to r$ 化为子句：
 $$
-(p\lor q)\to r\Leftrightarrow\neg(p\lor q)\lor r\Leftrightarrow(\neg p\lor r)\land(\neg q\lor r).
+\begin{aligned}
+(p\lor q)\to r
+&\Leftrightarrow\neg(p\lor q)\lor r &&\text{蕴涵等值式}\\
+&\Leftrightarrow(\neg p\land\neg q)\lor r &&\text{德摩根律}\\
+&\Leftrightarrow(\neg p\lor r)\land(\neg q\lor r) &&\text{分配律}
+\end{aligned}
 $$
 所以用两个子句 $\neg p\lor r$ 和 $\neg q\lor r$ 代替它。结论为两个子句 $\neg p$ 和 $\neg q$。
 

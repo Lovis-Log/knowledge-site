@@ -1,8 +1,7 @@
 import type { Book } from "@/content/types";
 
 /**
- * The campus grade label is deliberately scoped to the five published course
- * books; other books keep their existing studyPeriod/date presentation.
+ * Show the normalized grade label for published campus course books.
  */
 const GRADE_SCOPED_BOOKS = new Set([
   "campus-cpp-programming",
@@ -10,6 +9,7 @@ const GRADE_SCOPED_BOOKS = new Set([
   "campus-mathematical-analysis",
   "campus-linear-algebra-analytic-geometry",
   "campus-basic-physics",
+  "campus-engineering-drawing",
 ]);
 
 export interface StudyPeriodLabel {

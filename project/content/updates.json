@@ -1,6 +1,32 @@
 [
   {
     "date": "2026-11-21",
+    "version": "1.11.1",
+    "features": [
+      {
+        "zh": "校内课程书架去掉网盘域名署名，计算机工程制图补上「大一」标签。",
+        "en": "Removed file-hosting bylines from campus books and added a Year 1 badge to Computer Engineering Drawing."
+      },
+      {
+        "zh": "校内课程的长公式优先在运算符处换行，过宽的矩阵仍可横向滚动。",
+        "en": "Long formulas in campus notes now wrap at operators, with horizontal scrolling still available for wide matrices."
+      }
+    ],
+    "content": [
+      {
+        "title": "离散数学 · 五章重审，补上基数、量词和图论的关键证明，整理小节与长式 / Discrete Mathematics · Reviewed five chapters, added proofs for cardinality, quantifiers and graphs, and reorganized sections and long formulas",
+        "href": "/books/campus-discrete-mathematics/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "C++ 程序设计教程 · 修订指针、移位和 OJ 解法，补齐八组作业与练习的目录主题 / C++ Programming · Corrected pointer, shift and online-judge explanations and added topics to eight assignment and practice entries",
+        "href": "/books/campus-cpp-programming/",
+        "kind": "修订 / Revised"
+      }
+    ]
+  },
+  {
+    "date": "2026-11-21",
     "version": "1.11.0",
     "features": [
       {

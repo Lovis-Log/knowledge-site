@@ -56,6 +56,11 @@ test("campus section sorts first and shows no subcategories", () => {
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
   assert.deepEqual(campus.books.map((book) => book.slug), ["campus-basic-physics", "campus-cpp-programming", "campus-engineering-drawing", "campus-linear-algebra-analytic-geometry", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
+  for (const slug of ["campus-cpp-programming", "campus-linear-algebra-analytic-geometry"]) {
+    const book = campus.books.find((item) => item.slug === slug)!;
+    assert.equal(book.author, undefined, slug);
+    assert.ok(book.chapters.some((chapter) => chapter.sources.some((source) => new URL(source.url).hostname === "docs.google.com")), slug);
+  }
 });
 
 test("linear algebra keeps the courseware exercises and eight image-based homework entries", () => {

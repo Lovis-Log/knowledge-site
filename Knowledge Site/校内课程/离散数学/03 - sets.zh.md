@@ -21,6 +21,8 @@ sources:
 
 ### 集合与元素
 
+#### 集合、元素与数集
+
 集合是由一些对象聚集在一起构成的整体。
 
 **定义 3.1.1**
@@ -35,9 +37,11 @@ sources:
 - $\mathbb{R}$：实数集；
 - $\mathbb{C}$：复数集。
 
-所考虑的所有对象构成的集合称为**全集**，记作 $E$。全集不是绝对的，换一个问题就可能换一个全集；补运算尤其依赖全集的选取。
+所考虑的所有对象构成的集合称为**全集**（正式定义见 3.1 节末的 定义 3.1.4），记作 $E$。全集不是绝对的，换一个问题就可能换一个全集；补运算尤其依赖全集的选取。
 
 ### 三种表示法
+
+#### 列举法
 
 **列举法**把元素逐一写出，元素间用逗号隔开，整体用花括号括起来：
 
@@ -48,6 +52,8 @@ $$
 元素较多但有规律时，可写出前几项并用省略号，如偶数集 $\{2,4,6,\dots,2n,\dots\}$；省略号必须让人能唯一看出规律，否则这种写法不合法。
 
 > **注意**：$\mathbb{N}$ 是否含 $0$：本书约定含 $0$，应写 $\mathbb{N}=\{0,1,2,\dots\}$。若写成 $\{1,2,3,\dots\}$ 就与这一约定冲突；别的教材可能规定 $\mathbb{N}$ 不含 $0$，答题时若结论依赖这一点，应显式说明所采用的约定。
+
+#### 描述法
 
 **描述法**不列出元素，只给出元素应满足的性质：
 
@@ -63,6 +69,8 @@ C=\{x\mid x\ \text{是小于}\ 10\ \text{的正整数}\}=\{1,2,\dots,9\}.
 $$
 
 描述法的关键限制是：$P(x)$ 的论域和判断标准必须明确。像"$x$ 是公园里的美丽的花"这种谓词，"美丽"没有客观标准，论域也没有限定，无法对任意对象判定真假，因此不能确定一个集合。写描述法时，$x$ 的取值范围（$x\in\mathbb{Z}$、$x\in\mathbb{R}$ 等）不能省。
+
+#### 归纳法
 
 **归纳法**通过三条规则定义集合：
 
@@ -90,9 +98,13 @@ $$
 
 ### 特殊集合
 
+#### 有限集与无限集
+
 **定义 3.1.2**
 
 有限个元素构成的集合 $A$ 称为**有限集**，其中元素个数称为该集合的**元素数**，记作 $|A|$；无限个元素构成的集合称为**无限集**。
+
+#### 空集的定义
 
 **定义 3.1.3**
 
@@ -103,6 +115,8 @@ $$
 $$
 
 因为条件 $x\ne x$ 对任何 $x$ 都为假，所以没有任何对象满足它。
+
+#### 全集
 
 **定义 3.1.4**
 
@@ -122,6 +136,8 @@ $$
 
 ### 相等、子集、真子集
 
+#### 集合相等
+
 **定义 3.2.1**
 
 设 $A,B$ 为集合，当且仅当它们恰有完全相同的元素时，称 $A$ 与 $B$ **相等**，记作 $A=B$：
@@ -129,6 +145,8 @@ $$
 $$
 A=B\Leftrightarrow \forall x(x\in A\leftrightarrow x\in B).
 $$
+
+#### 子集
 
 **定义 3.2.2**
 
@@ -139,6 +157,8 @@ B\subseteq A\Leftrightarrow \forall x(x\in B\rightarrow x\in A).
 $$
 
 若 $B$ 不被 $A$ 包含，记作 $B\nsubseteq A$。
+
+#### 真子集
 
 **定义 3.2.3**
 
@@ -237,6 +257,8 @@ $$
 
 ### 子集计数与幂集
 
+#### 子集的计数
+
 **例** 求 $A=\{a,b,c\}$ 的全部子集。
 
 **解** 按元素个数分类列举：
@@ -249,6 +271,8 @@ $$
 合计 $1+3+3+1=8=2^3$ 个。
 
 一般地，$n$ 元集合有 $2^n$ 个子集，其中真子集 $2^n-1$ 个，非空子集 $2^n-1$ 个，非空真子集 $2^n-2$ 个。计数理由：构造一个子集时，每个元素独立地做一次"取"或"不取"的二选一，$n$ 个元素共有 $2^n$ 种选择，且不同选择得到的子集不同。
+
+#### 幂集
 
 **定义 3.2.4**
 
@@ -332,6 +356,8 @@ $$
 
 ### 运算律
 
+#### 交换律
+
 **定理 3.3.1（交换律）**
 
 设 $A,B$ 为集合，则
@@ -339,6 +365,16 @@ $$
 $$
 A\cup B=B\cup A,\qquad A\cap B=B\cap A.
 $$
+
+> **补充证明**
+>
+> **假设**：$x$ 是任意元素。
+>
+> **推理**：$x\in A\cup B\Leftrightarrow x\in A\vee x\in B\Leftrightarrow x\in B\vee x\in A\Leftrightarrow x\in B\cup A$；把 $\vee$ 换成 $\wedge$，同样得到 $x\in A\cap B\Leftrightarrow x\in B\cap A$。
+>
+> **结论**：对任意 $x$，两边的隶属条件同真同假，所以 $A\cup B=B\cup A$、$A\cap B=B\cap A$；这一串等价式同时给出了两个方向的包含。
+
+#### 结合律
 
 **定理 3.3.2（结合律）**
 
@@ -361,6 +397,8 @@ x\in(A\cap B)\cap C
 $$
 
 由于每一步对任意 $x$ 都等价，两边的元素完全相同，故集合相等。并的结合律同理，只需把 $\wedge$ 换成 $\vee$。
+
+#### 分配律
 
 **定理 3.3.3（分配律）**
 
@@ -393,6 +431,8 @@ x\in A\cap(B\cup C)\Leftrightarrow x\in A\wedge(x\in B\vee x\in C)
 \Leftrightarrow(x\in A\wedge x\in B)\vee(x\in A\wedge x\in C)
 \Leftrightarrow x\in(A\cap B)\cup(A\cap C).
 $$
+
+#### 吸收律
 
 **定理 3.3.4（吸收律）**
 
@@ -436,7 +476,17 @@ $$
 A-B=A\cap\sim B,
 $$
 
-其中 $\sim B$ 是 $B$ 的绝对补集。差运算不交换：一般 $A-B\ne B-A$。例如 $A=\{1,2,3\}$，$B=\{3,4\}$ 时，$A-B=\{1,2\}$，$B-A=\{4\}$。
+其中 $\sim B$ 是 $B$ 的绝对补集（定义见本节后面的“补集”）。
+
+> **补充证明**
+>
+> **假设**：全集为 $E$，$A\subseteq E$，$x$ 是任意元素。
+>
+> **推理**：由差集定义，$x\in A-B\Leftrightarrow x\in A\wedge x\notin B$。另一方面，$x\in A\cap\sim B\Leftrightarrow x\in A\wedge x\in\sim B\Leftrightarrow x\in A\wedge(x\in E\wedge x\notin B)$。因为 $A\subseteq E$，$x\in A$ 已蕴含 $x\in E$，所以 $x\in A\wedge x\in E\wedge x\notin B$ 与 $x\in A\wedge x\notin B$ 等价。
+>
+> **结论**：对任意 $x$，$x\in A-B$ 与 $x\in A\cap\sim B$ 同真同假，故 $A-B=A\cap\sim B$。条件 $A\subseteq E$ 不可省：否则 $A$ 中可能有 $E$ 之外的元素，$A\cap\sim B$ 会把它们漏掉。
+
+差运算不交换：一般 $A-B\ne B-A$。例如 $A=\{1,2,3\}$，$B=\{3,4\}$ 时，$A-B=\{1,2\}$，$B-A=\{4\}$。
 
 ### 补集
 
@@ -462,6 +512,24 @@ $$
 A\cap\sim A=\varnothing,\qquad A\cup\sim A=E.
 $$
 
+> **补充证明**（五条补集恒等式）
+>
+> **假设**：$E$ 为全集，$A\subseteq E$，$x$ 是任意元素。
+>
+> **推理**：逐条把“属于”展开成命题。
+>
+> $\sim E=E-E$：$x\in\sim E\Leftrightarrow x\in E\wedge x\notin E$，右边恒假，故 $\sim E=\varnothing$。
+>
+> $\sim\varnothing=E-\varnothing$：$x\in\sim\varnothing\Leftrightarrow x\in E\wedge x\notin\varnothing$。$x\notin\varnothing$ 恒真，故右边等价于 $x\in E$，即 $\sim\varnothing=E$。
+>
+> $\sim(\sim A)=E-\sim A$：$x\in\sim(\sim A)\Leftrightarrow x\in E\wedge x\notin\sim A\Leftrightarrow x\in E\wedge\neg(x\in E\wedge x\notin A)\Leftrightarrow x\in E\wedge\big(\neg(x\in E)\vee x\in A\big)\Leftrightarrow\big(x\in E\wedge\neg(x\in E)\big)\vee(x\in E\wedge x\in A)\Leftrightarrow x\in A$；最后一步用 $A\subseteq E$，$x\in A$ 蕴含 $x\in E$。
+>
+> $A\cap\sim A=\varnothing$：$x\in A\cap\sim A\Leftrightarrow x\in A\wedge x\in E\wedge x\notin A$，同时要求 $x\in A$ 与 $x\notin A$，恒假。
+>
+> $A\cup\sim A=E$：$x\in A\cup\sim A\Leftrightarrow x\in A\vee(x\in E\wedge x\notin A)$。若 $x\in E$，则 $x\in A$ 与 $x\notin A$ 必有一真，右边为真；反之若右边为真，第一支由 $A\subseteq E$ 给出 $x\in E$，第二支直接给出 $x\in E$。故右边等价于 $x\in E$。
+>
+> **结论**：五条恒等式都成立。每条都先展开“属于”的定义，再对任意 $x$ 判断真假，因此两个方向的包含是同时得到的。
+
 前三个等式说明补运算在 $E$ 与 $\varnothing$ 之间互换、连补两次回到原集合；后两个说明 $A$ 与它的补把全集分成互不相交的两块。
 
 ### 德摩根律
@@ -474,27 +542,39 @@ $$
 \sim(A\cap B)=\sim A\cup\sim B,\qquad \sim(A\cup B)=\sim A\cap\sim B.
 $$
 
-**证明** (1)：设 $E$ 为全集，显然 $A\cap E=A$，$A\cup E=E$。对任意 $x$，
+**证明** (1)：设 $E$ 为全集。对任意 $x$，
 
 $$
 \begin{aligned}
-\sim(A\cap B)
-&=\{x\mid x\in E\wedge x\notin A\cap B\}\\
-&=\{x\mid x\in E\wedge\neg(x\in A\wedge x\in B)\}\\
-&=\{x\mid x\in E\wedge\big(\neg(x\in A)\vee\neg(x\in B)\big)\}\\
-&=\{x\mid x\in E\wedge(x\notin A\vee x\notin B)\}\\
-&=\{x\mid(x\in E\wedge x\notin A)\vee(x\in E\wedge x\notin B)\}\\
-&=\sim A\cup\sim B.
+x\in\sim(A\cap B)
+&\Leftrightarrow x\in E\wedge x\notin A\cap B\\
+&\Leftrightarrow x\in E\wedge\neg(x\in A\wedge x\in B)\\
+&\Leftrightarrow x\in E\wedge\big(\neg(x\in A)\vee\neg(x\in B)\big)\\
+&\Leftrightarrow x\in E\wedge(x\notin A\vee x\notin B)\\
+&\Leftrightarrow(x\in E\wedge x\notin A)\vee(x\in E\wedge x\notin B)\\
+&\Leftrightarrow x\in\sim A\vee x\in\sim B\\
+&\Leftrightarrow x\in\sim A\cup\sim B.
 \end{aligned}
 $$
 
-第三行用了 $\neg(P\wedge Q)\Leftrightarrow\neg P\vee\neg Q$；第五行把 $x\in E$ 分别乘进两个析取项，用的是 $\wedge$ 对 $\vee$ 的分配律。由于 $x\in E$ 恒真，这个"乘进去"不会漏掉或增加元素。
+第三行用 $\neg(P\wedge Q)\Leftrightarrow\neg P\vee\neg Q$；第五行用 $\wedge$ 对 $\vee$ 的分配律，把 $x\in E$ 分别乘进两个析取项。由于 $A,B\subseteq E$，$x\in E$ 在两个分支中都成立，这一步不会漏掉或增加元素。每一步都是等价，所以 $x\in\sim(A\cap B)$ 与 $x\in\sim A\cup\sim B$ 对任意 $x$ 同真同假：前者成立推出后者（$\sim(A\cap B)\subseteq\sim A\cup\sim B$），后者成立也推出前者（$\sim A\cup\sim B\subseteq\sim(A\cap B)$），两个方向的包含同时成立，故 $\sim(A\cap B)=\sim A\cup\sim B$。
 
-(2) 完全对偶：把 $\neg(P\vee Q)\Leftrightarrow\neg P\wedge\neg Q$ 代进去，
+(2) 对偶地，对任意 $x$，
 
 $$
-\sim(A\cup B)=\{x\mid x\in E\wedge(x\notin A\wedge x\notin B)\}=\sim A\cap\sim B.
+\begin{aligned}
+x\in\sim(A\cup B)
+&\Leftrightarrow x\in E\wedge x\notin A\cup B\\
+&\Leftrightarrow x\in E\wedge\neg(x\in A\vee x\in B)\\
+&\Leftrightarrow x\in E\wedge\big(\neg(x\in A)\wedge\neg(x\in B)\big)\\
+&\Leftrightarrow x\in E\wedge x\notin A\wedge x\notin B\\
+&\Leftrightarrow(x\in E\wedge x\notin A)\wedge(x\in E\wedge x\notin B)\\
+&\Leftrightarrow x\in\sim A\wedge x\in\sim B\\
+&\Leftrightarrow x\in\sim A\cap\sim B.
+\end{aligned}
 $$
+
+同样是步步等价，故 $\sim(A\cup B)=\sim A\cap\sim B$，两个方向的包含同时成立。
 
 德摩根律是化简集合表达式时最常主动使用的一条：把"交的补"拆成"补的并"，或反过来把"并的补"合成"补的交"，通常能让表达式朝目标形式靠近。
 
@@ -528,7 +608,18 @@ $$
 A\oplus A=\varnothing,\qquad A\oplus\varnothing=A,\qquad A\oplus B=B\oplus A,\qquad (A\oplus B)\oplus C=A\oplus(B\oplus C).
 $$
 
-前两条可直接由定义验证：$A\oplus A$ 中每个元素都要求"属于 $A$ 又不属于 $A$"，条件恒假；$A\oplus\varnothing$ 只剩"属于 $A$ 而不属于 $\varnothing$"这一支，即 $A$。交换律来自析取两支互换；结合律可按元素逐个检查——$x$ 在三个集合中的隶属情况有 $2^3=8$ 种，每种情况下两边同为真或同为假。
+前两条可直接由定义验证：$A\oplus A$ 中每个元素都要求"属于 $A$ 又不属于 $A$"，条件恒假；$A\oplus\varnothing$ 只剩"属于 $A$ 而不属于 $\varnothing$"这一支，即 $A$。交换律来自析取两支互换；结合律的验证见下。
+
+> **补充证明**（结合律）
+>
+> **假设**：$E$ 为全集，$x$ 是任意元素。
+>
+> **推理**：由对称差定义，$x\in A\oplus B$ 当且仅当 $x$ 恰属于 $A,B$ 之一，即 $x\in A\oplus B\Leftrightarrow(x\in A)\oplus(x\in B)$，右边是命题的异或。于是
+> $x\in(A\oplus B)\oplus C\Leftrightarrow(x\in A\oplus B)\oplus(x\in C)\Leftrightarrow\big((x\in A)\oplus(x\in B)\big)\oplus(x\in C)$。
+> 命题异或满足结合律 $\big((P\oplus Q)\oplus R\big)\Leftrightarrow\big(P\oplus(Q\oplus R)\big)$，按 8 种赋值逐一列出真值表即可验证；故上式继续等价于
+> $(x\in A)\oplus\big((x\in B)\oplus(x\in C)\big)\Leftrightarrow x\in A\oplus(B\oplus C)$。
+>
+> **结论**：对任意 $x$，$x\in(A\oplus B)\oplus C$ 与 $x\in A\oplus(B\oplus C)$ 同真同假，两个方向的包含同时成立，所以 $(A\oplus B)\oplus C=A\oplus(B\oplus C)$。
 
 对称差刻画的是"恰属于其中一个集合"的元素，因此 $A\oplus B$ 与 $(A\cup B)-(A\cap B)$ 相等。
 

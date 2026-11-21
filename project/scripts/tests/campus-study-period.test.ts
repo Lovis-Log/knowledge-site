@@ -9,9 +9,10 @@ const scoped = [
   "campus-mathematical-analysis",
   "campus-linear-algebra-analytic-geometry",
   "campus-basic-physics",
+  "campus-engineering-drawing",
 ];
 
-test("the five campus courses share one normalized grade label", () => {
+test("the campus courses share one normalized grade label", () => {
   for (const slug of scoped) {
     const book = getAllBooks().find((item) => item.slug === slug);
     assert.ok(book, slug);
@@ -19,10 +20,8 @@ test("the five campus courses share one normalized grade label", () => {
   }
 });
 
-test("books outside the five-course scope keep their existing grade presentation", () => {
-  const engineering = getAllBooks().find((item) => item.slug === "campus-engineering-drawing")!;
+test("a non-campus book keeps its existing grade presentation", () => {
   const mit = getAllBooks().find((item) => item.slug === "mit-linear-algebra")!;
-  assert.equal(studyPeriodLabel(engineering), undefined);
   assert.equal(studyPeriodLabel(mit), undefined);
 });
 

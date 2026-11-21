@@ -21,6 +21,8 @@ sources:
 
 ### 2.1.1 个体词和谓词
 
+#### 个体词、谓词与元数
+
 **定义2.1.1（个体词与谓词）**
 
 个体词是指可以独立存在的客体，可以是一个具体的事物或抽象的概念，是原子命题所描述的对象。
@@ -38,6 +40,8 @@ sources:
 **个体常元**表示具体的或特定的个体，如 $a,b,c,\dots$；**个体变元**表示抽象的或泛指的个体，如 $x,y,z,\dots$。
 
 **谓词常项**表示具体性质或关系，例如 $R(a)$ 表示“$a$ 是人”；**谓词变项**表示抽象或泛指的谓词，例如 $P(a)$ 表示“$a$ 具有性质 $P$”。
+
+#### 谓词表达式与命题函数
 
 **定义2.1.3（谓词表达式与命题函数）**
 
@@ -62,6 +66,8 @@ sources:
 3. 设 $P(x)$：$x$ 来，$Q(x)$：$x$ 走，$a$：你，$b$：他，则 $P(a)\to Q(b)$。
 4. 设 $B(x,y)$：$x>y$，$a$：3，$b$：2，$c$：1，则 $B(a,b)\land B(b,c)\to B(a,c)$。
 5. 设 $Q(x,y,z)$：$y$ 位于 $x$ 和 $z$ 之间，$a$：北京，$b$：广州，$c$：武汉，则 $Q(a,c,b)$。
+
+#### 个体域
 
 **定义2.1.4（个体域）**
 
@@ -89,6 +95,8 @@ sources:
 
 ### 2.1.2 量词
 
+#### 量词的定义
+
 **定义2.1.5（量词）**
 
 表示个体常元或个体变元之间数量关系的词称为量词。量词有两种：
@@ -97,6 +105,8 @@ sources:
 - **存在量词** $\exists$：$\exists x$ 表示个体域中“存在这样的 $x$”“某个 $x$”“至少有一个 $x$”或“有一些 $x$”等。
 
 $\forall xF(x)$ 表示个体域中所有个体都有性质 $F$；$\exists xF(x)$ 表示个体域中存在个体有性质 $F$。
+
+#### 特性谓词与符号化
 
 **例** 设 $F(x)$ 表示 $x$ 选修离散数学，$x$ 的个体域是这个班的同学，将下列命题符号化：
 
@@ -153,6 +163,14 @@ $\forall xF(x)$ 表示个体域中所有个体都有性质 $F$；$\exists xF(x)$
 
    它等价于 $\forall x(A(x)\to B(x))$。
 
+   > **补充证明**
+   >
+   > **假设**：个体域为全总个体域，$A(x)$ 表示“$x$ 是人”，$B(x)$ 表示“$x$ 犯错误”。
+   >
+   > **推理**：$\neg\exists x(A(x)\land\neg B(x))\Leftrightarrow\forall x\neg(A(x)\land\neg B(x))$（量词否定转换律）$\Leftrightarrow\forall x(\neg A(x)\lor B(x))$（德摩根律）$\Leftrightarrow\forall x(A(x)\to B(x))$（蕴涵等值式）。
+   >
+   > **结论**：两种写法等值；全称量词后面接条件式，正是特性谓词的标准搭配。
+
 4. 设 $A(x)$：$x$ 是人，$B(x)$：$x$ 聪明，则
 
    $$
@@ -170,6 +188,8 @@ $\forall xF(x)$ 表示个体域中所有个体都有性质 $F$；$\exists xF(x)$
    $$
    \neg\forall x(A(x)\to\exists y(R(y)\land B(x,y))).
    $$
+
+#### 有限个体域上的量词展开
 
 当论述域中的元素个数有限时，例如论述域为 $n$ 个元素的集合 $\{a_1,a_2,\dots,a_n\}$，有
 $$
@@ -199,9 +219,13 @@ $P(4)$ 即“$4^2>10$”，为真，所以 $\exists xP(x)$ 为真。
 
 $\exists y\forall xP(x,y)$ 表示“存在实数 $y$，对每一个实数 $x$，都有 $x+y>10$”。无论固定怎样的 $y$，取 $x$ 足够小都会使 $x+y\le10$，所以真值为 0。
 
+#### 量词顺序不可随意交换
+
 多个量词同时出现时，除非所有量词都是全称量词或都是存在量词，否则不能随意颠倒量词的顺序；颠倒后会改变原命题的含义。
 
 ## 2.2 谓词合式公式
+
+### 2.2.1 谓词演算公式
 
 一个谓词 $P$ 和 $n$ 个个体变元 $x_1,x_2,\dots,x_n$ 表示成 $P(x_1,x_2,\dots,x_n)$ 的形式，称为 $n$ 元原子谓词公式，简称 $n$ 元谓词公式。如果谓词公式中没有个体变元，即 $n=0$，称为 $0$ 元谓词公式；$0$ 元谓词公式就是原子命题。
 
@@ -214,6 +238,8 @@ $\exists y\forall xP(x,y)$ 表示“存在实数 $y$，对每一个实数 $x$，
 3. 如果 $A$ 和 $B$ 都是谓词公式，则 $(A\land B)$、$(A\lor B)$、$(A\to B)$、$(A\leftrightarrow B)$ 都是谓词公式；
 4. 如果 $A$ 是谓词公式，$x$ 是其中的任一变元，则 $\forall xA$ 和 $\exists xA$ 都是谓词公式；
 5. 当且仅当有限次地应用上述步骤得到的符号串才是谓词公式。
+
+### 2.2.2 辖域、约束变元与自由变元
 
 **定义2.2.2（辖域、约束变元与自由变元）**
 
@@ -232,6 +258,8 @@ $\exists y\forall xP(x,y)$ 表示“存在实数 $y$，对每一个实数 $x$，
 1. $\forall x$ 的辖域是 $P(x)\land Q(x)$，$x$ 为约束变元。
 2. $\forall x$ 的辖域是 $P(x)\to\exists yQ(x,y)$，$\exists y$ 的辖域是 $Q(x,y)$，$x,y$ 均为约束变元。
 3. $\forall x$ 的辖域是 $\forall y(P(x,y)\land Q(y,z))$，$\forall y$ 的辖域是 $P(x,y)\land Q(y,z)$，$\exists x$ 的辖域是 $R(x,y)$。在 $\forall x\forall y(P(x,y)\land Q(y,z))$ 中，$x,y$ 为约束变元，$z$ 为自由变元；在 $\exists xR(x,y)$ 中，$x$ 为约束变元，$y$ 为自由变元。
+
+### 2.2.3 约束变元换名与自由变元代入
 
 对谓词公式中约束出现的变元更改符号名称，称为约束变元换名。换名规则是：将量词中的指导变元以及该量词辖域中该变元的所有出现，更改为辖域中没有出现的变元名称，公式的其余部分不变。
 
@@ -257,6 +285,8 @@ $$
 $$
 \forall x(P(x,t)\land Q(t,z))\land\exists uR(u,t)\land\forall yS(y).
 $$
+
+### 2.2.4 闭式
 
 **定义2.2.3（闭式）**
 
@@ -401,7 +431,9 @@ $$
 
 **定理2.4.2**
 
-设 $A(x)$ 是含自由变元 $x$ 的公式，$B$ 是不含 $x$ 的公式，则
+设 $A(x)$ 是含自由变元 $x$ 的公式，$B$ 是不含 $x$ 的公式，则有下列八条等值式。
+
+这八条都以“$B$ 不含 $x$”为前提。若 $B$ 含 $x$，把 $B$ 移进或移出量词辖域时，量词会捕获原本自由的 $x$，等值式随即失效；下面的补充证明末尾给出了反例。
 
 | 序号 | 等值式 |
 |:---:|:---|
@@ -438,6 +470,24 @@ $$
 $$
 
 第三步同样用到 $B$ 不含 $x$：只有这样，才能把 $B$ 放进 $\forall x$ 的辖域而不被量词捕获。
+
+> **补充证明**（第 1—4、7、8 条）
+>
+> **假设**：$I$ 是任意解释，个体域为 $D$，$B$ 中不出现 $x$，$a$ 遍历 $D$。
+>
+> **推理**：
+>
+> （1）若 $\forall x(A(x)\land B)$ 在 $I$ 下为真，则每个 $a$ 都使 $A(a)\land B$ 为真，特别地 $B$ 为真且每个 $a$ 使 $A(a)$ 为真，故 $\forall xA(x)\land B$ 为真。反之，若 $\forall xA(x)\land B$ 为真，则 $B$ 为真且每个 $a$ 使 $A(a)$ 为真，于是每个 $a$ 使 $A(a)\land B$ 为真，$\forall x(A(x)\land B)$ 为真。两个方向合起来即（1）。
+>
+> （2）设 $\forall x(A(x)\lor B)$ 为真。若 $B$ 为真，则 $\forall xA(x)\lor B$ 为真；若 $B$ 为假，则每个 $a$ 必须使 $A(a)$ 为真，故 $\forall xA(x)$ 为真，仍有 $\forall xA(x)\lor B$ 为真。反之，设 $\forall xA(x)\lor B$ 为真：$B$ 为真时每个 $A(a)\lor B$ 为真；$B$ 为假时 $\forall xA(x)$ 为真，每个 $A(a)$ 为真。故（2）成立。
+>
+> （3）$\exists x(A(x)\land B)$ 为真，当且仅当存在 $a$ 使 $A(a)$ 真且 $B$ 真；由于 $B$ 的真值与 $a$ 无关，这又当且仅当“存在 $a$ 使 $A(a)$ 真”且 $B$ 真，即 $\exists xA(x)\land B$。（4）把 $\land$ 换成 $\lor$，同理。
+>
+> （7）$B\to\forall xA(x)\Leftrightarrow\neg B\lor\forall xA(x)\Leftrightarrow\forall x(\neg B\lor A(x))\Leftrightarrow\forall x(B\to A(x))$，其中第二步把不含 $x$ 的 $\neg B$ 放进 $\forall x$ 的辖域，用的正是（2）。（8）同理，用（4）：$B\to\exists xA(x)\Leftrightarrow\neg B\lor\exists xA(x)\Leftrightarrow\exists x(\neg B\lor A(x))\Leftrightarrow\exists x(B\to A(x))$。
+>
+> **结论**：在 $B$ 不含 $x$ 的条件下，第 1—4、7、8 条都成立。
+>
+> **条件不可省的反例**：取 $D=\{0,1\}$，$A(x)$ 表示 $x=0$，$B(x)$ 表示 $x=1$。此时 $\forall x(A(x)\lor B(x))$ 为真（$x=0$ 时 $A$ 真，$x=1$ 时 $B$ 真），而把 $B(x)$ 移到辖域外得到的 $\forall xA(x)\lor B(x)$ 在 $x=0$ 处为假（$\forall x(x=0)$ 假，$0=1$ 也假）。所以 $B$ 含 $x$ 时（2）不再等值。
 
 ### 2.4.3 量词分配律
 
@@ -480,6 +530,14 @@ $$
 
 1. $\forall x\forall yA(x,y)\Leftrightarrow\forall y\forall xA(x,y)$；
 2. $\exists x\exists yA(x,y)\Leftrightarrow\exists y\exists xA(x,y)$。
+
+> **补充证明**
+>
+> **假设**：$I$ 为任意解释，个体域 $D$ 非空。
+>
+> **推理**：$\forall x\forall yA(x,y)$ 为真，当且仅当对每一对 $(a,b)\in D\times D$ 都有 $A(a,b)$ 为真。有序对 $(a,b)$ 与 $(b,a)$ 遍历的是同一个集合 $D\times D$，所以这又当且仅当对每一对 $(b,a)$ 都有 $A(a,b)$ 为真，即 $\forall y\forall xA(x,y)$ 为真。存在量词的情形把“每一对”换成“存在一对”，而 $D\times D$ 不变，故 $\exists x\exists yA(x,y)\Leftrightarrow\exists y\exists xA(x,y)$。
+>
+> **结论**：同种量词可以交换次序，交换不改变命题含义。
 
 **例** 证明下面的等价式成立：
 
@@ -549,6 +607,14 @@ $$
 \forall x(A(x)\to B(x))\Rightarrow\forall xA(x)\to\forall xB(x).
 $$
 
+> **补充证明**（第 2、4 条）
+>
+> **假设**：$I$ 为任意解释，个体域 $D$ 非空。
+>
+> **推理**：（2）若 $\exists x(A(x)\land B(x))$ 为真，取 $a$ 使 $A(a)$ 与 $B(a)$ 都真；于是 $A(a)$ 真给出 $\exists xA(x)$ 真，$B(a)$ 真给出 $\exists xB(x)$ 真，故 $\exists xA(x)\land\exists xB(x)$ 为真。（4）若 $\exists x(A(x)\to B(x))$ 为真，取 $a$ 使 $\neg A(a)\lor B(a)$ 为真。若此时 $\forall xA(x)$ 为真，则 $A(a)$ 为真，于是 $B(a)$ 为真，故 $\exists xB(x)$ 为真；所以 $\forall xA(x)\to\exists xB(x)$ 为真。
+>
+> **结论**：两条蕴含式都成立。第（2）条只是单向的：取 $D=\{0,1\}$，$A(x)$ 表示 $x=0$，$B(x)$ 表示 $x=1$，则 $\exists xA(x)\land\exists xB(x)$ 真，但不存在同时使 $A,B$ 为真的个体，$\exists x(A(x)\land B(x))$ 假，反方向不成立。第（4）条实际上可以加强为等值式 $\exists x(A(x)\to B(x))\Leftrightarrow\forall xA(x)\to\exists xB(x)$，证明见 2.4.3 节例（1）；表中写成 $\Rightarrow$ 是较弱但正确的陈述。
+
 **例** 证明下面的蕴含式成立：
 $$
 \exists xA(x)\to\forall xB(x)\Rightarrow\forall x(A(x)\to B(x)).
@@ -586,8 +652,14 @@ $$
 \forall x\forall yA(x,y)\Rightarrow\forall xA(x,x).
 $$
 
+> **补充证明**（第 2—8 条）
+>
+> **假设**：$I$ 为任意解释，个体域 $D$ 非空。
+>
+> **推理**：（2）若 $\exists xA(x,x)$ 为真，取 $a$ 使 $A(a,a)$ 为真；有序对 $(a,a)$ 就是 $\exists x\exists yA(x,y)$ 的见证。（3）若 $\forall x\forall yA(x,y)$ 为真，任取 $b\in D$（$D$ 非空），则每个 $a$ 都使 $A(a,b)$ 为真，故 $\forall xA(x,b)$ 为真，于是 $\exists y\forall xA(x,y)$ 为真。（4）同理，若 $\forall y\forall xA(x,y)$ 为真，任取 $a\in D$，则每个 $b$ 都使 $A(a,b)$ 为真，故 $\forall yA(a,y)$ 为真，于是 $\exists x\forall yA(x,y)$ 为真。（5）若 $\exists y\forall xA(x,y)$ 为真，取 $b$ 使对一切 $a$ 都有 $A(a,b)$ 为真；固定任一 $a$，$b$ 就是 $\exists yA(a,y)$ 的见证，故 $\forall x\exists yA(x,y)$ 为真。（6）若 $\forall x\exists yA(x,y)$ 为真，任取 $a$ 得 $b$ 使 $A(a,b)$ 为真；有序对 $(a,b)$ 就是 $\exists y\exists xA(x,y)$ 的见证。（7）若 $\exists x\forall yA(x,y)$ 为真，取 $a$ 使每个 $b$ 都有 $A(a,b)$ 为真；对任一 $b$，$a$ 就是 $\exists xA(x,b)$ 的见证，故 $\forall y\exists xA(x,y)$ 为真。（8）若 $\forall y\exists xA(x,y)$ 为真，任取 $b$ 得 $a$ 使 $A(a,b)$ 为真，于是 $\exists x\exists yA(x,y)$ 为真。
+>
+> **结论**：第 2—8 条都成立。反向一般不成立：取 $D=\mathbb{N}$，$A(x,y)$ 表示 $x<y$，则 $\forall x\exists y(x<y)$ 为真（取 $y=x+1$），而 $\exists y\forall x(x<y)$ 为假（没有比所有自然数都大的自然数），所以第 5 条的反向不成立；其余几条的反向同样可用“存在”与“任意”的次序构造反例。
 
-> **补充证明**（第 5 条：量词顺序） 设 $\exists y\forall xA(x,y)$ 在解释 $I$ 下为真，即存在 $b\in D$，使对一切 $x\in D$ 都有 $A(x,b)$ 为真。任取 $a\in D$，由 $A(a,b)$ 为真知 $\exists yA(a,y)$ 为真；$a$ 任意，故 $\forall x\exists yA(x,y)$ 为真。所以 $\exists y\forall xA(x,y)\Rightarrow\forall x\exists yA(x,y)$。反过来不成立：取 $D=\mathbb{N}$，$A(x,y)$ 表示 $x<y$，则 $\forall x\exists y(x<y)$ 为真（取 $y=x+1$），而 $\exists y\forall x(x<y)$ 为假（没有比所有自然数都大的自然数）。表中其余几条不能反向的蕴含式，都可用类似的赋值反例说明。
 ## 2.5 前束范式
 
 **定义2.5.1（前束范式）**
@@ -612,6 +684,14 @@ $$
 
 每一步变换都保持等价，所以得到的前束范式与原公式等价。
 
+> **补充证明**（换名为何必要、过程为何终止）
+>
+> **假设**：$A$ 是任意谓词公式。
+>
+> **推理**：第一步消去 $\to,\leftrightarrow$ 不涉及量词，与命题逻辑的范式化相同。第二步把 $\neg$ 内移时，$\neg\forall xB\Leftrightarrow\exists x\neg B$、$\neg\exists xB\Leftrightarrow\forall x\neg B$ 只把否定推进辖域，变元仍由同一个量词约束；若内层公式另有同名变元，就先按 2.2.3 的换名规则把内层约束变元改成辖域中未出现的新名，保证推进后不会把自由变元变成约束变元。第三步要把量词前移，用的是 2.4.2 的辖域律，其前提是另一个子公式不含该变元；若含，就先换名，使两个量词使用不同变元，再逐层外移。每外移一个量词，首标长度加一、尚未进入首标的量词个数减一，故必在有限步终止。
+>
+> **结论**：换名保证每一步都满足辖域律“$B$ 不含 $x$”的条件，量词逐个进入首标，最终得到与原公式等价的前束范式。
+
 **例** 求 $\forall xA(x)\to\exists xB(x)$ 的前束范式。
 
 **解** 方法一：
@@ -631,7 +711,7 @@ $$
 &\Leftrightarrow\neg\forall xA(x)\lor\exists xB(x) &&\text{置换规则}\\
 &\Leftrightarrow\exists x\neg A(x)\lor\exists xB(x) &&\text{定理2.4.1}\\
 &\Leftrightarrow\exists x\neg A(x)\lor\exists yB(y) &&\text{换名规则}\\
-&\Leftrightarrow\exists x\exists y(\neg A(x)\lor B(y)) &&\text{定理2.4.2}
+&\Leftrightarrow\exists x\exists y(\neg A(x)\lor B(y)) &&\text{定理2.4.2 第 4 条，用两次}
 \end{aligned}
 $$
 
@@ -709,9 +789,14 @@ $$
 
 ### 2.6.2 推理问题的证明
 
-**例2.6.1** 证明 $\forall x(P(x)\to\neg Q(x))$ 是
+#### 例2.6.1
+
+证明 $\forall x(P(x)\to\neg Q(x))$ 是
 $$
-\exists x(P(x)\land Q(x))\to\forall y(R(y)\to S(y)),\qquad \exists y(R(y)\land\neg S(y))
+\begin{aligned}
+&\exists x(P(x)\land Q(x))\to\forall y(R(y)\to S(y)),\\
+&\exists y(R(y)\land\neg S(y))
+\end{aligned}
 $$
 的结论。
 
@@ -728,7 +813,9 @@ $$
 | 7 | $\forall x(\neg P(x)\lor\neg Q(x))$ | (6) 量词否定转换律、德摩根律 |
 | 8 | $\forall x(P(x)\to\neg Q(x))$ | (7) 置换规则 |
 
-**例2.6.2（苏格拉底三段论）** 证明“所有的人都是要死的。苏格拉底是人。所以苏格拉底是要死的。”
+#### 例2.6.2（苏格拉底三段论）
+
+证明“所有的人都是要死的。苏格拉底是人。所以苏格拉底是要死的。”
 
 **证明** 设 $M(x)$：$x$ 是人，$P(x)$：$x$ 是要死的，$a$：苏格拉底。前提为 $\forall x(M(x)\to P(x))$、$M(a)$，结论为 $P(a)$。
 
@@ -739,11 +826,17 @@ $$
 | 3 | $M(a)$ | 前提引入 |
 | 4 | $P(a)$ | (2)，(3) 假言推理 |
 
-**例2.6.3** 证明“每个大学生都是聪明的，每个勤奋又聪明的大学生在学业中都会取得成功，有些大学生是勤奋的，所以有些大学生在学业中会取得成功”是正确的推理。
+#### 例2.6.3
+
+证明“每个大学生都是聪明的，每个勤奋又聪明的大学生在学业中都会取得成功，有些大学生是勤奋的，所以有些大学生在学业中会取得成功”是正确的推理。
 
 **证明** 设 $P(x)$：$x$ 是大学生，$Q(x)$：$x$ 是聪明的，$R(x)$：$x$ 是勤奋的，$S(x)$：$x$ 在学业中会取得成功。前提为
 $$
-\forall x(P(x)\to Q(x)),\quad \forall x(P(x)\land R(x)\land Q(x)\to S(x)),\quad \exists x(P(x)\land R(x)),
+\begin{aligned}
+&\forall x(P(x)\to Q(x)),\\
+&\forall x((P(x)\land R(x)\land Q(x))\to S(x)),\\
+&\exists x(P(x)\land R(x)),
+\end{aligned}
 $$
 结论为 $\exists x(P(x)\land S(x))$。
 
@@ -757,13 +850,15 @@ $$
 | 6 | $Q(c)$ | (3)，(5) 假言推理 |
 | 7 | $R(c)$ | (2) 化简 |
 | 8 | $P(c)\land R(c)\land Q(c)$ | (3)，(7)，(6) 合取 |
-| 9 | $\forall x(P(x)\land R(x)\land Q(x)\to S(x))$ | 前提引入 |
-| 10 | $P(c)\land R(c)\land Q(c)\to S(c)$ | (9) UI |
+| 9 | $\forall x((P(x)\land R(x)\land Q(x))\to S(x))$ | 前提引入 |
+| 10 | $(P(c)\land R(c)\land Q(c))\to S(c)$ | (9) UI |
 | 11 | $S(c)$ | (8)，(10) 假言推理 |
 | 12 | $P(c)\land S(c)$ | (3)，(11) 合取 |
 | 13 | $\exists x(P(x)\land S(x))$ | (12) EG |
 
-**例2.6.4** 说明下面推理的错误，并指出错误的原因：
+#### 例2.6.4
+
+说明下面推理的错误，并指出错误的原因：
 
 1. $\exists xP(x)\land\exists xQ(x)$，前提引入；
 2. $\exists xP(x)$，(1) 化简；
@@ -789,7 +884,9 @@ $$
 
 注意结论只能是 $\exists x\exists y(P(x)\land Q(y))$，不能写成 $\exists x(P(x)\land Q(x))$。
 
-**例2.6.5** 说明下面推理的错误，并指出错误的原因：
+#### 例2.6.5
+
+说明下面推理的错误，并指出错误的原因：
 
 1. $\forall x(P(x)\to Q(x))$，前提引入；
 2. $P(c)\to Q(c)$，(1) UI；
@@ -813,7 +910,9 @@ $$
 
 当前提中同时含有全称量词和存在量词时，一般应先使用 EI 规则，后使用 UI 规则。
 
-**例2.6.6** 下面的推理是否正确？为什么？
+#### 例2.6.6
+
+下面的推理是否正确？为什么？
 
 1. $\forall x\exists yF(x,y)$，前提引入；
 2. $\exists yF(z,y)$，(1) UI；
@@ -822,7 +921,9 @@ $$
 
 **解** 不正确。错在第（3）步：$\exists yF(z,y)$ 中 $z$ 是自由变元，不满足 EI 规则的条件 3，不能使用 EI 规则。
 
-**例2.6.7** 证明 $\forall x(P(x)\to Q(x))\Rightarrow\forall xP(x)\to\exists xQ(x)$。
+#### 例2.6.7
+
+证明 $\forall x(P(x)\to Q(x))\Rightarrow\forall xP(x)\to\exists xQ(x)$。
 
 **证明** 利用 CP 规则，证明
 $$

@@ -88,6 +88,14 @@ html[data-theme="dark"] [data-reading-preset="campus-notes"] .prose blockquote[d
   max-width: 100%;
 }
 
+/* KaTeX emits inline chunks at outer operators. Wrap between those chunks,
+   and keep the scroll area for any chunk wider than the reading column. */
+[data-reading-preset="campus-notes"] .prose .katex-display > .katex:not(:has(> .katex-html > .tag)) {
+  width: min-content;
+  min-width: 100%;
+  white-space: normal;
+}
+
 [data-reading-preset="campus-notes"] .prose :is(blockquote, li) .katex-display {
   margin-block: 1em;
 }
