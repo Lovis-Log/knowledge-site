@@ -2366,6 +2366,294 @@ int main()
 - `d = 1`：内层 `for` 不执行，每次删除当前 `p`，然后 `p = p->next`；这相当于从起点开始逐个出列，逻辑上成立。
 - `Out` 会销毁整条链表，调用后 `head` 悬空，不能再 `ShowList` 或再次 `Out`。
 
+## 6.5 课堂练习与解析
+
+### 练习 1　位串输出与字节分组
+
+给定无符号整数 $15$，用最高位掩码输出其 32 位二进制表示，并按每 8 位分组。
+
+**补充解答**
+
+前三组全为零，最后一组是二进制的 $15$。原程序的 ends 写入空字符，并不输出空格。下面用空格使分组可见，并用无符号常量构造最高位掩码。
+
+```cpp
+#include<iostream>
+using namespace std;
+void anonyf(unsigned value);
+int main()
+{
+    unsigned x = 15;
+    anonyf(x);
+}
+void anonyf(unsigned value)
+{
+    unsigned c;
+    unsigned bitmask = 1u << 31;
+    for (c = 1; c <= 32; c++)
+    {
+        cout << (value & bitmask ? '1' : '0');
+        value <<= 1;
+        if (c % 8 == 0)  cout << ' ';
+    }
+    cout << endl;
+}
+```
+
+运行结果为
+
+```text
+00000000 00000000 00000000 00001111
+```
+
+### 练习 2　用位串生成加密字符
+
+依次处理 $3,5,17$。跳过二进制前导零后，按位计数器的奇偶性编码：偶数位置的 1、0 分别输出两个 x、两个 z，奇数位置输出单个 x 或 z。
+
+**补充解答**
+
+原程序按 32 位无符号整数计数。$3$ 的有效位对应计数 30、31，$5$ 对应 29、30、31，$17$ 对应 27–31。此处约定输入为正整数；零没有最高的 1，原寻找循环会一直继续。
+
+```cpp
+#include<iostream>
+using namespace std;
+void BitEncryption(unsigned value);
+int main()
+{
+    unsigned message[3] = { 3,5,17 };
+    for (int i = 0; i < 3; i++)
+        BitEncryption(message[i]);
+    return 0;
+}
+void BitEncryption(unsigned value)
+{
+    unsigned count, temp, flag;
+    unsigned bitMask = 1u << 31;
+    flag = 1; count = 0; temp = value;
+    while (flag)
+    {
+        flag = (temp & bitMask ? 0 : 1);
+        temp <<= 1; count++;
+    }
+    count--;
+    value = value << count;
+    for (; count <= 31; count++)
+    {
+        switch (count % 2)
+        {
+        case 0:    cout << (value & bitMask ? "xx" : "zz"); break;
+        case 1:    cout << (value & bitMask ? 'x' : 'z'); break;
+        }
+        value <<= 1;
+    }
+    cout << endl;
+}
+```
+
+运行结果为
+
+```text
+xxx
+xzzx
+xzzzzzx
+```
+
+### 练习 3　结构体指针与成员自增
+
+先判断单选题中哪项错误：p->num、(p++).num、(p++)->num、(*p).num。再执行下面的结构体数组程序。
+
+**补充解答**
+
+错误项为 (p++).num，因为 p++ 的结果仍是指针。后置自增先返回旧值再改变对象；前两条输出后，p 指向第三个元素。后两条改变第三个元素的 n 成员，指针本身保持。
+
+```cpp
+#include <iostream>
+using namespace std;
+struct Data
+{  int n;
+   double score;
+};
+int main()
+{  Data a[3] = { 1001,87,1002,72,1003,90 }, *p = a;
+   cout << (p++)->n << endl;
+   cout << (p++)->n << endl;
+   cout << p->n++ << endl;
+   cout << (*p).n++ << endl;
+}
+```
+
+运行结果为
+
+```text
+1001
+1002
+1003
+1004
+```
+
+### 练习 4　按实际表达式计算结构体函数结果
+
+结构体 Vec 有两个分量，函数实际计算 v1.u + v2.v 与 v1.v + v2.u。输入结构体 $(1,2)$ 与 $(10,20)$，求输出。
+
+**补充解答**
+
+按代码，第一分量为 $1+20=21$，第二分量为 $2+10=12$。若希望做通常的向量相加，应改成同名分量相加，此时得到 $(11,22)$。
+
+```cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
+struct Vec {
+    double u;
+    double v;
+};
+Vec addVec(Vec v1, Vec v2)
+{
+    Vec sum;
+    sum.u = v1.u + v2.v;
+    sum.v = v1.v + v2.u;
+    return sum;
+}
+void printVec(Vec v)
+{
+    cout << "vec: " << v.u << "," << v.v << endl;
+}
+int main()
+{
+    Vec a = { 1, 2 };
+    Vec b = { 10, 20 };
+    Vec c = addVec(a, b);
+    printVec(c);
+    return 0;
+}
+```
+
+运行结果为
+
+```text
+vec: 21,12
+```
+
+### 练习 5　结构体数组按成绩排序
+
+对四条学生记录按成绩升序做冒泡排序，输出学号与成绩。
+
+**补充解答**
+
+相邻成绩逆序时交换整个结构体，学号随成绩一起移动。每一趟把尚未排好部分的最大成绩移到右端，最终学号顺序为 104、102、101、103。
+
+```cpp
+#include<iostream>
+using namespace std;
+struct Student
+{int id;
+    int score;};
+int main()
+{
+    Student st[4] = { {101,82},{102,75},{103,91},{104,68} };
+    int i, j;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3 - i; j++)
+        {
+            if (st[j].score > st[j + 1].score)
+            {  Student temp = st[j];
+                 st[j] = st[j + 1];
+                st[j + 1] = temp; }
+          }
+    }
+    for (i = 0; i < 4; i++)
+    {
+        cout << st[i].id << "," << st[i].score << "\n";
+    }
+    cout << endl;
+}
+```
+
+运行结果为
+
+```text
+104,68
+102,75
+101,82
+103,91
+```
+
+### 练习 6　结点数组构成的循环链
+
+三个数组结点分别保存 C++、Java、PHP，指针域依次指向下一结点，末结点指回首结点。连续访问四次字符串，求输出。
+
+**补充解答**
+
+a[0] 指向 a[1]，a[1] 指向 a[2]，a[2] 指回 a[0]，第四次访问回到 C++。这是三个数组对象通过指针建立的循环关系。
+
+```cpp
+#include <iostream>
+using namespace std;
+struct Node
+{
+    const char* s;
+    Node* q;
+};
+int main()
+{
+    Node a[] = { { "C++", a + 1 }, { "Java", a + 2 }, { "PHP", a } };
+    Node* p = a;
+    cout << p->s << endl;
+    cout << p->q->s << endl;
+    cout << p->q->q->s << endl;
+    cout << p->q->q->q->s << endl;
+}
+```
+
+运行结果为
+
+```text
+C++
+Java
+PHP
+C++
+```
+
+### 练习 7　沿链表指针读取指定结点
+
+建立数值为 4、6、8 的三个结点。先累加 p->num，再累加 q->next->num，求 sum。
+
+**补充解答**
+
+q->next 指向第三个结点，所加的值为 8，所以 $sum=4+8=12$。下面采用标准的 int main 并释放动态结点。若要三个结点之和，需要遍历链表，结果为 18。
+
+```cpp
+#include<iostream>
+using namespace std ;
+# include <math.h>
+#include <stdlib.h>
+struct NODE{
+            int num;
+            struct NODE *next;
+           };
+int main( )
+{   struct NODE *p,*q,*r;
+    int sum=0;
+    p=new NODE;
+    q=new NODE;
+    r=new NODE;
+    p->num=4;q->num=6;r->num=8;
+    p->next=q;q->next=r;r->next=NULL;
+    sum+=p->num;sum+=q->next->num;
+    cout<<"sum="<<sum<<endl;
+    delete r;
+    delete q;
+    delete p;
+}
+```
+
+运行结果为
+
+```text
+sum=12
+```
+
+
 ## 本章小结
 
 本章有两条主线：**按位操作**和**用结构/指针组织数据**。
