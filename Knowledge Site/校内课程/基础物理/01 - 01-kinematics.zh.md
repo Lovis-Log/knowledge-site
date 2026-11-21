@@ -96,7 +96,12 @@ $$
 **位移**：质点从 $a$ 运动到 $b$ 时，由 $a$ 指向 $b$ 的有向线段，记 $\Delta\vec r$。它反映位置的变化，与路径无关。
 
 $$
-\Delta\vec r_{ab}=\vec r_b-\vec r_a=(x_b-x_a)\vec i+(y_b-y_a)\vec j+(z_b-z_a)\vec k=\Delta x\,\vec i+\Delta y\,\vec j+\Delta z\,\vec k
+\begin{aligned}
+\Delta\vec r_{ab}
+&=\vec r_b-\vec r_a\\
+&=(x_b-x_a)\vec i+(y_b-y_a)\vec j+(z_b-z_a)\vec k\\
+&=\Delta x\,\vec i+\Delta y\,\vec j+\Delta z\,\vec k
+\end{aligned}
 $$
 
 $$
@@ -152,11 +157,20 @@ $$
 直角坐标分量式
 
 $$
-\vec v=\frac{\mathrm d\vec r}{\mathrm dt}=\frac{\mathrm dx}{\mathrm dt}\vec i+\frac{\mathrm dy}{\mathrm dt}\vec j+\frac{\mathrm dz}{\mathrm dt}\vec k=v_x\vec i+v_y\vec j+v_z\vec k
+\begin{aligned}
+\vec v
+&=\frac{\mathrm d\vec r}{\mathrm dt}\\
+&=\frac{\mathrm dx}{\mathrm dt}\vec i+\frac{\mathrm dy}{\mathrm dt}\vec j+\frac{\mathrm dz}{\mathrm dt}\vec k\\
+&=v_x\vec i+v_y\vec j+v_z\vec k
+\end{aligned}
 $$
 
 $$
-v=|\vec v|=\sqrt{v_x^{2}+v_y^{2}+v_z^{2}}=\sqrt{\left(\frac{\mathrm dx}{\mathrm dt}\right)^{2}+\left(\frac{\mathrm dy}{\mathrm dt}\right)^{2}+\left(\frac{\mathrm dz}{\mathrm dt}\right)^{2}}
+\begin{aligned}
+v=|\vec v|
+&=\sqrt{v_x^{2}+v_y^{2}+v_z^{2}}\\
+&=\sqrt{\left(\frac{\mathrm dx}{\mathrm dt}\right)^{2}+\left(\frac{\mathrm dy}{\mathrm dt}\right)^{2}+\left(\frac{\mathrm dz}{\mathrm dt}\right)^{2}}
+\end{aligned}
 $$
 
 $$
@@ -199,7 +213,11 @@ $$
 直角坐标分量：
 
 $$
-\vec a=\frac{\mathrm d v_x}{\mathrm dt}\vec i+\frac{\mathrm d v_y}{\mathrm dt}\vec j+\frac{\mathrm d v_z}{\mathrm dt}\vec k=a_x\vec i+a_y\vec j+a_z\vec k
+\begin{aligned}
+\vec a
+&=\frac{\mathrm d v_x}{\mathrm dt}\vec i+\frac{\mathrm d v_y}{\mathrm dt}\vec j+\frac{\mathrm d v_z}{\mathrm dt}\vec k\\
+&=a_x\vec i+a_y\vec j+a_z\vec k
+\end{aligned}
 $$
 
 $$
@@ -207,7 +225,11 @@ a_x=\frac{\mathrm d v_x}{\mathrm dt}=\frac{\mathrm d^{2}x}{\mathrm dt^{2}},\qqua
 $$
 
 $$
-a=|\vec a|=\sqrt{a_x^{2}+a_y^{2}+a_z^{2}}=\sqrt{\left(\frac{\mathrm d^{2}x}{\mathrm dt^{2}}\right)^{2}+\left(\frac{\mathrm d^{2}y}{\mathrm dt^{2}}\right)^{2}+\left(\frac{\mathrm d^{2}z}{\mathrm dt^{2}}\right)^{2}}
+\begin{aligned}
+a=|\vec a|
+&=\sqrt{a_x^{2}+a_y^{2}+a_z^{2}}\\
+&=\sqrt{\left(\frac{\mathrm d^{2}x}{\mathrm dt^{2}}\right)^{2}+\left(\frac{\mathrm d^{2}y}{\mathrm dt^{2}}\right)^{2}+\left(\frac{\mathrm d^{2}z}{\mathrm dt^{2}}\right)^{2}}
+\end{aligned}
 $$
 
 **思考题（辨析）** 质点作曲线运动时，下面四式的正误：
@@ -278,7 +300,11 @@ v=\int_{0}^{t}a\,\mathrm dt=\int_{0}^{t}\left(a_0+\frac{a_0}{\tau}t\right)\mathr
 $$
 
 $$
-x=\int_{0}^{t}v\,\mathrm dt=\int_{0}^{t}\left(a_0t+\frac{a_0}{2\tau}t^{2}\right)\mathrm dt=\frac{a_0}{2}t^{2}+\frac{a_0}{6\tau}t^{3}
+\begin{aligned}
+x&=\int_{0}^{t}v\,\mathrm dt
+=\int_{0}^{t}\left(a_0t+\frac{a_0}{2\tau}t^{2}\right)\mathrm dt\\
+&=\frac{a_0}{2}t^{2}+\frac{a_0}{6\tau}t^{3}
+\end{aligned}
 $$
 
 要点：这里 $a$ 不是常量，不能套用 $v^2-v_0^2=2as$；只能用 $\mathrm dv=a\,\mathrm dt$ 与 $\mathrm dx=v\,\mathrm dt$ 逐次积分。
@@ -333,7 +359,11 @@ $$
 对时间求导（$h$ 为常量，$l=l(t)$）：
 
 $$
-v=\frac{\mathrm dx}{\mathrm dt}=\frac{l}{\sqrt{l^{2}-h^{2}}}\frac{\mathrm dl}{\mathrm dt}=\frac{\sqrt{x^{2}+h^{2}}}{x}\frac{\mathrm dl}{\mathrm dt}
+\begin{aligned}
+v=\frac{\mathrm dx}{\mathrm dt}
+&=\frac{l}{\sqrt{l^{2}-h^{2}}}\frac{\mathrm dl}{\mathrm dt}\\
+&=\frac{\sqrt{x^{2}+h^{2}}}{x}\frac{\mathrm dl}{\mathrm dt}
+\end{aligned}
 $$
 
 设 $t=0$ 时 $l=l_0$，绳长以速率 $v_0$ 缩短，则 $l=l_0-v_0t$，$\dfrac{\mathrm dl}{\mathrm dt}=-v_0$，故
@@ -373,7 +403,12 @@ $$
 $$
 
 $$
-\frac{\mathrm d\vec\tau}{\mathrm dt}=\frac{\mathrm d\theta}{\mathrm dt}\vec n=\frac{\mathrm d\theta}{\mathrm ds}\frac{\mathrm ds}{\mathrm dt}\vec n=\frac{1}{\rho}v\,\vec n
+\begin{aligned}
+\frac{\mathrm d\vec\tau}{\mathrm dt}
+&=\frac{\mathrm d\theta}{\mathrm dt}\vec n
+=\frac{\mathrm d\theta}{\mathrm ds}\frac{\mathrm ds}{\mathrm dt}\vec n\\
+&=\frac{1}{\rho}v\,\vec n
+\end{aligned}
 $$
 
 其中 $\rho$ 为**曲率半径**（$\mathrm ds=\rho\,\mathrm d\theta$）。于是
@@ -568,7 +603,12 @@ $$
 再求导：
 
 $$
-\frac{\mathrm d^{2}\vec r}{\mathrm dt^{2}}=\frac{\mathrm d^{2}\vec r'}{\mathrm dt^{2}}+\frac{\mathrm d^{2}\vec R}{\mathrm dt^{2}}\ \Rightarrow\ \vec a_{\text{绝对}}=\vec a_{\text{相对}}+\vec a_{\text{牵连}}
+\begin{aligned}
+\frac{\mathrm d^{2}\vec r}{\mathrm dt^{2}}
+&=\frac{\mathrm d^{2}\vec r'}{\mathrm dt^{2}}+\frac{\mathrm d^{2}\vec R}{\mathrm dt^{2}}\\
+&\Longrightarrow\ \vec a_{\text{绝对}}
+=\vec a_{\text{相对}}+\vec a_{\text{牵连}}
+\end{aligned}
 $$
 
 当 $S'$ 相对 $S$ 作**匀速直线运动**时 $\vec a_{\text{牵连}}=0$，于是
@@ -644,10 +684,3 @@ $$
 - 运动学第二类问题必须积分并代入初始条件；$v^{2}-v_0^{2}=2as$ 只在 $a$ 为常量时成立。
 - 求路程前先判断 $v$ 是否变号，转向点要分段计算。
 - 相对运动中 $\vec v_{\text{绝对}}=\vec v_{\text{相对}}+\vec v_{\text{牵连}}$，加速度只在牵连运动为匀速直线运动时才相等。
-
-## 原始资料
-
-- 第1章1-4节 参考系 坐标系 时间 位置矢量 位移 速度 加速度（1）.pdf（25 页，主干：§1-2、§1-3、§1-4）
-- 第1章1-4节 参考系 坐标系 时间 位置矢量 位移 速度 加速度.pdf（2 页，拉船靠岸例题，见例 1.5）
-- 第1章6节 圆周运动 测量.pdf（13 页，§1-6 与时间、质量测量）
-- 第1章7节 运动学两类基本问题 相对运动1.pdf（5 页，§1-7 相对运动）

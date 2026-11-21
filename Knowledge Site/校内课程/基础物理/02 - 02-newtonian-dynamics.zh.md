@@ -244,7 +244,12 @@ $$
 **(1) 补充解答**（课件缺此步）：$a$ 随 $x$ 变化，不能套匀加速公式。用 $a=v\dfrac{\mathrm dv}{\mathrm dx}$：
 
 $$
-v\frac{\mathrm dv}{\mathrm dx}=\frac{g\sin\theta}{L}x\ \Longrightarrow\ \int_{0}^{v}v\,\mathrm dv=\frac{g\sin\theta}{L}\int_{l}^{x}x\,\mathrm dx
+\begin{aligned}
+v\frac{\mathrm dv}{\mathrm dx}&=\frac{g\sin\theta}{L}x\\
+\Longrightarrow\quad
+\int_{0}^{v}v'\,\mathrm dv'
+&=\frac{g\sin\theta}{L}\int_{l}^{x}x'\,\mathrm dx'
+\end{aligned}
 $$
 
 $$
@@ -334,11 +339,3 @@ $$
 - 万有引力只对质点直接成立，连续体必须取微元积分；$l\gg L$ 时退化检验是必备步骤。
 - 轻绳的张力关系要结合沿绳分布力和滑轮条件判断；有质量绳上的张力可按微元列式求解。
 - 加速度随位置变化时，可用 $a=v\,\mathrm dv/\mathrm dx$ 或能量法。固定整条链条为系统时总质量不变。
-
-## 原始资料
-
-- 第2章1节 牛顿运动定律.pdf（6 页；页脚标注"1/7页"，实际只有 6 页，首页为章封面）
-- 第2章2节 几种常见的力.pdf（7 页；内部页码 1–8，缺第 4 页）
-- 第2章-4节 应用牛顿力学解题.pdf（5 页，例 2.2、2.3 与例 2.4 的题面）
-- 第2章-4节 应用牛顿力学解题(2).pdf（5 页，与上一份逐页像素相同，未重复整理）
-- 第2章-4节 应用牛顿力学解题(3).pdf（2 页，同一课件的第 6、7 页，例 2.4 的完整解）

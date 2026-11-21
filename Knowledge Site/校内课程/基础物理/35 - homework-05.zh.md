@@ -1,6 +1,6 @@
 ---
 slug: "homework-05"
-title: "第 5 次作业 · 刚体力学"
+title: "第 5 次作业（刚体力学）"
 summary: "刚体力学的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"

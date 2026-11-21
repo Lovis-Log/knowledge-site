@@ -1,6 +1,6 @@
 ---
 slug: "homework-04"
-title: "第 4 次作业 · 功和能"
+title: "第 4 次作业（功和能）"
 summary: "功和能的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"

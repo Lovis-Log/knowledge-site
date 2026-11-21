@@ -161,7 +161,13 @@ $$
 **动量守恒定律**：若质点系所受合外力为零，则系统总动量保持不变。
 
 $$
-\vec F_{\text{合外}}=0\ \Longrightarrow\ \frac{\mathrm d}{\mathrm dt}\sum_i m_i\vec v_i=0\ \Longrightarrow\ \sum_{i=1}^{n}m_i\vec v_i=m_1\vec v_1+m_2\vec v_2+\cdots+m_n\vec v_n=\text{恒矢量}
+\begin{aligned}
+\vec F_{\text{合外}}=0
+&\Longrightarrow \frac{\mathrm d}{\mathrm dt}\sum_i m_i\vec v_i=0\\
+&\Longrightarrow \sum_{i=1}^{n}m_i\vec v_i
+=m_1\vec v_1+m_2\vec v_2+\cdots+m_n\vec v_n\\
+&=\text{恒矢量}
+\end{aligned}
 $$
 
 ### 适用条件（六条，逐条落实）
@@ -195,7 +201,12 @@ $$
 人对车的相对速度
 
 $$
-\vec v_{\text{人车}}=\vec v_{\text{人}}-\vec v_{\text{车}}=\vec v_{\text{人}}+\frac{m}{M}\vec v_{\text{人}}=\frac{M+m}{M}\vec v_{\text{人}}
+\begin{aligned}
+\vec v_{\text{人车}}
+&=\vec v_{\text{人}}-\vec v_{\text{车}}
+=\vec v_{\text{人}}+\frac{m}{M}\vec v_{\text{人}}\\
+&=\frac{M+m}{M}\vec v_{\text{人}}
+\end{aligned}
 $$
 
 对时间积分（$\vec v$ 的方向始终不变，可化为标量）：
@@ -465,7 +476,12 @@ $$
 ### 3.6.3 质点的角动量定理
 
 $$
-\frac{\mathrm d\vec L}{\mathrm dt}=\frac{\mathrm d}{\mathrm dt}\left(\vec r\times\vec p\right)=\frac{\mathrm d\vec r}{\mathrm dt}\times\vec p+\vec r\times\frac{\mathrm d\vec p}{\mathrm dt}=\vec v\times\vec p+\vec r\times\vec F
+\begin{aligned}
+\frac{\mathrm d\vec L}{\mathrm dt}
+&=\frac{\mathrm d}{\mathrm dt}\left(\vec r\times\vec p\right)
+=\frac{\mathrm d\vec r}{\mathrm dt}\times\vec p+\vec r\times\frac{\mathrm d\vec p}{\mathrm dt}\\
+&=\vec v\times\vec p+\vec r\times\vec F
+\end{aligned}
 $$
 
 第一项 $\vec v\times\vec p=\vec v\times m\vec v=0$（共线矢量叉乘为零），第二项即 $\vec M$，所以
@@ -522,7 +538,12 @@ $$
 联立三式解得
 
 $$
-\omega_2=\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}\omega_1=\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}\sqrt{\frac{m_1g}{mr_1}}
+\begin{aligned}
+\omega_2
+&=\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}\omega_1\\
+&=\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}
+\sqrt{\frac{m_1g}{mr_1}}
+\end{aligned}
 $$
 
 $$
@@ -532,11 +553,13 @@ $$
 比较前后两个匀速圆周运动状态，小球的能量变化就是其动能变化。其对孔的角动量在半径变化过程中保持不变，但张力可对小球做功。
 
 $$
-\Delta E=\frac{1}{2}mv_2^{2}-\frac{1}{2}mv_1^{2}=\frac{1}{2}m\left(r_2\omega_2\right)^{2}-\frac{1}{2}m\left(r_1\omega_1\right)^{2}
-$$
-
-$$
-=\frac{1}{2}mr_1^{2}\omega_1^{2}\left[\left(\frac{r_1}{r_2}\right)^{2}-1\right]=\frac{1}{2}mr_1^{2}\omega_1^{2}\left[\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}-1\right]
+\begin{aligned}
+\Delta E
+&=\frac{1}{2}mv_2^{2}-\frac{1}{2}mv_1^{2}
+=\frac{1}{2}m\left(r_2\omega_2\right)^{2}-\frac{1}{2}m\left(r_1\omega_1\right)^{2}\\
+&=\frac{1}{2}mr_1^{2}\omega_1^{2}\left[\left(\frac{r_1}{r_2}\right)^{2}-1\right]\\
+&=\frac{1}{2}mr_1^{2}\omega_1^{2}\left[\left(\frac{m_1+m_2}{m_1}\right)^{\frac{2}{3}}-1\right]
+\end{aligned}
 $$
 
 角动量守恒只保证 $r^{2}\omega$ 不变。半径减小时角速度、动能增加，增加的动能来自张力做功。上述结果比较的是两个平衡的匀速圆周运动状态；若突然加挂重物且完全没有耗散，径向运动还可能持续振荡，最终稳定需要相应的调节或耗散过程。
@@ -578,7 +601,11 @@ $$
 对整个质点系求和：
 
 $$
-\frac{\mathrm d}{\mathrm dt}\sum_i\vec L_i=\sum_i\left[\vec r_i\times\left(\vec F_i+\vec f_i\right)\right]=\sum_i\vec r_i\times\vec F_i+\sum_i\vec r_i\times\vec f_i
+\begin{aligned}
+\frac{\mathrm d}{\mathrm dt}\sum_i\vec L_i
+&=\sum_i\left[\vec r_i\times\left(\vec F_i+\vec f_i\right)\right]\\
+&=\sum_i\vec r_i\times\vec F_i+\sum_i\vec r_i\times\vec f_i
+\end{aligned}
 $$
 
 第二项是内力矩之和。由牛顿第三定律，内力成对且沿同一直线，$\sum_i\vec r_i\times\vec f_i=0$。
@@ -647,8 +674,3 @@ $$
 - 角动量 $\vec L=\vec r\times m\vec v$ 依赖参考点；角动量守恒也与参考点选取有关，但有心力对力心必守恒。
 - 角动量守恒只保证 $r^{2}\omega$ 不变，不保证动能不变（例 3.6 中半径减小、动能增大）。
 - 力矩为零的两种典型：$\vec r=0$（力过参考点）与 $\vec r\parallel\vec F$（有心力）。
-
-## 原始资料
-
-- 第3章1-5节 动量 动量守恒 质心运动定理.pdf（28 页）
-- 第3章6-9节 角动量 角动量定理 角动量守恒.pdf（10 页，实际只讲到 §3.8）

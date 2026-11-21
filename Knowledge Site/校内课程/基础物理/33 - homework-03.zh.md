@@ -1,6 +1,6 @@
 ---
 slug: "homework-03"
-title: "第 3 次作业 · 动量与角动量"
+title: "第 3 次作业（动量与角动量）"
 summary: "动量与角动量的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"
@@ -379,11 +379,12 @@ u=v_2-v_1 .
 $$
 联立解得
 $$
-v_1=v_0-\frac{m_2u}{m_1+m_2}
-=7600-\frac{150\times910}{290+150}
-=7600-310.2
-=7289.8\ \mathrm{m/s}
+\begin{aligned}
+v_1&=v_0-\frac{m_2u}{m_1+m_2}
+=7600-\frac{150\times910}{290+150}\\
+&=7600-310.2=7289.8\ \mathrm{m/s}
 \approx7290\ \mathrm{m/s},
+\end{aligned}
 $$
 $$
 v_2=u+v_1=910+7290=8200\ \mathrm{m/s}.

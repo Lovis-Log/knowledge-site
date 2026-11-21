@@ -1,6 +1,6 @@
 ---
 slug: "homework-09"
-title: "第 9 次作业 · 光的衍射"
+title: "第 9 次作业（光的衍射）"
 summary: "光的衍射的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"
@@ -385,7 +385,12 @@ $$
 “至少”即取等号：
 
 $$
-D=\frac{1.22\lambda}{\theta}=\frac{1.22\times550\times10^{-9}}{4.84\times10^{-6}}=\frac{6.71\times10^{-7}}{4.84\times10^{-6}}=0.139\ \text{m}
+\begin{aligned}
+D&=\frac{1.22\lambda}{\theta}
+=\frac{1.22\times550\times10^{-9}}{4.84\times10^{-6}}\\
+&=\frac{6.71\times10^{-7}}{4.84\times10^{-6}}
+=0.139\ \text{m}
+\end{aligned}
 $$
 
 即口径至少约 $14\ \text{cm}$。

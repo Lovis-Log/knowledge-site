@@ -1,6 +1,6 @@
 ---
 slug: "homework-06"
-title: "第 6 次作业 · 机械振动"
+title: "第 6 次作业（机械振动）"
 summary: "机械振动的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"
@@ -185,7 +185,11 @@ $$
 （2）简谐振动总能量等于最大势能：
 
 $$
-E=\frac{1}{2}kA^2=\frac{1}{2}\frac{mg}{\Delta l}A^2=\frac{1}{2}\times\frac{0.005\times9.8}{0.01}\times(0.04)^2=3.92\times10^{-3}\ \text{J}
+\begin{aligned}
+E&=\frac{1}{2}kA^2=\frac{1}{2}\frac{mg}{\Delta l}A^2\\
+&=\frac{1}{2}\times\frac{0.005\times9.8}{0.01}\times(0.04)^2
+=3.92\times10^{-3}\ \text{J}
+\end{aligned}
 $$
 
 ### 题目 10 · 填空题 5
@@ -453,7 +457,10 @@ $$
 （2）$x=-0.04\ \text{m}=-\dfrac{A}{2}$ 且继续向负方向运动，相位为 $\dfrac{2\pi}{3}$，故转过的相位
 
 $$
-\omega t=\frac{2\pi}{3}-\frac{\pi}{3}=\frac{\pi}{3}\ \Longrightarrow\ t=\frac{\pi/3}{\pi/2}=\frac{2}{3}\ \text{s}=0.667\ \text{s}
+\begin{aligned}
+\omega t&=\frac{2\pi}{3}-\frac{\pi}{3}=\frac{\pi}{3}\\
+\Longrightarrow\quad t&=\frac{\pi/3}{\pi/2}=\frac{2}{3}\ \text{s}=0.667\ \text{s}
+\end{aligned}
 $$
 
 也可由旋转矢量图直接读出：初矢量在 $\pi/3$，末矢量在 $2\pi/3$，夹角 $\pi/3$ 即最短时间。

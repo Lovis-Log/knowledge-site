@@ -1,6 +1,6 @@
 ---
 slug: "homework-02"
-title: "第 2 次作业 · 质点动力学"
+title: "第 2 次作业（质点动力学）"
 summary: "质点动力学的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"

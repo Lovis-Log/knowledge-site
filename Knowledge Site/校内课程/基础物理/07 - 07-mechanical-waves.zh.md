@@ -190,17 +190,21 @@ $$
 沿 $+x$ 方向：
 
 $$
-y=A\cos\left[\omega\left(t-\frac{x}{u}\right)+\varphi\right]
-=A\cos\left[(\omega t-kx)+\varphi\right]
-=A\cos\left[2\pi\left(\frac{t}{T}-\frac{x}{\lambda}\right)+\varphi\right]
+\begin{aligned}
+y&=A\cos\left[\omega\left(t-\frac{x}{u}\right)+\varphi\right]\\
+&=A\cos\left[(\omega t-kx)+\varphi\right]\\
+&=A\cos\left[2\pi\left(\frac{t}{T}-\frac{x}{\lambda}\right)+\varphi\right]
+\end{aligned}
 $$
 
 沿 $-x$ 方向：
 
 $$
-y=A\cos\left[\omega\left(t+\frac{x}{u}\right)+\varphi\right]
-=A\cos\left[(\omega t+kx)+\varphi\right]
-=A\cos\left[2\pi\left(\frac{t}{T}+\frac{x}{\lambda}\right)+\varphi\right]
+\begin{aligned}
+y&=A\cos\left[\omega\left(t+\frac{x}{u}\right)+\varphi\right]\\
+&=A\cos\left[(\omega t+kx)+\varphi\right]\\
+&=A\cos\left[2\pi\left(\frac{t}{T}+\frac{x}{\lambda}\right)+\varphi\right]
+\end{aligned}
 $$
 
 其中 $k=2\pi/\lambda$ 为角波数。判断符号只需问一句：$x$ 增大时相位是落后还是超前？落后取 $-$，超前取 $+$。
@@ -688,6 +692,30 @@ $$
 A=\sqrt{A_1^2+A_2^2+2A_1A_2\cos\Delta\varphi}
 $$
 
+> **补充证明**（合振幅与强度公式）
+>
+> 两振动同方向，合位移可直接相加：
+>
+> $$
+> \begin{aligned}
+> y_P&=A_1\cos(\omega t+\varphi_1)+A_2\cos(\omega t+\varphi_2)\\
+> &=(A_1\cos\varphi_1+A_2\cos\varphi_2)\cos\omega t\\
+> &\quad-(A_1\sin\varphi_1+A_2\sin\varphi_2)\sin\omega t.
+> \end{aligned}
+> $$
+>
+> 设 $y_P=A\cos(\omega t+\varphi)$，则两个括号分别是 $A\cos\varphi$ 与 $A\sin\varphi$，平方相加得
+>
+> $$
+> \begin{aligned}
+> A^2&=(A_1\cos\varphi_1+A_2\cos\varphi_2)^2\\
+> &\quad+(A_1\sin\varphi_1+A_2\sin\varphi_2)^2\\
+> &=A_1^2+A_2^2+2A_1A_2\cos(\varphi_1-\varphi_2).
+> \end{aligned}
+> $$
+>
+> 因 $\Delta\varphi=\varphi_2-\varphi_1$，而余弦为偶函数，$\cos(\varphi_1-\varphi_2)=\cos\Delta\varphi$。再对时间平均并用 $I\propto A^2$，即得 $I=I_1+I_2+2\sqrt{I_1I_2}\cos\Delta\varphi$。
+
 其中两波在 $P$ 点的相位差
 
 $$
@@ -803,8 +831,12 @@ $$
 相位差
 
 $$
-\Delta\varphi=\left[\omega\left(t-\frac{20-x}{u}\right)+\pi\right]-\omega\left(t-\frac{x}{u}\right)
-=\pi+\frac{\omega}{u}(2x-20)
+\begin{aligned}
+\Delta\varphi
+&=\left[\omega\left(t-\frac{20-x}{u}\right)+\pi\right]
+-\omega\left(t-\frac{x}{u}\right)\\
+&=\pi+\frac{\omega}{u}(2x-20)
+\end{aligned}
 $$
 
 代入 $\omega=2\pi\nu=160\pi$、$u=320$，得 $\omega/u=\pi/2$：
@@ -1046,7 +1078,12 @@ $$
 解：设波源 $o$ 到反射面的垂直距离为 $h$，$x$ 轴上的 $P$ 点坐标为 $x$。由镜像对称，反射路径长等于镜像点 $o'$ 到 $P$ 的直线距离。$o'$ 是 $o$ 关于 $M$ 的镜像，在 $o$ 正上方、离 $x$ 轴 $2h$ 处，故
 
 $$
-\overline{oM}+\overline{MP}=\overline{o'P}=\sqrt{x^2+4h^2}=2\sqrt{\left(\frac{x}{2}\right)^2+h^2}
+\begin{aligned}
+\overline{oM}+\overline{MP}
+&=\overline{o'P}\\
+&=\sqrt{x^2+4h^2}
+=2\sqrt{\left(\frac{x}{2}\right)^2+h^2}
+\end{aligned}
 $$
 
 直接传播的路程为 $oP=x$。反射存在半波损失，反射波多出 $\lambda/2$ 的等效路程，因此要相长，几何路程差须为半波长的奇数倍：
@@ -1078,6 +1115,8 @@ k\in\{0,1,2,\ldots\},\qquad k<\frac{2h}{\lambda}-\frac{1}{2}
 $$
 
 几何路程差随 $x>0$ 从 $2h$ 单调趋近零，因而所有满足 $0<(k+\tfrac12)\lambda<2h$ 的级次都可出现。原解从 $k=1$ 起列，若 $h>\lambda/4$，$k=0$ 对应的路程差 $\lambda/2$ 也能产生加强点。
+
+> 课件在 §7.7 之后直接进入 §7.11，§7.8–§7.10 未列入本课程范围。
 
 ## 7.11 多普勒效应
 
@@ -1251,15 +1290,3 @@ $$
 - 驻波中把"波节两侧反相"误记为"波节两侧同相"，或把节腹间距记成 $\lambda/2$；
 - 反射题不先判断波密/波疏就套用半波损失；
 - 多普勒公式中把 $V_S$、$V_O$ 当成二者相对速度，或忘记 $V_S<u$ 的前提。
-
-## 原始资料
-
-现有课件从 7.7 节跳到 7.11 节，7.8–7.10 暂缺。例 7.2 和例 7.6 对应原单选题的 A、C。
-
-- 第7章1&2节 行波 简谐波.pdf（17 页，§7.1–§7.2 主干）
-- 第7章1&2节 行波 简谐波(2).pdf（9 页，例题与习题补充，第 1 页与主干第 17 页重复）
-- 第7章3-6节 弹性形变 波速 波的能量 惠更斯原理 波的反射与折射.pdf（16 页，§7.3–§7.6）
-- 第7章7节1 波的叠加.pdf（14 页，叠加与干涉）
-- 第7章7节2 驻波.pdf（8 页，驻波与半波损失）
-- 第7章7节2 驻波(2).pdf（3 页，页脚标 1/4–3/4，缺第 4 页）
-- 第7章11节 多普勒效应.pdf（12 页，§7.11）

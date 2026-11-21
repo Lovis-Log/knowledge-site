@@ -1,6 +1,6 @@
 ---
 slug: "homework-08"
-title: "第 8 次作业 · 光的干涉"
+title: "第 8 次作业（光的干涉）"
 summary: "光的干涉的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"
@@ -33,7 +33,12 @@ $$
 $D$、$\lambda$、$x$ 均不变，只有 $d$ 随时间变化，两边对 $t$ 求导：
 
 $$
-\frac{\mathrm{d}k}{\mathrm{d}t}=\frac{x}{D\lambda}\frac{\mathrm{d}d}{\mathrm{d}t}=\frac{0.05}{2.0\times500\times10^{-9}}\times0.2\times10^{-3}=10\ \text{s}^{-1}
+\begin{aligned}
+\frac{\mathrm{d}k}{\mathrm{d}t}
+&=\frac{x}{D\lambda}\frac{\mathrm{d}d}{\mathrm{d}t}\\
+&=\frac{0.05}{2.0\times500\times10^{-9}}\times0.2\times10^{-3}
+=10\ \text{s}^{-1}
+\end{aligned}
 $$
 
 即每秒有 10 条亮纹扫过该点，选 D。注意“对称增大”只说明每条缝各移动 $0.1\ \text{mm/s}$，代入公式的仍是缝间距的变化率 $0.2\ \text{mm/s}$。
@@ -185,7 +190,11 @@ $$
 同一级次 $k=10$ 的直径平方与 $n$ 成反比：
 
 $$
-n=\left(\frac{D_{\text{空气}}}{D_{\text{液体}}}\right)^2=\left(\frac{1.4\times10^{-2}}{1.27\times10^{-2}}\right)^2=1.215\approx1.22
+\begin{aligned}
+n&=\left(\frac{D_{\text{空气}}}{D_{\text{液体}}}\right)^2\\
+&=\left(\frac{1.4\times10^{-2}}{1.27\times10^{-2}}\right)^2
+=1.215\approx1.22
+\end{aligned}
 $$
 
 ### 题目 9 · 填空题 4

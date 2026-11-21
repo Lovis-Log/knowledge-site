@@ -1,6 +1,6 @@
 ---
 slug: "homework-07"
-title: "第 7 次作业 · 机械波"
+title: "第 7 次作业（机械波）"
 summary: "机械波的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"
@@ -59,7 +59,10 @@ $$
 故波函数
 
 $$
-y=A\cos\left\{\omega\left[t-\frac{x}{u}\right]+\frac{\omega l}{u}\right\}=A\cos\left\{\omega\left[t+\frac{l}{u}-\frac{x}{u}\right]\right\}
+\begin{aligned}
+y&=A\cos\left\{\omega\left[t-\frac{x}{u}\right]+\frac{\omega l}{u}\right\}\\
+&=A\cos\left\{\omega\left[t+\frac{l}{u}-\frac{x}{u}\right]\right\}
+\end{aligned}
 $$
 
 即 C 正确。核对其他选项：$O$ 点（$x=0$）比 $P$ 早振动 $l/u$，应为 $y=A\cos[\omega(t+l/u)]$，A 错；B 在 $x=l$ 处给出 $A\cos[\omega(t-2l/u)]\neq A\cos\omega t$，错；$C$ 点在 $x=2l$，$y=A\cos[\omega(t+l/u-2l/u)]=A\cos[\omega(t-l/u)]$，D 错。
@@ -167,7 +170,11 @@ $O$ 处质点的振动方程 ______；
 【补充解答】波沿 $-x$ 传播，波函数取 $y=A\cos[\omega(t+x/u)+\varphi_0]$，相位随 $x$ 增大而超前。$P$ 在 $x=-L$ 处：
 
 $$
-A\cos\left[\omega\left(t-\frac{L}{u}\right)+\varphi_0\right]=A\cos(\omega t+\varphi)\ \Longrightarrow\ \varphi_0=\varphi+\frac{\omega L}{u}
+\begin{aligned}
+A\cos\left[\omega\left(t-\frac{L}{u}\right)+\varphi_0\right]
+&=A\cos(\omega t+\varphi)\\
+\Longrightarrow\quad \varphi_0&=\varphi+\frac{\omega L}{u}
+\end{aligned}
 $$
 
 于是
@@ -409,7 +416,12 @@ $$
 （2）用和差化积：
 
 $$
-y=y_1+y_2=A\cos2\pi\left(\frac{t}{T}+\frac{x}{\lambda}\right)-A\cos2\pi\left(\frac{t}{T}-\frac{x}{\lambda}\right)=-2A\sin\frac{2\pi t}{T}\sin\frac{2\pi x}{\lambda}
+\begin{aligned}
+y&=y_1+y_2\\
+&=A\cos2\pi\left(\frac{t}{T}+\frac{x}{\lambda}\right)
+-A\cos2\pi\left(\frac{t}{T}-\frac{x}{\lambda}\right)\\
+&=-2A\sin\frac{2\pi t}{T}\sin\frac{2\pi x}{\lambda}
+\end{aligned}
 $$
 
 （3）振幅分布为 $\left|2A\sin\dfrac{2\pi x}{\lambda}\right|$：

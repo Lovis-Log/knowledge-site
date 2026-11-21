@@ -488,8 +488,8 @@ $$
 $$
 \delta=
 \begin{cases}
-\dfrac{\lambda}{2}\ \ (n_1<n>n_3,\ n_1>n<n_3)\ \Longrightarrow\ \text{暗纹}\\[4pt]
-0\ \ \ (n_1>n>n_3,\ n_1<n<n_3)\ \Longrightarrow\ \text{明纹}
+\dfrac{\lambda}{2}, & n_2>\max(n_1,n_3)\ \text{或}\ n_2<\min(n_1,n_3)\ \Longrightarrow\ \text{暗纹}\\[4pt]
+0, & n_1>n_2>n_3\ \text{或}\ n_1<n_2<n_3\ \Longrightarrow\ \text{明纹}
 \end{cases}
 $$
 
@@ -626,7 +626,12 @@ $$
 不等距。$d_k\propto r_k^2$，离中心越远，光程差增加越快，干涉环也越密。
 
 $$
-\Delta r=r_{k+1}-r_k=\left(\sqrt{k+1}-\sqrt{k}\right)\sqrt{R\lambda}\ \Longrightarrow\ k\uparrow,\ \Delta r\downarrow
+\begin{aligned}
+\Delta r
+&=r_{k+1}-r_k
+=\left(\sqrt{k+1}-\sqrt{k}\right)\sqrt{R\lambda}\\
+&\Longrightarrow\ k\uparrow,\ \Delta r\downarrow
+\end{aligned}
 $$
 
 **（3）将牛顿环置于 $n>1$ 的液体中，条纹如何变化？**
@@ -785,18 +790,3 @@ $$
 8. **增透膜**在折射率按 $n_1<n_2<n_3$ 排列、垂直入射时，反射相消的最小膜厚为 $\lambda/(4n_2)$。多层增反膜使相关反射光相长叠加。
 9. **迈克尔孙**：等效空气薄膜，$\Delta d=N\lambda/2$——把"数条纹"变成"测长度"。
 10. **时间相干性**：当 $|\delta|$ 大于相干长度 $L$ 时，条纹可见度明显降低。$L$ 的量级可由 $\lambda^2/\Delta\lambda$ 估算。
-
----
-
-## 原始资料
-
-现有课件覆盖 22.1、22.2、22.5、22.6 和 22.8。22.7 原件只有自学标题，正文为补充说明。时间相干性来自迈克尔孙干涉仪课件中的补充页。
-
-- 第22章1&2节 杨氏双缝干涉实验 相干光.pdf（12 页，$\S22.1$ 双缝）
-- 第22章1&2节 杨氏双缝干涉实验 相干光(2).pdf（7 页，$\S22.2$ 相干光、洛埃镜，与前者不重复）
-- 第22章5&6节 光程 薄膜干涉.pdf（12 页，$\S22.5$ 光程 + $\S22.6$ 开头）
-- 第22章5&6节 光程 薄膜干涉(2).pdf（18 页，$\S22.6$ 全节；前 2 页与上一份末 2 页重复）
-- 第22章5&6节 光程 薄膜干涉(3).pdf（2 页，例 22-4 与 $\S22.7$ 标题页）
-- 第22章8节 迈克尔干涉仪.pdf（5 页，$\S22.8$ + $\S22$–X 补充）
-
-配图目录：[assets/课件-3](assets/课件-3)

@@ -1,6 +1,6 @@
 ---
 slug: "homework-01"
-title: "第 1 次作业 · 质点运动学"
+title: "第 1 次作业（质点运动学）"
 summary: "质点运动学的原题与解析。"
 updatedAt: "2026-11-19"
 content_type: "reference"

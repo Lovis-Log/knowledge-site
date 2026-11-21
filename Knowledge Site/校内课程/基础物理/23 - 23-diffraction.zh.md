@@ -94,6 +94,22 @@ $$
 I=I_0\left(\frac{\sin\alpha}{\alpha}\right)^2,\qquad \alpha=\frac{\pi}{\lambda}a\sin\theta
 $$
 
+> **补充证明**（由子波叠加推出光强公式）
+>
+> 把缝宽 $a$ 分成无数宽 $\mathrm dx$ 的窄条，位于 $x$ 处的窄条发出的子波到达 $P$ 点时，相对缝边缘的相位差为 $\dfrac{2\pi}{\lambda}x\sin\theta$。各子波振幅正比于 $\mathrm dx$，故总复振幅
+>
+> $$
+> E\propto\int_0^a \exp\left(\mathrm i\frac{2\pi}{\lambda}x\sin\theta\right)\mathrm dx.
+> $$
+>
+> 令 $\alpha=\dfrac{\pi a}{\lambda}\sin\theta$，积分得
+>
+> $$
+> E\propto a\,\mathrm e^{\mathrm i\alpha}\frac{\sin\alpha}{\alpha}.
+> $$
+>
+> 取模平方，即得 $I=I_0\left(\dfrac{\sin\alpha}{\alpha}\right)^2$。$\alpha=0$ 时 $\sin\alpha/\alpha\to1$，对应中央最大 $I_0$；$\alpha=\pm k\pi$（$k=1,2,\cdots$）时 $\sin\alpha=0$，对应暗纹 $a\sin\theta=\pm k\lambda$。
+
 - 中央亮纹强度最大：$\theta=0\Rightarrow\alpha=0\Rightarrow I=I_0$。
 - 各级明纹光强随衍射角 $\theta$（即 $k$）的增加迅速减小。
 - 对光强关于 $\alpha$ 求导，非零的次极大满足 $\tan\alpha=\alpha$。第一条旁瓣的峰值在 $|\alpha|\approx4.493$，光强约为中央峰的 $4.7\%$。
@@ -270,6 +286,8 @@ $$
 
 > 课件此页分母印作 $2.2\times10^{14}$，属排版笔误，应为 $2.2\times10^{-4}$；按 $2.2\times10^{-4}$ 计算才得到 13.6 m。
 
+> §23.4（自学）不在本章正文展开。
+
 ---
 
 ## 23.5 光栅衍射
@@ -288,7 +306,9 @@ $$
 d=a+b
 $$
 
-数量级 $10^{-5}\sim10^{-6}\ \mathrm{m}$，即每毫米 10～10000 条刻痕。
+通常 $d=10^{-5}\sim10^{-6}\ \mathrm m$，即每厘米 $10^3\sim10^4$ 条刻痕（每毫米约 $10^2\sim10^3$ 条）。
+
+> 校注：原课件写"每毫米 10～10000 条"，与 $d=10^{-5}\sim10^{-6}\ \mathrm m$ 的换算不符；按 $d$ 换算应为每厘米 $10^3\sim10^4$ 条。
 
 相邻两缝沿 $\theta$ 方向衍射光的光程差
 
@@ -333,8 +353,10 @@ $$
 第 $k'$ 级单缝极小
 
 $$
-a\sin\theta_{k'}=\pm k'\lambda,\qquad k'=0,1,2,3\cdots,\qquad I_a(\theta_{k'})=0
+a\sin\theta_{k'}=\pm k'\lambda,\qquad k'=1,2,3\cdots,\qquad I_a(\theta_{k'})=0
 $$
+
+> 校注：原课件把单缝极小的级次写成 $k'=0,1,2,\cdots$。$k'=0$ 对应 $\theta=0$ 的中央明纹，并非极小，故这里从 $k'=1$ 起计；缺级公式仍取 $k'=\pm1,\pm2,\cdots$。
 
 当 $\theta_k=\theta_{k'}=\theta$ 时
 
@@ -376,7 +398,7 @@ $$
 ### 23.5.5 光栅条纹的特点：亮、细、疏
 
 - **亮**：$I=N^2I_a$，缝数 $N$ 很大，主极大光强极强。
-- **细**：明纹的半角宽度很小，$\Delta\theta\approx\theta_1/N$（$\theta_1\approx\lambda/d$ 为相邻主极大的角间距）。
+- **细**：明纹的半角宽度很小，$\Delta\theta\approx\dfrac{\lambda}{dN}$（相邻主极大的角间距约为 $\lambda/d$）。
 - **疏**：$N$ 很大时，相邻两主极大之间有 $N-1$ 个暗纹，主极大之间占据很大的角宽度。
 
 ![不同缝数的光栅衍射图样](/course-materials/campus-basic-physics/figures/23-06.png)
@@ -400,13 +422,18 @@ $$
 **（3）屏上可观察的条纹级次有限**
 
 $$
-\theta<\frac{\pi}{2}\ \Longrightarrow\ k_{\max}<\frac{a+b}{\lambda}\qquad(\text{计算时向前取整数})
+\theta<\frac{\pi}{2}\ \Longrightarrow\ k_{\max}<\frac{a+b}{\lambda}\qquad(\text{取不超过该值的最大整数})
 $$
 
 ### 23.5.7 光强分布的定量分析（了解）
 
 $$
-I=I_0\left(\frac{\sin\alpha}{\alpha}\right)^2\left(\frac{\sin N\beta}{\sin\beta}\right)^2,\qquad \alpha=\frac{\pi a}{\lambda}\sin\theta,\quad \beta=\frac{\pi d}{\lambda}\sin\theta
+\begin{aligned}
+I&=I_0\left(\frac{\sin\alpha}{\alpha}\right)^2
+\left(\frac{\sin N\beta}{\sin\beta}\right)^2,\\
+\alpha&=\frac{\pi a}{\lambda}\sin\theta,\qquad
+\beta=\frac{\pi d}{\lambda}\sin\theta.
+\end{aligned}
 $$
 
 - $\left(\dfrac{\sin\alpha}{\alpha}\right)^2$——**单缝衍射因子**，代表单缝衍射的结果（包络线）。
@@ -461,7 +488,7 @@ $$
 
 ## 23.7 晶体的 X 射线衍射（作业补充）
 
-把晶体中的一组平行晶面视为间距为 $d$ 的散射层。入射 X 射线与晶面夹角为掠射角 $\theta$。比较相邻两晶面的散射光，较深一层入射和出射各多走 $d\sin\theta$，光程差为 $2d\sin\theta$。相长叠加给出布拉格条件
+原课件正文缺失，以下按作业需要补写。把晶体中的一组平行晶面视为间距为 $d$ 的散射层。入射 X 射线与晶面夹角为掠射角 $\theta$。比较相邻两晶面的散射光，较深一层入射和出射各多走 $d\sin\theta$，光程差为 $2d\sin\theta$。相长叠加给出布拉格条件
 
 $$
 2d\sin\theta=m\lambda,\qquad m=1,2,3,\ldots
@@ -484,15 +511,3 @@ $$
 9. **条纹三特点**亮（$N^2$）、细（$\Delta\theta\approx\theta_1/N$）、疏（$N-1$ 个暗纹）；光强是两个因子的乘积：多缝干涉因子给峰，单缝衍射因子给包络。
 10. **光栅光谱**：级次越高谱线越宽、越易重叠；中央零级不分色（白色）。
 11. **易错**：单缝的"第 $k$ 级"与光栅的"第 $k$ 级"数法不同（前者明纹从 $k=1$、中央另算，后者 $k=0$ 就是中央）；圆孔用 $1.22\lambda/D$，单缝用 $\lambda/a$；缺级不等于"看不见衍射"。
-
----
-
-## 原始资料
-
-23.4 的原件只有自学标题。23.7 的原课件正文缺失，本章根据作业所需补充布拉格条件。
-
-- 第23章 1-3节 光的衍射 单缝衍射 光学仪器分辨率.pdf（18 页，23.1–23.2 及 23.3 首张圆孔衍射幻灯片）
-- 第23章 1-3节 光的衍射 单缝衍射 光学仪器分辨率(1).pdf（8 页，23.3 的续页及 23.4 自学标题，首张圆孔衍射幻灯片与前一份末页重复）
-- 第23章 5&7节 光栅衍射、晶体的X射线衍射.pdf（13 页，全部为 $\S23.5$）
-
-配图目录：[assets/课件-3](assets/课件-3)
