@@ -36,6 +36,11 @@
         "title": "基础物理 · 去掉重复的原始资料区块，补上平行轴和单缝衍射的推导，统一九份作业的主题写法 / Basic Physics · Removed duplicate source sections, added parallel-axis and single-slit diffraction derivations, and standardized nine homework topics",
         "href": "/books/campus-basic-physics/",
         "kind": "修订 / Revised"
+      },
+      {
+        "title": "工科数学分析 · 补上无界数列取子列和单侧极限的证明，分行展示极限与求导，注明作业及测验主题 / Engineering Mathematical Analysis · Added subsequence and one-sided limit proofs, improved the layout of limit and derivative calculations, and added assignment and quiz topics",
+        "href": "/books/campus-mathematical-analysis/",
+        "kind": "修订 / Revised"
       }
     ]
   },

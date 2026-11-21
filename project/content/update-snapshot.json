@@ -1,23 +1,23 @@
 {
   "campus-cpp-programming/01-computer-fundamentals": {
     "title": "计算机基础",
-    "hash": "17c27374ac717c7b4a67f7002004ef42b29b81f4bf8ef37bec662e0fe7461bd1"
+    "hash": "4dcbecfe6871376cc97ab11d4eb97df5f41c5565b585c2429ddc076f7796dccc"
   },
   "campus-cpp-programming/02-basic-syntax": {
     "title": "基本语法",
-    "hash": "a3935903cee565a4bc58e5efb51b03fb3bc578b974b8eb0957951e8983021eea"
+    "hash": "dddc1c4ad069c7f72739c451f7c1ebae94fc23c959dd018f8f6f87c8dffcbae5"
   },
   "campus-cpp-programming/03-control-flow": {
     "title": "流程控制",
-    "hash": "4f45636eb99fb22bcd777ee7be95c856aa5f51044d5665b069fb822fb35d7dc2"
+    "hash": "52cb168a6a6da91627f338221b627332f3eb07f3a43b1999b7467863f201b93f"
   },
   "campus-cpp-programming/04-functions": {
     "title": "函数",
-    "hash": "95c683bf77d22e33cbfabc0bb2d87d3020e34b003a2cf876181d814c06663d0e"
+    "hash": "516f388293e19ac9fa18c9eee85bfe31e752b619f10576684288efb9c07eaf8a"
   },
   "campus-cpp-programming/05-pointers": {
     "title": "指针",
-    "hash": "7122b2cf30f7e439b8354737cb842c92e8daca878ca490674418f1270753f183"
+    "hash": "cfcaddd8033d521288b431bede5f987ecf0572f9f36c64bd3ef75d22a76fbc85"
   },
   "campus-engineering-drawing/01-drawing-fundamentals": {
     "title": "制图基本知识",
@@ -45,243 +45,243 @@
   },
   "campus-linear-algebra-analytic-geometry/1-1-2-determinants-and-permutations": {
     "title": "1.1-1.2 二、三阶行列式、排列及其逆序数和对换",
-    "hash": "c6e6ecd97435efa40e1cfe980041c393ae297dc2b3c02d02aa03c0da48b310a4"
+    "hash": "4323da7aa991df46e171ab509d9d8f98f08877813982ca960b5c3f5bc3a1559a"
   },
   "campus-linear-algebra-analytic-geometry/1-3-definition-of-nth-order-determinant": {
     "title": "1.3 n阶行列式的定义",
-    "hash": "cbef9c80d0db17642e334f6b9ca56bd562d3ccee8dda1c9078fd1687052621ad"
+    "hash": "31f5671f4b0c888abac2b7e0f1e7f7d958ddaada6efd2a6fee20239e608a4dcd"
   },
   "campus-linear-algebra-analytic-geometry/1-4-properties-and-computation-of-determinants": {
     "title": "1.4 n阶行列式的性质及计算",
-    "hash": "e3a0375a519667a71297ad81a55a52a6a03cf62d36000e56ab4554db9c972021"
+    "hash": "2a090fcb625792d1692789fdc140af3fa2052aa57cfa1457337fe05d60a68027"
   },
   "campus-linear-algebra-analytic-geometry/1-5-cofactor-expansion-and-cramers-rule": {
     "title": "1.5 行列式按一行展开及克拉默法则",
-    "hash": "001a3d63d217bd7f8153534edff2ec9a4c3e497987dd4dd54b2503d02d277a36"
+    "hash": "821ec89a89684fff3d2166eaecbf7fc4407663798dc8777393435ecc6ef646bb"
   },
   "campus-linear-algebra-analytic-geometry/2-1-matrices-and-operations": {
     "title": "2.1 矩阵与矩阵的运算",
-    "hash": "434848e68eefaa47aff5c3004b21c1edc4aeeaa0087acf3c26052ff1e2e990a3"
+    "hash": "5e0c394516427b968b4f2d9f0f7f8c56577ab202c2867f39805cefbe5233aedb"
   },
   "campus-linear-algebra-analytic-geometry/2-2-block-matrices": {
     "title": "2.2 矩阵的分块",
-    "hash": "39413e1709b85896542abc04b7626d776fd50a11a33c5de831db8b768377787d"
+    "hash": "1ded4a62d69d3b05a1c3703857423e90255cc16e8b1aaf53d592cc1c75a98e44"
   },
   "campus-linear-algebra-analytic-geometry/2-3-rank-of-a-matrix": {
     "title": "2.3 矩阵的秩",
-    "hash": "c2580675e4b4ba915573ba06ef6b66732bca6cfd1bee6ba1cb6b710c7c074674"
+    "hash": "fbbc3a643b1e24bc10fe83653a0d7580bf48a62203957d982bbbdc9b89751427"
   },
   "campus-linear-algebra-analytic-geometry/2-4-inverse-of-a-matrix": {
     "title": "2.4 矩阵的逆",
-    "hash": "1393d4cffe27f76dc76899e280c35e24eb5299edf9354f3726c65545b3b0f18a"
+    "hash": "7bec446b9f790a62b1ff621f2c3021f80090d2479ebdd14058d89db1b99f1703"
   },
   "campus-linear-algebra-analytic-geometry/2-5-elementary-matrices": {
     "title": "2.5 初等矩阵",
-    "hash": "9a4a58d40f77e2967abb561c77f8b34938dc4adaaf068032a88f8ec92b15c101"
+    "hash": "63cbdd0c6c26b36fdfe400b47c0499caafb4f599269297819110d08c35e49634"
   },
   "campus-linear-algebra-analytic-geometry/3-1-space-rectangular-coordinates": {
     "title": "3.1 空间直角坐标系",
-    "hash": "aa13fbda4ef58adb561a5e1a69976423f812829eb92f06d0c855194b2b0e640f"
+    "hash": "1a52573904d010b2baf7bab90943d036142b811b82ae7334ef63e39c87fd32c7"
   },
   "campus-linear-algebra-analytic-geometry/3-2-dot-cross-and-mixed-products": {
     "title": "3.2 向量的内积、外积及混合积",
-    "hash": "f64814eb1712f8936a8a9dde02fa5c46b5767c33f9950089cd3a1a98dd98b991"
+    "hash": "c8a86ff6ca97a2c2c923d210059e926e7cbccd4b916b815f442c6ad1699b8538"
   },
   "campus-linear-algebra-analytic-geometry/3-3-planes-in-space": {
     "title": "3.3 空间平面及其方程",
-    "hash": "c9c6f8d35d9410957b72e6c856846dfcde738a375d012daad53111d4e471aca2"
+    "hash": "b9a929c8bd7ae9b9767ded490ca27465653e573992318dc69cdd8e573fda3894"
   },
   "campus-linear-algebra-analytic-geometry/3-4-lines-in-space": {
     "title": "3.4 空间直线及其方程",
-    "hash": "e291a9d6077e17ef0a30186ac44b0bb2f6d70eaa8fbc40759cc0695d2c6da3f6"
+    "hash": "80407473def3c7601d9ed5dc7162a848813022c68b8841de7b3333d3b847f8c1"
   },
   "campus-linear-algebra-analytic-geometry/4-1-elimination-method": {
     "title": "4.1 消元法",
-    "hash": "e2f345a4ced338fc1ea61f27568baf8f1515e98b9ecc3601f101ad5f4aef0989"
+    "hash": "6768e972ae7498e04e2742d502fd3a39faf83a70767213284bb8410150832eb8"
   },
   "campus-linear-algebra-analytic-geometry/4-2-n-dimensional-vectors": {
     "title": "4.2 n维向量",
-    "hash": "cb89feb6d890b6fc65def6f4458c44dd62d8753a793945dfa5fa6dd3178bd90c"
+    "hash": "915944ad202aafc80cf27b1d911fb848dabfd23a6c664b9ba1c821ea2f56b756"
   },
   "campus-linear-algebra-analytic-geometry/4-3-linear-dependence-of-vector-sets": {
     "title": "4.3 向量组的线性相关性",
-    "hash": "be57703dbde7b7d425d1a332cc3f485768e4e15a85cfee776395d700fd6650b7"
+    "hash": "a398876b2bbe384903ef35802960cd71d1d0d9b6fa236ac54827344184370037"
   },
   "campus-linear-algebra-analytic-geometry/4-4-bases-and-coordinates": {
     "title": "4.4 Rⁿ的基、向量在基下的坐标",
-    "hash": "83f87e7ba982eacafa9c1e3ec3c759f1a136bf5dd10498a6c5eb26aea252c55d"
+    "hash": "d04d73659a9b2d50b4dc3ff3ee9c610156ebf733ac3247266f070d000ab25f01"
   },
   "campus-linear-algebra-analytic-geometry/4-5-rank-of-a-vector-set": {
     "title": "4.5 向量组的秩",
-    "hash": "ca8ae6c330caced804911e1993abb9d4305345aa7c00cc969b7087393022251e"
+    "hash": "3ed06ddd06790deb406768dbc0012cb9b65cd33e8751e3c03bb977cfac5fc112"
   },
   "campus-linear-algebra-analytic-geometry/4-6-structure-of-solution-sets": {
     "title": "4.6 线性方程组解的结构",
-    "hash": "312bb8bf711ebf55857aaf97ce41656d0a0d416531d3477024cc32940a4d765e"
+    "hash": "734dba06197a30093379092ceefd21a3d4a9abf3cd83de80372e41cefcde63d0"
   },
   "campus-linear-algebra-analytic-geometry/5-1-eigenvalues-and-eigenvectors": {
     "title": "5.1 矩阵特征值与特征向量",
-    "hash": "a10058ebf2ab003aac4d3a4e3a4812d10bc8531e38877ab3f1a1463a089f4789"
+    "hash": "51f21f58039c1666b8208abf8e08c998af8435eab7a63b8c85508d1b3cf70912"
   },
   "campus-linear-algebra-analytic-geometry/5-2-similar-matrices-and-diagonalization": {
     "title": "5.2 相似矩阵及矩阵可对角化的条件",
-    "hash": "3132c08f07f7d1161a62b247179ef7699b6a63a903bed546b1db4d679e37e86f"
+    "hash": "0bbe586fde28a5fa97c0e8618f2f2e90feecf43564efed8c76d6c6b8d19987e7"
   },
   "campus-linear-algebra-analytic-geometry/5-3-diagonalization-of-real-symmetric-matrices": {
     "title": "5.3 实对称矩阵的对角化",
-    "hash": "c708b959d2d2a215f45f0bb7c1260596f72b3ae40e9b8c8de6237844b0b4472d"
+    "hash": "3c5ebe4691e30602b2e6674e99e3c83167144b4409bc035aa6e9c651fe5c1bf5"
   },
   "campus-linear-algebra-analytic-geometry/6-1-quadratic-forms-and-standard-forms": {
     "title": "6.1 二次型及其标准形",
-    "hash": "7e00cb5e7a070a8f967b576629ccb1201cdde0e29f1636a1007900118c7460ca"
+    "hash": "10a40e56eff8740e1a76d43c0966cf74944205cecda151d601323d7fdb6c0915"
   },
   "campus-linear-algebra-analytic-geometry/6-2-positive-definite-quadratic-forms": {
     "title": "6.2 正定实二次型",
-    "hash": "3bc484a98aff40f01a6ca8edde6425782de927a61d4909494cbf9ac32bfa8881"
+    "hash": "cb3ae74cd6276b11a7bce4fa6fa6ec51bb7cce36ac969ab179707df2da3eec30"
   },
   "campus-linear-algebra-analytic-geometry/6-3-surfaces-and-their-equations": {
     "title": "6.3 曲面及其方程",
-    "hash": "7cc1e32caf309b327d362147532bd5d968d927218ef6657e19d64e88ae28b32f"
+    "hash": "c5765f8d0c1e6359ff0008011d8428d405985a47c0468727c1c38396c956f266"
   },
   "campus-linear-algebra-analytic-geometry/6-4-quadric-surfaces": {
     "title": "6.4 二次曲面",
-    "hash": "e2f1eb076a80e4b442555631c0c656a0a67deb9dbfdb8178b5f33d0a2e4ea87c"
+    "hash": "3d0f2b61bb16be01c06bf6b2631d03010fd80659e46cb0465791d6ae9e281f84"
   },
   "campus-linear-algebra-analytic-geometry/exercise-slides": {
     "title": "课件习题",
-    "hash": "1f43d7e8c9ca4d52c84675ff76a0586c70201c99aa3fc3ebff83a90f505840b1"
+    "hash": "f10e499944a9f074ce51a1edf2a90250c7d4f310959310860eefe609e209daab"
   },
   "campus-linear-algebra-analytic-geometry/homework-01": {
-    "title": "第 1 次作业（习题一）",
-    "hash": "909f272b8e36fc2c38f24343d326e9401d5fb97fcc60e483166a160e191b1dce"
+    "title": "第 1 次作业（行列式与逆序数）",
+    "hash": "a346c15a6e8f2f0cff37e099845b12e663ecd3b44eab4f20111fac8bb828cc24"
   },
   "campus-linear-algebra-analytic-geometry/homework-02": {
-    "title": "第 2 次作业（习题二）",
-    "hash": "f35496930413c3574c73baf9629f69dfb78a47bf39168dd5b93c432aeed8d3c7"
+    "title": "第 2 次作业（行列式的性质与计算）",
+    "hash": "3371fe19c64e1cfd322d1b1ff59fc444b1b6d847b2c836e2eec2d460b0a5c212"
   },
   "campus-linear-algebra-analytic-geometry/homework-03": {
-    "title": "第 3 次作业（习题三）",
-    "hash": "43341d6a2df66e592498c44a5e0e7ba9a8b0e6bfbb9f491b41547a413a423800"
+    "title": "第 3 次作业（矩阵运算与秩）",
+    "hash": "9ace606c79c5fd6a2f844b1928163026b1060f2b22493f3fffc25f87646098f3"
   },
   "campus-linear-algebra-analytic-geometry/homework-04": {
-    "title": "第 4 次作业（习题四）",
-    "hash": "a3931847b934fcdcee473da50e623613675803c596548f1067cf608d69cc0781"
+    "title": "第 4 次作业（矩阵的逆与分块）",
+    "hash": "31c26e806ae4e366ca3d8b47f8d38be81e9d86aa012d1020596df443113bb9a9"
   },
   "campus-linear-algebra-analytic-geometry/homework-05": {
     "title": "第 5 次作业（平面与直线）",
-    "hash": "b04c53600fc5ad7a674fde727f1622d630aa5a49b781984037a0acbea6eaf3b4"
+    "hash": "ece8a0bbe3b07822c2375cdfe191a6a82a46d3fc428aec93c48f09e8428143ac"
   },
   "campus-linear-algebra-analytic-geometry/homework-06": {
     "title": "第 6 次作业（线性方程组与向量组）",
-    "hash": "6b29e66a9f7f0d54a0130c1738fc493b29a263fcf646efa7fc5d192d871afbbc"
+    "hash": "3da395528c1dcd0e33b037ae71358de6e708af93066f48b35e42cde830c3a7ef"
   },
   "campus-linear-algebra-analytic-geometry/homework-07": {
     "title": "第 7 次作业（向量组的秩与解的结构）",
-    "hash": "d36bd363adf13ceb9ebaf4ff7dbf4932f54a1f53c6a1a0e0d559a6a5eeb0222c"
+    "hash": "891b03d1cc07d207ae0f00b40e12d23ae4a8b7dcdc4ee28efaa99dd901cbc5cf"
   },
   "campus-discrete-mathematics/01-propositional-logic": {
     "title": "命题逻辑",
-    "hash": "6c95dc856d3abca2dddd823a5e7d662b148a1bc6fe928ab12bbc20d779256dd8"
+    "hash": "92f155c4d4d9b2561dda7c38b23b06b5053d6dc08a585c8e60cc915943bdf892"
   },
   "campus-discrete-mathematics/02-predicate-logic": {
     "title": "谓词逻辑",
-    "hash": "7006efca246be8c121d38c165c96b74a21e5bf2b74bd7b89c4d9261a1d502b32"
+    "hash": "3b9083e26c244a16896e2459119d924c55ae99d46b1bbe7d55077eadd1ec3ac4"
   },
   "campus-discrete-mathematics/03-sets": {
     "title": "集合",
-    "hash": "7029eec4081d1693d1c9cf4974807e5ced0670e982b791f85b149381ce81d4c3"
+    "hash": "c3bc45d70d62cd1c889fba54b6b398584c85d55b019c58d473c7acccbaee7490"
   },
   "campus-discrete-mathematics/04-relations-and-functions": {
     "title": "关系和函数",
-    "hash": "689c1bd5c0f24a5297488ee3e42b6d7d5bd741771697d2e58e77827fd5ba3bb3"
+    "hash": "86bd47f2ea7b2c0afea994ecc4388d1352d8dc508f25d6393a288609bc1b2bcc"
   },
   "campus-discrete-mathematics/07-graph-theory": {
     "title": "图论",
-    "hash": "9daed34715576075c9e6a9efae242096c69cff16fd3bf0e7ddb639a851739779"
+    "hash": "a3b9b64b23ab8dbfd3d4d6da9d549e4c1335d3c153f955753efe03bdd006c13b"
   },
   "campus-mathematical-analysis/00-course-introduction": {
     "title": "课程介绍",
-    "hash": "845e59d98b9e1b6f3b6bf1a27432030c93d8d5f9a5a7dd88839a2219942ec85d"
+    "hash": "4a4adb3141db019f0cb5f5627706e502a654a92d09318c44d675e88e03be253f"
   },
   "campus-mathematical-analysis/01-sets-and-real-numbers": {
     "title": "集合与实数集",
-    "hash": "600291b8886e880fde013b9db7a1ccba9446284496ca49530ab43cd49b976964"
+    "hash": "a5ef53ea62ec1af22fa4d59337918d4b473f1c2c9d59617ca30abe9310ce5a6a"
   },
   "campus-mathematical-analysis/02-mappings-and-functions": {
     "title": "映射与函数",
-    "hash": "ef963ce85e683fb6077c15fba70f8a1a5d0eb85863cb66ccb8bf3a61a709e8d1"
+    "hash": "a37671b56518eefdcfa9febdcfa88d59887c6c77165aa74845c67fc56fb11089"
   },
   "campus-mathematical-analysis/03-function-properties-and-elementary-functions": {
     "title": "函数的几种特性与初等函数",
-    "hash": "c5f70e1ceb0359096e904a4dd9d114e8f9322d024821e2c1f54f1f7b977a6f56"
+    "hash": "090954f6e8d6aaced1d4bce7cda76f2a64bbf487a363dae11dc33f2df4c0ea2f"
   },
   "campus-mathematical-analysis/04-sequences-and-limits": {
     "title": "数列与数列极限",
-    "hash": "501edc2db2c72bb52d1f4f21054f99e8f38ee5bb7ecac5aff5a49cc1fa3965b0"
+    "hash": "c1ac0dc00f614b993b56c118376b3f35edec4211e0c766f2fb27fe037ce9cd85"
   },
   "campus-mathematical-analysis/05-completeness-of-real-numbers": {
     "title": "实数基本定理",
-    "hash": "5882b3868fb7506bb6d845c0688b09b1490bc24f41c6d0fa3f9f1939e75b9f82"
+    "hash": "3262d0c2e098a4d0ffd9d3ed4a3853f9d3df29da75a2737e295b513897adcdb4"
   },
   "campus-mathematical-analysis/06-limits-of-functions": {
     "title": "函数极限",
-    "hash": "299b780f79983ec887318a43ea38ed6d745891b6c98b8d8b87b87a2e74f25c51"
+    "hash": "a707980c5d0d2f57f82d009b04b5c1d26a9b752e1b4697a657073b0666e4b220"
   },
   "campus-mathematical-analysis/07-continuity-and-discontinuity": {
     "title": "连续与间断",
-    "hash": "fcbdc1d3daab048f8f44d70fd705083394fe4c075b4d63aa0da7c5058d388c23"
+    "hash": "1bbcbc91a16b5ba7dbe2ab305d7a83bbde0023c88337248ee5cb7a4c8b406a35"
   },
   "campus-mathematical-analysis/08-properties-of-continuous-functions-on-closed-intervals": {
     "title": "闭区间上连续函数的性质",
-    "hash": "6bdf91558031f3141e2287f3de4c7acca589aad0efe8343453d422844db0bb1e"
+    "hash": "85c264398d41aed62f6922c082823082e618b4f1116661c60e5c60cef7cb8148"
   },
   "campus-mathematical-analysis/09-orders-of-infinitesimals": {
     "title": "无穷小量与无穷大量的阶",
-    "hash": "751a010d33be54cbad9aecce5140b69b5016e97e297d5e89515f933b86485c3c"
+    "hash": "63cd591de84914092b7746b9d952dc9961227165e60a653fc38cb71d0fd38d12"
   },
   "campus-mathematical-analysis/10-chapter-2-review": {
     "title": "第二章 极限与连续复习",
-    "hash": "e0538fe5a10e99552c5e9d99298c5992541a602c9e700af240815f1fe7d56119"
+    "hash": "b4f0a3f59c4de493e01e40d6fff18e292dfcbcf05acd149e2ef159bdfe602dae"
   },
   "campus-mathematical-analysis/11-derivatives-and-differentiation-rules": {
     "title": "导数概念与求导法则",
-    "hash": "a618ac75d5fc9c9bbb60c53f9944eaf28d0352fbefc94fb872c951352698e5ab"
+    "hash": "ea93f2669206dd9e9a4890c711d7869c73d23b9ae0d432c7bf5ae7ad2ea63aad"
   },
   "campus-mathematical-analysis/12-derivatives-and-differentials": {
     "title": "导数和微分",
-    "hash": "3ef57f32e7a17ab7a6bd4db95305a9593a0d47ca94d229d5d5ba0c5b70717d90"
+    "hash": "366b89811d7b54a4cc149ab5e4fb5c5512438d9fa71925edcb37acccce2e90b0"
   },
   "campus-mathematical-analysis/13-implicit-and-parametric-differentiation": {
     "title": "隐函数的导数和参数式求导",
-    "hash": "0c20566980757b6acaeab74844afa87b9d87b34e2c9536bfb041f5bd9ddd5205"
+    "hash": "2241f45d6e5c5a3ce21137b89d89a7dd19707071b48beed1cf571931cd62e3d1"
   },
   "campus-mathematical-analysis/14-higher-order-derivatives-and-differentials": {
     "title": "高阶导数和高阶微分",
-    "hash": "8b49530f8968e24cf4a769f5058c04f3d7a28638cdafea2c9ddd150f84640c08"
+    "hash": "0dda64f92fb4ea539a26add8b3f638c5be22a8a1633b2aba146ae3f9b427c3c1"
   },
   "campus-mathematical-analysis/15-mean-value-theorems-and-lhopital": {
     "title": "微分中值定理与洛必达法则",
-    "hash": "11d3801b055c093b68fa68861197ea29cd8bb610a2d2244689062b08ee691901"
+    "hash": "6881ae2918bd891829df5a874e0e6146be23455c173cc91afb11bfbe60c0b928"
   },
   "campus-mathematical-analysis/16-taylor-theorem-with-peano-remainder": {
     "title": "带佩亚诺余项的泰勒定理",
-    "hash": "cc7c3eb7da5224c47e51c4690c5b78c808105cdf08566ab20e850e241d047958"
+    "hash": "2003b1d7af34fd69ef9a4f1bd334480d6e667b11e6cdf8f4c4d4b8c70360b590"
   },
   "campus-mathematical-analysis/17-taylor-theorem-with-lagrange-remainder": {
     "title": "带拉格朗日余项的泰勒定理",
-    "hash": "19c8025da2f5c1f28df8216076ca8147bb254d48561d47c4701bd3463ccfb530"
+    "hash": "0b8b8d527122c64f3d84fd1777eb5b47e7804a65cc9d7a934c08e3c4bf4ea90b"
   },
   "campus-mathematical-analysis/18-extrema-of-functions": {
     "title": "函数的极值和最值",
-    "hash": "f4a063579280185716f580d66b4f47875a1c6699eefce6855ef721eaac8fb5d2"
+    "hash": "da121c8e5d82393c7ba712da38320ce2e7ae5daa94e214ec10cacfdc24bfa38c"
   },
   "campus-mathematical-analysis/19-convexity-of-functions": {
     "title": "函数的凸性",
-    "hash": "c29137c9de0561558059b988add357078a16614bb0719747be91b6a34a5d0122"
+    "hash": "d53c997a07b5b49c2e3a7617616a9f79287e1ccef9a59fb7f353cd7386ac9c38"
   },
   "campus-mathematical-analysis/20-graphing-functions": {
     "title": "函数作图",
-    "hash": "db734f39c41500f2ee20a13c7289e9b91171319096891d2f7262c98b2fb5aad2"
+    "hash": "b217503c93a3bcdd223c21f90644aeec340b649f785e191cf9ac580b7f40cea2"
   },
   "campus-mathematical-analysis/21-optimization-models": {
     "title": "最优化问题数学模型",
@@ -289,39 +289,39 @@
   },
   "campus-mathematical-analysis/22-newton-iteration": {
     "title": "牛顿迭代法",
-    "hash": "2a5d13066c8b733ee0576df84b195e6b4d870ce0917f400f90391060f528fd33"
+    "hash": "336a8e46e4a183cd4578e27cb38d89686d18c014b286f0bb2dcf6e4edec3d8aa"
   },
   "campus-mathematical-analysis/23-indefinite-integrals": {
     "title": "不定积分",
     "hash": "1a8fd545dc9f18755b804bc11d05d5464e87c541bfc708c49085ba3743677a9b"
   },
   "campus-mathematical-analysis/24-homework-01": {
-    "title": "第 1 次作业与解析",
-    "hash": "e0578695cd1d188da0df61a20634a72c90283e52af198b7dc9cda8915ec4621c"
+    "title": "第 1 次作业（确界、函数性质与双射）",
+    "hash": "f1bed217e9ae9d28015defcb153ae0c6f7f39251caa8a937c16acde5b3d0a1ce"
   },
   "campus-mathematical-analysis/25-homework-02": {
-    "title": "第 2 次作业与解析",
-    "hash": "cbc86dc787621b2f1b828a540c823464bf98d7c96c2a5a5c868884855dffec7b"
+    "title": "第 2 次作业（极限定义、夹逼与 e）",
+    "hash": "d216848addff66914ac53fff5f43895c7f6ff08176caf818e6f5df223330adcd"
   },
   "campus-mathematical-analysis/26-homework-03": {
-    "title": "第 3 次作业与解析",
-    "hash": "e0f196ec1d862293f6fe7aebaca1875bed439287f03d6885f56acf9002dfd42d"
+    "title": "第 3 次作业（数列收敛与函数极限）",
+    "hash": "cbf8754ef183e3fae6269cb97c7aaafabb2a6863d46c11ba6be3777e316a0c21"
   },
   "campus-mathematical-analysis/27-homework-04": {
-    "title": "第 4 次作业与解析",
-    "hash": "b4daa1b18249877f4d9fa71d16f75cf15941fd5f7654ba28d3cb89fa4f2c1ab9"
+    "title": "第 4 次作业（极限、连续与一致连续）",
+    "hash": "47569a376137aa54069ae7de408309f87b78bd4cc598a110ed0b162f4d799342"
   },
   "campus-mathematical-analysis/28-homework-05": {
-    "title": "第 5 次作业与解析",
-    "hash": "f0165c15569755b4e0b246c008d00fb59f82d303f03728dacecdf342fb0a6883"
+    "title": "第 5 次作业（导数、微分与相关变化率）",
+    "hash": "6a0a341b51e406c11d9f12bdfc6b131c8bb4db1431b80bfc55de1d5b94e36911"
   },
   "campus-mathematical-analysis/29-homework-06": {
-    "title": "第 6 次作业与解析",
-    "hash": "adadecea4e28a0f06ce90e98ed235b9dc35b08c1e8066f4c25369078dfcd9fae"
+    "title": "第 6 次作业（洛必达法则与中值定理）",
+    "hash": "46429dba0643e8876b31b851bc633907e8f0969331ff63142950b43954539b32"
   },
   "campus-mathematical-analysis/30-homework-07": {
-    "title": "第 7 次作业与解析",
-    "hash": "e3c160476ef5b1c08c9773d8385a07211a712ecd1c9ce5851683be470de39647"
+    "title": "第 7 次作业（泰勒公式与不等式证明）",
+    "hash": "e749f0ba3c15c3a8e6dc1120fd41c45c8cae634d4e481f586474c8ad8b366a5e"
   },
   "3b1b-essence-of-calculus/01-essence-of-calculus": {
     "title": "微积分的本质：从一个圆出发",
@@ -1298,5 +1298,121 @@
   "vibe-coding/03-saas-ai-workflow": {
     "title": "用 AI 交付一个完整 SaaS：从规划、界面、后端到自动排错",
     "hash": "1b7925ffd10965bf1d2a2125ee52619b55cd40701f600c537ada2da91c383d18"
+  },
+  "campus-basic-physics/01-kinematics": {
+    "title": "质点运动学",
+    "hash": "048720fb55dd9d8f2e04b29bb1b680aa9a4e60dfc32a115ab2cfe8c9d6dd47fd"
+  },
+  "campus-basic-physics/02-newtonian-dynamics": {
+    "title": "牛顿运动定律与质点动力学",
+    "hash": "b68a92795599ec2cb8b3d9321ca4a847d4e8f532108a11a831ad7babba849243"
+  },
+  "campus-basic-physics/03-momentum-and-angular-momentum": {
+    "title": "动量与角动量",
+    "hash": "fb793f6a3bb31e8fdd712a8717e1bdf9e3323dc18a66e98b4ca22230423282e6"
+  },
+  "campus-basic-physics/04-work-and-energy": {
+    "title": "功与能",
+    "hash": "5287c2e6939637b84953f1b25488d7ed2e81c953875958861b77de4fc763b17d"
+  },
+  "campus-basic-physics/05-rigid-body-mechanics": {
+    "title": "刚体力学",
+    "hash": "b9324b55b242dda51ac795aa6c33f86f755958c985fccc554f584c7c42368a5e"
+  },
+  "campus-basic-physics/06-oscillations": {
+    "title": "机械振动",
+    "hash": "14f47892f42da7add018ecf289b2c6ce4c052d883e622948ebced35af1b47984"
+  },
+  "campus-basic-physics/07-mechanical-waves": {
+    "title": "机械波",
+    "hash": "b1d1e9dbf7aab5a29185bd861f2c671fe251d95628287f3cfea2ee3e234b4e19"
+  },
+  "campus-basic-physics/22-interference": {
+    "title": "光的干涉",
+    "hash": "665cdc8af177fcc3ee12825a8c90a844911b954782849ca24396f69b63aa71bf"
+  },
+  "campus-basic-physics/23-diffraction": {
+    "title": "光的衍射",
+    "hash": "6adf96951e0a207487ffac3ddac5abbf45aeec9ea65aec88bdfbeff9d0f05f5b"
+  },
+  "campus-basic-physics/homework-01": {
+    "title": "第 1 次作业（质点运动学）",
+    "hash": "15d3e2a1bf42ca8de63a0e58c1c0e689e07ead5bb5bdb622c048013b3fd24cbc"
+  },
+  "campus-basic-physics/homework-02": {
+    "title": "第 2 次作业（质点动力学）",
+    "hash": "191ab8afec521b799dc3216a13a0f1ba2d9ca91490603c7044b8c0151332484e"
+  },
+  "campus-basic-physics/homework-03": {
+    "title": "第 3 次作业（动量与角动量）",
+    "hash": "67a0e002c3124be80d27e8eb02e4969f47fbf9c3ae10d7b7eeb49f703a8f9ec0"
+  },
+  "campus-basic-physics/homework-04": {
+    "title": "第 4 次作业（功和能）",
+    "hash": "75adabcd5e8e82ae3c6d906ed2ef8a8dd055eb2e6bf64bf1fe23d36ed837fe22"
+  },
+  "campus-basic-physics/homework-05": {
+    "title": "第 5 次作业（刚体力学）",
+    "hash": "063f635260de696155978de911ed460afc8e21ed0f11d57a17420326964912a8"
+  },
+  "campus-basic-physics/homework-06": {
+    "title": "第 6 次作业（机械振动）",
+    "hash": "036c92eb17d348607065c0a5d98324e6b95f082f3eaf936348377bfdfa749964"
+  },
+  "campus-basic-physics/homework-07": {
+    "title": "第 7 次作业（机械波）",
+    "hash": "e5dbb7697dfd4cee82282af7f573a30d3fa2cd412a86f29d486d76de0ad162b4"
+  },
+  "campus-basic-physics/homework-08": {
+    "title": "第 8 次作业（光的干涉）",
+    "hash": "6e0d83bd07fa7a4ec4cc4a69803203c26a558d4676c3343040af32b33bd29703"
+  },
+  "campus-basic-physics/homework-09": {
+    "title": "第 9 次作业（光的衍射）",
+    "hash": "d05f2289e0844a04a7a7fb3295fcbf54d56202aed9002a85eaba2eb1a500ef4c"
+  },
+  "campus-cpp-programming/06-bitwise-operations-and-structures": {
+    "title": "位运算与结构",
+    "hash": "9123bb1bcf998121ce7508666826e5256ca98d96337d999f5909a7ef3a21cec4"
+  },
+  "campus-cpp-programming/06-oj-homework-01": {
+    "title": "第一次作业（字符输出、基本运算与拆位）",
+    "hash": "a4dc2cdd04e0da42ab779e54581e1f5441ae2edd3c09303c411570e2df78451f"
+  },
+  "campus-cpp-programming/07-oj-lab-01": {
+    "title": "第一次线下实验（条件分支、分类与计费）",
+    "hash": "6125fd5495bf98e55bc01feb028702583788751ae2dff2a6df3aa2f25bfcb0be"
+  },
+  "campus-cpp-programming/08-oj-homework-03-supplement": {
+    "title": "第 3 次作业补充（日期、字符与过程模拟）",
+    "hash": "22bb310ee290a3663637498d2cd6f3c9bf6c66861daf525b9a636ce5b1894a6e"
+  },
+  "campus-cpp-programming/09-oj-homework-04-supplement": {
+    "title": "第四次作业补充（数位计数、递推与搜索）",
+    "hash": "73816c0cdbf230f032bf5c683b11a81165d5c979839d011914437e841ccf3bf3"
+  },
+  "campus-cpp-programming/10-oj-practice-02": {
+    "title": "第二次 OJ 练习（分段函数与条件判断）",
+    "hash": "4823da19ea21944d6d82e75b4bc4f7d2d83752e8b091694dea0e459a3522b423"
+  },
+  "campus-cpp-programming/11-oj-homework-03": {
+    "title": "第三次作业（函数、递推与搜索）",
+    "hash": "a0015ac74b19f268043c7e29933dd2ab57090a249570aab0b4181d3b2a101f24"
+  },
+  "campus-cpp-programming/12-oj-homework-05": {
+    "title": "第五次作业（数组、动态存储与矩阵）",
+    "hash": "8ef71adffb8648221110cf60421a37f00d831704b57b2a3eb93be3473f4fe723"
+  },
+  "campus-cpp-programming/13-oj-midterm-review": {
+    "title": "期中考试复盘（日期、数位与素数）",
+    "hash": "cdb5990a80b1a8f7a2929799dd61d19700cd6d670c5ff1ae1fd471b4558ffe0a"
+  },
+  "campus-linear-algebra-analytic-geometry/homework-08": {
+    "title": "第 8 次作业（特征值与相似对角化）",
+    "hash": "ca18550f79d266f264d14de751a5de397d70bc99e5748bdc93bc76905d8ee120"
+  },
+  "campus-mathematical-analysis/31-classroom-quiz": {
+    "title": "课堂测验（极限、连续与微分）",
+    "hash": "355ef12fa17317a844aafe2ae0b00826c68b24acad6c15fdba5b8b4e3c8b76f9"
   }
 }
