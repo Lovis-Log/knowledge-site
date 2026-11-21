@@ -1,6 +1,6 @@
 ---
 slug: "06-oj-homework-01"
-title: "第一次作业"
+title: "第一次作业（字符输出、基本运算与拆位）"
 summary: "字符输出、基本运算、条件分支与拆位。"
 updatedAt: "2026-11-18"
 content_type: "reference"

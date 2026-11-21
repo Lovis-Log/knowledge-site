@@ -1,6 +1,6 @@
 ---
 slug: "10-oj-practice-02"
-title: "第二次 OJ 练习"
+title: "第二次 OJ 练习（分段函数与条件判断）"
 summary: "分段函数、闰年、成绩划分与分档奖金。"
 updatedAt: "2026-11-18"
 content_type: "reference"

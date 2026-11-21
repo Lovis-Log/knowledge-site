@@ -1,6 +1,6 @@
 ---
 slug: "07-oj-lab-01"
-title: "第一次线下实验"
+title: "第一次线下实验（条件分支、分类与计费）"
 summary: "用条件分支处理分类、计费、时间差与方程求根。"
 updatedAt: "2026-11-18"
 content_type: "reference"

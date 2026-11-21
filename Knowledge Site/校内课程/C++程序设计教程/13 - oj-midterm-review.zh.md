@@ -1,6 +1,6 @@
 ---
 slug: "13-oj-midterm-review"
-title: "期中考试复盘"
+title: "期中考试复盘（日期、数位与素数）"
 summary: "工作日、数位统计、校验码与回文素数。"
 updatedAt: "2026-11-18"
 content_type: "reference"

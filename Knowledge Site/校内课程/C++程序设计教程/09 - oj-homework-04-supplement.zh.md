@@ -1,6 +1,6 @@
 ---
 slug: "09-oj-homework-04-supplement"
-title: "第四次作业补充"
+title: "第四次作业补充（数位计数、递推与搜索）"
 summary: "数位计数、约瑟夫环、素数、整数拆分与字典序。"
 updatedAt: "2026-11-18"
 content_type: "reference"

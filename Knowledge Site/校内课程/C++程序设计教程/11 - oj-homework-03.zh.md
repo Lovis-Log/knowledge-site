@@ -1,6 +1,6 @@
 ---
 slug: "11-oj-homework-03"
-title: "第三次作业"
+title: "第三次作业（函数、递推与搜索）"
 summary: "函数、递推、组合数、搜索与字典序。"
 updatedAt: "2026-11-18"
 content_type: "reference"
