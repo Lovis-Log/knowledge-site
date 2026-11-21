@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import { highlightRanges, highlightSelection, indexHighlightText, orderedRange } from "@/lib/highlight-anchor";
+import { highlightRanges, highlightSelection, indexHighlightText } from "@/lib/highlight-anchor";
 import type { HighlightIndex, HighlightIndexMode } from "@/lib/highlight-anchor";
 import { changeReadingState } from "@/lib/reading-state-client";
 import type { HighlightView, ReadingHighlight, ReadingState } from "@/lib/reading-state-types";
@@ -50,10 +50,6 @@ function matchingMark(ranges: Range[], range: Range) {
     range.isPointInRange(candidate.startContainer, candidate.startOffset));
 }
 
-function rangesForMark(element: HTMLElement, mark: ReadingHighlight) {
-  return highlightRanges(indexHighlightText(element), mark);
-}
-
 function startsAtFocus(raw: Range) {
   const selection = window.getSelection();
   return Boolean(selection?.focusNode === raw.startContainer && selection.focusOffset === raw.startOffset);
@@ -75,7 +71,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   const [target, setTarget] = useState<Target | null>(null);
   const [pending, setPending] = useState<ReadingHighlight[]>([]);
   const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
-  const [busy, setBusy] = useState(false);
+  const busy = useRef(false);
   const [error, setError] = useState(false);
   const [fallback, setFallback] = useState<DOMRect[]>([]);
   const [activeFallback, setActiveFallback] = useState<DOMRect[]>([]);
@@ -180,62 +176,43 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const article = root.current;
     if (!article) return;
     const clear = () => { setTarget(null); setError(false); };
-    const viewFor = (range: Range) => {
-      const container = range.startContainer;
-      const element = (container instanceof Element ? container : container.parentElement)?.closest<HTMLElement>("[data-highlight-view]");
-      if (!element || !article.contains(element) || !element.contains(range.endContainer)) return null;
-      return element;
-    };
-    const targetFor = (raw: Range, commit: boolean) => {
-      const range = orderedRange(raw);
+    const viewFor = (node: Node) => (node instanceof Element ? node : node.parentElement)
+      ?.closest<HTMLElement>("[data-highlight-view]");
+    const selected = () => {
+      if (busy.current || document.activeElement === button.current) return;
+      const selection = window.getSelection();
+      if (!selection?.rangeCount || selection.isCollapsed) {
+        setTarget((current) => current?.mark ? current : null);
+        return;
+      }
+      // Selection keeps the drag direction, while its DOM Range is already ordered.
+      const raw = selection.getRangeAt(0);
       const atStart = startsAtFocus(raw);
-      const element = viewFor(range);
-      if (!element) { clear(); return; }
+      const start = viewFor(raw.startContainer);
+      const end = viewFor(raw.endContainer);
+      const element = start ?? end;
+      if (!element || !article.contains(element) || (start && end && start !== end)) { clear(); return; }
+      const range = raw.cloneRange();
+      if (!start) range.setStart(element, 0);
+      if (!end) range.setEnd(element, element.childNodes.length);
       const rect = visibleSelectionRect(range, atStart);
       if (!rect) { clear(); return; }
       const view = element.dataset.highlightView as HighlightView;
-      const existing = painted.current.find((item) => item.mark.view === view && matchingMark(item.ranges, range));
-      if (!commit) {
-        setError(false);
-        setTarget((current) => {
-          if (current?.mark && sameBoundaries(current.range, range)) return current;
-          return {
-            mark: existing?.mark ?? null,
-            remove: Boolean(existing),
-            rect,
-            range: range.cloneRange(),
-            view,
-            element,
-            ranges: existing?.ranges ?? [],
-            atStart,
-          };
-        });
-        return;
-      }
-      const mark = existing?.mark ?? highlightSelection(element, range, view);
-      if (!mark) { clear(); return; }
-      const ranges = existing?.ranges ?? rangesForMark(element, mark);
       setError(false);
-      setTarget({ mark, remove: Boolean(existing), rect, range: range.cloneRange(), view, element, ranges, atStart });
-    };
-    const selected = (commit: boolean) => {
-      const selection = window.getSelection();
-      const raw = selection?.rangeCount && !selection.isCollapsed ? selection.getRangeAt(0) : null;
-      if (!raw) {
-        // A click that follows pointerup must be allowed to open the remove pen.
-        if (commit) clear();
-        return;
-      }
-      if (busy || document.activeElement === button.current) return;
-      targetFor(raw, commit);
+      setTarget((current) => {
+        if (current && current.atStart === atStart && sameBoundaries(current.range, range)) return current;
+        const existing = painted.current.find((item) => item.element === element && matchingMark(item.ranges, range));
+        return { mark: existing?.mark ?? null, remove: Boolean(existing), rect, range,
+          view, element, ranges: existing?.ranges ?? [], atStart };
+      });
     };
     let queued = 0;
     const schedule = () => {
       if (queued) return;
-      queued = requestAnimationFrame(() => { queued = 0; selected(false); });
+      queued = requestAnimationFrame(() => { queued = 0; selected(); });
     };
     const clickMark = (event: MouseEvent) => {
-      if (busy || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
+      if (busy.current || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
         event.target.closest("a, button")) return;
       for (const { mark, ranges, element } of painted.current) {
         const range = ranges.find((candidate) => Array.from(candidate.getClientRects()).some(
@@ -253,7 +230,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") clear();
-      else if (event.shiftKey) selected(true);
+      else if (event.shiftKey) selected();
     };
     const dismissOutside = (event: PointerEvent) => { if (!button.current?.contains(event.target as Node)) clear(); };
     const onPointerUp = () => {
@@ -262,7 +239,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         cancelAnimationFrame(queued);
         queued = 0;
       }
-      selected(true);
+      selected();
     };
     let frame = 0;
     const reposition = () => {
@@ -279,7 +256,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       });
     };
     document.addEventListener("selectionchange", schedule);
-    article.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointerup", onPointerUp);
     article.addEventListener("click", clickMark);
     document.addEventListener("pointerdown", dismissOutside);
     document.addEventListener("keyup", onKey);
@@ -289,7 +266,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "data-reading-view", "data-font-size"] });
     return () => {
       document.removeEventListener("selectionchange", schedule);
-      article.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointerup", onPointerUp);
       article.removeEventListener("click", clickMark);
       document.removeEventListener("pointerdown", dismissOutside);
       document.removeEventListener("keyup", onKey);
@@ -299,22 +276,22 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       cancelAnimationFrame(frame);
       observer.disconnect();
     };
-  }, [root, busy]);
+  }, [root]);
 
   async function apply() {
-    if (!target || busy) return;
+    if (!target || busy.current) return;
     if (!state?.account) {
       refresh();
       return;
     }
     const previous = target;
-    if (!previous.mark && previous.remove) return;
-    const mark = previous.mark ?? highlightSelection(previous.element, previous.range, previous.view);
+    const index = previous.mark ? null : indexHighlightText(previous.element);
+    const mark = previous.mark ?? (index && highlightSelection(index, previous.range, previous.view));
     if (!mark) { setTarget(null); return; }
-    const ranges = previous.ranges.length ? previous.ranges : rangesForMark(previous.element, mark);
+    const ranges = index ? highlightRanges(index, mark) : previous.ranges;
     const restoring: Target = { ...previous, mark, ranges };
 
-    setBusy(true);
+    busy.current = true;
     setError(false);
     window.getSelection()?.removeAllRanges();
     setTarget(null);
@@ -332,7 +309,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         setTarget(restoring);
         setError(true);
       } finally {
-        setBusy(false);
+        busy.current = false;
       }
       return;
     }
@@ -346,7 +323,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       setTarget(restoring);
       setError(true);
     } finally {
-      setBusy(false);
+      busy.current = false;
     }
   }
 
@@ -365,7 +342,7 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         top: Math.max(8, Math.min(innerHeight - 44, target.rect.top > 48 ? target.rect.top - 42 : target.rect.bottom + 8)),
         left: Math.max(8, Math.min(innerWidth - 44, target.atStart ? target.rect.left - 8 : target.rect.right - 8)),
       }}>
-        <button ref={button} type="button" disabled={busy || (!state && !failed)}
+        <button ref={button} type="button" disabled={!state && !failed}
           onPointerDown={(event) => event.preventDefault()} onClick={() => void apply()}
           {...(target.remove ? uiLabel("移除高亮", "Remove highlight") : uiLabel("添加高亮", "Highlight text"))}>
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">

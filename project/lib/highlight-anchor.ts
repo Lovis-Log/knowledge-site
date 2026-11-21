@@ -1,8 +1,7 @@
-﻿import type { HighlightView, ReadingHighlight } from "./reading-state-types";
+import type { HighlightView, ReadingHighlight } from "./reading-state-types";
 
 const contextLength = 32;
 const formulaBoundary = "\ufffc";
-const documentPositionFollowing = 4;
 
 export type HighlightIndexMode = "rendered" | "formula" | "legacy";
 
@@ -15,10 +14,6 @@ export type HighlightIndex = {
   mode: HighlightIndexMode;
 };
 
-function modeOf(mode: HighlightIndexMode | boolean): HighlightIndexMode {
-  return mode === true ? "legacy" : mode === false ? "rendered" : mode;
-}
-
 /**
  * Three views of the same reading DOM:
  * - rendered: visible KaTeX glyphs, so a highlight can stop on one symbol;
@@ -27,9 +22,8 @@ function modeOf(mode: HighlightIndexMode | boolean): HighlightIndexMode {
  */
 export function indexHighlightText(
   root: HTMLElement,
-  mode: HighlightIndexMode | boolean = "rendered",
+  mode: HighlightIndexMode = "rendered",
 ): HighlightIndex {
-  const resolved = modeOf(mode);
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node) => {
       const element = node instanceof Element ? node : node.parentElement;
@@ -37,8 +31,8 @@ export function indexHighlightText(
         return NodeFilter.FILTER_REJECT;
       const formula = element.closest(".katex");
       if (formula) {
-        if (resolved === "legacy") return NodeFilter.FILTER_REJECT;
-        if (resolved === "formula")
+        if (mode === "legacy") return NodeFilter.FILTER_REJECT;
+        if (mode === "formula")
           return node === formula ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
         // KaTeX keeps a clipped MathML copy for screen readers and rendered glyphs in
         // .katex-html. Index only the visible glyphs, otherwise every formula would be
@@ -61,25 +55,7 @@ export function indexHighlightText(
     text += value;
     segments.push({ node: node as Text | Element, start, end: text.length });
   }
-  return { text, segments, root, mode: resolved };
-}
-
-/**
- * Normalize a range whose start may sit after its end. Selection ranges are normally
- * ordered, but an inverted range read as start → end produces an empty quote and swallows
- * the pen; right-to-left selections across text and an inline formula are the usual case.
- */
-export function orderedRange(range: Range): Range {
-  if (range.collapsed) return range.cloneRange();
-  const forward = range.startContainer === range.endContainer
-    ? range.startOffset <= range.endOffset
-    : Boolean(range.startContainer.compareDocumentPosition(range.endContainer) & documentPositionFollowing);
-  if (forward) return range.cloneRange();
-  const ordered = range.cloneRange();
-  // Extend both boundaries before pulling the start back so neither step collapses the range.
-  ordered.setEnd(range.startContainer, range.startOffset);
-  ordered.setStart(range.endContainer, range.endOffset);
-  return ordered;
+  return { text, segments, root, mode };
 }
 
 export function highlightAnchor(
@@ -102,9 +78,7 @@ export function highlightAnchor(
   };
 }
 
-export function highlightSelection(root: HTMLElement, selection: Range, view: HighlightView): ReadingHighlight | null {
-  const range = orderedRange(selection);
-  const { text, segments } = indexHighlightText(root);
+export function highlightSelection({ text, segments }: HighlightIndex, range: Range, view: HighlightView): ReadingHighlight | null {
   const selected = segments.filter(({ node }) => range.intersectsNode(node));
   const first = selected[0];
   const last = selected.at(-1);
@@ -123,6 +97,7 @@ function matchesContext(text: string, mark: Anchor, at: number) {
 }
 
 export function resolveHighlight(text: string, mark: Anchor): number {
+  if (!mark.quote) return -1;
   if (text.startsWith(mark.quote, mark.start) && matchesContext(text, mark, mark.start)) return mark.start;
   let count = 0;
   let first = -1;
@@ -167,20 +142,18 @@ export function highlightRanges(
   fallback: (mode: HighlightIndexMode) => HighlightIndex =
     (mode) => indexHighlightText(index.root, mode),
 ): Range[] {
-  // A quote containing U+FFFC came from the whole-formula index. Plain quotes are tried
-  // against rendered text first, then the formula index only when its saved context still
-  // matches (so a lone symbol cannot repaint an unrelated whole formula), then legacy.
+  // U+FFFC anchors come from the whole-formula index. For other anchors,
+  // prefer matching context across all indexes before falling back to a unique quote.
   const wholeFormula = mark.quote.includes(formulaBoundary);
-  const modes: HighlightIndexMode[] = wholeFormula
-    ? ["formula", "rendered", "legacy"]
-    : ["rendered", "formula", "legacy"];
+  const modes: HighlightIndexMode[] = wholeFormula ? ["formula"] : ["rendered", "formula", "legacy"];
+  let unique: { index: HighlightIndex; start: number; end: number } | undefined;
   for (const mode of modes) {
     const candidate = index.mode === mode ? index : fallback(mode);
     const span = locateHighlight(candidate, mark);
     if (!span) continue;
-    if (mode === "formula" && !wholeFormula && !matchesContext(candidate.text, mark, span.start)) continue;
-    const ranges = rangesForSpan(candidate, span.start, span.end);
-    if (ranges.length) return ranges;
+    if (wholeFormula || matchesContext(candidate.text, mark, span.start))
+      return rangesForSpan(candidate, span.start, span.end);
+    if (mode !== "formula" && !unique) unique = { index: candidate, ...span };
   }
-  return [];
+  return unique ? rangesForSpan(unique.index, unique.start, unique.end) : [];
 }

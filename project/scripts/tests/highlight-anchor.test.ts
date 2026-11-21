@@ -1,44 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { highlightAnchor, orderedRange, resolveHighlight } from "../../lib/highlight-anchor";
-
-type FakeNode = { compareDocumentPosition(other: FakeNode): number };
-
-function orderedPair() {
-  const before: FakeNode = { compareDocumentPosition: (other) => (other === before ? 0 : 4) };
-  const after: FakeNode = { compareDocumentPosition: (other) => (other === before ? 2 : 0) };
-  return { before, after };
-}
-
-class FakeRange {
-  constructor(
-    public startContainer: FakeNode,
-    public startOffset: number,
-    public endContainer: FakeNode,
-    public endOffset: number,
-  ) {}
-  get collapsed() { return this.startContainer === this.endContainer && this.startOffset === this.endOffset; }
-  cloneRange() { return new FakeRange(this.startContainer, this.startOffset, this.endContainer, this.endOffset); }
-  setStart(node: FakeNode, offset: number) { this.startContainer = node; this.startOffset = offset; }
-  setEnd(node: FakeNode, offset: number) { this.endContainer = node; this.endOffset = offset; }
-}
-
-test("backward selections are read in document order", () => {
-  const { before, after } = orderedPair();
-
-  const same = new FakeRange(before, 12, before, 5);
-  const ordered = orderedRange(same as unknown as Range) as unknown as FakeRange;
-  assert.equal(ordered.startOffset, 5);
-  assert.equal(ordered.endOffset, 12);
-
-  const crossed = new FakeRange(after, 3, before, 8);
-  const fixed = orderedRange(crossed as unknown as Range) as unknown as FakeRange;
-  assert.equal(fixed.startContainer, before);
-  assert.equal(fixed.startOffset, 8);
-  assert.equal(fixed.endContainer, after);
-  assert.equal(fixed.endOffset, 3);
-});
+import { highlightAnchor, resolveHighlight } from "../../lib/highlight-anchor";
 
 test("a partial rendered-formula selection keeps a one-symbol anchor", () => {
   const text = "The force F = ma acts";
