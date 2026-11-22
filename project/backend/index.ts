@@ -593,12 +593,13 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
             // root. The placeholder removes the original name and text but
             // preserves the row id, hidden state and reply target.
             statement(
-                `INSERT OR IGNORE INTO users(id,username,password_hash,nickname,reason,role,status,created_at)
+                `INSERT INTO users(id,username,password_hash,nickname,reason,role,status,created_at)
                  SELECT ?,?,?,?,?,?,?,?
                  WHERE EXISTS(SELECT 1 FROM guestbook_entries g
                    WHERE g.user_id=? AND g.parent_id IS NULL
                      AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=g.id AND r.user_id<>g.user_id))
-                   AND ${guard}`,
+                   AND ${guard}
+                 ON CONFLICT(id) DO NOTHING`,
                 DELETED_AUTHOR_ID, DELETED_AUTHOR_USERNAME, '', DELETED_AUTHOR_NICKNAME, '', 'user', 'disabled', 0, user.id, user.id, current.password_hash,
             ),
             statement(
