@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { errorMessage, isAuthError, SessionRecovery } from "./session-recovery";
 import { UiText } from "./ui-text";
 import { uiPlaceholder } from "@/lib/ui-language";
@@ -17,6 +17,7 @@ type Item = {
   status: string;
   note: string;
   source: string;
+  version: number;
   created_at: number;
 };
 type Board = {
@@ -96,6 +97,15 @@ export function Submissions() {
       setPages([]);
       setRevision((value) => value + 1);
     } catch (caught: unknown) {
+      if (caught instanceof ApiError && caught.code === "STALE_SUBMISSION") {
+        // Another administrator or the author changed this row. Reload the
+        // list so the form receives the current version instead of repeating
+        // a write that can never apply.
+        setError(submissionFailure("action", caught));
+        setPages([]);
+        setRevision((value) => value + 1);
+        return;
+      }
       // Keep the exact write so retrying repeats it instead of only refreshing the list.
       setError(submissionFailure("action", caught, { path, data }));
     } finally {
@@ -244,10 +254,10 @@ export function Submissions() {
                   {item.url && <a className={styles.link} href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>}
                   {item.note && <p className={styles.note}><UiText zh="处理说明" en="Review note" />: {item.note}</p>}
                   {admin ? (
-                    <form className={styles.review} onSubmit={(event) => {
+                    <form className={styles.review} key={`${item.id}:${item.version}`} onSubmit={(event) => {
                       event.preventDefault();
                       const data = Object.fromEntries(new FormData(event.currentTarget));
-                      void act("/api/admin/submissions", { id: item.id, ...data });
+                      void act("/api/admin/submissions", { ...data, id: item.id, version: item.version });
                     }}>
                       <label>
                         <UiText zh="状态" en="Status" />

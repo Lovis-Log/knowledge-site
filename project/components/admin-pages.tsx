@@ -62,7 +62,12 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
     [busy, setBusy] = useState(false),
     [loaded, setLoaded] = useState(false);
   const loadSequence = useRef(0),
-    reviewSequence = useRef(0);
+    reviewSequence = useRef(0),
+    selectedRef = useRef<User | null>(null);
+  function select(user: User | null) {
+    selectedRef.current = user;
+    setSelected(user);
+  }
   function handleError(e: unknown) {
     if (e instanceof ApiError && e.status === 401) {
       navigateDocument(
@@ -106,7 +111,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
     let active = true;
     setSecret("");
     setLoaded(false);
-    setSelected(null);
+    select(null);
     setError("");
     void load().catch((e) => {
       if (active) handleError(e);
@@ -115,60 +120,87 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
       active = false;
       loadSequence.current++;
       reviewSequence.current++;
+      selectedRef.current = null;
     };
   }, [mode, status, page]); // Every query is independently authorized by the backend.
-  async function inspect(user: User) {
+  async function loadLogs(userId: string) {
     const sequence = ++reviewSequence.current;
-    setSelected(user);
+    const result = await api<{ logs: Review[] }>(
+      `/api/admin/users/${userId}/reviews`,
+    );
+    // Ignore a reply that belongs to a panel the administrator already left.
+    if (sequence !== reviewSequence.current || selectedRef.current?.id !== userId) return;
+    setLogs(result.logs);
+  }
+  async function inspect(user: User) {
+    select(user);
     setNoteOpen(false);
     setNote("");
     setLogs([]);
     setError("");
     try {
-      const result = await api<{ logs: Review[] }>(
-        `/api/admin/users/${user.id}/reviews`,
-      );
-      if (sequence !== reviewSequence.current) return;
-      setLogs(result.logs);
+      await loadLogs(user.id);
     } catch (e) {
-      handleError(e);
+      if (selectedRef.current?.id === user.id) handleError(e);
     }
   }
   async function act(action: string) {
-    if (!selected) return;
+    const target = selected;
+    if (!target) return;
     setBusy(true);
     setError("");
     try {
-      await api(`/api/admin/users/${selected.id}`, "PATCH", {
-        action,
-        note,
-        version: selected.version,
-      });
-      if (action === "note") await inspect(selected);
-      else setSelected(null);
+      const result = await api<{ version: number; status: string }>(
+        `/api/admin/users/${target.id}`,
+        "PATCH",
+        {
+          action,
+          note,
+          version: target.version,
+        },
+      );
+      // Apply the server-issued version only to the panel still on screen, so
+      // a late response cannot overwrite a newly selected account.
+      const current = selectedRef.current;
+      if (current?.id !== target.id) return;
+      if (action === "note") {
+        select({ ...current, version: result.version, status: result.status });
+        await loadLogs(target.id);
+      } else {
+        select(null);
+      }
       setNote("");
       await load();
     } catch (e) {
+      if (e instanceof ApiError && e.code === "STALE_REVIEW") {
+        // The panel version is stale; close it and load the fresh list instead
+        // of offering a retry that would repeat the rejected write.
+        select(null);
+        setNote("");
+        await load().catch(() => undefined);
+      }
       handleError(e);
     } finally {
       setBusy(false);
     }
   }
   async function issueReset() {
-    if (!selected) return;
+    const target = selected;
+    if (!target) return;
     setBusy(true);
     setError("");
     try {
       const result = await api<{ token: string }>(
-        `/api/admin/users/${selected.id}/reset-credential`,
+        `/api/admin/users/${target.id}/reset-credential`,
         "POST",
         { note },
       );
       setSecretKind("reset");
       setSecret(result.token);
-      await inspect(selected);
+      const current = selectedRef.current;
+      if (current?.id === target.id) await inspect(current);
     } catch (e) {
-      handleError(e);
+      if (selectedRef.current?.id === target.id) handleError(e);
     } finally {
       setBusy(false);
     }

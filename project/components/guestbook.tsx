@@ -19,6 +19,7 @@ type Entry = {
   own: boolean;
   parentId: number | null;
   replyTo: string;
+  placeholder: boolean;
   replies?: Entry[];
 };
 type Board = { items: Entry[]; next: number | null; canModerate: boolean };
@@ -255,13 +256,17 @@ export function GuestbookView() {
           </p>
         )}
         <div className={styles.entryHeader}>
-          <AccountAvatar username={entry.nickname} />
+          <AccountAvatar username={entry.placeholder ? '已注销' : entry.nickname} />
           <div className="guestbook-byline">
-            <strong>{entry.nickname}</strong>
+            <strong>{entry.placeholder ? <UiText zh="已注销读者" en="Deleted reader" /> : entry.nickname}</strong>
             <time dateTime={date.toISOString()}>{date.toLocaleString()}</time>
           </div>
         </div>
-        <p className={`guestbook-message ${styles.entryMessage}`}>{entry.message}</p>
+        <p className={`guestbook-message ${styles.entryMessage}${entry.placeholder ? ` ${styles.placeholderMessage}` : ''}`}>
+          {entry.placeholder
+            ? <UiText zh="该留言的作者已注销，原内容已移除。" en="The author deleted their account; the original message was removed." />
+            : entry.message}
+        </p>
         <div className={`guestbook-actions ${styles.entryActions}`}>
           {!hidden && (
             <button className="reader-action" type="button" disabled={blocked}
@@ -324,7 +329,9 @@ export function GuestbookView() {
         <form onSubmit={publish} className={styles.composerForm}>
           <label className={replyingTo ? styles.replyTarget : 'reader-sr-only'} htmlFor="guestbook-message">
             {replyingTo
-              ? <UiText zh={`回复 @${replyingTo.nickname}`} en={`Reply to @${replyingTo.nickname}`} />
+              ? replyingTo.placeholder
+                ? <UiText zh="回复这条留言" en="Reply to this message" />
+                : <UiText zh={`回复 @${replyingTo.nickname}`} en={`Reply to @${replyingTo.nickname}`} />
               : <UiText zh="写下你的想法" en="Leave a thought" />}
           </label>
           <div className={styles.inputArea}><textarea ref={composing} id="guestbook-message" aria-describedby="guestbook-limit" rows={5} required maxLength={1000}

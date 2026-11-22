@@ -38,10 +38,12 @@ npm run benchmark:auth
 - `users`：保留输入大小写、唯一性与登录不区分大小写的用户名，版本化 scrypt 密码哈希、昵称、理由、角色、状态和审核版本。
 - `sessions`：256 位随机令牌的 SHA-256 哈希，七天过期。`__Host-` Cookie 使用 Secure、HttpOnly、SameSite=Lax；不会存入 localStorage。
 - `invites`：新邀请码为 6 位大写字母与数字（不分组，排除 0、1、I、O），接受小写输入。新短码保存带版本前缀的 HMAC-SHA-256 哈希及 AES-256-GCM 加密副本；HMAC 密钥由 `INVITE_CODE_ENCRYPTION_KEY` 的同一密钥材料经 HKDF 独立派生，与 AES 用途隔离，不新增 Secret 或数据库字段。查找同时接受旧短码和旧 64 位长码的无密钥 SHA-256 哈希，因此回填前的旧短码仍可注册。加密使用每条记录独立的 96 位随机 IV，并绑定管理编号作为附加认证数据。管理员可长期查看和复制，撤销或过期后仍可查看。旧 64 位邀请码仍有效，只有哈希的旧记录无法回显。插入用户的同一个数据库事务通过触发器验证邀请码并扣次数，失败回滚。
-- `review_logs`：审核动作、操作者、内部备注。审核接口使用账号版本防止覆盖其他管理员的操作。
+- `review_logs`：审核动作、操作者、内部备注。审核接口使用账号版本防止覆盖其他管理员的操作；只添加备注（状态未变）不会撤销该账号的现有会话，状态或密码变化仍会撤销。成功响应返回递增后的 `version` 与当前 `status`。
 - `reset_tokens`：一次性、十五分钟有效的重置凭据哈希；签发及兑换均撤销旧会话。禁用账号时在同一数据库事务中撤销未兑换凭据，兑换的最终原子更新也拒绝 disabled 账号；pending/rejected 账号的既有重置策略不变。核实身份和安全转交由管理员完成；不发送邮件、不改变审核状态。
 - `rate_limits`：D1 原子固定窗口计数；注册、登录、邀请码及重置均有限额。
+- `submissions`：待处理、已采用、未采用。管理员审核请求必须携带读取时的 `version`；服务端以比较交换更新并递增版本，过期版本返回 `STALE_SUBMISSION`，已被读者撤回的投稿返回 404。迁移触发器也会为旧 Worker 的更新递增版本，避免混合版本部署时静默覆盖。
 - 留言发布单独采用每账号每分钟 20 条的窗口（`guestbook:v2:*`），替代旧的十分钟 5 条；其他接口的限额不变。达到限额返回 `GUESTBOOK_RATE_LIMITED` 与 `Retry-After` 秒数，前端保留草稿并显示倒计时，到期恢复发布。
+- 注销账号时，本人写的回复以及没有其他人回复的根留言照旧删除；若其他读者已回复某条根留言，该根留言改为不含原用户名和正文的占位（`placeholder=1`），保留原 id、隐藏状态与回复链。占位由保留账号 `deleted-reader` 持有，该账号不能登录、不会出现在管理员账号列表，回复中的旧 @ 指向也会清除。用户主动删除自己的留言仍按原规则连同回复删除。
 - `content_versions`、`content_entries`、`content_current`：按原 slug 导入完整内容和剥离正文的目录数据，导入完成后才激活版本。版本由标准化内容摘要确定；重复导入不会覆写已完成的版本。新 Worker 读取自身绑定版本，全局指针供历史部署兼容。
 
 后端每次从 D1 主库读取会话及当前账号状态，避免读取副本延迟让已禁用会话继续使用。普通注册忽略任何客户端角色与状态字段；管理员页面和 API 均检查权限。管理员账号不允许通过普通用户管理接口禁用或重置，首管恢复需受控数据库维护。
@@ -71,6 +73,10 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 | `POST /api/auth/logout` | 撤销当前会话 |
 | `GET /api/auth/me` | 当前账号；匿名返回 user:null |
 | `POST /api/auth/reset-password` | 兑换 token、password、confirmPassword |
+| `GET /api/account/settings` | 当前账号与功能开关；改密、注销仅当环境显式配置 `...=1` 时开启 |
+| `POST /api/account/profile` | username、currentPassword；同步公开昵称并更新历史回复的 @ 指向 |
+| `POST /api/account/password` | currentPassword、password、confirmPassword；成功后撤销全部会话 |
+| `POST /api/account/delete` | currentPassword；删除账号与个人数据，保留他人仍在回复的留言占位 |
 | `GET /api/admin/users?status=&page=1` | 每页 30 人、总数及待审核数量 |
 | `PATCH /api/admin/users/:id` | action、note、version；approve/reject/disable/enable |
 | `GET /api/admin/users/:id/reviews` | 最近 100 条审核记录 |
@@ -83,6 +89,8 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 | `GET /api/guestbook?before=...` | 分页读取可见留言，需已通过账号 |
 | `POST /api/guestbook` | action:publish + message（1–1000 字符），或 action:delete + 本人留言 id |
 | `GET /api/admin/guestbook?before=...`、`POST /api/admin/guestbook` | 管理员查看隐藏留言、执行 hide / restore |
+| `GET /api/submissions?before=...`、`POST /api/submissions` | 本人投稿列表；requestId 幂等创建或撤回 |
+| `GET /api/admin/submissions?before=&status=`、`POST /api/admin/submissions` | 管理员审核；请求带 id、status、note、version，版本过期返回 `STALE_SUBMISSION` |
 | `GET /api/content/catalog` | 已鉴权的目录、简介和展示译名，无正文 |
 | `GET /api/content/chapters/:book/:chapter` | 已鉴权的章节正文及译文 |
 
@@ -146,4 +154,4 @@ npx wrangler d1 execute DB --local --file scripts/maintenance.sql
 
 ## 搜索、投稿与更新公告
 
-元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销默认关闭，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](../docs/lightweight-features.md)。
+元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销默认关闭，仅当目标环境显式配置 `ACCOUNT_CHANGE_PASSWORD_ENABLED=1` 或 `ACCOUNT_DELETE_ENABLED=1` 时分别开启，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](../docs/lightweight-features.md)。

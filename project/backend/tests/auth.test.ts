@@ -108,9 +108,9 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql", "0007_reading_state.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql", "0007_reading_state.sql", "0008_account_thread_and_review_safety.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
-    for (const statement of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|$))/)) {
+    for (const statement of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|DROP|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
     }
   }
@@ -540,11 +540,19 @@ test("registration accepts an invite alone but never neither invite nor reason",
 });
 test("approval grants reading, ordinary users cannot administer, logout revokes session and cookies are secure", async () => {
   assert.equal((await review("manual_reader", "approve")).status, 200);
+  const noteSession = client();
+  assert.equal((await noteSession.call("/api/auth/login", "POST", { username: "manual_reader", password })).status, 200);
   const beforeNote = (await user("manual_reader"))!;
-  assert.equal((await review("manual_reader", "note")).status, 200);
+  const noteResponse = await review("manual_reader", "note");
+  assert.equal(noteResponse.status, 200);
+  const noteResult = await noteResponse.json() as { ok: boolean; version: number; status: string };
   const afterNote = (await user("manual_reader"))!;
   assert.equal(afterNote.status, beforeNote.status);
   assert.equal(afterNote.version, beforeNote.version + 1);
+  assert.equal(noteResult.version, afterNote.version);
+  assert.equal(noteResult.status, afterNote.status);
+  // A note-only review leaves the status alone and keeps existing sessions.
+  assert.equal((await noteSession.call("/api/content/catalog")).status, 200);
   const noteLog = await db.prepare("SELECT note,admin_id FROM review_logs WHERE user_id=? AND action='note'").bind(afterNote.id).first<{ note: string; admin_id: string }>();
   assert.equal(noteLog?.note, "Reviewed identity and application");
   assert.equal(noteLog?.admin_id, "admin-id");

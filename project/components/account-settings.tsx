@@ -52,7 +52,7 @@ export function AccountSettings() {
     if (action === 'password' && values.password !== values.confirmPassword) {
       setError('两次密码不一致 / Passwords do not match'); return;
     }
-    if (action === 'delete' && !window.confirm('永久删除账号与个人内容，无法撤销。继续？ / Permanently delete your account and personal content? This cannot be undone.')) return;
+    if (action === 'delete' && !window.confirm('永久删除账号与个人内容，无法撤销。若他人已回复你的留言，该留言会保留为不含原用户名和正文的占位，以维持对话。继续？ / Permanently delete your account and personal content? This cannot be undone. If others replied to one of your messages, it stays as an anonymized placeholder without your name or text so the thread remains readable.')) return;
     lock.current = true; setBusy(action);
     try {
       const result = await api<{ username: string }>('/api/account/' + action, 'POST', values);
@@ -99,7 +99,7 @@ export function AccountSettings() {
       </section>}
       {securityPanel === 'delete' && <section id="account-delete" className="account-settings__section account-settings__panel account-settings__danger">
         <h2><UiText zh="永久注销账号" en="Delete account permanently" /></h2>
-        <p><UiText zh="账号及个人内容将被永久删除，无法撤销。" en="Your account and personal content will be permanently deleted. This cannot be undone." /></p>
+        <p><UiText zh="账号及个人内容将被永久删除，无法撤销。若他人已回复你的留言，该留言会保留为不含原用户名和正文的占位，以维持对话。" en="Your account and personal content will be permanently deleted. This cannot be undone. If others replied to one of your messages, it stays as an anonymized placeholder without your name or text so the thread remains readable." /></p>
         {settings.role === 'admin' ? <p><UiText zh="管理员不能自助注销。" en="Administrators cannot delete themselves." /></p> : settings.features.deleteAccount ? <form onSubmit={event => void submit(event, 'delete')} autoComplete="off"><fieldset disabled={busy !== null}>
           <label htmlFor="delete-password"><UiText zh="输入密码确认注销" en="Enter password to delete account" /></label><FreshPassword id="delete-password" />
           <div className="account-settings__actions"><button type="submit"><UiText zh={busy === 'delete' ? '注销中…' : '确认永久注销'} en={busy === 'delete' ? 'Deleting…' : 'Confirm deletion'} /></button><button type="button" onClick={() => { setSecurityPanel(null); setError(''); deleteButton.current?.focus(); }}><UiText zh="取消" en="Cancel" /></button></div>

@@ -57,6 +57,13 @@ class HttpError extends Error {
 const now = () => Math.floor(Date.now() / 1000);
 const SESSION = "__Host-lovismind-session";
 const CSRF = "__Host-lovismind-csrf";
+// A reserved, non-login account owns guestbook roots left behind when the
+// author deletes their account but other readers still replied in the thread.
+// Its username contains a hyphen, which registration and login reject.
+const DELETED_AUTHOR_ID = "deleted-reader";
+const DELETED_AUTHOR_USERNAME = "deleted-reader";
+const DELETED_AUTHOR_NICKNAME = "已注销读者";
+const DELETED_AUTHOR_MESSAGE = "该留言的作者已注销，原内容已移除。 / The author deleted their account; the original content was removed.";
 function cookie(request: Request, name: string) {
   return (
     request.headers
@@ -320,21 +327,27 @@ async function favoritesApi(request: Request, db: DB, path: string) {
 
 type GuestbookRow = {
   id: number; user_id: string; message: string; created_at: number; nickname: string;
-  parent_id: number | null; reply_to_nickname: string;
+  parent_id: number | null; reply_to_nickname: string; placeholder: number;
 };
 type GuestbookItem = {
   id: number; message: string; created_at: number; nickname: string; own: boolean;
-  parentId: number | null; replyTo: string; replies: GuestbookItem[];
+  parentId: number | null; replyTo: string; placeholder: boolean; replies: GuestbookItem[];
 };
 function guestbookItem(row: GuestbookRow, viewerId: string): GuestbookItem {
+  const placeholder = row.placeholder === 1;
   return {
     id: row.id,
-    message: row.message,
+    // The stored marker keeps an older Worker readable; the current API never
+    // returns it as the author's original text.
+    message: placeholder ? "" : row.message,
     created_at: row.created_at,
-    nickname: row.nickname,
-    own: row.user_id === viewerId,
+    nickname: placeholder ? "" : row.nickname,
+    own: !placeholder && row.user_id === viewerId,
     parentId: row.parent_id,
-    replyTo: row.reply_to_nickname,
+    // Mentions of the reserved account can remain if an older Worker handled a
+    // reply during deployment; never show them as the deleted member.
+    replyTo: row.reply_to_nickname === DELETED_AUTHOR_USERNAME ? "" : row.reply_to_nickname,
+    placeholder,
     replies: [],
   };
 }
@@ -350,14 +363,14 @@ async function guestbookApi(request: Request, db: DB, path: string) {
     // hidden entry flat, so a hidden reply stays actionable on its own.
     const { results } = await db.prepare(
       moderation
-        ? "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=1 AND g.id<? ORDER BY g.id DESC LIMIT 21"
-        : "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IS NULL AND g.hidden=0 AND g.id<? ORDER BY g.id DESC LIMIT 21",
+        ? "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,g.placeholder,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.hidden=1 AND g.id<? ORDER BY g.id DESC LIMIT 21"
+        : "SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,g.placeholder,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IS NULL AND g.hidden=0 AND g.id<? ORDER BY g.id DESC LIMIT 21",
     ).bind(before).all<GuestbookRow>();
     const items = results.slice(0, 20).map((row) => guestbookItem(row, user.id));
     if (!moderation && items.length) {
       const placeholders = items.map(() => "?").join(",");
       const { results: replies } = await db.prepare(
-        `SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IN (${placeholders}) AND g.hidden=0 ORDER BY g.id ASC`,
+        `SELECT g.id,g.user_id,g.message,g.created_at,g.parent_id,g.reply_to_nickname,g.placeholder,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.parent_id IN (${placeholders}) AND g.hidden=0 ORDER BY g.id ASC`,
       ).bind(...items.map((item) => item.id)).all<GuestbookRow>();
       const threads = new Map(items.map((item) => [item.id, item]));
       for (const row of replies)
@@ -377,9 +390,9 @@ async function guestbookApi(request: Request, db: DB, path: string) {
         if (typeof targetId !== "number" || !Number.isSafeInteger(targetId) || targetId < 1)
           fail(400, "INVALID_PARENT", "回复目标无效 / Invalid reply target");
         const target = await db.prepare(
-          "SELECT g.id,g.parent_id,g.hidden,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.id=?",
+          "SELECT g.id,g.parent_id,g.hidden,g.placeholder,u.username AS nickname FROM guestbook_entries g JOIN users u ON u.id=g.user_id WHERE g.id=?",
         ).bind(targetId).first<{
-          id: number; parent_id: number | null; hidden: number; nickname: string;
+          id: number; parent_id: number | null; hidden: number; placeholder: number; nickname: string;
         }>();
         if (!target || target.hidden)
           fail(404, "NOT_FOUND", "留言不存在或已隐藏 / Message unavailable");
@@ -391,7 +404,7 @@ async function guestbookApi(request: Request, db: DB, path: string) {
             fail(404, "NOT_FOUND", "留言不存在或已隐藏 / Message unavailable");
         }
         parentId = rootId;
-        replyTo = target.nickname;
+        replyTo = target.placeholder === 1 ? "" : target.nickname;
       }
       await limit(db, `guestbook:v2:${user.id}`, 20, 60, {
         code: "GUESTBOOK_RATE_LIMITED",
@@ -405,7 +418,7 @@ async function guestbookApi(request: Request, db: DB, path: string) {
       return json({
         item: {
           id: entry.id, message, created_at: createdAt, nickname: user.nickname, own: true,
-          parentId, replyTo, replies: [],
+          parentId, replyTo, placeholder: false, replies: [],
         } satisfies GuestbookItem,
       }, 201);
     }
@@ -455,7 +468,7 @@ async function submissionsApi(request: Request, db: DB, path: string) {
         if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status))
             fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
         const where = admin ? "id<? AND (?='' OR status=?)" : "user_id=? AND id<?";
-        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,source,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
+        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,source,version,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
         const { results } = await (admin ? query.bind(before, status, status) : query.bind(user.id, before)).all();
         const items = results.slice(0, 20);
         return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === 'admin' });
@@ -464,12 +477,22 @@ async function submissionsApi(request: Request, db: DB, path: string) {
         fail(405, 'METHOD_NOT_ALLOWED', '不支持此操作 / Method not allowed');
     const data: Record<string, unknown> = { summary: '', message: '', url: '', note: '', ...await body(request) };
     if (admin) {
-        if (!Number.isSafeInteger(data.id) || !['pending', 'adopted', 'declined'].includes(String(data.status)))
-            fail(400, 'INVALID_STATUS', '状态无效 / Invalid status');
-        const result = await db.prepare('UPDATE submissions SET status=?,note=? WHERE id=?').bind(data.status, text(data, 'note', 0, 300), data.id).run();
-        if (!result.meta.changes)
-            fail(404, 'NOT_FOUND', '投稿不存在 / Submission not found');
-        return json({ ok: true });
+        // Moderation is compare-and-swap: the panel sends the version it read,
+        // and a reader withdrawal or another administrator wins cleanly.
+        if (!Number.isSafeInteger(data.id) || !Number.isSafeInteger(data.version) || (data.version as number) < 0
+            || !['pending', 'adopted', 'declined'].includes(String(data.status)))
+            fail(400, 'INVALID_STATUS', '状态或版本无效 / Invalid status or version');
+        const status = String(data.status);
+        const updated = await db.prepare('UPDATE submissions SET status=?,note=?,version=version+1 WHERE id=? AND version=? RETURNING version')
+            .bind(status, text(data, 'note', 0, 300), data.id, data.version)
+            .first<{ version: number }>();
+        if (!updated) {
+            const exists = await db.prepare('SELECT 1 AS found FROM submissions WHERE id=?').bind(data.id).first();
+            if (!exists)
+                fail(404, 'NOT_FOUND', '投稿不存在 / Submission not found');
+            fail(409, 'STALE_SUBMISSION', '投稿已更新，请刷新后重试 / Submission changed; refresh and try again');
+        }
+        return json({ ok: true, version: updated.version, status });
     }
     if (data.action === 'withdraw') {
         if (!Number.isSafeInteger(data.id))
@@ -516,7 +539,7 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     return json({ ok: true, id: row.id }, 201);
 }
 async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
-    const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED !== '0', deleteAccount: env.ACCOUNT_DELETE_ENABLED !== '0' };
+    const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED === '1', deleteAccount: env.ACCOUNT_DELETE_ENABLED === '1' };
     const user = await requireUser(request, db);
     if (request.method === 'GET' && path === '/api/account/settings')
         return json({ features, username: user.username, nickname: user.nickname, role: user.role });
@@ -544,9 +567,16 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         // One public name: keep the legacy nickname column in sync for messages.
         const nickname = username;
         try {
-            const result = await db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND status='approved'")
-                .bind(username, nickname, user.id, current.password_hash, user.username).run();
-            if (!result.meta.changes)
+            const results = await db.batch([
+                db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND status='approved'")
+                    .bind(username, nickname, user.id, current.password_hash, user.username),
+                // Reply targets store the public name at reply time. Keep old
+                // mentions pointing at the same person after a rename; only run
+                // this when the account update above actually applied.
+                db.prepare("UPDATE guestbook_entries SET reply_to_nickname=? WHERE reply_to_nickname=? AND changes()=1")
+                    .bind(username, user.username),
+            ]);
+            if (!results[0].meta.changes)
                 fail(409, 'STALE_ACCOUNT', '账号已变化，请刷新后重试 / Account changed; refresh and try again');
         } catch (error) {
             if (error instanceof Error && error.message.includes('users.username'))
@@ -557,8 +587,46 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
     }
     if (deleting) {
         const guard = "EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user')";
-        const statements = ['reset_tokens', 'review_logs', 'submissions', 'favorites', 'guestbook_entries', 'sessions'].map(table => db.prepare(`DELETE FROM ${table} WHERE ${table === 'review_logs' ? '(user_id=? OR admin_id=?)' : 'user_id=?'} AND ${guard}`).bind(...(table === 'review_logs' ? [user.id, user.id] : [user.id]), user.id, current.password_hash));
-        const results = await db.batch([...statements, db.prepare("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'").bind(user.id, current.password_hash)]);
+        const statement = (sql: string, ...values: unknown[]) => db.prepare(sql).bind(...values);
+        const results = await db.batch([
+            // Keep a visible thread when other readers replied to this member's
+            // root. The placeholder removes the original name and text but
+            // preserves the row id, hidden state and reply target.
+            statement(
+                `INSERT OR IGNORE INTO users(id,username,password_hash,nickname,reason,role,status,created_at)
+                 SELECT ?,?,?,?,?,?,?,?
+                 WHERE EXISTS(SELECT 1 FROM guestbook_entries g
+                   WHERE g.user_id=? AND g.parent_id IS NULL
+                     AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=g.id AND r.user_id<>g.user_id))
+                   AND ${guard}`,
+                DELETED_AUTHOR_ID, DELETED_AUTHOR_USERNAME, '', DELETED_AUTHOR_NICKNAME, '', 'user', 'disabled', 0, user.id, user.id, current.password_hash,
+            ),
+            statement(
+                `UPDATE guestbook_entries SET user_id=?,message=?,placeholder=1,reply_to_nickname=''
+                 WHERE user_id=? AND parent_id IS NULL
+                   AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=guestbook_entries.id AND r.user_id<>?)
+                   AND EXISTS(SELECT 1 FROM users WHERE id=?)
+                   AND ${guard}`,
+                DELETED_AUTHOR_ID, DELETED_AUTHOR_MESSAGE, user.id, user.id, DELETED_AUTHOR_ID, user.id, current.password_hash,
+            ),
+            // Own replies and roots without other readers' replies disappear as
+            // before; the cascade above no longer reaches preserved threads.
+            statement(`DELETE FROM guestbook_entries WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
+            // Old reply targets anywhere in the board pointed at this member's public
+            // name; clear them so the deleted identity is not left behind.
+            statement(
+                `UPDATE guestbook_entries SET reply_to_nickname=''
+                 WHERE reply_to_nickname=? AND placeholder=0
+                   AND ${guard}`,
+                user.username, user.id, current.password_hash,
+            ),
+            statement(`DELETE FROM reset_tokens WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
+            statement(`DELETE FROM review_logs WHERE (user_id=? OR admin_id=?) AND ${guard}`, user.id, user.id, user.id, current.password_hash),
+            statement(`DELETE FROM submissions WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
+            statement(`DELETE FROM favorites WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
+            statement(`DELETE FROM sessions WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
+            statement("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'", user.id, current.password_hash),
+        ]);
         if (!results.at(-1)?.meta.changes)
             fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
     }
@@ -861,12 +929,13 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
       const [users, counts] = await Promise.all([
         db
           .prepare(
-            "SELECT id,username,nickname,reason,role,status,created_at,version FROM users WHERE (?='' OR status=?) ORDER BY created_at DESC,id LIMIT 30 OFFSET ?",
+            "SELECT id,username,nickname,reason,role,status,created_at,version FROM users WHERE id<>? AND (?='' OR status=?) ORDER BY created_at DESC,id LIMIT 30 OFFSET ?",
           )
-          .bind(status, status, (Math.floor(page) - 1) * 30)
+          .bind(DELETED_AUTHOR_ID, status, status, (Math.floor(page) - 1) * 30)
           .all(),
         db
-          .prepare("SELECT status,count(*) AS count FROM users GROUP BY status")
+          .prepare("SELECT status,count(*) AS count FROM users WHERE id<>? GROUP BY status")
+          .bind(DELETED_AUTHOR_ID)
           .all<{ status: User["status"]; count: number }>(),
       ]);
       const statusCounts = { pending: 0, approved: 0, rejected: 0, disabled: 0 };
@@ -891,6 +960,12 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
         .bind(review[1])
         .first<User>();
       if (!user) fail(404, "NOT_FOUND", "账号不存在 / User not found");
+      if (user.id === DELETED_AUTHOR_ID)
+        fail(
+          403,
+          "SYSTEM_ACCOUNT",
+          "系统占位账号不可修改 / System placeholder cannot be changed",
+        );
       if (user.role === "admin")
         fail(
           403,
@@ -947,7 +1022,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
           "STALE_REVIEW",
           "申请已被更新，请刷新 / Refresh this application",
         );
-      return json({ ok: true });
+      return json({ ok: true, version: user.version + 1, status: transition.to });
     }
     const logs = path.match(/^\/api\/admin\/users\/([^/]+)\/reviews$/);
     if (method === "GET" && logs) {
@@ -964,6 +1039,12 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     );
     if (method === "POST" && reset) {
       await limit(db, `admin-reset:${admin.id}`, 20, 3600);
+      if (reset[1] === DELETED_AUTHOR_ID)
+        fail(
+          403,
+          "SYSTEM_ACCOUNT",
+          "系统占位账号不可修改 / System placeholder cannot be changed",
+        );
       const data = await body(request),
         note = text(data, "note", 1, 2000);
       const target = await db
