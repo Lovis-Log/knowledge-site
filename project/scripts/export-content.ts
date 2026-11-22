@@ -1,13 +1,22 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { getPageCatalog } from "../content/catalog";
+import { packCatalog } from "../content/catalog-storage";
 import { getAllBooks } from "../content/index";
 import { contentJson } from "./content-json";
+
+const d1RowLimit = 2_000_000;
+
+export function assertContentFitsD1(key: string, value: string, version: string) {
+  // Include the other columns and reserve room for the SQLite record header.
+  const bytes = Buffer.byteLength(key) + Buffer.byteLength(value) + Buffer.byteLength(version) + 16;
+  if (bytes > d1RowLimit) throw new Error(`D1 content row ${key} needs ${bytes} bytes (limit ${d1RowLimit}).`);
+}
 
 export async function exportContent() {
   const books = getAllBooks();
   const entries: [string, string][] = [
-    ["catalog", contentJson(getPageCatalog())],
+    ["catalog", contentJson(packCatalog(getPageCatalog()))],
   ];
   for (const book of books)
     for (const chapter of book.chapters)
@@ -26,6 +35,7 @@ export async function exportContent() {
   ];
   // Large JSON values are assembled in bounded statements, staying below D1's SQL length limit.
   for (const [key, value] of entries) {
+    assertContentFitsD1(key, value, version);
     sql.push(
       `INSERT OR IGNORE INTO content_entries(version_id,key,json) VALUES(${quote(version)},${quote(key)},'');`,
     );

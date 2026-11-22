@@ -11,6 +11,7 @@ import type {
   Lang,
   Source,
   SourceKind,
+  TaxonomySection,
 } from "@/content/types";
 
 const CHAPTER_FILE = /^(\d{2,3})\s*-\s*(.+?)\.(zh|en)\.md$/;
@@ -22,14 +23,6 @@ export interface TaxonomyCategory {
   section: string;
   name: string;
   description?: string;
-}
-
-export interface TaxonomySection {
-  slug: string;
-  name: string;
-  description: string;
-  featuredBooks?: string[];
-  groupByCategory?: boolean;
 }
 
 function siteDir(): string {

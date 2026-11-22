@@ -9,6 +9,8 @@ import {
 } from "./password";
 import { isValidPassword } from "../lib/password-policy";
 import { publicLandingAssets } from "../lib/landing-assets";
+import { catalogResponseBody } from "../content/catalog-storage";
+import { releaseReady } from "./release-health";
 import { decryptInvite, importInviteKey, importInviteKeys, importInviteKeysIfConfigured, InviteStorageError, inviteCodeHashes, isShortInviteCode, storeInvite } from "./invites";
 
 // Secrets are provisioned separately from Wrangler's generated resource bindings.
@@ -207,7 +209,7 @@ async function content(db: DB, key: string) {
     .first<{ json: string }>();
   if (!entry)
     fail(404, "NOT_FOUND", "内容不存在或尚未导入 / Content not found");
-  return new Response(entry.json, {
+  return new Response(key === "catalog" ? catalogResponseBody(entry.json) : entry.json, {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "private, no-store",
@@ -1139,9 +1141,8 @@ export default {
       }
       const db = env.DB.withSession("first-primary");
       if (path === "/api/release" && ["GET", "HEAD"].includes(request.method)) {
-        const entry = await db.prepare("SELECT json_valid(json) AS ready FROM content_entries WHERE version_id=? AND key='catalog'")
-          .bind(CONTENT_VERSION).first<{ ready: number }>();
-        return json({ commit: RELEASE_COMMIT, contentVersion: CONTENT_VERSION, ready: entry?.ready === 1 }, entry?.ready === 1 ? 200 : 503);
+        const ready = await releaseReady(db, CONTENT_VERSION);
+        return json({ commit: RELEASE_COMMIT, contentVersion: CONTENT_VERSION, ready }, ready ? 200 : 503);
       }
       if (path.startsWith("/api/")) return await api(request, db, path, env);
       if (!["GET", "HEAD"].includes(request.method))

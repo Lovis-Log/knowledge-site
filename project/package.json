@@ -13,7 +13,7 @@
     "verify": "tsx scripts/verify-protected-export.ts && node scripts/verify-ui-language.mjs && tsx scripts/verify-campus-publication.ts",
     "verify:ui": "node scripts/verify-ui-language.mjs",
     "verify:content": "node scripts/verify-content-refresh.mjs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.build.json",
     "dev:full": "wrangler pages dev out --port 8788",
     "deploy:preview": "wrangler pages deploy out --project-name lovismind-preview --branch codex/backend-auth --commit-dirty=true",
     "db:migrate": "wrangler d1 migrations apply DB --local",

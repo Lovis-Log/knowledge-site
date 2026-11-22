@@ -6,17 +6,12 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname } from "next/navigation";
-import type { Book, Chapter } from "./types";
-import type { LibrarySection } from "./index";
+import type { Catalog } from "./types";
 import { api } from "@/lib/api";
 import { navigateDocument } from "@/components/navigation-feedback";
 
-export type Catalog = {
-  books: Book[];
-  sections: LibrarySection[];
-  taxonomyEnglish: Record<string, { name: string; description: string }>;
-  bookEnglish: Record<string, { description: string; longDescription: string }>;
-};
+export type { Catalog } from "./types";
+
 const Context = createContext<Catalog | null>(null);
 export function useContent() {
   const data = useContext(Context);

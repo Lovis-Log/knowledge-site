@@ -1,6 +1,8 @@
-import type { Book, Chapter } from "@/content/types";
+import type { Book, CategoryGroup, Chapter, LibrarySection } from "@/content/types";
 import { cache } from "react";
-import { getSections, getTaxonomy, loadBooks, type TaxonomySection } from "@/lib/notes";
+import { getSections, getTaxonomy, loadBooks } from "@/lib/notes";
+
+export type { CategoryGroup, LibrarySection } from "./types";
 
 // Share a snapshot within one server render, but read the files again on the
 // next request so external Markdown edits cannot leave titles/categories stale.
@@ -53,13 +55,6 @@ export function getAllChapterRefs(): ChapterRef[] {
   );
 }
 
-export interface CategoryGroup {
-  slug: string;
-  name: string;
-  description?: string;
-  books: Book[];
-}
-
 export function getCategoryGroups(): CategoryGroup[] {
   const categories = getTaxonomy();
   const order = new Map(categories.map((category, index) => [category.slug, index]));
@@ -84,12 +79,6 @@ export function getCategoryGroups(): CategoryGroup[] {
       (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
       (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
   );
-}
-
-export interface LibrarySection extends TaxonomySection {
-  groups: CategoryGroup[];
-  books: Book[];
-  preview: Book[];
 }
 
 export function getLibrarySections(): LibrarySection[] {

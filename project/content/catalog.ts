@@ -1,6 +1,5 @@
 import { getAllBooks, getLibrarySections } from "./index";
-import type { Catalog } from "./client";
-import type { Chapter } from "./types";
+import type { Catalog, Chapter } from "./types";
 import { bookEnglish, taxonomyEnglish } from "@/lib/content-translations";
 
 function metadata(chapter: Chapter): Chapter {

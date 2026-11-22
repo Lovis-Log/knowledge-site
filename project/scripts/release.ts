@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, open, readFile, writeFile, unlink } from "node:fs/promises";
+import { mkdir, open, readFile, readdir, writeFile, unlink } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
@@ -22,6 +22,11 @@ function npm(script: string) {
 }
 function d1(...args: string[]) {
   return run(process.execPath, [wrangler, "d1", ...args, "--remote", "--env", "production"]);
+}
+function queryProduction<T>(sql: string): T[] {
+  const output = run(process.execPath, [wrangler, "d1", "execute", "DB", "--remote", "--env", "production", "--json", "--command", sql], true);
+  const queries = JSON.parse(output) as { results: T[] }[];
+  return queries.flatMap((query) => query.results);
 }
 await mkdir(".backend-build/releases", { recursive: true });
 const lockPath = ".backend-build/release.lock";
@@ -59,12 +64,17 @@ try {
     await save("preparing-content");
     // Check Pages read access before importing or pushing anything.
     run(process.execPath, [wrangler, "pages", "deployment", "list", "--project-name", "lovismind", "--environment", "production", "--json"], true);
-    // No migrations, account initialization, or secret changes are hidden in a routine release.
+    // Require migrations before staging content or pushing a new Worker.
+    const required = (await readdir("backend/migrations")).filter((file) => file.endsWith(".sql")).sort();
+    const applied = new Set(queryProduction<{ name: string }>("SELECT name FROM d1_migrations").map((row) => row.name));
+    const missing = required.filter((name) => !applied.has(name));
+    if (missing.length)
+      throw new Error(`Production D1 is missing migrations: ${missing.join(", ")}. Apply the migrations before publishing.`);
+
     function contentCounts() {
-      const output = run(process.execPath, [wrangler, "d1", "execute", "DB", "--remote", "--env", "production", "--json", "--command",
-        `SELECT count(*) AS total,sum(json_valid(json)) AS valid FROM content_entries WHERE version_id='${manifest.version}'`], true);
-      const rows = JSON.parse(output) as { results: { total: number; valid: number }[] }[];
-      return rows.flatMap((row) => row.results)[0];
+      return queryProduction<{ total: number; valid: number }>(
+        `SELECT count(*) AS total,sum(json_valid(json)) AS valid FROM content_entries WHERE version_id='${manifest.version}'`,
+      )[0];
     }
     let counts = contentCounts();
     if (counts?.total !== manifest.entries || counts.valid !== manifest.entries) {

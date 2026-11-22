@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
 const nextConfig: NextConfig = {
   output: "export",
@@ -6,4 +7,8 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
 };
 
-export default nextConfig;
+export default function config(phase: string): NextConfig {
+  return phase === PHASE_PRODUCTION_BUILD
+    ? { ...nextConfig, typescript: { tsconfigPath: "tsconfig.build.json" } }
+    : nextConfig;
+}

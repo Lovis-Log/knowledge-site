@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/dev/types/**/*.ts"],
+  // Next expects both generated globs. Excluding the dev tree keeps its validators out of release checks.
+  "exclude": ["node_modules", "out", "backend", "scripts/*.ts", ".next/dev"]
+}

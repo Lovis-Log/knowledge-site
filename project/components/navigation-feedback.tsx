@@ -172,10 +172,12 @@ export function NavigationFeedback() {
   if (!pending) return null;
   return <div className="navigation-feedback" data-phase={pending.phase}>
     <div className="navigation-feedback__line" aria-hidden="true" />
-    {rocket && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
-    <span className={slow ? undefined : "reader-sr-only"} role="status">
-      <UiText zh="正在打开页面…" en="Opening page…" />
-    </span>
-    {slow && <a href={pending.href}><UiText zh="直接打开" en="Open directly" /></a>}
+    {rocket && !slow && <div className="navigation-feedback__rocket" aria-hidden="true"><RocketLoader compact /></div>}
+    <div className="navigation-feedback__notice" data-slow={slow}>
+      <span className={slow ? undefined : "reader-sr-only"} role="status">
+        <UiText zh="正在打开页面…" en="Opening page…" />
+      </span>
+      {slow && <a href={pending.href}><UiText zh="直接打开" en="Open directly" /></a>}
+    </div>
   </div>;
 }

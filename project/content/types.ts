@@ -76,3 +76,31 @@ export interface Book {
   groups?: ChapterGroup[];
   chapters: Chapter[];
 }
+
+export interface TaxonomySection {
+  slug: string;
+  name: string;
+  description: string;
+  featuredBooks?: string[];
+  groupByCategory?: boolean;
+}
+
+export interface CategoryGroup {
+  slug: string;
+  name: string;
+  description?: string;
+  books: Book[];
+}
+
+export interface LibrarySection extends TaxonomySection {
+  groups: CategoryGroup[];
+  books: Book[];
+  preview: Book[];
+}
+
+export interface Catalog {
+  books: Book[];
+  sections: LibrarySection[];
+  taxonomyEnglish: Record<string, { name: string; description: string }>;
+  bookEnglish: Record<string, { description: string; longDescription: string }>;
+}
