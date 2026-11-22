@@ -15,8 +15,12 @@ export interface ContinueItem {
 
 export function ContinueReading({ items }: { items: ContinueItem[] }) {
   const { state } = useReadingState();
-  const last = state?.progress[0];
-  const item = last && items.find((candidate) => candidate.book === last.book && candidate.chapter === last.chapter);
+  // The server sends a bounded recent list. Skip chapters that are no longer
+  // published instead of hiding the whole continue-reading entry.
+  const index = new Map(items.map((item) => [item.book + "/" + item.chapter, item]));
+  const item = state?.progress
+    .map((entry) => index.get(entry.book + "/" + entry.chapter))
+    .find((candidate) => candidate);
 
   if (!item) return null;
 

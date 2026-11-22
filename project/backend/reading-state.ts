@@ -4,17 +4,28 @@ type Target = { book: string; chapter: string };
 type Fail = (status: number, code: string, message: string) => never;
 const progressColumns = "book,chapter,resume,furthest,observed_at AS observedAt,last_read_at AS lastReadAt";
 const highlightLimit = 250;
+// Filter against the current catalog before limiting the results so any number
+// of retired chapters can be skipped, including for clients that read only progress[0].
+const recentLimit = 8;
 
 export async function getReadingState(
   db: D1DatabaseSession,
   account: string,
   target: Target | null,
+  availableChapters?: string,
 ) {
-  const progress = db.prepare(target
-    ? "SELECT " + progressColumns + " FROM reading_progress WHERE user_id=? AND book=?" + (target.chapter ? " AND chapter=?" : "")
-    : "SELECT " + progressColumns + " FROM reading_progress WHERE user_id=? ORDER BY last_read_at DESC LIMIT 1"
-  ).bind(account, ...(target ? [target.book, ...(target.chapter ? [target.chapter] : [])] : []));
-  const highlights = target?.chapter
+  if (!target) {
+    const positions = await db.prepare(`
+      SELECT ${progressColumns} FROM reading_progress WHERE user_id=?
+        AND book||'/'||chapter IN (SELECT value FROM json_each(?))
+      ORDER BY last_read_at DESC, observed_at DESC, book, chapter LIMIT ${recentLimit}
+    `).bind(account, availableChapters ?? "[]").all<ReadingProgressEntry>();
+    return { account, progress: positions.results, highlights: [] };
+  }
+  const progress = db.prepare(
+    "SELECT " + progressColumns + " FROM reading_progress WHERE user_id=? AND book=?" + (target.chapter ? " AND chapter=?" : ""),
+  ).bind(account, target.book, ...(target.chapter ? [target.chapter] : []));
+  const highlights = target.chapter
     ? db.prepare("SELECT id,view,start,quote,prefix,suffix FROM reading_highlights WHERE user_id=? AND book=? AND chapter=? ORDER BY start,id")
       .bind(account, target.book, target.chapter)
     : null;

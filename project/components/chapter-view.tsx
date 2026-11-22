@@ -6,9 +6,11 @@ import { InlineMarkdown, Markdown } from "@/components/markdown";
 import { ReadingLayout } from "@/components/reading-layout";
 import { useRef } from "react";
 import { useReadingState } from "@/lib/reading-state-client";
+import { useHighlightQueue } from "@/lib/reading-highlight-queue";
 import { ReadingHighlights } from "@/components/reading-highlights";
 import { ReadingProgress } from "@/components/reading-progress";
 import { ReadingToolbar } from "@/components/reading-toolbar";
+import { SessionRecovery } from "@/components/session-recovery";
 import { SourceList } from "@/components/source-list";
 import { TableOfContents } from "@/components/table-of-contents";
 import { FavoriteButton } from "@/components/favorites";
@@ -30,7 +32,8 @@ export default function ChapterView({
   chapterSlug: string;
 }) {
   const article = useRef<HTMLDivElement>(null);
-  const { state, failed, refresh } = useReadingState(bookSlug, chapterSlug);
+  const { state, account, authExpired, failed, refresh } = useReadingState(bookSlug, chapterSlug);
+  const queue = useHighlightQueue(account, bookSlug, chapterSlug);
   const { getBook, getChapter, getAdjacentChapters } = useContent();
   const book = getBook(bookSlug);
   const chapter = getChapter(bookSlug, chapterSlug);
@@ -68,7 +71,7 @@ export default function ChapterView({
       data-reading-preset={campusReading ? "campus-notes" : undefined}
     >
       <ReadingLayout
-        progress={<ReadingProgress key={book.slug + "/" + chapter.slug} book={book.slug} chapter={chapter.slug} account={state?.account} entry={state?.progress[0]} />}
+        progress={<ReadingProgress key={book.slug + "/" + chapter.slug} book={book.slug} chapter={chapter.slug} account={account} entry={state?.progress[0]} />}
         aside={
           <>
             <div data-reading-block="notes">
@@ -152,6 +155,10 @@ export default function ChapterView({
           </div>
         </header>
 
+        {(authExpired || queue.problem === "auth") && (
+          <SessionRecovery onRetry={refresh} />
+        )}
+
         <details className="toc-inline">
           <summary>
             <UiText zh="篇内目录" />
@@ -209,8 +216,9 @@ export default function ChapterView({
             </div>
           )}
         </div>
-        <ReadingHighlights key={book.slug + "/" + chapter.slug} root={article} book={book.slug}
-          chapter={chapter.slug} state={state} failed={failed} refresh={refresh} />
+        <ReadingHighlights key={book.slug + "/" + chapter.slug + "/" + (account ?? "")} root={article}
+          account={account} queue={queue} state={state} failed={failed}
+          authExpired={authExpired || queue.problem === "auth"} refresh={refresh} />
         <SourceList sources={chapter.sources} />
         <ChapterPager
           bookSlug={book.slug}

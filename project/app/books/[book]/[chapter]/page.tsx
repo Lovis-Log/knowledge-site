@@ -15,7 +15,7 @@ export default async function Page({
 }) {
   const { book, chapter } = await params;
   return (
-    <ProtectedContent catalog={getPageCatalog({ book, chapter })}>
+    <ProtectedContent catalog={getPageCatalog({ book, chapter })} recoverSessionInPage>
       <ChapterView bookSlug={book} chapterSlug={chapter} />
     </ProtectedContent>
   );

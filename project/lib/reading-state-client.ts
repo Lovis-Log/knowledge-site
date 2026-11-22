@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { api, ApiError } from "./api";
 import { readLastRead, readProgress } from "./progress";
+import { flushAccountHighlights } from "./reading-highlight-queue";
+import { classifyReadingFailure, readingRetryDelay } from "./reading-queue-policy";
 import type { ReadingProgressEntry, ReadingState } from "./reading-state-types";
 
 const endpoint = "/api/reading-state";
@@ -10,6 +12,8 @@ const legacyOwnerKey = "shufang:reading-state-import-owner";
 const migratedKey = "shufang:reading-state-imported";
 const pending = new Map<string, ReadingProgressEntry>();
 const writes = new Map<string, Promise<void>>();
+const progressAttempts = new Map<string, number>();
+const progressTimers = new Map<string, ReturnType<typeof setTimeout>>();
 let migration: Promise<boolean> | undefined;
 
 function keyOf({ book, chapter }: { book: string; chapter: string }) {
@@ -20,7 +24,7 @@ function storagePrefix(account: string) {
   return "shufang:reading-pending:" + account + ":";
 }
 
-function queueKey(account: string, entry: ReadingProgressEntry) {
+function queueKey(account: string, entry: { book: string; chapter: string }) {
   return storagePrefix(account) + keyOf(entry);
 }
 
@@ -65,24 +69,60 @@ export function saveReadingPosition(account: string, entry: ReadingProgressEntry
   flushPosition(account, next);
 }
 
+function clearProgressRetry(key: string) {
+  const timer = progressTimers.get(key);
+  if (timer) clearTimeout(timer);
+  progressTimers.delete(key);
+}
+
+function forgetPosition(account: string, entry: ReadingProgressEntry) {
+  const key = queueKey(account, entry);
+  pending.delete(key);
+  progressAttempts.delete(key);
+  clearProgressRetry(key);
+  try {
+    const stored = parsePosition(localStorage.getItem(key));
+    if (!stored || (stored.observedAt <= entry.observedAt && stored.furthest <= entry.furthest))
+      localStorage.removeItem(key);
+  } catch { /* Storage is optional. */ }
+}
+
 function flushPosition(account: string, entry: ReadingProgressEntry) {
   const key = queueKey(account, entry);
   if (writes.has(key)) return;
+  pending.set(key, entry);
+  clearProgressRetry(key);
   const write = api(endpoint, "POST", { account, action: "progress", ...entry }, { keepalive: true })
     .then(() => {
+      progressAttempts.delete(key);
       if (pending.get(key) && pending.get(key) !== entry) return;
-      pending.delete(key);
-      try {
-        const stored = parsePosition(localStorage.getItem(key));
-        if (stored && stored.observedAt <= entry.observedAt && stored.furthest <= entry.furthest)
-          localStorage.removeItem(key);
-      } catch { /* Storage is optional. */ }
+      forgetPosition(account, entry);
     })
-    .catch(() => { /* Persist until the next reader visit or reconnection. */ })
+    .catch((error) => {
+      const kind = classifyReadingFailure(error);
+      if (kind === "terminal") {
+        // A retired chapter or an invalid target must not be replayed forever,
+        // but a newer position saved during this request still owns the row.
+        if (pending.get(key) && pending.get(key) !== entry) return;
+        forgetPosition(account, entry);
+        return;
+      }
+      // Auth/account mismatches stay stored for that verified account only.
+      if (kind !== "transient") return;
+      const attempt = (progressAttempts.get(key) ?? 0) + 1;
+      progressAttempts.set(key, attempt);
+      clearProgressRetry(key);
+      progressTimers.set(key, setTimeout(() => {
+        progressTimers.delete(key);
+        const latest = pending.get(key);
+        if (latest) flushPosition(account, latest);
+      }, Math.max(readingRetryDelay(attempt), (error instanceof ApiError ? error.retryAfter ?? 0 : 0) * 1000)));
+    })
     .finally(() => {
       writes.delete(key);
       const newest = pending.get(key);
-      if (newest && newest !== entry) flushPosition(account, newest);
+      // A backoff timer already owns the next attempt; do not bypass it.
+      if (newest && newest !== entry && !progressTimers.has(key)) flushPosition(account, newest);
     });
   writes.set(key, write);
 }
@@ -123,32 +163,75 @@ function mergePending(state: ReadingState, book?: string, chapter?: string) {
     });
   }
   const progress = [...entries.values()].sort((a, b) => b.lastReadAt - a.lastReadAt);
-  return { ...state, progress: book ? progress : progress.slice(0, 1) };
+  return { ...state, progress };
 }
 
 export function useReadingState(book?: string, chapter?: string) {
   const key = [book, chapter].filter(Boolean).join("/");
-  const [snapshot, setSnapshot] = useState<{ key: string; value: ReadingState | null; failed?: boolean }>();
+  const [snapshot, setSnapshot] = useState<{
+    key: string;
+    value: ReadingState | null;
+    account?: string;
+    failed?: boolean;
+    authExpired?: boolean;
+  }>();
   const [revision, setRevision] = useState(0);
   useEffect(() => {
     let active = true;
     let requestId = 0;
+    let attempts = 0;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
     const params = new URLSearchParams();
     if (book) params.set("book", book);
     if (chapter) params.set("chapter", chapter);
     const path = params.size ? endpoint + "?" + params : endpoint;
+    const clearRetry = () => {
+      if (retryTimer) clearTimeout(retryTimer);
+      retryTimer = undefined;
+    };
     const refresh = async () => {
       const id = ++requestId;
+      clearRetry();
       try {
         let value = await api<ReadingState>(path);
         if (!active || requestId !== id) return;
+        attempts = 0;
         if (await migrateLegacy(value.account)) value = await api<ReadingState>(path);
-        if (active && requestId === id) setSnapshot({ key, value: mergePending(value, book, chapter) });
+        if (!active || requestId !== id) return;
+        setSnapshot({ key, value: mergePending(value, book, chapter), account: value.account });
+        flushAccountHighlights(value.account);
       } catch (error) {
-        const expired = error instanceof ApiError && (error.status === 401 || error.status === 403);
-        if (active && requestId === id) setSnapshot((current) => ({
-          key, value: !expired && current?.key === key ? current.value : null, failed: true,
-        }));
+        if (!active || requestId !== id) return;
+        if (classifyReadingFailure(error) === "auth") {
+          setSnapshot({ key, value: null, failed: true, authExpired: true });
+          return;
+        }
+        setSnapshot((current) => current?.key === key
+          ? { ...current, failed: true }
+          : { key, value: null, failed: true });
+        attempts += 1;
+        retryTimer = setTimeout(() => {
+          if (active && requestId === id) void refresh();
+        }, readingRetryDelay(attempts));
+
+        // A failure of reading-state doesn't invalidate a session. Verify the
+        // account independently so pending progress may still be saved safely.
+        try {
+          const { user } = await api<{ user: { id: string } | null }>("/api/auth/me");
+          if (!active || requestId !== id) return;
+          if (!user) {
+            clearRetry();
+            setSnapshot({ key, value: null, failed: true, authExpired: true });
+            return;
+          }
+          setSnapshot((current) => ({
+            key,
+            value: current?.key === key && current.value?.account === user.id ? current.value : null,
+            account: user.id,
+            failed: true,
+          }));
+          flushAccountHighlights(user.id);
+        } catch { /* The next attempt also rechecks the account. */ }
       }
     };
     const onVisible = () => { if (document.visibilityState === "visible") void refresh(); };
@@ -157,13 +240,17 @@ export function useReadingState(book?: string, chapter?: string) {
     window.addEventListener("online", refresh);
     return () => {
       active = false;
+      clearRetry();
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", refresh);
     };
   }, [book, chapter, key, revision]);
+  const current = snapshot?.key === key ? snapshot : undefined;
   return {
-    state: snapshot?.key === key ? snapshot.value : null,
-    failed: snapshot?.key === key && snapshot.failed,
+    state: current?.value ?? null,
+    account: current?.account,
+    failed: current?.failed,
+    authExpired: current?.authExpired,
     refresh: () => setRevision((value) => value + 1),
   };
 }

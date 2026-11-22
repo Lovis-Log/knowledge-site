@@ -218,6 +218,9 @@ async function content(db: DB, key: string) {
 }
 type FavoriteTitle = { zh: string; en: string };
 declare const FAVORITE_TITLES: Record<string, FavoriteTitle>;
+const availableReadingChapters = JSON.stringify(Object.keys(FAVORITE_TITLES)
+  .filter((path) => /^\/books\/[^/]+\/[^/]+\/$/.test(path))
+  .map((path) => path.slice("/books/".length, -1)));
 
 const BOOK_ALIASES: Record<string, string> = {
   "image-generation-workflows": "agent-engineering",
@@ -580,7 +583,8 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
     const user = await requireUser(request, db);
     const query = new URL(request.url).searchParams;
     if (method === "GET") {
-      if (!query.has("book") && !query.has("chapter")) return json(await getReadingState(db, user.id, null));
+      if (!query.has("book") && !query.has("chapter"))
+        return json(await getReadingState(db, user.id, null, availableReadingChapters));
       const target = favoriteTarget(query.get("book"), query.get("chapter") ?? "");
       return json(await getReadingState(db, user.id, { ...target, book: canonicalBook(target.book) }));
     }

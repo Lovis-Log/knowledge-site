@@ -6,7 +6,7 @@ import { highlightRanges, highlightSelection, indexHighlightText } from "@/lib/h
 import type { HighlightIndex, HighlightIndexMode } from "@/lib/highlight-anchor";
 import { groupHighlightBands } from "@/lib/highlight-geometry";
 import type { HighlightBand, HighlightBox } from "@/lib/highlight-geometry";
-import { changeReadingState } from "@/lib/reading-state-client";
+import type { HighlightQueueHandle } from "@/lib/reading-highlight-queue";
 import type { HighlightView, ReadingHighlight, ReadingState } from "@/lib/reading-state-types";
 import { uiLabel } from "@/lib/ui-language";
 import { UiText } from "./ui-text";
@@ -244,19 +244,17 @@ function bandPath(bands: readonly HighlightBand[]) {
     `M${left},${top}h${width}v${height}h${-width}Z`).join("");
 }
 
-export function ReadingHighlights({ root, book, chapter, state, failed, refresh }: {
+export function ReadingHighlights({ root, account, queue, state, failed, authExpired, refresh }: {
   root: RefObject<HTMLDivElement | null>;
-  book: string;
-  chapter: string;
+  account?: string;
+  queue: HighlightQueueHandle;
   state: ReadingState | null;
   failed?: boolean;
+  authExpired?: boolean;
   refresh: () => void;
 }) {
   const [target, setTarget] = useState<Target | null>(null);
-  const [pending, setPending] = useState<ReadingHighlight[]>([]);
-  const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
-  const busy = useRef(false);
-  const [error, setError] = useState(false);
+  const applying = useRef(false);
   const [bands, setBands] = useState<HighlightBand[]>([]);
   const [activeBands, setActiveBands] = useState<HighlightBand[]>([]);
   // Bumped when the reader switches language, view or font size: the formula
@@ -273,14 +271,13 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     const article = root.current;
     if (!article) return;
     painted.current = [];
-    const saved = savedHighlights ?? [];
-    const marks = saved.filter((mark) => !hidden.has(mark.id));
-    for (const mark of pending) {
-      if (hidden.has(mark.id) || saved.some((item) => item.id === mark.id)) continue;
-      marks.push(mark);
+    const marks = new Map(savedHighlights?.map((mark) => [mark.id, mark]));
+    for (const change of [...queue.confirmed, ...queue.pending.map((write) => write.change)]) {
+      if (change.action === "highlight") marks.set(change.mark.id, change.mark);
+      else marks.delete(change.id);
     }
     for (const element of article.querySelectorAll<HTMLElement>("[data-highlight-view]")) {
-      const viewMarks = marks.filter((mark) => mark.view === element.dataset.highlightView);
+      const viewMarks = [...marks.values()].filter((mark) => mark.view === element.dataset.highlightView);
       if (!viewMarks.length) continue;
       const index = indexHighlightText(element);
       const indexes = new Map<HighlightIndexMode, HighlightIndex>([["rendered", index]]);
@@ -320,19 +317,19 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
     };
-  }, [root, savedHighlights, pending, hidden, revision]);
+  }, [root, savedHighlights, queue.pending, queue.confirmed, revision]);
 
+  const settled = useRef(queue.revision);
+  const refreshRef = useRef(refresh);
+  refreshRef.current = refresh;
   useEffect(() => {
-    if (!state) return;
-    const ids = new Set(state.highlights.map((mark) => mark.id));
-    setPending((list) => list.some((mark) => ids.has(mark.id))
-      ? list.filter((mark) => !ids.has(mark.id)) : list);
-    setHidden((current) => {
-      if (!current.size) return current;
-      const next = new Set([...current].filter((id) => ids.has(id)));
-      return next.size === current.size ? current : next;
-    });
-  }, [state]);
+    if (settled.current === queue.revision || queue.pending.length) return;
+    settled.current = queue.revision;
+    refreshRef.current();
+  }, [queue.revision, queue.pending.length]);
+  useEffect(() => {
+    if (savedHighlights) queue.acknowledge(savedHighlights);
+  }, [savedHighlights]); // Confirm only against a newly fetched server snapshot.
 
   useEffect(() => {
     if (!activeRange || !activeElement || !activeRanges) {
@@ -367,11 +364,11 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
   useEffect(() => {
     const article = root.current;
     if (!article) return;
-    const clear = () => { setTarget(null); setError(false); };
+    const clear = () => setTarget(null);
     const viewFor = (node: Node) => (node instanceof Element ? node : node.parentElement)
       ?.closest<HTMLElement>("[data-highlight-view]");
     const selected = () => {
-      if (busy.current || document.activeElement === button.current) return;
+      if (document.activeElement === button.current) return;
       const selection = window.getSelection();
       if (!selection?.rangeCount || selection.isCollapsed) {
         setTarget((current) => current?.mark ? current : null);
@@ -390,10 +387,12 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       const rect = visibleSelectionRect(range, atStart);
       if (!rect) { clear(); return; }
       const view = element.dataset.highlightView as HighlightView;
-      setError(false);
       setTarget((current) => {
         if (current && current.atStart === atStart && sameBoundaries(current.range, range)) return current;
-        const existing = painted.current.find((item) => item.element === element && matchingMark(item.ranges, range));
+        const overlaps = painted.current.filter((item) => item.element === element && matchingMark(item.ranges, range));
+        // A re-selection removes an exact match. A partly overlapping range can be added.
+        const anchor = overlaps.length ? highlightSelection(indexHighlightText(element), range, view) : null;
+        const existing = anchor && overlaps.find(({ mark }) => mark.start === anchor.start && mark.quote === anchor.quote);
         return { mark: existing?.mark ?? null, remove: Boolean(existing), rect, range,
           view, element, ranges: existing?.ranges ?? [], atStart };
       });
@@ -421,10 +420,11 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
       settle = window.setTimeout(queueSelection, 120);
     };
     const clickMark = (event: MouseEvent) => {
-      if (busy.current || !window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
+      if (!window.getSelection()?.isCollapsed || !(event.target instanceof Element) ||
         event.target.closest("a, button")) return;
       const view = viewFor(event.target);
-      for (const { mark, ranges, element, bands } of painted.current) {
+      const ordered = [...painted.current].sort((left, right) => left.mark.quote.length - right.mark.quote.length);
+      for (const { mark, ranges, element, bands } of ordered) {
         if (element !== view) continue;
         const hit = bands.find((band) => event.clientX >= band.left && event.clientX <= band.left + band.width &&
           event.clientY >= band.top && event.clientY <= band.top + band.height);
@@ -432,7 +432,6 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         const selection = window.getSelection();
         const range = selection?.rangeCount ? selection.getRangeAt(0).cloneRange() : ranges[0];
         const rect = new DOMRect(event.clientX, hit.top, 0, hit.height);
-        setError(false);
         setTarget({ mark, remove: true, rect, range, view: mark.view, element, ranges, atStart: false });
         return;
       }
@@ -504,56 +503,35 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
     };
   }, [root]);
 
-  async function apply() {
-    if (!target || busy.current) return;
-    if (!state?.account) {
+  function apply() {
+    if (!target || applying.current) return;
+    if (!account) {
       refresh();
       return;
     }
+    applying.current = true;
+    queueMicrotask(() => { applying.current = false; });
     const previous = target;
     const index = previous.mark ? null : indexHighlightText(previous.element);
     const mark = previous.mark ?? (index && highlightSelection(index, previous.range, previous.view));
     if (!mark) { setTarget(null); return; }
-    const ranges = index ? highlightRanges(index, mark) : previous.ranges;
-    const restoring: Target = { ...previous, mark, ranges };
-
-    busy.current = true;
-    setError(false);
-    window.getSelection()?.removeAllRanges();
-    setTarget(null);
-    if (previous.remove) {
-      setHidden((ids) => new Set(ids).add(mark.id));
-      try {
-        await changeReadingState(state.account, book, chapter, { action: "remove-highlight", id: mark.id });
-        refresh();
-      } catch {
-        setHidden((ids) => {
-          const next = new Set(ids);
-          next.delete(mark.id);
-          return next;
-        });
-        setTarget(restoring);
-        setError(true);
-      } finally {
-        busy.current = false;
-      }
-      return;
-    }
-    // Paint optimistically; keep the mark until the reload confirms it, then drop it.
-    setPending((list) => list.some((item) => item.id === mark.id) ? list : [...list, mark]);
-    try {
-      await changeReadingState(state.account, book, chapter, { action: "highlight", mark });
-      refresh();
-    } catch {
-      setPending((list) => list.filter((item) => item.id !== mark.id));
-      setTarget(restoring);
-      setError(true);
-    } finally {
-      busy.current = false;
+    if (queue.enqueue(previous.remove ? { action: "remove-highlight", id: mark.id } : { action: "highlight", mark })) {
+      window.getSelection()?.removeAllRanges();
+      setTarget(null);
     }
   }
 
-  if (!target && !bands.length && !activeBands.length) return null;
+  const notice = !authExpired && (queue.problem || (queue.pending.length ? "pending" : failed && !state ? "unavailable" : undefined));
+  const noticeText = notice === "full"
+    ? <UiText zh="待同步高亮已满，点击重试" en="Highlight queue full. Tap to retry." />
+    : notice === "rejected"
+      ? <UiText zh="高亮未保存，点击关闭" en="Highlight not saved. Tap to dismiss." />
+      : notice === "retry" || notice === "pending"
+        ? <UiText zh="高亮待同步，点击重试" en="Highlight pending. Tap to retry." />
+        : <UiText zh="高亮暂不可用，点击重试" en="Highlights unavailable. Tap to retry." />;
+  const noticeAction = notice === "unavailable" ? refresh : notice === "rejected" ? queue.dismiss : queue.retry;
+
+  if (!target && !bands.length && !activeBands.length && !notice) return null;
   return createPortal(<>
     {(bands.length > 0 || activeBands.length > 0) && (
       <svg className="reading-highlight-bands" aria-hidden="true">
@@ -565,17 +543,27 @@ export function ReadingHighlights({ root, book, chapter, state, failed, refresh 
         top: Math.max(8, Math.min(innerHeight - 44, target.rect.top > 48 ? target.rect.top - 42 : target.rect.bottom + 8)),
         left: Math.max(8, Math.min(innerWidth - 44, target.atStart ? target.rect.left - 8 : target.rect.right - 8)),
       }}>
-        <button ref={button} type="button" disabled={!state && !failed}
-          onPointerDown={(event) => event.preventDefault()} onClick={() => void apply()}
+        <button ref={button} type="button" disabled={!account}
+          onPointerDown={(event) => event.preventDefault()} onClick={apply}
           {...(target.remove ? uiLabel("移除高亮", "Remove highlight") : uiLabel("添加高亮", "Highlight text"))}>
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
             {target.remove ? <path d="M6 6l12 12M18 6 6 18" /> :
               <path d="m5 14 5 5m-6 1h7m7.5-16.5 2 2a1.5 1.5 0 0 1 0 2.1L12 16l-5 2 2-5 8.4-8.5a1.5 1.5 0 0 1 2.1 0Z" />}
           </svg>
         </button>
-        {(error || (failed && !state)) && <span role="status" className="reading-highlight-error">
-          <UiText zh="保存失败，点击重试" en="Could not save. Click to retry." />
-        </span>}
+      </div>
+    )}
+    {notice && (
+      <div className="reading-highlight-action" style={{ left: 12, bottom: 12 }}>
+        <span role="status" className="reading-highlight-error"
+          style={{ position: "static", inset: "auto", maxWidth: 260 }}>
+          <button type="button" onClick={noticeAction} style={{
+            width: "auto", height: "auto", padding: 0, border: 0, background: "transparent",
+            color: "inherit", font: "inherit", textAlign: "left",
+          }}>
+            {noticeText}
+          </button>
+        </span>
       </div>
     )}
   </>, document.body);

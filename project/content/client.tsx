@@ -44,9 +44,11 @@ export function useContent() {
 export function ProtectedContent({
   children,
   catalog,
+  recoverSessionInPage = false,
 }: {
   children: ReactNode;
   catalog: Catalog;
+  recoverSessionInPage?: boolean;
 }) {
   const path = usePathname();
   useEffect(() => {
@@ -56,6 +58,7 @@ export function ProtectedContent({
   }, [catalog]);
 
   useEffect(() => {
+    if (recoverSessionInPage) return;
     let active = true;
     const revalidate = async () => {
       if (document.visibilityState !== "visible") return;
@@ -73,7 +76,7 @@ export function ProtectedContent({
       active = false;
       document.removeEventListener("visibilitychange", revalidate);
     };
-  }, [path]);
+  }, [path, recoverSessionInPage]);
 
   return <Context.Provider value={catalog}>{children}</Context.Provider>;
 }
