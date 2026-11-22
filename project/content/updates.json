@@ -1,6 +1,33 @@
 [
   {
     "date": "2026-11-22",
+    "version": "1.11.9",
+    "features": [
+      {
+        "zh": "首页在进入知识库旁加入带下划线的创建账号入口。登录时放大并加粗注册链接，移除使用重置凭据的入口。",
+        "en": "Added an underlined account creation link beside the library button. The sign-in screens now give the registration link more emphasis and omit the reset credential link."
+      },
+      {
+        "zh": "首页深色模式用不同深度的炭灰区分区块。首屏拼图按容器宽度等比缩放，宽屏上可完整显示三张预览。",
+        "en": "The dark homepage uses distinct shades of charcoal for its sections. The opening collage scales with its container and keeps all three previews in frame on wide screens."
+      },
+      {
+        "zh": "代码审查后改进阅读进度和高亮的保存与重试，减少断网或离开页面时丢失改动的情况。",
+        "en": "Code review led to more reliable saving and retries for reading progress and highlights when leaving a page or losing connectivity."
+      },
+      {
+        "zh": "注销账号时匿名保留其他读者已回复的留言线程，防止同时审核覆盖投稿结果。管理员只改审核备注时，用户无需重新登录。",
+        "en": "Account deletion preserves anonymized guestbook threads with replies from other readers. Concurrent submission reviews can no longer overwrite each other, and editing a review note keeps the reader signed in."
+      },
+      {
+        "zh": "完善发布检查，确认生产环境部署的是本次提交、配套内容已就绪、数据库结构完整，并验证匿名访问书库会跳转到登录页。",
+        "en": "Release checks now verify the production commit, matching content, required database schema, and sign-in redirects for signed-out library visitors."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-22",
     "version": "1.11.8",
     "features": [
       {

@@ -1176,6 +1176,11 @@
   text-underline-offset: 3px;
 }
 
+.switch .createAccount {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
 .formError {
   margin: 0 0 18px;
   padding: 12px;

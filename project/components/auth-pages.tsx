@@ -322,21 +322,16 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "reset" }) {
           </form>
         )}
         <div className="auth-links">
-          <Link href={mode === "register" ? "/login/" : "/register/"}>
+          <Link href={mode === "register" ? "/login/" : "/register/"} className={mode === "login" ? "auth-create-account" : undefined}>
             <UiText
-              zh={mode === "register" ? "已有账号？登录" : "申请账号"}
+              zh={mode === "register" ? "已有账号？登录" : mode === "login" ? "创建账号" : "申请账号"}
               en={
                 mode === "register"
                   ? "Already registered? Sign in"
-                  : "Request an account"
+                  : mode === "login" ? "Create an account" : "Request an account"
               }
             />
           </Link>
-          {mode === "login" && (
-            <Link href="/reset-password/">
-              <UiText zh="使用重置凭据" en="Use a reset credential" />
-            </Link>
-          )}
         </div>
       </section>
     </div>

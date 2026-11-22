@@ -2912,6 +2912,7 @@ html[data-reading-view="translation"] .segmented__btn[data-view="translation"] {
 .auth-button:disabled, .admin-shell button:disabled { opacity:.5; cursor:wait; }
 .auth-links, .landing-actions, .admin-nav, .admin-actions { display:flex; flex-wrap:wrap; align-items:center; gap:18px; margin-top:22px; }
 .auth-links { justify-content:space-between; font-size:14px; }
+.auth-links .auth-create-account { color: var(--accent); font-size: 1rem; font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
 .form-error { color:#8c2626; background:#fff0ea; padding:12px 15px; border-radius:6px; overflow-wrap:anywhere; }
 .auth-result, .secret-result { background:#edf0e6; color:#263a2d; padding:18px; border-radius:8px; line-height:1.7; }
 .auth-status { padding-block:80px; }

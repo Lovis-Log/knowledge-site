@@ -467,6 +467,7 @@ export function AuthModal({
                 />{" "}
                 <button
                   type="button"
+                  className={mode === "login" ? styles.createAccount : undefined}
                   onClick={() => go(mode === "login" ? "register" : "login")}
                 >
                   <UiText
@@ -474,14 +475,6 @@ export function AuthModal({
                     en={mode === "login" ? "Create an account" : "Back to sign in"}
                   />
                 </button>
-                {mode === "login" && (
-                  <>
-                    <span aria-hidden="true"> · </span>
-                    <a href="/reset-password/">
-                      <UiText zh="使用重置凭据" en="Use a reset credential" />
-                    </a>
-                  </>
-                )}
               </div>
             </>
           )}

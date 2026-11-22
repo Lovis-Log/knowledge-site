@@ -5,6 +5,7 @@ export const landingCopy = {
   heroAccent: { zh: "梳理成清晰的理解。", en: "into clear understanding." },
   heroDescription: { zh: "收录理工科专业课程、AI前沿信息与个人精选内容。依逻辑梳理脉络，附原始来源出处；记录学习过程，留存思考印记。", en: "Notes on science and engineering courses, developments in AI, and personal selections. Organized to clarify the reasoning, with links to original sources; a record of learning and reflection." },
   enter: { zh: "进入知识库", en: "Enter the library" },
+  createAccount: { zh: "创建账号", en: "Create an account" },
   join: { zh: "申请访问", en: "Request access" },
   storyTitle: { zh: "从逐章细读，到融会贯通。", en: "From close reading to a connected understanding." },
   storyDescription: { zh: "依循目录由浅入深，逐步理解本质。", en: "Follow the outline from fundamentals to deeper ideas, building an understanding of the essentials." },

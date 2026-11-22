@@ -181,8 +181,12 @@ export function LandingPage() {
           <p className={styles.heroDescription} data-landing-entry style={{ animationDelay: "160ms" }}><UiText {...copy.heroDescription} /></p>
           <div className={styles.actions} data-landing-entry style={{ animationDelay: "220ms" }}>
             {entrance(styles.primary)}
+            {!signedIn && <Link href="/register/" prefetch={false} className={styles.registerLink} onNavigate={(event) => {
+              event.preventDefault();
+              openAuth("register", "/library/");
+            }}><UiText {...copy.createAccount} /></Link>}
           </div>
-          <noscript><p><a href="/login/"><UiText zh="登录" en="Sign in" /></a> · <a href="/register/"><UiText zh="创建账号" en="Create account" /></a></p></noscript>
+          <noscript><p><a href="/login/"><UiText zh="登录" en="Sign in" /></a></p></noscript>
         </div>
         <div className={styles.heroArt} aria-hidden="true">
           <div className={styles.heroStageNote}><UiText zh="阅读留下的痕迹，都在这里。" en="A few things worth coming back to." /></div>
@@ -206,31 +210,33 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section id="collections" className={`${styles.collection} ${styles.shell}`} aria-labelledby="collection-title">
-        <div className={styles.collectionHeading}><h2 id="collection-title"><UiText {...copy.collectionTitle} /></h2><p><UiText {...copy.collectionDescription} /></p></div>
-        <div className={styles.volumes}>
-          {landingVolumes.map((volume) => {
-            const label = uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`);
-            const card = (
-              <figure className={styles.volume} data-landing-reveal="pending" data-landing-volume>
-                <div className={styles.collectionWell}>
-                  <img src={volume.cover} width={528} height={704} loading="lazy" decoding="async" alt="" />
-                </div>
-                <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
-              </figure>
-            );
-            return <Link href={volume.href} className={styles.collectionCard} key={volume.href} {...label}
-              prefetch={signedIn ? undefined : false}
-              onClick={(event) => {
-                if (signedIn) return;
-                event.preventDefault();
-                openAuth("login", volume.href);
-              }}>
-              {card}
-            </Link>;
-          })}
+      <section id="collections" className={styles.collectionSection} aria-labelledby="collection-title">
+        <div className={`${styles.collection} ${styles.shell}`}>
+          <div className={styles.collectionHeading}><h2 id="collection-title"><UiText {...copy.collectionTitle} /></h2><p><UiText {...copy.collectionDescription} /></p></div>
+          <div className={styles.volumes}>
+            {landingVolumes.map((volume) => {
+              const label = uiLabel(`${volume.title.zh}笔记`, `${volume.title.en} notes`);
+              const card = (
+                <figure className={styles.volume} data-landing-reveal="pending" data-landing-volume>
+                  <div className={styles.collectionWell}>
+                    <img src={volume.cover} width={528} height={704} loading="lazy" decoding="async" alt="" />
+                  </div>
+                  <figcaption><div><h3><UiText {...volume.title} /></h3><p><UiText {...volume.description} /></p></div><Arrow /></figcaption>
+                </figure>
+              );
+              return <Link href={volume.href} className={styles.collectionCard} key={volume.href} {...label}
+                prefetch={signedIn ? undefined : false}
+                onClick={(event) => {
+                  if (signedIn) return;
+                  event.preventDefault();
+                  openAuth("login", volume.href);
+                }}>
+                {card}
+              </Link>;
+            })}
+          </div>
+          <button type="button" className={styles.collectionLink} onClick={openLibraryLogin}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></button>
         </div>
-        <button type="button" className={styles.collectionLink} onClick={openLibraryLogin}><UiText zh="查看全部藏书" en="View all collections" /><Arrow /></button>
       </section>
 
       <section id="reflection" className={styles.reflection} aria-labelledby="reflection-title">
