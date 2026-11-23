@@ -103,6 +103,8 @@ $$
 =\frac{2}{\pi}.
 $$
 
+> **补充说明**：第三步能去掉因子 $\sin\dfrac{\pi x}{2}$，是因为它趋于 $\sin\dfrac{\pi}{2}=1$，属于非零的极限因子，可以分离出来单独求极限。剩下的 $\dfrac{1-x}{\cos\frac{\pi x}{2}}$ 为 $\dfrac00$ 型，分母导数在 $x=1$ 附近不为零，满足洛必达法则的条件。
+
 ### (4) $\displaystyle\lim_{x\to1}\frac{x-x^x}{1-x+\ln x}$
 
 **思路**：代入 $x=1$ 得到 $0/0$ 型，可用 **洛必达法则**。难点在 $x^x$ 的求导：先写成 $e^{x\ln x}$，得到 $(x^x)'=x^x(1+\ln x)$。第一次求导后，把分子、分母同乘 $x$，将分母化为 $1-x$，再求导时就简单得多。
@@ -121,6 +123,14 @@ $$
 &=\frac{-2}{-1}=2.
 \end{aligned}
 $$
+
+> **补充说明**：第三步的分子是把上一式上下同乘 $x$ 得到的，$x\left[1-x^x(1+\ln x)\right]=x-x^{x+1}(1+\ln x)$。对 $x^{x+1}(1+\ln x)$ 用乘积法则时，先把 $x^{x+1}=e^{(x+1)\ln x}$ 求导得 $x^{x+1}\left(\ln x+1+\frac1x\right)$，于是
+>
+> $$
+> \left[x^{x+1}(1+\ln x)\right]'=x^{x+1}(1+\ln x)\left(1+\ln x+\frac1x\right)+x^{x},
+> $$
+>
+> 最后一项来自 $x^{x+1}\cdot\dfrac1x=x^x$。在 $x=1$ 处它等于 $2+1=3$，故分子导数为 $1-3=-2$，分母 $(1-x)'=-1$，商为 $2$。
 
 ### (5) $\displaystyle\lim_{x\to+\infty}\left(\frac{\pi}{2}-\arctan x\right)^{1/x}$
 

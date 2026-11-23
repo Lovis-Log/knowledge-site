@@ -31,12 +31,12 @@ $$
 
 （原答案写作“$\forall\varepsilon>0,\exists X>0$，s.t. 只要 $|x|>X$，就有 $|f(x)-A|<\varepsilon$”。）
 
-> 说明：此处 $x\to\infty$ 按 $|x|\to\infty$（双侧）理解；若题为 $x\to+\infty$，条件应改为 $x>X$。
+> **补充说明**：此处 $x\to\infty$ 按 $|x|\to\infty$（双侧）理解；若题为 $x\to+\infty$，条件应改为 $x>X$。
 
 ### 第 2 题　取整函数的间断点
 <!-- homework-topic: 取整函数的间断点 -->
 
-**原题**：设 $[x]$ 表示不超过 $x$ 的最大整数，则函数 $f(x)=[\sin x]$ 在 $(0,2\pi)$ 内的全体间断点为 ______，它们分别是 ______ 间断点、______ 间断点。
+**原题**：设 $[x]$ 表示不超过 $x$ 的最大整数，则函数 $f(x)=[\sin x]$ 在 $(0,2\pi)$ 内的全体间断点为 $\underline{\qquad}$，它们分别是 $\underline{\qquad}$ 间断点、$\underline{\qquad}$ 间断点。
 
 **教师答案**
 
@@ -46,26 +46,34 @@ $$
 
 其中 $x_1$ 为可去间断点，$x_2$ 为跳跃间断点。
 
-**补充解答**
-
-在 $(0,\pi)$ 上 $0<\sin x\le 1$，故 $[\sin x]=0$，惟在 $x=\dfrac{\pi}{2}$ 处 $\sin x=1$、$[\sin x]=1$；在 $(\pi,2\pi)$ 上 $-1<\sin x<0$，故 $[\sin x]=-1$。于是
-
-$$
-\lim_{x\to\frac{\pi}{2}}f(x)=0\ne f\left(\frac{\pi}{2}\right)=1,
-$$
-
-故 $x=\dfrac{\pi}{2}$ 是可去间断点；
-
-$$
-\lim_{x\to\pi^-}f(x)=0,\qquad \lim_{x\to\pi^+}f(x)=-1,
-$$
-
-故 $x=\pi$ 是跳跃间断点。其余各点处 $f$ 在去心邻域内取常值，连续，所以间断点恰为这两点。
+> **补充解答**
+>
+> 先分段求出 $[\sin x]$ 的取值。在 $\left(0,\dfrac{\pi}{2}\right)$ 与 $\left(\dfrac{\pi}{2},\pi\right)$ 上 $0<\sin x<1$，故 $[\sin x]=0$；在 $x=\dfrac{\pi}{2}$ 处 $\sin x=1$，故 $[\sin x]=1$；在 $(\pi,2\pi)$ 上 $-1\le\sin x<0$，故 $[\sin x]=-1$。
+>
+> 于是
+>
+> $$
+> \begin{aligned}
+> \lim_{x\to(\pi/2)^-}f(x)&=0,\\
+> \lim_{x\to(\pi/2)^+}f(x)&=0,\\
+> f\left(\frac{\pi}{2}\right)&=1.
+> \end{aligned}
+> $$
+>
+> 两侧极限相等，但不等于函数值，故 $x=\dfrac{\pi}{2}$ 是可去间断点。又
+>
+> $$
+> \lim_{x\to\pi^-}f(x)=0,\qquad \lim_{x\to\pi^+}f(x)=-1,
+> $$
+>
+> 左右极限都存在但不相等，故 $x=\pi$ 是跳跃间断点。按右极限减左极限计算，跃度为 $-1-0=-1$。
+>
+> 其余各点处 $f$ 在某个邻域内取常值，因而连续：$x\in\left(0,\dfrac{\pi}{2}\right)\cup\left(\dfrac{\pi}{2},\pi\right)$ 时 $f(x)\equiv0$，$x\in(\pi,2\pi)$ 时 $f(x)\equiv-1$。特别地 $x=\dfrac{3\pi}{2}$ 处 $\sin x=-1$，而它两侧的 $\sin x$ 都略大于 $-1$，取整仍为 $-1$，函数值不变，所以 $f$ 在该点连续。因此间断点恰为 $x=\dfrac{\pi}{2}$ 与 $x=\pi$ 两点。
 
 ### 第 3 题　参数曲线的二阶导数
 <!-- homework-topic: 参数曲线的二阶导数 -->
 
-**原题**：设 $x=a\cos t$，$y=b\sin t$，则 $\dfrac{d^2y}{dx^2}=$ ______。
+**原题**：设 $x=a\cos t$，$y=b\sin t$，则 $\dfrac{d^2y}{dx^2}=\underline{\qquad}$。
 
 **教师答案**
 
@@ -73,17 +81,19 @@ $$
 \frac{d^2y}{dx^2}=-\frac{b}{a^2\sin^3t}\qquad (a\ne0,\ \sin t\ne0).
 $$
 
-**补充解答**
-
-$$
-\frac{dy}{dx}=\frac{(b\sin t)'}{(a\cos t)'}=\frac{b\cos t}{-a\sin t}=-\frac{b}{a}\cot t,
-$$
-
-$$
-\frac{d^2y}{dx^2}=\frac{1}{-a\sin t}\cdot\frac{d}{dt}\left(-\frac{b}{a}\cot t\right)
-=\frac{1}{-a\sin t}\cdot\frac{b}{a\sin^2t}
-=-\frac{b}{a^2\sin^3t}.
-$$
+> **补充解答**
+>
+> $$
+> \frac{dy}{dx}=\frac{(b\sin t)'}{(a\cos t)'}=\frac{b\cos t}{-a\sin t}=-\frac{b}{a}\cot t,
+> $$
+>
+> $$
+> \frac{d^2y}{dx^2}=\frac{1}{-a\sin t}\cdot\frac{d}{dt}\left(-\frac{b}{a}\cot t\right)
+> =\frac{1}{-a\sin t}\cdot\frac{b}{a\sin^2t}
+> =-\frac{b}{a^2\sin^3t}.
+> $$
+>
+> 要对 $x$ 再求一次导，先对 $t$ 求导，再除以 $x'(t)=-a\sin t$。因此这一步要求 $a\sin t\ne0$。
 
 ### 第 4 题　平方根函数的三阶泰勒展开
 <!-- homework-topic: 平方根函数的三阶泰勒展开 -->
@@ -96,14 +106,14 @@ $$
 \sqrt{1+x}=1+\frac12x-\frac18x^2+\frac1{16}x^3+o(x^3),\qquad x\to0.
 $$
 
-**补充解答**
-
-由 $(1+x)^\alpha=\sum\limits_{k=0}^{n}\frac{\alpha(\alpha-1)\cdots(\alpha-k+1)}{k!}x^k+o(x^n)$ 取 $\alpha=\dfrac12$，前三项系数为
-
-$$
-\frac12,\qquad \frac{\frac12\left(-\frac12\right)}{2!}=-\frac18,\qquad
-\frac{\frac12\left(-\frac12\right)\left(-\frac32\right)}{3!}=\frac1{16}.
-$$
+> **补充解答**
+>
+> 由 $(1+x)^\alpha=\sum\limits_{k=0}^{n}\frac{\alpha(\alpha-1)\cdots(\alpha-k+1)}{k!}x^k+o(x^n)$ 取 $\alpha=\dfrac12$、$n=3$，前三项系数为
+>
+> $$
+> \frac12,\qquad \frac{\frac12\left(-\frac12\right)}{2!}=-\frac18,\qquad
+> \frac{\frac12\left(-\frac12\right)\left(-\frac32\right)}{3!}=\frac1{16}.
+> $$
 
 ### 第 5 题　三角和的 n 次方根极限
 <!-- homework-topic: 三角和的 n 次方根极限 -->
@@ -115,15 +125,35 @@ $$
 
 **教师答案**：$1$。
 
-**补充解答**
-
-记 $S_n=\sin^21+\sin^22+\cdots+\sin^2n$，则 $\sin^21\le S_n\le n$，于是
-
-$$
-1=\sqrt[n]{\sin^21}\ \le\ \sqrt[n]{S_n}\ \le\ \sqrt[n]{n}\ \longrightarrow\ 1\qquad(n\to\infty),
-$$
-
-由夹逼准则得极限为 $1$。
+> **补充解答**
+>
+> 记 $S_n=\sum\limits_{k=1}^{n}\sin^2k$。每项 $\sin^2k\le1$，且 $\sin1>0$，所以
+>
+> $$
+> 0<\sin^21\le S_n\le n .
+> $$
+>
+> 开 $n$ 次方根，得
+>
+> $$
+> \sqrt[n]{\sin^21}\le\sqrt[n]{S_n}\le\sqrt[n]{n}.
+> $$
+>
+> 两个界都趋于 $1$。对下界，$\ln(\sin^2 1)$ 是常数，所以
+>
+> $$
+> \sqrt[n]{\sin^2 1}
+> =\exp\left(\frac{\ln(\sin^2 1)}{n}\right)\longrightarrow1.
+> $$
+>
+> 对上界，用 $\ln n/n\to0$，有
+>
+> $$
+> \sqrt[n]{n}
+> =\exp\left(\frac{\ln n}{n}\right)\longrightarrow1.
+> $$
+>
+> 由夹逼准则，$\lim\limits_{n\to\infty}\sqrt[n]{S_n}=1$，即原极限为 $1$。
 
 ## 二、计算与证明
 
@@ -188,7 +218,7 @@ $$
 \end{aligned}
 $$
 
-给定 $\varepsilon>0$，取 $N=\lfloor1/\varepsilon\rfloor+1$。任意 $n>N$ 和 $p\ge1$ 都满足 $|x_{n+p}-x_n|<1/n<\varepsilon$，所以数列由 Cauchy 收敛准则收敛。
+给定 $\varepsilon>0$，取 $N=\left\lfloor1/\varepsilon\right\rfloor+1$。任意 $n>N$ 和 $p\ge1$ 都满足 $|x_{n+p}-x_n|<1/n<\varepsilon$，所以数列由 Cauchy 收敛准则收敛。
 
 > **易错点**：尾和分子从 $\cos(n+1)$ 开始。原答案印成了 $\cos1,\cos2,\ldots,\cos n$，这里按题干通项校正。
 
@@ -230,9 +260,9 @@ $$
 
 在 $a_{n+1}=\sin a_n$ 两边令 $n\to\infty$ 得 $a=\sin a$，所以 $a=0$，即 $\lim\limits_{n\to\infty}a_n=0$。
 
-**补充解答（补出“易见”的依据）**
-
-$a_1=\sin1\in(0,1]$，且 $a_{n+1}=\sin a_n\in(0,1]$，故 $0<a_n\le1$。又 $x>0$ 时 $\sin x<x$，所以 $a_{n+1}=\sin a_n<a_n$，即 $\{a_n\}$ 严格递减且有下界 $0$。极限 $a$ 满足 $a=\sin a$，在 $[0,1]$ 上该方程只有解 $a=0$。
+> **补充解答**（补出“易见”的依据）
+>
+> $a_1=\sin1\in(0,1]$，且 $a_{n+1}=\sin a_n\in(0,1]$，故 $0<a_n\le1$。又 $x>0$ 时 $\sin x<x$，所以 $a_{n+1}=\sin a_n<a_n$，即 $\{a_n\}$ 严格递减且有下界 $0$。极限 $a$ 满足 $a=\sin a$，在 $[0,1]$ 上该方程只有解 $a=0$。
 
 **（2）求缩放后的极限**
 
@@ -244,13 +274,10 @@ $$
 \begin{aligned}
 \lim_{n\to\infty}n a_n^2
 &=\lim_{n\to\infty}\frac{n}{1/a_n^2}\\
-&
-=\lim_{n\to\infty}\frac{(n+1)-n}{\frac1{a_{n+1}^2}-\frac1{a_n^2}}
-\\
+&=\lim_{n\to\infty}\frac{(n+1)-n}{\frac1{a_{n+1}^2}-\frac1{a_n^2}}\\
 &=\lim_{n\to\infty}\frac{a_n^2a_{n+1}^2}{a_n^2-a_{n+1}^2}\\
-&=\lim_{n\to\infty}\frac{a_n^2\sin^2a_n}{a_n^2-\sin^2a_n}
-=\lim_{t\to0}\frac{t^2\sin^2t}{t^2-\sin^2t}
-\\
+&=\lim_{n\to\infty}\frac{a_n^2\sin^2a_n}{a_n^2-\sin^2a_n}\\
+&=\lim_{t\to0}\frac{t^2\sin^2t}{t^2-\sin^2t}\\
 &=\lim_{t\to0}\frac{t^4}{(t+\sin t)(t-\sin t)}\\
 &=\frac12\lim_{t\to0}\frac{t^3}{t-\sin t}
 =\frac12\lim_{t\to0}\frac{3t^2}{1-\cos t}=3 .
@@ -263,8 +290,9 @@ $$
 \lim_{n\to\infty}\sqrt{n}\,a_n=\sqrt3 .
 $$
 
-**补充解答（补足被略去的条件与一步计算）**
-
-- Stolz 定理的条件：分母 $\dfrac1{a_n^2}$ 严格单调递增且趋于 $+\infty$，这由 $a_n\downarrow0$、$a_n>0$ 保证。
-- 第三步将 $t^2\sin^2t$ 换成 $t^4$、$t+\sin t$ 换成 $2t$，属乘除因子的等价无穷小替换；末步 $\lim\limits_{t\to0}\dfrac{3t^2}{1-\cos t}=6$（再用一次洛必达，或由 $1-\cos t\sim\dfrac{t^2}{2}$）。
-- 由 $n a_n^2\to3$ 且 $a_n>0$，得 $\sqrt{n}\,a_n=\sqrt{n a_n^2}\to\sqrt3$。
+> **补充解答**（补足被略去的条件与一步计算）
+>
+> - Stolz 定理的条件：分母 $\dfrac1{a_n^2}$ 严格单调递增且趋于 $+\infty$，这由 $a_n\downarrow0$、$a_n>0$ 保证。
+> - 第六步中 $t^2\sin^2t$ 换成 $t^4$、$t+\sin t$ 换成 $2t$，都是乘除因子的等价无穷小替换（$\sin t\sim t$），不改变极限。
+> - 末步 $\lim\limits_{t\to0}\dfrac{3t^2}{1-\cos t}=6$：由 $1-\cos t\sim\dfrac{t^2}{2}$ 即得；故 $\dfrac12\cdot6=3$。
+> - 由 $n a_n^2\to3$ 且 $a_n>0$，得 $\sqrt{n}\,a_n=\sqrt{n a_n^2}\to\sqrt3$。
