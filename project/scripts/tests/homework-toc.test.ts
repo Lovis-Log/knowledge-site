@@ -19,7 +19,7 @@ function stripTopics(markdown: string): string {
 test("math homework outlines show each topic at its original question anchor", () => {
   const book = getAllBooks().find((item) => item.slug === "campus-mathematical-analysis")!;
   const homework = book.chapters.filter((chapter) => chapter.group === "homework" && chapter.slug !== "31-classroom-quiz");
-  assert.equal(homework.length, 7);
+  assert.equal(homework.length, 8);
   for (const chapter of homework) {
     const body = chapter.versions.zh!.body;
     const originalIds = new Set(buildToc(body, "zh").map((item) => item.id));
@@ -33,6 +33,7 @@ test("math homework outlines show each topic at its original question anchor", (
   assert.equal(buildHomeworkToc(homework[1].versions.zh!.body, "zh").length, 5);
   assert.equal(buildHomeworkToc(homework[2].versions.zh!.body, "zh").length, 9);
   assert.equal(buildHomeworkToc(homework[6].versions.zh!.body, "zh").length, 15);
+  assert.equal(buildHomeworkToc(homework[7].versions.zh!.body, "zh").length, 7);
 
   const quiz = book.chapters.find((chapter) => chapter.slug === "31-classroom-quiz")!;
   assert.equal(quiz.group, "homework");

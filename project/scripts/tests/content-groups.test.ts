@@ -13,24 +13,26 @@ test("campus course keeps explicit course and homework groups with independent n
     book.groups?.map((group) => group.heading),
     ["课程目录", "作业目录"],
   );
-  assert.equal(book.chapters.length, 32);
+  assert.equal(book.chapters.length, 33);
 
   const courses = book.chapters.filter((chapter) => chapter.group === "course");
   const homework = book.chapters.filter((chapter) => chapter.group === "homework");
   assert.equal(courses.length, 24);
-  assert.equal(homework.length, 8);
+  assert.equal(homework.length, 9);
   assert.equal(courses[0].slug, "00-course-introduction");
   assert.equal(chapterNumberLabel(courses[0]), "00");
   assert.deepEqual(
     homework.map((chapter) => chapterNumberLabel(chapter)),
-    ["01", "02", "03", "04", "05", "06", "07", "测验"],
+    ["01", "02", "03", "04", "05", "06", "07", "测验", "08"],
   );
   // The file order stays stable in `number`, but homework never reads as chapter 24.
   assert.deepEqual(
     homework.map((chapter) => chapter.number),
-    [24, 25, 26, 27, 28, 29, 30, 31],
+    [24, 25, 26, 27, 28, 29, 30, 31, 32],
   );
-  assert.equal(homework.at(-1)?.slug, "31-classroom-quiz");
+  assert.equal(homework[7].slug, "31-classroom-quiz");
+  assert.equal(homework[8].slug, "32-homework-08");
+  assert.equal(chapterHeading(homework[8], book.groups), "作业 08");
   assert.equal(chapterHeading(homework[0], book.groups), "作业 01");
   assert.equal(chapterHeading(courses[1], book.groups), "课程 01");
   assert.equal(chapterPagerLabel(homework[0], book.groups), "作业 01");
