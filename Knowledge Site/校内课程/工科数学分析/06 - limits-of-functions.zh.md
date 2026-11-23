@@ -50,6 +50,8 @@ $$\lim_{x\to x_0}f(x)=A,\qquad\text{或}\qquad f(x)\to A\ (x\to x_0).$$
 
 如果不存在具有上述性质的实数 $A$，则称 $f(x)$ 在点 $x_0$ 的极限不存在。
 
+> **补充说明**：本讲先要求函数在整个去心邻域上有定义，取 $\delta$ 时可约束 $\delta\le\rho$。这样邻域内实际有点可取，极限的不等式才有约束力。更一般的定义只在 $D_f$ 中取点，此时要求 $x_0$ 是 $D_f$ 的聚点。条件 $0<|x-x_0|$ 则始终用于排除 $x_0$ 本身。
+
 把两个定义对照着看，区别只有两处。
 
 > **易混点**：第一，数列极限里 $n\to\infty$，数列在"$n=\infty$"处本来就没有定义，所以不必去心；函数极限在 $x_0$ 处可能是有定义的，但**极限与 $f(x_0)$ 无关**，所以必须去掉 $x_0$ 这一点。
@@ -85,6 +87,8 @@ $$\delta=\min\{\ln(1+\varepsilon),\,-\ln(1-\varepsilon)\}>0,$$
 当 $0<|x|<\delta$ 时上式成立，即 $|e^x-1|<\varepsilon$。故 $\lim\limits_{x\to0}e^x=1$。
 
 这里没有用放缩，而是直接把不等式解出来，得到"最精确的 $\delta$"。能这样做的场合不多，但它说明 $\delta$ 的取法本质上是解不等式。
+
+> **补充说明**：为什么先设 $0<\varepsilon<1$？因为 $\ln(1-\varepsilon)$ 只在 $\varepsilon<1$ 时有意义。当 $\varepsilon\ge1$ 时取 $\delta=\ln2$ 即可：$|x|<\ln2$ 时 $0<e^x<2$，从而 $|e^x-1|<1\le\varepsilon$。这种“小 $\varepsilon$ 单独处理、大 $\varepsilon$ 自动成立”的做法在 $\varepsilon$-$\delta$ 证明中很常见。
 
 **例 2** 设 $s(t)=t^3$，证明 $\lim\limits_{t\to1}\dfrac{s(t)-s(1)}{t-1}=3$。
 
@@ -139,6 +143,8 @@ $$g(x)<B+\varepsilon_0=\frac{A+B}{2}.$$
 这条推论说明：极限非零，则函数在 $x_0$ 附近与零保持正距离。它是处理商式极限时"分母不会趋于零"的依据。
 
 **推论 2** 若 $\lim\limits_{x\to x_0}f(x)=A$，$\lim\limits_{x\to x_0}g(x)=B$，且存在 $r>0$，使 $0<|x-x_0|<r$ 时 $g(x)\le f(x)$，则 $B\le A$。
+
+> **补充证明**（推论 2）：反设 $B>A$。把性质 2 用到 $g$ 与 $f$ 上——$\lim g=B$、$\lim f=A$ 且 $B>A$——得存在 $\delta>0$，当 $0<|x-x_0|<\delta$ 时 $g(x)>f(x)$。取 $\delta'=\min\{\delta,r\}$，在该去心邻域内既有 $g(x)\le f(x)$ 又有 $g(x)>f(x)$，矛盾。所以 $B\le A$。
 
 **推论 3（局部有界性）** 若 $\lim\limits_{x\to x_0}f(x)=A$，则存在 $\delta>0$，使 $f(x)$ 在 $O(x_0,\delta)\setminus\{x_0\}$ 中有界。
 
@@ -211,6 +217,8 @@ $$\lim_{x\to0}\frac{\sin\alpha x}{\sin\beta x}=\lim_{x\to0}\frac{\sin\alpha x}{x
 $$\lim_{n\to\infty}f(x_n)=A .$$
 
 这条定理把函数极限的问题翻译成数列极限的问题：想证明函数极限存在，只需对所有逼近 $x_0$ 的数列验证；想证明函数极限不存在，只需找出一个（或两个）捣乱的数列。它是双向的工具。
+
+> **补充说明**：条件 $x_n\ne x_0$ 不能去掉。若允许 $x_n\equiv x_0$，则 $f(x_n)=f(x_0)$ 是常数列，极限恒为 $f(x_0)$，与 $\lim_{x\to x_0}f(x)$ 毫无关系。例如 $f(x)=1\ (x\ne0)$、$f(0)=0$，在 $x=0$ 处极限为 $1$，但常数列 $x_n=0$ 给出 $f(x_n)=0$。所以“去心”这件事在数列版本里也必须显式写出。
 
 **必要性。** 由 $\lim\limits_{x\to x_0}f(x)=A$，任给 $\varepsilon>0$，存在 $\delta>0$，使 $0<|x-x_0|<\delta$ 时 $|f(x)-A|<\varepsilon$。因为 $x_n\to x_0$ 且 $x_n\ne x_0$，对这个 $\delta$ 存在 $N$，当 $n>N$ 时 $0<|x_n-x_0|<\delta$，于是 $|f(x_n)-A|<\varepsilon$。
 
@@ -343,6 +351,8 @@ $$\frac{x^2}{x-1}<\frac{1}{4(x-1)}<-\frac{1}{4\delta}\le-G .$$
 1. **局部保序性与夹逼性**：只当函数极限 $A$ 为有限数、$+\infty$ 或 $-\infty$ 时才成立。必须排除 $A$ 是未定号的无穷大 $\infty$，因为 $\infty$ 无法与其他量比较大小。
 2. **四则运算**：只要不出现待定型，如 $\infty-\infty$、$(+\infty)-(+\infty)$、$0\cdot\infty$、$\frac00$、$\frac\infty\infty$，法则是成立的。出现待定型就必须对具体问题具体分析。
 3. **Heine 定理**：每种过程都有相应的版本，叙述、证明方法与作用都类似。
+
+> **补充说明**：为什么必须排除未定号的 $\infty$？一方面“$A>B$”这句话对 $\infty$ 没有定义，无法与任何数比较大小；另一方面确实会出错。取 $f(x)=\frac1x$、$g(x)=1$，当 $x\to0$ 时 $|f(x)|\to\infty$，若硬把 $\infty$ 当成“大于 $1$”，就会断言 $0$ 附近恒有 $f>g$；但在左半邻域 $x<0$ 上 $f(x)<0<1=g(x)$，结论并不成立。
 
 **定理 2''（$x\to+\infty$ 的 Heine 定理）** $\lim\limits_{x\to+\infty}f(x)=A$ 的充要条件是：对任意满足 $\lim\limits_{n\to\infty}x_n=+\infty$ 的数列 $\{x_n\}$，有 $\lim\limits_{n\to\infty}f(x_n)=A$。
 

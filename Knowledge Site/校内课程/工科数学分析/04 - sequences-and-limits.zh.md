@@ -55,6 +55,8 @@ $$\lim_{n\to\infty}x_n=a,\qquad \text{或}\quad x_n\to a\ (n\to\infty).$$
 
 如果不存在这样的实数 $a$，就称 $\{x_n\}$ 发散。
 
+> **补充说明**：这段定义有三处可以替换而不改变含义：$n>N$ 换成 $n\ge N$（把 $N$ 加一即可）；$|x_n-a|<\varepsilon$ 换成 $\le\varepsilon$（把 $\varepsilon$ 换成 $\varepsilon/2$）；$\forall\varepsilon>0$ 换成 $\forall\varepsilon\in(0,1)$。但“存在 $N$”不能改成“存在无穷多个 $n$”，也不能把 $N$ 提到 $\varepsilon$ 前面——后者会变成“存在 $N$，对一切 $\varepsilon>0$ 都有 $|x_n-a|<\varepsilon$”，只有最终为常数的数列才满足。
+
 回到上面的例子，用定义验证 $x_n=0.\underbrace{33\cdots3}_{n}\to \frac13$：注意
 
 $$\left|x_n-\frac13\right| = \frac13\cdot \frac{1}{10^n} = \frac{1}{3\cdot 10^n}.$$
@@ -108,6 +110,8 @@ $$\left|x_n-\frac13\right|<\frac{5n}{9n^2}=\frac{5}{9n}.$$
 对任意 $\varepsilon>0$，取 $N=\max\left\{2,\left[\frac{5}{9\varepsilon}\right]+1\right\}$，则 $n>N$ 时 $\frac{5}{9n}<\varepsilon$，从而 $|x_n-\frac13|<\varepsilon$。证毕。
 
 这里放大的思路值得记住：分子用 $|10-5n|<5n$ 把常数项扔掉，分母只留最高次项并夸大（去掉正项使分母变小、整个分式变大），剩下 $\frac{5}{9n}$ 就能解出 $n$。
+
+> **补充说明**：这里的 $N$ 同时要保证 $n\ge3$（使分母的估计成立）和 $n>5/(9\varepsilon)$（使误差小于 $\varepsilon$）。因为条件写的是 $n>N$，取 $N=\max\{2,\lfloor5/(9\varepsilon)\rfloor\}$ 已经足够。
 
 **例 2** 设 $0<|q|<1$，证明 $\lim\limits_{n\to\infty}q^n=0$。
 
@@ -179,7 +183,9 @@ $$M=\max\{|x_1|,|x_2|,\cdots,|x_N|,|a|+1\},$$
 2. 若存在 $N$，使 $n>N$ 时 $x_n<y_n$，则 $a\le b$（注意得不出 $a<b$）；
 3. 若存在 $N$，使 $n>N$ 时 $x_n\le y_n$，则 $a\le b$。
 
-> **易错点**：第 2 条为什么只能得到 $\le$？取 $x_n=0$，$y_n=\frac1n$，处处有 $x_n<y_n$，但两个极限都等于 $0$。严格不等式在取极限后会"退化"成非严格不等式，这是最容易出错的地方。
+> **易错点**：第 2 条为什么只能得到 $\le$？取 $x_n=0$，$y_n=\frac1n$，处处有 $x_n<y_n$，但两个极限都等于 $0$。严格不等式在取极限后会“退化”成非严格不等式，这是最容易出错的地方。
+
+> **补充说明**：第 1 条的 $a<b$ 也不能放宽成 $a\le b$。取 $x_n=\frac{(-1)^n}{n}$，$y_n=0$，两者极限都为 $0$，但 $x_n$ 在偶数项为正，不存在 $N$ 使 $n>N$ 时恒有 $x_n<y_n$。要得到“某项之后严格不等”，两个极限之间必须留出正间隙。
 
 **性质 4（两边夹定理）** 设 $\lim\limits_{n\to\infty}x_n=\lim\limits_{n\to\infty}z_n=a$，且存在 $N_0$，使 $n>N_0$ 时 $x_n\le y_n\le z_n$，则 $\lim\limits_{n\to\infty}y_n=a$。
 
@@ -205,7 +211,7 @@ $$M=\sqrt[n]{M^n}\le\sqrt[n]{a_1^n+\cdots+a_k^n}\le\sqrt[n]{kM^n}=M\sqrt[n]{k}.$
 
 $$0<(n+1)^\alpha-n^\alpha=n^\alpha\left[\left(1+\frac1n\right)^\alpha-1\right].$$
 
-使用幂函数的 Bernoulli 不等式：$0<\alpha<1$ 时， $(1+t)^\alpha\le1+\alpha t\ (t\ge0)$，于是
+使用幂函数的凹性：$0<\alpha<1$ 时， $(1+t)^\alpha\le1+\alpha t\ (t\ge0)$，于是
 
 $$0<(n+1)^\alpha-n^\alpha\le n^\alpha\cdot\frac{\alpha}{n}=\alpha n^{\alpha-1}=\frac{\alpha}{n^{1-\alpha}}\to0 .$$
 
@@ -282,6 +288,8 @@ $$\frac{n}{n^2+n}\le\sum_{k=1}^{n}\frac{1}{n^2+k}\le\frac{n}{n^2+1}.$$
 $$a-\varepsilon<x_N\le x_n\le a,$$
 
 即 $|x_n-a|<\varepsilon$，故 $x_n\to a$。单调减少有下界的情形同理，极限是下确界。
+
+> **补充说明**：这里的 $N$ 来自上确界的第二条：$a-\varepsilon$ 不是上界，所以集合中必有一项 $x_N$ 超过它。因为数列单调增加，这一项之后的每一项都不小于 $x_N$，才得到 $a-\varepsilon<x_n\le a$。若没有单调性，$x_N$ 之后的项可能又掉下去，论证就断了——单调性正是用来把“某一项超过 $a-\varepsilon$”推广到“以后所有项”的。
 
 > **理解关键**：这个定理的分量在于：**它在极限值未知时就能断定极限存在**。用定义证明收敛必须事先知道极限是多少；用单调有界则先拿到"存在"，再用别的手段（往往是对递推式两边取极限）求值。后面定义 $e$ 和 $\pi$ 都靠这一点。
 
@@ -501,7 +509,9 @@ $$\lim_{n\to\infty}\frac{x_n-x_{n-1}}{y_n-y_{n-1}}=a\qquad(a\ \text{可为有限
 
 $$\lim_{n\to\infty}\frac{x_n}{y_n}=a .$$
 
-注意条件里 $\{y_n\}$ 必须是正无穷大量；只有"$y_n$ 单调增加"不够。
+注意条件里 $\{y_n\}$ 必须是正无穷大量；只有“$y_n$ 单调增加”不够。
+
+> **补充说明**：这个条件在证明的哪一步用？情形 1 中把 $\left|\frac{x_{N_1}}{y_n}\right|<\varepsilon$ 压下去，靠的正是 $y_n\to+\infty$；若 $y_n$ 只单调增加而有界，$x_{N_1}/y_n$ 不会自动变小，结论可能不成立。还要注意，定理只保证“差分比的极限存在时，原比的极限等于它”，不能反过来由原比推差分比。
 
 **证明** 分情形。
 

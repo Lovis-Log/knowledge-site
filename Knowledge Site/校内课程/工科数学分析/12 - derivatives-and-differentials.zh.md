@@ -166,8 +166,8 @@ $$30^\circ5'=\frac\pi6+0.0014544 .$$
 $$
 \begin{aligned}
 \sin 30^\circ5'&\approx\sin\frac\pi6+\cos\frac\pi6\cdot\delta\\
-&=0.5+\frac{\sqrt3}{2}\times0.0014544\\
-&=0.5+0.0012596=0.5012596 .
+&=0.5+\frac{\sqrt3}{2}\cdot\frac{\pi}{2160}\\
+&\approx 0.5+0.0012596=0.5012596 .
 \end{aligned}
 $$
 

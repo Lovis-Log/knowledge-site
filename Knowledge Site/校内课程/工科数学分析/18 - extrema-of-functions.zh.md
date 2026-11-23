@@ -427,9 +427,9 @@ $$
 
 水渠横截面的侧边和底边长度均为 $b$，问如何修建水渠，可使流量最大？
 
-**思路**：流量最大等价于横截面积最大。横截面是等腰梯形：底边长为 $b$，两腰长也为 $b$，腰与底边的夹角为 $\theta$。把面积写成 $\theta$ 的函数，再求最大值。
+**思路**：按题设用横截面积衡量流量。底边和两腰都长 $b$。设 $\theta$ 为腰与底边向外延长线的夹角，先由开口宽度求可行域，再把梯形面积写成 $\theta$ 的函数。
 
-**解**：设腰与底边的夹角为 $\theta\in\left[0,\dfrac{\pi}{2}\right]$。则梯形的高为
+**解**：梯形的高为
 
 $$
 b\sin\theta,
@@ -441,6 +441,8 @@ $$
 b+2b\cos\theta.
 $$
 
+> **补充说明**：要求高和上底均非负，所以可在 $\theta\in[0,2\pi/3]$ 上比较面积。$\theta=0$ 时高度为零，$\theta=\pi/2$ 时两腰竖直、截面为矩形，$\theta=2\pi/3$ 时上底为零、截面退化成三角形。排除退化端点仍得到同一个内部最大值点。
+
 所以横截面积
 
 $$
@@ -450,7 +452,7 @@ f(\theta)
 =
 b^2(1+\cos\theta)\sin\theta,
 \qquad
-\theta\in\left[0,\frac{\pi}{2}\right].
+\theta\in\left[0,\frac{2\pi}{3}\right].
 $$
 
 求导：
@@ -469,7 +471,7 @@ b^2(2\cos\theta-1)(\cos\theta+1).
 \end{aligned}
 $$
 
-在 $\left(0,\dfrac{\pi}{2}\right)$ 内，$\cos\theta+1>0$，所以 $f'(\theta)=0$ 等价于
+在 $\left(0,\dfrac{2\pi}{3}\right)$ 内，$\cos\theta+1>0$，所以 $f'(\theta)=0$ 等价于
 
 $$
 2\cos\theta-1=0,
@@ -479,7 +481,7 @@ $$
 \theta=\frac{\pi}{3}.
 $$
 
-当 $0<\theta<\dfrac{\pi}{3}$ 时，$\cos\theta>\dfrac12$，$f'(\theta)>0$；当 $\dfrac{\pi}{3}<\theta<\dfrac{\pi}{2}$ 时，$f'(\theta)<0$。所以 $\theta=\dfrac{\pi}{3}$ 是最大值点。最大面积为
+当 $0<\theta<\dfrac{\pi}{3}$ 时，$\cos\theta>\dfrac12$，$f'(\theta)>0$；当 $\dfrac{\pi}{3}<\theta<\dfrac{2\pi}{3}$ 时，$f'(\theta)<0$。所以 $\theta=\dfrac{\pi}{3}$ 是最大值点。最大面积为
 
 $$
 f\left(\frac{\pi}{3}\right)
@@ -489,32 +491,7 @@ b^2\left(1+\frac12\right)\cdot\frac{\sqrt3}{2}
 \frac{3\sqrt3}{4}b^2.
 $$
 
-因此，当水渠横截面的两腰向外倾斜，并与底边成 $\dfrac{\pi}{3}$ 角时，流量最大。
-
-> **补充说明**
->
-> 原件把 $\theta$ 写成 $[0,\pi]$，但梯形面积公式
->
-> $$
-> f(\theta)=b^2(1+\cos\theta)\sin\theta
-> $$
->
-> 要求上底 $b+2b\cos\theta\ge0$，即 $\theta\le\dfrac{2\pi}{3}$；超过这个范围，“上底”已经为负，图形不再是梯形。所以真正的可行域是 $\left[0,\dfrac{2\pi}{3}\right]$（$\theta=0$ 为矩形，$\theta=\dfrac{2\pi}{3}$ 退化为三角形）。
->
-> 本文取 $\left[0,\dfrac{\pi}{2}\right]$，是只考虑两腰向外倾斜的常见情形。这样做不影响最优点：在 $\left[\dfrac{\pi}{3},\dfrac{2\pi}{3}\right]$ 上 $\cos\theta\le\dfrac12$，故
->
-> $$
-> f'(\theta)=b^2(2\cos\theta-1)(\cos\theta+1)\le0,
-> $$
->
-> $f$ 单调下降；而
->
-> $$
-> f(0)=0,\qquad f\left(\frac{2\pi}{3}\right)=\frac{\sqrt3}{4}b^2
-> <\frac{3\sqrt3}{4}b^2=f\left(\frac{\pi}{3}\right).
-> $$
->
-> 所以最大值仍在 $\theta=\dfrac{\pi}{3}$，可行域取大或取小得到同一个答案。
+因此，当两腰向外张开，与底边向外延长线成 $\dfrac{\pi}{3}$ 角时，按此模型流量最大。
 
 ## 课堂小结
 

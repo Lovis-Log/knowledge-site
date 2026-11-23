@@ -1174,21 +1174,77 @@ I&=\int\frac{\cos x\,\mathrm{d}x}{\sin x(1+\sin x)}
 $$
 解法二明显更短。两种结果并不矛盾：由 $\sin x=\dfrac{2t}{1+t^2}$ 得 $\dfrac{\sin x}{1+\sin x}=\dfrac{2t}{(1+t)^2}$，与解法一的 $\dfrac{t}{(1+t)^2}$ 只差常数因子 $2$，即两组原函数相差常数 $\ln2$。不定积分相差常数是允许的。
 
+**例 9** 求下列五个不定积分。
+
 > **补充解答**
 >
-> 原件最后一页的例 9 是五道三角函数积分练习，下面列出结果，均可通过求导回验。
+> 对有分母的题目，在分母非零的每个区间上分别求原函数，积分常数 $C$ 可以随区间改变。
 >
-> (1) $\displaystyle\int\sin^4x\,\mathrm dx=\frac{3x}{8}-\frac{\sin2x}{4}+\frac{\sin4x}{32}+C$。
+> **（1）$\displaystyle\int\sin^4 x\,\mathrm dx$**
 >
-> (2) $\displaystyle\int\sin^3x\,\mathrm dx=-\cos x+\frac{\cos^3x}{3}+C$。
+> 偶数次幂用半角公式降幂。先把 $\sin^2 x$ 换成 $(1-\cos 2x)/2$，平方后再对 $\cos^2 2x$ 降幂，得到
 >
-> (3) $\displaystyle\int\frac{\sin^2x}{\cos^3x}\,\mathrm dx=\frac12\sec x\tan x-\frac12\ln|\sec x+\tan x|+C$。
+> $$
+> \sin^4x=\frac38-\frac12\cos 2x+\frac18\cos 4x.
+> $$
 >
-> (4) $\displaystyle\int\frac{\sin x\cos x}{\sin x+\cos x}\,\mathrm dx=\frac{\sin x-\cos x}{2}-\frac{1}{2\sqrt2}\ln\left|\tan\left(\frac x2+\frac\pi8\right)\right|+C$。
+> 逐项积分，得 $\dfrac{3x}{8}-\dfrac{\sin 2x}{4}+\dfrac{\sin 4x}{32}+C$。
 >
-> (5) $\displaystyle\int\frac{\mathrm dx}{\sin^3x\cos^5x}=-\frac{1}{2\tan^2x}+3\ln|\tan x|+\frac32\tan^2x+\frac14\tan^4x+C$。
+> **（2）$\displaystyle\int\sin^3 x\,\mathrm dx$**
 >
-> 其中 (3) 先把被积函数写成 $\sec^3x-\sec x$；(4) 利用 $\sin x\cos x=\frac12[(\sin x+\cos x)^2-1]$ 拆项；(5) 令 $t=\tan x$，被积函数化为 $t^{-3}+3t^{-1}+3t+t^3$。
+> 奇数次幂留出一个 $\sin x\,\mathrm dx$。令 $u=\cos x$，则 $\mathrm du=-\sin x\,\mathrm dx$，其余的 $\sin^2 x$ 换成 $1-u^2$。于是
+>
+> $$
+> \int\sin^3x\,\mathrm dx
+> =-\int(1-u^2)\,\mathrm du
+> =-\cos x+\frac{\cos^3x}{3}+C.
+> $$
+>
+> **（3）$\displaystyle\int\frac{\sin^2 x}{\cos^3 x}\,\mathrm dx$**
+>
+> 分子用 $\sin^2x=1-\cos^2x$，被积函数变成 $\sec^3x-\sec x$。记 $J=\int\sec^3x\,\mathrm dx$。把 $\sec^2 x\,\mathrm dx$ 凑成 $\mathrm d(\tan x)$ 后分部积分：
+>
+> $$
+> J=\sec x\tan x-\int\sec x\tan^2 x\,\mathrm dx.
+> $$
+>
+> 再用 $\tan^2x=\sec^2x-1$，得到 $2J=\sec x\tan x+\int\sec x\,\mathrm dx$（等式两边的积分常数最后一并计入）。所以
+>
+> $$
+> \int\frac{\sin^2 x}{\cos^3 x}\,\mathrm dx
+> =\frac{\sec x\tan x}{2}
+> -\frac12\ln|\sec x+\tan x|+C.
+> $$
+>
+> **（4）$\displaystyle\int\frac{\sin x\cos x}{\sin x+\cos x}\,\mathrm dx$**
+>
+> 分母是 $\sin x+\cos x$，所以把分子写成 $\tfrac12[(\sin x+\cos x)^2-1]$。积分拆成 $\tfrac12\int(\sin x+\cos x)\,\mathrm dx$ 和 $-\tfrac12\int(\sin x+\cos x)^{-1}\,\mathrm dx$。第二项用
+>
+> $$
+> \sin x+\cos x=\sqrt2\sin\left(x+\frac\pi4\right).
+> $$
+>
+> 令 $u=x+\pi/4$，由 $(\ln|\tan(u/2)|)'=1/\sin u$ 得
+>
+> $$
+> \frac{\sin x-\cos x}{2}
+> -\frac{1}{2\sqrt2}\ln\left|\tan\left(\frac x2+\frac\pi8\right)\right|+C.
+> $$
+>
+> **（5）$\displaystyle\int\frac{\mathrm dx}{\sin^3 x\cos^5 x}$**
+>
+> 取 $t=\tan x$。先写 $\sin^3x\cos^5x=t^3\cos^8x$，再将 $\cos^{-2}x=1+t^2$ 和 $\mathrm dx=\mathrm dt/(1+t^2)$ 代入：
+>
+> $$
+> \begin{aligned}
+> \int\frac{\mathrm dx}{\sin^3 x\cos^5 x}
+> &=\int\frac{(1+t^2)^3}{t^3}\,\mathrm dt\\
+> &=\int(t^{-3}+3t^{-1}+3t+t^3)\,\mathrm dt\\
+> &=-\frac1{2t^2}+3\ln|t|+\frac32t^2+\frac14t^4+C.
+> \end{aligned}
+> $$
+>
+> 最后将 $t$ 换回 $\tan x$。
 
 ## 课堂小结
 
