@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-23",
+    "version": "1.11.10",
+    "features": [],
+    "content": [
+      {
+        "title": "工科数学分析 · 精修 32 篇课程与作业笔记，补全关键推导，修正课堂测验的填空与极限解析 / Engineering Mathematical Analysis · Revised 32 lecture and homework notes, filled in missing derivation steps, and corrected the quiz blanks and limit solution",
+        "href": "/books/campus-mathematical-analysis/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "工科数学分析 · 第 8 次作业，含第三章总习题 28 题和不定积分 27 小题的解析 / Engineering Mathematical Analysis · Homework 8 with worked solutions to 28 Chapter 3 review problems and 27 indefinite integrals",
+        "href": "/books/campus-mathematical-analysis/32-homework-08/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-22",
     "version": "1.11.9",
     "features": [

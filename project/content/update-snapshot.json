@@ -201,127 +201,127 @@
   },
   "campus-mathematical-analysis/00-course-introduction": {
     "title": "课程介绍",
-    "hash": "4a4adb3141db019f0cb5f5627706e502a654a92d09318c44d675e88e03be253f"
+    "hash": "bce8e8069456b80c95de1b91ee3ddf4edbdb269033fd14d8da02cafda9a9c52b"
   },
   "campus-mathematical-analysis/01-sets-and-real-numbers": {
     "title": "集合与实数集",
-    "hash": "a5ef53ea62ec1af22fa4d59337918d4b473f1c2c9d59617ca30abe9310ce5a6a"
+    "hash": "bedbbd712041f6aa993307c2f3bf0635a65131e5502651c4940119c390def742"
   },
   "campus-mathematical-analysis/02-mappings-and-functions": {
     "title": "映射与函数",
-    "hash": "a37671b56518eefdcfa9febdcfa88d59887c6c77165aa74845c67fc56fb11089"
+    "hash": "d5ec8cceca703dbba283b6e905873984edaac7775a9f6faf0d8aae2a9b8f0574"
   },
   "campus-mathematical-analysis/03-function-properties-and-elementary-functions": {
     "title": "函数的几种特性与初等函数",
-    "hash": "090954f6e8d6aaced1d4bce7cda76f2a64bbf487a363dae11dc33f2df4c0ea2f"
+    "hash": "5d81cddf309074a5aa3e5a7603bc4a61a18d43ee64af1eefde199d461da45eaf"
   },
   "campus-mathematical-analysis/04-sequences-and-limits": {
     "title": "数列与数列极限",
-    "hash": "c1ac0dc00f614b993b56c118376b3f35edec4211e0c766f2fb27fe037ce9cd85"
+    "hash": "2da78efc38963db8d5533af43b503cdf1b9bc7c14e061e17b6005cf26fdb1ea7"
   },
   "campus-mathematical-analysis/05-completeness-of-real-numbers": {
     "title": "实数基本定理",
-    "hash": "3262d0c2e098a4d0ffd9d3ed4a3853f9d3df29da75a2737e295b513897adcdb4"
+    "hash": "d546e876a7a5b7f891b52bf8591b7a4397cf4dd3e676a752d38198cb0772fcb8"
   },
   "campus-mathematical-analysis/06-limits-of-functions": {
     "title": "函数极限",
-    "hash": "a707980c5d0d2f57f82d009b04b5c1d26a9b752e1b4697a657073b0666e4b220"
+    "hash": "288ecd0d0aed90a12d86eeb1de43a01dfbc1661349932f9b99d19e7c48c028aa"
   },
   "campus-mathematical-analysis/07-continuity-and-discontinuity": {
     "title": "连续与间断",
-    "hash": "1bbcbc91a16b5ba7dbe2ab305d7a83bbde0023c88337248ee5cb7a4c8b406a35"
+    "hash": "1bdf24bd335afeedc137068494401fc89d88b5aa6f807cd44a2ea6eccba3063a"
   },
   "campus-mathematical-analysis/08-properties-of-continuous-functions-on-closed-intervals": {
     "title": "闭区间上连续函数的性质",
-    "hash": "85c264398d41aed62f6922c082823082e618b4f1116661c60e5c60cef7cb8148"
+    "hash": "4c83dcf9cdd1eec8b4efb56f900d2166fb0684aa3b6f7f58d79c36f52da66e2d"
   },
   "campus-mathematical-analysis/09-orders-of-infinitesimals": {
     "title": "无穷小量与无穷大量的阶",
-    "hash": "63cd591de84914092b7746b9d952dc9961227165e60a653fc38cb71d0fd38d12"
+    "hash": "1973bb8b05009a9838d5cd91a175899dccf78723af713c89967c7ae8c76922fe"
   },
   "campus-mathematical-analysis/10-chapter-2-review": {
     "title": "第二章 极限与连续复习",
-    "hash": "b4f0a3f59c4de493e01e40d6fff18e292dfcbcf05acd149e2ef159bdfe602dae"
+    "hash": "ccd3aedb0b0f1b4db7c05c57258748daa3a9fcc79efd74a206949bb0e713879e"
   },
   "campus-mathematical-analysis/11-derivatives-and-differentiation-rules": {
     "title": "导数概念与求导法则",
-    "hash": "ea93f2669206dd9e9a4890c711d7869c73d23b9ae0d432c7bf5ae7ad2ea63aad"
+    "hash": "eab80d888993fe32dbea82d68157ea3a0599ae48ed3a803f9c77396ec796a1d6"
   },
   "campus-mathematical-analysis/12-derivatives-and-differentials": {
     "title": "导数和微分",
-    "hash": "366b89811d7b54a4cc149ab5e4fb5c5512438d9fa71925edcb37acccce2e90b0"
+    "hash": "eb6ed5b814931c1d9d06efba1b7356e585a35a4579676f2c7e6f706bd9934744"
   },
   "campus-mathematical-analysis/13-implicit-and-parametric-differentiation": {
     "title": "隐函数的导数和参数式求导",
-    "hash": "2241f45d6e5c5a3ce21137b89d89a7dd19707071b48beed1cf571931cd62e3d1"
+    "hash": "468dba1ef3a810e167a42c3be7efa00c12d9c1fc3ff2aaeabb25241b0d10f89b"
   },
   "campus-mathematical-analysis/14-higher-order-derivatives-and-differentials": {
     "title": "高阶导数和高阶微分",
-    "hash": "0dda64f92fb4ea539a26add8b3f638c5be22a8a1633b2aba146ae3f9b427c3c1"
+    "hash": "bdd3c9ee43c7ab617ad03c40c5a6d671dd0e8dd31bd6aa594f2bfffe3f72c3f0"
   },
   "campus-mathematical-analysis/15-mean-value-theorems-and-lhopital": {
     "title": "微分中值定理与洛必达法则",
-    "hash": "6881ae2918bd891829df5a874e0e6146be23455c173cc91afb11bfbe60c0b928"
+    "hash": "68b2fdaff4bf4374b7eb5291071ecac4ea429ad5912b071bb32ad4a3634854d4"
   },
   "campus-mathematical-analysis/16-taylor-theorem-with-peano-remainder": {
     "title": "带佩亚诺余项的泰勒定理",
-    "hash": "2003b1d7af34fd69ef9a4f1bd334480d6e667b11e6cdf8f4c4d4b8c70360b590"
+    "hash": "f9d40bca612adbd5f2396faa88da0a8f00126fe741190f97a9d99f99eb5727a0"
   },
   "campus-mathematical-analysis/17-taylor-theorem-with-lagrange-remainder": {
     "title": "带拉格朗日余项的泰勒定理",
-    "hash": "0b8b8d527122c64f3d84fd1777eb5b47e7804a65cc9d7a934c08e3c4bf4ea90b"
+    "hash": "69b7410167c403f8f0c57f05ffb74ff66f0b9e37bfbc0b6da3b66aa02f0326d7"
   },
   "campus-mathematical-analysis/18-extrema-of-functions": {
     "title": "函数的极值和最值",
-    "hash": "da121c8e5d82393c7ba712da38320ce2e7ae5daa94e214ec10cacfdc24bfa38c"
+    "hash": "c435f365ea9d8fbc766bdf2a59b8bc0c5a6feca2b458b34b600b2bbe408a0fcc"
   },
   "campus-mathematical-analysis/19-convexity-of-functions": {
     "title": "函数的凸性",
-    "hash": "d53c997a07b5b49c2e3a7617616a9f79287e1ccef9a59fb7f353cd7386ac9c38"
+    "hash": "690d13fdd970edabbddef6831b75f8352ff3354eac09a3fc541f83767ff5152a"
   },
   "campus-mathematical-analysis/20-graphing-functions": {
     "title": "函数作图",
-    "hash": "b217503c93a3bcdd223c21f90644aeec340b649f785e191cf9ac580b7f40cea2"
+    "hash": "fb7e33b14e2f9a8bfa772faadfc42667edae3609e6fc78f4ee86fb7e17f5404f"
   },
   "campus-mathematical-analysis/21-optimization-models": {
     "title": "最优化问题数学模型",
-    "hash": "acbedb6718c92fb72f0488f1e57e601c75cb6619dce78d22377068f9a446078b"
+    "hash": "6741c7cb13ffffeebfca5ba8ea32b2f28a2bf3935dc288cef8c4ba5a1bff657e"
   },
   "campus-mathematical-analysis/22-newton-iteration": {
     "title": "牛顿迭代法",
-    "hash": "336a8e46e4a183cd4578e27cb38d89686d18c014b286f0bb2dcf6e4edec3d8aa"
+    "hash": "6ba4d35f551664d32567bcba438cd2613f818685bd6f15314e658af873768d71"
   },
   "campus-mathematical-analysis/23-indefinite-integrals": {
     "title": "不定积分",
-    "hash": "1a8fd545dc9f18755b804bc11d05d5464e87c541bfc708c49085ba3743677a9b"
+    "hash": "bf202b3495eb7694675dc68e05cff508f84c9b07a47c2024e43d34fb6837acd6"
   },
   "campus-mathematical-analysis/24-homework-01": {
     "title": "第 1 次作业（确界、函数性质与双射）",
-    "hash": "f1bed217e9ae9d28015defcb153ae0c6f7f39251caa8a937c16acde5b3d0a1ce"
+    "hash": "32756d62e807ecf3b86b0e2cab7ae75a1edf06572f24d8a7d079b0b249609fdd"
   },
   "campus-mathematical-analysis/25-homework-02": {
     "title": "第 2 次作业（极限定义、夹逼与 e）",
-    "hash": "d216848addff66914ac53fff5f43895c7f6ff08176caf818e6f5df223330adcd"
+    "hash": "cd4db5120dcce5388128a30dccfd455a09100b939e7d3c1f10876a48de5a1b85"
   },
   "campus-mathematical-analysis/26-homework-03": {
     "title": "第 3 次作业（数列收敛与函数极限）",
-    "hash": "cbf8754ef183e3fae6269cb97c7aaafabb2a6863d46c11ba6be3777e316a0c21"
+    "hash": "2bae2fd6fd9a5c659d0e9ecf696d6222a6fe8705f9a92f033095f0004dbf5fb8"
   },
   "campus-mathematical-analysis/27-homework-04": {
     "title": "第 4 次作业（极限、连续与一致连续）",
-    "hash": "47569a376137aa54069ae7de408309f87b78bd4cc598a110ed0b162f4d799342"
+    "hash": "96d603fbc00e7ef35b7c70009d8f8fce0ace21fc030955828597b3947c06131e"
   },
   "campus-mathematical-analysis/28-homework-05": {
     "title": "第 5 次作业（导数、微分与相关变化率）",
-    "hash": "6a0a341b51e406c11d9f12bdfc6b131c8bb4db1431b80bfc55de1d5b94e36911"
+    "hash": "1ae0d03dd78321a403b49c012b9f4be30d49eee9176c0ec208f3fe5b611223d2"
   },
   "campus-mathematical-analysis/29-homework-06": {
     "title": "第 6 次作业（洛必达法则与中值定理）",
-    "hash": "46429dba0643e8876b31b851bc633907e8f0969331ff63142950b43954539b32"
+    "hash": "305addef8741f6945926572ba4dfbe7f34d1ca9ede919352b67e49f5c9cd9000"
   },
   "campus-mathematical-analysis/30-homework-07": {
     "title": "第 7 次作业（泰勒公式与不等式证明）",
-    "hash": "e749f0ba3c15c3a8e6dc1120fd41c45c8cae634d4e481f586474c8ad8b366a5e"
+    "hash": "ae5e995975581ca06fef4fced1e670804f5194c06f5165d4a8cc0b2a6a578931"
   },
   "3b1b-essence-of-calculus/01-essence-of-calculus": {
     "title": "微积分的本质：从一个圆出发",
@@ -1413,6 +1413,10 @@
   },
   "campus-mathematical-analysis/31-classroom-quiz": {
     "title": "课堂测验（极限、连续与微分）",
-    "hash": "355ef12fa17317a844aafe2ae0b00826c68b24acad6c15fdba5b8b4e3c8b76f9"
+    "hash": "b9aefee46ee37d2942b8134b80037d9b4317c22672c38be5c753356b85cdf4a5"
+  },
+  "campus-mathematical-analysis/32-homework-08": {
+    "title": "第 8 次作业（第三章总习题与不定积分）",
+    "hash": "fdd89f39efd54f58f9c93db42b8b577b283c6cefd799faa57844f0069fcf3cbb"
   }
 }
