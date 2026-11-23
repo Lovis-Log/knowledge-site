@@ -718,6 +718,18 @@ I_n=\frac{2n-3}{2a^2(n-1)}I_{n-1}
 $$
 这是分部积分导出递推公式的典型例子：幂次降一阶，反复使用可降到 $I_1$。
 
+> **补充说明**
+>
+> 例 18 的关键是把分子 $1$ 写成 $\dfrac{(x^2+a^2)-x^2}{a^2}$。这样第一项直接给出 $I_{n-1}$，第二项含 $x^2$，正好可以取 $u=x$、$\mathrm dv=\dfrac{x\,\mathrm dx}{(x^2+a^2)^n}$ 做分部积分：$v$ 容易求出，而 $\mathrm du=\mathrm dx$ 使幂次不再升高。若把 $1$ 拆成别的形式，或者对 $I_n$ 直接分部，通常得不到 $I_{n-1}$ 与 $I_n$ 的闭合关系。
+>
+> 做完后可用 $n=2$ 回验：
+>
+> $$
+> I_2=\frac{1}{2a^2}I_1+\frac{x}{2a^2(x^2+a^2)}.
+> $$
+>
+> 对右端求导，应得到 $\dfrac{1}{(x^2+a^2)^2}$；这一步同时也检查了系数 $\dfrac{2n-3}{2a^2(n-1)}$ 没有写错。
+
 **例 19** 求 $\displaystyle\int(x+1)\sqrt{x^2-2x+5}\,\mathrm{d}x$。
 
 **解法一（换元）** 配方得 $x^2-2x+5=(x-1)^2+4$。令 $x-1=2\tan t$，则 $\mathrm{d}x=2\sec^2t\,\mathrm{d}t$，$\sqrt{x^2-2x+5}=2\sec t$，且 $x+1=2(1+\tan t)$。于是
@@ -1077,6 +1089,17 @@ $$
 \end{aligned}
 $$
 
+> **补充解答**
+>
+> 例 6 的代换不是凭空想出来的。被积函数是 $(x-1)^{-2/3}(x+1)^{-4/3}$，两个因式的指数分母都是 $3$，而 $(x+1)$ 的指数 $-4/3$ 比 $-1$ 还小，说明它“多出来”一个平方因子。把 $(x+1)^{-4/3}$ 拆成 $(x+1)^{-2}\cdot(x+1)^{2/3}$，就得到
+>
+> $$
+> \frac{1}{\sqrt[3]{(x-1)^2(x+1)^4}}
+> =\frac{1}{(x+1)^2}\sqrt[3]{\frac{(x+1)^2}{(x-1)^2}} .
+> $$
+>
+> 剩下的立方根只含比值 $\dfrac{x+1}{x-1}$，于是令 $t=\sqrt[3]{\dfrac{x+1}{x-1}}$，根号整体变成 $t^2$，$x$ 也可以从中解出。判断这类题的关键不是背公式，而是先把各因式的指数凑成同一个分母，再看哪一个因子能提成整幂：提出整幂后，根号里只剩一个比值，代换就自然了。
+
 ### 可化为有理函数：三角函数
 
 形如 $\displaystyle\int R(\sin x,\cos x)\,\mathrm{d}x$ 的积分，可用万能公式
@@ -1150,6 +1173,22 @@ I&=\int\frac{\cos x\,\mathrm{d}x}{\sin x(1+\sin x)}
 
 $$
 解法二明显更短。两种结果并不矛盾：由 $\sin x=\dfrac{2t}{1+t^2}$ 得 $\dfrac{\sin x}{1+\sin x}=\dfrac{2t}{(1+t)^2}$，与解法一的 $\dfrac{t}{(1+t)^2}$ 只差常数因子 $2$，即两组原函数相差常数 $\ln2$。不定积分相差常数是允许的。
+
+> **补充解答**
+>
+> 原件最后一页的例 9 是五道三角函数积分练习，下面列出结果，均可通过求导回验。
+>
+> (1) $\displaystyle\int\sin^4x\,\mathrm dx=\frac{3x}{8}-\frac{\sin2x}{4}+\frac{\sin4x}{32}+C$。
+>
+> (2) $\displaystyle\int\sin^3x\,\mathrm dx=-\cos x+\frac{\cos^3x}{3}+C$。
+>
+> (3) $\displaystyle\int\frac{\sin^2x}{\cos^3x}\,\mathrm dx=\frac12\sec x\tan x-\frac12\ln|\sec x+\tan x|+C$。
+>
+> (4) $\displaystyle\int\frac{\sin x\cos x}{\sin x+\cos x}\,\mathrm dx=\frac{\sin x-\cos x}{2}-\frac{1}{2\sqrt2}\ln\left|\tan\left(\frac x2+\frac\pi8\right)\right|+C$。
+>
+> (5) $\displaystyle\int\frac{\mathrm dx}{\sin^3x\cos^5x}=-\frac{1}{2\tan^2x}+3\ln|\tan x|+\frac32\tan^2x+\frac14\tan^4x+C$。
+>
+> 其中 (3) 先把被积函数写成 $\sec^3x-\sec x$；(4) 利用 $\sin x\cos x=\frac12[(\sin x+\cos x)^2-1]$ 拆项；(5) 令 $t=\tan x$，被积函数化为 $t^{-3}+3t^{-1}+3t+t^3$。
 
 ## 课堂小结
 

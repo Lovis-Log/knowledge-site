@@ -118,6 +118,31 @@ $$\mathrm dy=f'(x_0)\,\mathrm dx,\qquad f'(x_0)=\frac{\mathrm dy}{\mathrm dx}.$$
 
 导数因此也称为**微商**：它是两个微分之比。这个写法在后面处理反函数、参数方程、隐函数时特别方便，因为 $\mathrm dy$ 与 $\mathrm dx$ 可以像普通的量一样参与运算。
 
+> **补充说明**
+>
+> 同一个增量不能有两个不同的线性主部。设
+>
+> $$
+> \Delta y=g_1(x_0)\Delta x+o(\Delta x),\qquad
+> \Delta y=g_2(x_0)\Delta x+o(\Delta x).
+> $$
+>
+> 两式相减得
+>
+> $$
+> \bigl(g_1(x_0)-g_2(x_0)\bigr)\Delta x=o(\Delta x)\qquad(\Delta x\to0).
+> $$
+>
+> 两边除以 $\Delta x$ 再令 $\Delta x\to0$，左边趋于 $g_1(x_0)-g_2(x_0)$，右边趋于 $0$，故 $g_1(x_0)=g_2(x_0)$。所以微分定义中的线性系数由函数本身唯一决定，记作 $f'(x_0)$ 不会产生歧义。
+>
+> 这也说明 $\Delta y$ 与 $\mathrm dy$ 的差别。以 $y=x^2$ 为例，
+>
+> $$
+> \Delta y=2x\,\Delta x+(\Delta x)^2,\qquad \mathrm dy=2x\,\mathrm dx,
+> $$
+>
+> 线性主部是 $\mathrm dy$，余项 $(\Delta x)^2$ 是比 $\Delta x$ 高阶的无穷小；$\Delta x$ 并不小时，二者可以差很多。
+
 ## 线性近似与切线
 
 把微分的定义移项，得到
@@ -142,7 +167,7 @@ $$
 \begin{aligned}
 \sin 30^\circ5'&\approx\sin\frac\pi6+\cos\frac\pi6\cdot\delta\\
 &=0.5+\frac{\sqrt3}{2}\times0.0014544\\
-&=0.5+0.0012594=0.5012594 .
+&=0.5+0.0012596=0.5012596 .
 \end{aligned}
 $$
 

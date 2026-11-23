@@ -491,6 +491,31 @@ $$
 
 因此，当水渠横截面的两腰向外倾斜，并与底边成 $\dfrac{\pi}{3}$ 角时，流量最大。
 
+> **补充说明**
+>
+> 原件把 $\theta$ 写成 $[0,\pi]$，但梯形面积公式
+>
+> $$
+> f(\theta)=b^2(1+\cos\theta)\sin\theta
+> $$
+>
+> 要求上底 $b+2b\cos\theta\ge0$，即 $\theta\le\dfrac{2\pi}{3}$；超过这个范围，“上底”已经为负，图形不再是梯形。所以真正的可行域是 $\left[0,\dfrac{2\pi}{3}\right]$（$\theta=0$ 为矩形，$\theta=\dfrac{2\pi}{3}$ 退化为三角形）。
+>
+> 本文取 $\left[0,\dfrac{\pi}{2}\right]$，是只考虑两腰向外倾斜的常见情形。这样做不影响最优点：在 $\left[\dfrac{\pi}{3},\dfrac{2\pi}{3}\right]$ 上 $\cos\theta\le\dfrac12$，故
+>
+> $$
+> f'(\theta)=b^2(2\cos\theta-1)(\cos\theta+1)\le0,
+> $$
+>
+> $f$ 单调下降；而
+>
+> $$
+> f(0)=0,\qquad f\left(\frac{2\pi}{3}\right)=\frac{\sqrt3}{4}b^2
+> <\frac{3\sqrt3}{4}b^2=f\left(\frac{\pi}{3}\right).
+> $$
+>
+> 所以最大值仍在 $\theta=\dfrac{\pi}{3}$，可行域取大或取小得到同一个答案。
+
 ## 课堂小结
 
 - **单调性**：$f'\ge0$（$\le0$）对应单调增加（减少）；$f'>0$ 对应严格单调增加。除有限个点外 $f'>0$，仍可推出严格单调增加。
