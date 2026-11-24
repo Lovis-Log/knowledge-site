@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-24",
+    "version": "1.11.11",
+    "features": [],
+    "content": [
+      {
+        "title": "C++程序设计教程 · 精修 6 章课件与 59 道已有 OJ 题，修正知识点和例题，新增浅底题面、难题解析与补充解法 / C++ Programming · Revised six lecture chapters and 59 existing exercises, with corrections, shaded problem statements, and explanations and alternative solutions for difficult problems",
+        "href": "/books/campus-cpp-programming/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "C++程序设计教程 · 新增第 5 次作业补充的 6 道题与解析 / C++ Programming · Added six problems and solutions from the fifth homework supplement",
+        "href": "/books/campus-cpp-programming/14-oj-homework-05-supplement/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-23",
     "version": "1.11.10",
     "features": [],

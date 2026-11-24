@@ -11,6 +11,11 @@ test("supplemental proof labels reuse the campus blockquote chrome", () => {
   assert.equal(noteEmphasis("易错点"), "key");
 });
 
+test("a standalone problem label gets the filled campus blockquote", () => {
+  assert.equal(noteEmphasis("题目"), "key");
+  assert.equal(noteEmphasis("题目解析"), undefined);
+});
+
 test("ordinary labels stay ordinary quotes", () => {
   assert.equal(noteEmphasis("证明"), undefined);
   assert.equal(noteEmphasis("补充证明与说明"), undefined);

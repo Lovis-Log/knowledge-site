@@ -59,7 +59,7 @@
   margin-bottom: 0;
 }
 
-/* Reserve the reference's warm fill for explicitly labelled takeaways/pitfalls. */
+/* Use the warm fill for labelled problems, takeaways, and pitfalls. */
 [data-reading-preset="campus-notes"] .prose blockquote[data-note-emphasis="key"] {
   padding: 14px 20px;
   border-left: 3px solid var(--gold);

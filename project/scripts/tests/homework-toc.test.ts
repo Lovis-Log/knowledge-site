@@ -77,9 +77,9 @@ test("ordinary course outlines retain their detailed headings", () => {
 test("C++ OJ outlines retain all lettered questions and their anchors", () => {
   const book = getAllBooks().find((item) => item.slug === "campus-cpp-programming")!;
   const homework = book.chapters.filter((chapter) => chapter.group === "homework");
-  assert.equal(homework.length, 8);
+  assert.equal(homework.length, 9);
 
-  const counts = [6, 8, 6, 7, 6, 10, 10, 6];
+  const counts = [6, 8, 6, 7, 6, 10, 10, 6, 6];
   const chapterAnchors = new Map<string, Set<string>>();
   for (const [index, chapter] of homework.entries()) {
     const body = chapter.versions.zh!.body;
@@ -90,10 +90,13 @@ test("C++ OJ outlines retain all lettered questions and their anchors", () => {
     const ids = items.map((item) => item.id);
     assert.deepEqual(ids, letters.map((letter) => "zh-" + letter.toLowerCase()));
     chapterAnchors.set(chapter.slug, new Set(ids));
-    assert.deepEqual(chapter.sources, []);
+    assert.equal(chapter.sources.length, 1);
+    assert.match(chapter.sources[0].url, /^https:\/\/drive\.google\.com\/drive\/folders\/[\w-]+$/);
     const questions = body.split(/^## [A-Z]\r?$/m).slice(1);
     assert.equal(questions.length, letters.length, chapter.slug);
     for (const [questionIndex, question] of questions.entries()) {
+      assert.match(question, /^> \*\*题目\*\*　\*\*.+\*\*\r?\n>\r?\n> \S/m, chapter.slug);
+      assert.match(question, /\]\(https:\/\/drive\.google\.com\/file\/d\/[\w-]+\/view(?:\?[^)]*)?\)/, chapter.slug);
       assert.match(
         question,
         /\*\*原始代码\*\*\s*\x60{3}cpp\r?\n[\s\S]*?\bmain\s*\([\s\S]*?\x60{3}/,

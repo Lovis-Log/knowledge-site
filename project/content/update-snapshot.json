@@ -1,23 +1,23 @@
 {
   "campus-cpp-programming/01-computer-fundamentals": {
     "title": "计算机基础",
-    "hash": "4dcbecfe6871376cc97ab11d4eb97df5f41c5565b585c2429ddc076f7796dccc"
+    "hash": "97955305280a2c0be81b24431b316f700360aec9e2b5a6e6e7976de6b7e1c6d7"
   },
   "campus-cpp-programming/02-basic-syntax": {
     "title": "基本语法",
-    "hash": "dddc1c4ad069c7f72739c451f7c1ebae94fc23c959dd018f8f6f87c8dffcbae5"
+    "hash": "11cc01acba0e052b10a6bf37808de46d1f1cb8fc2f37dad51650f8d48e4469f0"
   },
   "campus-cpp-programming/03-control-flow": {
     "title": "流程控制",
-    "hash": "52cb168a6a6da91627f338221b627332f3eb07f3a43b1999b7467863f201b93f"
+    "hash": "7f1ca7e1b9cb720f37de47005ec06fcc15c038a70e1156a18157757288db43ac"
   },
   "campus-cpp-programming/04-functions": {
     "title": "函数",
-    "hash": "516f388293e19ac9fa18c9eee85bfe31e752b619f10576684288efb9c07eaf8a"
+    "hash": "f9b4c2b4d0b986c9f17ec8857c6354116db4534f8d5b5047811ad2c93a0ed7ef"
   },
   "campus-cpp-programming/05-pointers": {
     "title": "指针",
-    "hash": "cfcaddd8033d521288b431bede5f987ecf0572f9f36c64bd3ef75d22a76fbc85"
+    "hash": "e91b9ca8696c60b7684cbfa4a3bade53aa2d52100a0b4465e6b048566ca277a6"
   },
   "campus-engineering-drawing/01-drawing-fundamentals": {
     "title": "制图基本知识",
@@ -1373,39 +1373,39 @@
   },
   "campus-cpp-programming/06-bitwise-operations-and-structures": {
     "title": "位运算与结构",
-    "hash": "9123bb1bcf998121ce7508666826e5256ca98d96337d999f5909a7ef3a21cec4"
+    "hash": "ac61732ecbef40ee5e0bf93dd784fd010eb12611df524518ea03805b85755b31"
   },
   "campus-cpp-programming/06-oj-homework-01": {
     "title": "第一次作业（字符输出、基本运算与拆位）",
-    "hash": "a4dc2cdd04e0da42ab779e54581e1f5441ae2edd3c09303c411570e2df78451f"
+    "hash": "2abd121975a9d5db6e4712d8670db62236f79844d6e0dd35eb004d796c2e6605"
   },
   "campus-cpp-programming/07-oj-lab-01": {
     "title": "第一次线下实验（条件分支、分类与计费）",
-    "hash": "6125fd5495bf98e55bc01feb028702583788751ae2dff2a6df3aa2f25bfcb0be"
+    "hash": "c29369bf6d9066523b39e588ee4edd1d277f13eeb69ce0b182919b7084f6ced6"
   },
   "campus-cpp-programming/08-oj-homework-03-supplement": {
     "title": "第 3 次作业补充（日期、字符与过程模拟）",
-    "hash": "22bb310ee290a3663637498d2cd6f3c9bf6c66861daf525b9a636ce5b1894a6e"
+    "hash": "359bb5342ab2cf40d12fb2383f2eef9f8e517a4d2bdd285139021cd7ff9b6f3c"
   },
   "campus-cpp-programming/09-oj-homework-04-supplement": {
     "title": "第四次作业补充（数位计数、递推与搜索）",
-    "hash": "73816c0cdbf230f032bf5c683b11a81165d5c979839d011914437e841ccf3bf3"
+    "hash": "cdda0a9232fc1ceb2a3323031bc507fa5e820c3e2f430aca9c3328d679856e68"
   },
   "campus-cpp-programming/10-oj-practice-02": {
     "title": "第二次 OJ 练习（分段函数与条件判断）",
-    "hash": "4823da19ea21944d6d82e75b4bc4f7d2d83752e8b091694dea0e459a3522b423"
+    "hash": "ef3352022138e79845e9a0f9883140534078b7596a66792772d7cf8f1b282f4a"
   },
   "campus-cpp-programming/11-oj-homework-03": {
     "title": "第三次作业（函数、递推与搜索）",
-    "hash": "a0015ac74b19f268043c7e29933dd2ab57090a249570aab0b4181d3b2a101f24"
+    "hash": "ccab9c4d4c86f74face281858699cd216254d897ef0b11317ce9dc45b3e51ed8"
   },
   "campus-cpp-programming/12-oj-homework-05": {
     "title": "第五次作业（数组、动态存储与矩阵）",
-    "hash": "8ef71adffb8648221110cf60421a37f00d831704b57b2a3eb93be3473f4fe723"
+    "hash": "12b0e585dea58bc03826d0b816a0a06fd35a7970b50707c3c97cc074638c15f1"
   },
   "campus-cpp-programming/13-oj-midterm-review": {
     "title": "期中考试复盘（日期、数位与素数）",
-    "hash": "cdb5990a80b1a8f7a2929799dd61d19700cd6d670c5ff1ae1fd471b4558ffe0a"
+    "hash": "ca73eea7b481b56564f228bd49618a99769b6fe67ee7a393b2a5e1dc99a3cb31"
   },
   "campus-linear-algebra-analytic-geometry/homework-08": {
     "title": "第 8 次作业（特征值与相似对角化）",
@@ -1418,5 +1418,9 @@
   "campus-mathematical-analysis/32-homework-08": {
     "title": "第 8 次作业（第三章总习题与不定积分）",
     "hash": "fdd89f39efd54f58f9c93db42b8b577b283c6cefd799faa57844f0069fcf3cbb"
+  },
+  "campus-cpp-programming/14-oj-homework-05-supplement": {
+    "title": "第五次作业补充（字符串、模拟与前后缀）",
+    "hash": "c6e5f25a3b10abce4f75265ca3a381c4e12bb4261acfcae145921b623c1b7196"
   }
 }

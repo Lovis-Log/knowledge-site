@@ -1,10 +1,10 @@
 /**
- * Editorial labels share one blockquote chrome. Key takeaways keep the warm
- * card treatment; supplemental proofs get a distinct vertical rule instead.
+ * Problem statements and key takeaways use the warm card treatment.
+ * Supplemental proofs use a vertical rule.
  */
 export type NoteEmphasis = "key" | "proof";
 
-const KEY_LABELS = /^(关键结论|理解关键|注意|易错点|易混点)$/;
+const KEY_LABELS = /^(题目|关键结论|理解关键|注意|易错点|易混点)$/;
 
 export function noteEmphasis(label: string): NoteEmphasis | undefined {
   const value = label.trim();
