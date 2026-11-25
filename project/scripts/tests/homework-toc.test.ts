@@ -45,7 +45,7 @@ test("math homework outlines show each topic at its original question anchor", (
 test("linear algebra homework outlines keep the original numbering and include topics", () => {
   const book = getAllBooks().find((item) => item.slug === "campus-linear-algebra-analytic-geometry")!;
   const homework = book.chapters.filter((chapter) => chapter.group === "homework");
-  assert.equal(homework.length, 8);
+  assert.equal(homework.length, 9);
   const labels: string[][] = [];
   for (const chapter of homework) {
     const body = chapter.versions.zh!.body;
@@ -61,6 +61,7 @@ test("linear algebra homework outlines keep the original numbering and include t
   assert.deepEqual(labels[2], ["题目 1（5）", "题目 3（1）", "题目 4", "题目 6", "题目 9", "题目 11", "题目 14（1）", "题目 20"]);
   assert.deepEqual(labels[4].slice(5, 7), ["题目 27（1）", "题目 27（3）"]);
   assert.deepEqual(labels[7], ["题目 1（2）", "题目 1（4）", "题目 2（1）", "题目 3", "题目 5", "题目 10", "题目 11"]);
+  assert.deepEqual(labels[8], ["题目 14（1）", "题目 14（3）", "题目 15", "题目 17", "题目 19", "题目 21（1）", "题目 21（2）", "题目 23"]);
   for (const chapterLabels of labels) {
     assert.equal(new Set(chapterLabels).size, chapterLabels.length, "question labels stay unique");
   }
