@@ -167,7 +167,7 @@ B_{t1} & \cdots & B_{tl}
 \end{pmatrix}.
 $$
 
-**关键条件**：$A$ 的列的分法与 $B$ 的行的分法相同，即 $A_{i1},A_{i2},\dots,A_{it}$ 的列数分别等于 $B_{1j},B_{2j},\dots,B_{tj}$ 的行数（这样每个 $A_{ik}B_{kj}$ 才有意义）。此时
+**关键条件**：$A$ 的列分法与 $B$ 的行分法必须相同，即对每个 $k=1,\dots,t$，$A_{ik}$ 的列数等于 $B_{kj}$ 的行数（这样每个 $A_{ik}B_{kj}$ 才有意义）。此时
 
 $$
 AB=\begin{pmatrix}
@@ -179,10 +179,10 @@ C_{s1} & \cdots & C_{sl}
 C_{ij}=\sum_{k=1}^{t}A_{ik}B_{kj}.
 $$
 
-若 $A_{ik}$ 是 $m_i\times p_k$ 矩阵、$B_{kj}$ 是 $p_k\times n_j$ 矩阵，则
+若 $A_{ik}$ 是 $m_i\times n_k$ 矩阵、$B_{kj}$ 是 $n_k\times p_j$ 矩阵，则
 
 $$
-m_1+\cdots+m_s=m,\quad p_1+\cdots+p_t=p,\quad n_1+\cdots+n_l=n.
+m_1+\cdots+m_s=m,\quad n_1+\cdots+n_t=n,\quad p_1+\cdots+p_l=p.
 $$
 
 形式上就是把子块当元素做"行乘列"，只是元素的乘法是矩阵乘法、加法是矩阵加法，因此**子块的次序不能交换**。
@@ -285,7 +285,7 @@ B_{21}=\begin{pmatrix}1 & 0\\-1 & -1\end{pmatrix},\quad
 B_{22}=\begin{pmatrix}4 & 1\\2 & 0\end{pmatrix}.
 $$
 
-**为什么这样分块**：$A$ 的左上块是单位矩阵、左下块是任意块、右下块是单位矩阵，这种"单位块 + 单侧块"的结构在乘法中会把结果化简成 $B$ 的若干块直接搬运，只需算两个 $2\times 2$ 的块乘积。按分块乘法，
+**理解关键：为什么这样分块**：$A$ 的左上块是单位矩阵、左下块是任意块、右下块是单位矩阵，这种"单位块 + 单侧块"的结构在乘法中会把结果化简成 $B$ 的若干块直接搬运，只需算两个 $2\times 2$ 的块乘积。按分块乘法，
 
 $$
 AB=\begin{pmatrix}E & O\\ A_1 & E\end{pmatrix}
