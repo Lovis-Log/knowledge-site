@@ -1,5 +1,22 @@
 [
   {
+    "date": "2026-11-25",
+    "version": "1.11.12",
+    "features": [],
+    "content": [
+      {
+        "title": "线性代数与解析几何 · 精修 35 篇课堂笔记与作业，补充克拉默法则、基变换和半正定判据的证明与解释，修正题面和计算 / Linear Algebra and Analytic Geometry · Revised 35 lecture and homework notes, expanded proofs and explanations for Cramer’s rule, changes of basis, and positive semidefiniteness, and corrected problem statements and calculations",
+        "href": "/books/campus-linear-algebra-analytic-geometry/",
+        "kind": "修订 / Revised"
+      },
+      {
+        "title": "线性代数与解析几何 · 新增第 9 次作业的 6 道原题与解析，涵盖正交对角化、幂等矩阵与特征值 / Linear Algebra and Analytic Geometry · Added six worked problems from homework 9 on orthogonal diagonalization, idempotent matrices, and eigenvalues",
+        "href": "/books/campus-linear-algebra-analytic-geometry/homework-09/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-24",
     "version": "1.11.11",
     "features": [],

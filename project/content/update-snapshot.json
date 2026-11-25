@@ -45,139 +45,147 @@
   },
   "campus-linear-algebra-analytic-geometry/1-1-2-determinants-and-permutations": {
     "title": "1.1-1.2 二、三阶行列式、排列及其逆序数和对换",
-    "hash": "4323da7aa991df46e171ab509d9d8f98f08877813982ca960b5c3f5bc3a1559a"
+    "hash": "27078959ca83754d98b6cb0568a2626da79d4ba42987126915fcf8cb751df3dd"
   },
   "campus-linear-algebra-analytic-geometry/1-3-definition-of-nth-order-determinant": {
     "title": "1.3 n阶行列式的定义",
-    "hash": "31f5671f4b0c888abac2b7e0f1e7f7d958ddaada6efd2a6fee20239e608a4dcd"
+    "hash": "2f8271cbca26444c8d919fb8c64a44d5f15f4630750d204babb9d5c746d1547b"
   },
   "campus-linear-algebra-analytic-geometry/1-4-properties-and-computation-of-determinants": {
     "title": "1.4 n阶行列式的性质及计算",
-    "hash": "2a090fcb625792d1692789fdc140af3fa2052aa57cfa1457337fe05d60a68027"
+    "hash": "d93f8454aeaa4b210b43d376682a1b99c80b963ba705e3bb15058a55fce95aa6"
   },
   "campus-linear-algebra-analytic-geometry/1-5-cofactor-expansion-and-cramers-rule": {
     "title": "1.5 行列式按一行展开及克拉默法则",
-    "hash": "821ec89a89684fff3d2166eaecbf7fc4407663798dc8777393435ecc6ef646bb"
+    "hash": "741cb2f96fe688f497849ccab7eabce19c9a4abc6a9e6b5e7d53a773a641abab"
   },
   "campus-linear-algebra-analytic-geometry/2-1-matrices-and-operations": {
     "title": "2.1 矩阵与矩阵的运算",
-    "hash": "5e0c394516427b968b4f2d9f0f7f8c56577ab202c2867f39805cefbe5233aedb"
+    "hash": "dcaab1381a9fdf5d7d5c6976cd10ec919877f8976a8436acb07eb80495ccee68"
   },
   "campus-linear-algebra-analytic-geometry/2-2-block-matrices": {
     "title": "2.2 矩阵的分块",
-    "hash": "1ded4a62d69d3b05a1c3703857423e90255cc16e8b1aaf53d592cc1c75a98e44"
+    "hash": "953213dd2d9638daa7435b18f9770ff401c583f682dcf867be0b0f757b5e2129"
   },
   "campus-linear-algebra-analytic-geometry/2-3-rank-of-a-matrix": {
     "title": "2.3 矩阵的秩",
-    "hash": "fbbc3a643b1e24bc10fe83653a0d7580bf48a62203957d982bbbdc9b89751427"
+    "hash": "fa6dfee4503b38e70f0a98ef30956ad35539ff1e85dee87ff573bf4f5a826841"
   },
   "campus-linear-algebra-analytic-geometry/2-4-inverse-of-a-matrix": {
     "title": "2.4 矩阵的逆",
-    "hash": "7bec446b9f790a62b1ff621f2c3021f80090d2479ebdd14058d89db1b99f1703"
+    "hash": "3aa480f74d60fc9881f1e5d9fcb2fa732ca347c6f23d2d8e43bd1ffa8ad0e62b"
   },
   "campus-linear-algebra-analytic-geometry/2-5-elementary-matrices": {
     "title": "2.5 初等矩阵",
-    "hash": "63cbdd0c6c26b36fdfe400b47c0499caafb4f599269297819110d08c35e49634"
+    "hash": "d8cad4e1b8908e9960e8dcaf89666a1c56acd1d184db1440e8d16148d44ed49f"
   },
   "campus-linear-algebra-analytic-geometry/3-1-space-rectangular-coordinates": {
     "title": "3.1 空间直角坐标系",
-    "hash": "1a52573904d010b2baf7bab90943d036142b811b82ae7334ef63e39c87fd32c7"
+    "hash": "55a6b26261414fddb97203b6d53b2d9b2ef1671989ecd29f465eb255a65ede57"
   },
   "campus-linear-algebra-analytic-geometry/3-2-dot-cross-and-mixed-products": {
     "title": "3.2 向量的内积、外积及混合积",
-    "hash": "c8a86ff6ca97a2c2c923d210059e926e7cbccd4b916b815f442c6ad1699b8538"
+    "hash": "0b04340e306c41deb14c40055e79004a1d0c5b03ad41e90ed119bd26dc3d69c0"
   },
   "campus-linear-algebra-analytic-geometry/3-3-planes-in-space": {
     "title": "3.3 空间平面及其方程",
-    "hash": "b9a929c8bd7ae9b9767ded490ca27465653e573992318dc69cdd8e573fda3894"
+    "hash": "f602c141e8063c32bd06a673d5a52a74a06b5e32797c7df844cd18490c31078d"
   },
   "campus-linear-algebra-analytic-geometry/3-4-lines-in-space": {
     "title": "3.4 空间直线及其方程",
-    "hash": "80407473def3c7601d9ed5dc7162a848813022c68b8841de7b3333d3b847f8c1"
+    "hash": "348569e7ca537568564ce4262cea37790bd9c322bcdafdee1d6fdd2eb618b5fc"
   },
   "campus-linear-algebra-analytic-geometry/4-1-elimination-method": {
     "title": "4.1 消元法",
-    "hash": "6768e972ae7498e04e2742d502fd3a39faf83a70767213284bb8410150832eb8"
+    "hash": "1c33afc9e2731293469cf544729617864441e1b9706414eb2de58cae9683c6e1"
   },
   "campus-linear-algebra-analytic-geometry/4-2-n-dimensional-vectors": {
     "title": "4.2 n维向量",
-    "hash": "915944ad202aafc80cf27b1d911fb848dabfd23a6c664b9ba1c821ea2f56b756"
+    "hash": "574e64de5740c94bf1e1a46504a5aecfaed7cf217c815e3283ce0995e82e0a78"
   },
   "campus-linear-algebra-analytic-geometry/4-3-linear-dependence-of-vector-sets": {
     "title": "4.3 向量组的线性相关性",
-    "hash": "a398876b2bbe384903ef35802960cd71d1d0d9b6fa236ac54827344184370037"
+    "hash": "51286eb73e4fc8f7046f0e4a173db3785de71f819c2a719045a38d3f73016889"
   },
   "campus-linear-algebra-analytic-geometry/4-4-bases-and-coordinates": {
     "title": "4.4 Rⁿ的基、向量在基下的坐标",
-    "hash": "d04d73659a9b2d50b4dc3ff3ee9c610156ebf733ac3247266f070d000ab25f01"
+    "hash": "ca1d6272b54f45b7c455b2e75f5fc9a4ed94352a2fabf28a09819af1c6bf3972"
   },
   "campus-linear-algebra-analytic-geometry/4-5-rank-of-a-vector-set": {
     "title": "4.5 向量组的秩",
-    "hash": "3ed06ddd06790deb406768dbc0012cb9b65cd33e8751e3c03bb977cfac5fc112"
+    "hash": "fdd8389a2834367b162fe6f1c1ba974e415cd9f745cddf9c88f65251fc4694db"
   },
   "campus-linear-algebra-analytic-geometry/4-6-structure-of-solution-sets": {
     "title": "4.6 线性方程组解的结构",
-    "hash": "734dba06197a30093379092ceefd21a3d4a9abf3cd83de80372e41cefcde63d0"
+    "hash": "e00f70c37a70ccb04ddfe98c2d2528b61e3b7d0281c1112f1f1c90355116ec9f"
   },
   "campus-linear-algebra-analytic-geometry/5-1-eigenvalues-and-eigenvectors": {
     "title": "5.1 矩阵特征值与特征向量",
-    "hash": "51f21f58039c1666b8208abf8e08c998af8435eab7a63b8c85508d1b3cf70912"
+    "hash": "107430cfcc108c515bc6c5be06b928538c6bb2fb61190524b144dde2a45aee7f"
   },
   "campus-linear-algebra-analytic-geometry/5-2-similar-matrices-and-diagonalization": {
     "title": "5.2 相似矩阵及矩阵可对角化的条件",
-    "hash": "0bbe586fde28a5fa97c0e8618f2f2e90feecf43564efed8c76d6c6b8d19987e7"
+    "hash": "276298b06028c9e7602779161cb5d70a0c5b1c7d31fc62329671e700c419b2cb"
   },
   "campus-linear-algebra-analytic-geometry/5-3-diagonalization-of-real-symmetric-matrices": {
     "title": "5.3 实对称矩阵的对角化",
-    "hash": "3c5ebe4691e30602b2e6674e99e3c83167144b4409bc035aa6e9c651fe5c1bf5"
+    "hash": "93c752c76f9eaf0ddf6cf410910945030cfc6eefc06bf8d23193b513ed80a79d"
   },
   "campus-linear-algebra-analytic-geometry/6-1-quadratic-forms-and-standard-forms": {
     "title": "6.1 二次型及其标准形",
-    "hash": "10a40e56eff8740e1a76d43c0966cf74944205cecda151d601323d7fdb6c0915"
+    "hash": "9fd0fa7178f5356d35bf653e80be8f3f62089d217cae2330808de47c17c55db2"
   },
   "campus-linear-algebra-analytic-geometry/6-2-positive-definite-quadratic-forms": {
     "title": "6.2 正定实二次型",
-    "hash": "cb3ae74cd6276b11a7bce4fa6fa6ec51bb7cce36ac969ab179707df2da3eec30"
+    "hash": "b8f6820de1c4ddbfd55f64f4e695f161f3889d0d08572d1f87432d46ae69d1de"
   },
   "campus-linear-algebra-analytic-geometry/6-3-surfaces-and-their-equations": {
     "title": "6.3 曲面及其方程",
-    "hash": "c5765f8d0c1e6359ff0008011d8428d405985a47c0468727c1c38396c956f266"
+    "hash": "9f562f3cf6e59ee326ca788baec31395b551950ef20d2e6007f52483d827d782"
   },
   "campus-linear-algebra-analytic-geometry/6-4-quadric-surfaces": {
     "title": "6.4 二次曲面",
-    "hash": "3d0f2b61bb16be01c06bf6b2631d03010fd80659e46cb0465791d6ae9e281f84"
+    "hash": "a404ee8d8fb3ce8eec8561a5cfbd9903ca3a6d25759825bb1b24aea9140ada37"
   },
   "campus-linear-algebra-analytic-geometry/exercise-slides": {
     "title": "课件习题",
-    "hash": "f10e499944a9f074ce51a1edf2a90250c7d4f310959310860eefe609e209daab"
+    "hash": "f0c0a20da99330ccc675d47f7213fc3d43745ce34c1bf1b34c202dd03c8f9a7b"
   },
   "campus-linear-algebra-analytic-geometry/homework-01": {
     "title": "第 1 次作业（行列式与逆序数）",
-    "hash": "a346c15a6e8f2f0cff37e099845b12e663ecd3b44eab4f20111fac8bb828cc24"
+    "hash": "74d66f237bc14fed5c5a208b4db5acc862d5707a4aa9e068aad6bf061cde188d"
   },
   "campus-linear-algebra-analytic-geometry/homework-02": {
     "title": "第 2 次作业（行列式的性质与计算）",
-    "hash": "3371fe19c64e1cfd322d1b1ff59fc444b1b6d847b2c836e2eec2d460b0a5c212"
+    "hash": "ea05b1c0000e9d6b3092dc1baca25834f543dfe29aa9561ed9219c303cc1c394"
   },
   "campus-linear-algebra-analytic-geometry/homework-03": {
     "title": "第 3 次作业（矩阵运算与秩）",
-    "hash": "9ace606c79c5fd6a2f844b1928163026b1060f2b22493f3fffc25f87646098f3"
+    "hash": "759f6e092ef65e41c3d0a1e1ea554b1dcc5ff7b3614caecaf4dc830460fae94d"
   },
   "campus-linear-algebra-analytic-geometry/homework-04": {
     "title": "第 4 次作业（矩阵的逆与分块）",
-    "hash": "31c26e806ae4e366ca3d8b47f8d38be81e9d86aa012d1020596df443113bb9a9"
+    "hash": "824b7e4fa15704f8b23f4cb68849125c0cc7125bb8d0f41427ddf622fc07a4c8"
   },
   "campus-linear-algebra-analytic-geometry/homework-05": {
     "title": "第 5 次作业（平面与直线）",
-    "hash": "ece8a0bbe3b07822c2375cdfe191a6a82a46d3fc428aec93c48f09e8428143ac"
+    "hash": "d097e8b4e5f65f808972e4606ef366d04e7bef46be6cf727010374a1d5f69f51"
   },
   "campus-linear-algebra-analytic-geometry/homework-06": {
     "title": "第 6 次作业（线性方程组与向量组）",
-    "hash": "3da395528c1dcd0e33b037ae71358de6e708af93066f48b35e42cde830c3a7ef"
+    "hash": "b81073e168e33ce07a958cbbe16b11e40bae809d9acd9b554c23fa82a195bada"
   },
   "campus-linear-algebra-analytic-geometry/homework-07": {
     "title": "第 7 次作业（向量组的秩与解的结构）",
-    "hash": "891b03d1cc07d207ae0f00b40e12d23ae4a8b7dcdc4ee28efaa99dd901cbc5cf"
+    "hash": "03ace18dad3980c928dab032b1e15877feef87fdfa4a994b5f3be1b3c04021f9"
+  },
+  "campus-linear-algebra-analytic-geometry/homework-08": {
+    "title": "第 8 次作业（特征值与相似对角化）",
+    "hash": "1e3b4fc426169c3bd17d62852aee11edcfdd9b7fdfffa099095ac66530afbf12"
+  },
+  "campus-linear-algebra-analytic-geometry/homework-09": {
+    "title": "第 9 次作业（正交对角化与特征值性质）",
+    "hash": "91e9bfe5ac0d4bbb099b3b325ff713459126cc48e67b90cff8b32d75e8c5424a"
   },
   "campus-discrete-mathematics/01-propositional-logic": {
     "title": "命题逻辑",
@@ -1406,10 +1414,6 @@
   "campus-cpp-programming/13-oj-midterm-review": {
     "title": "期中考试复盘（日期、数位与素数）",
     "hash": "ca73eea7b481b56564f228bd49618a99769b6fe67ee7a393b2a5e1dc99a3cb31"
-  },
-  "campus-linear-algebra-analytic-geometry/homework-08": {
-    "title": "第 8 次作业（特征值与相似对角化）",
-    "hash": "ca18550f79d266f264d14de751a5de397d70bc99e5748bdc93bc76905d8ee120"
   },
   "campus-mathematical-analysis/31-classroom-quiz": {
     "title": "课堂测验（极限、连续与微分）",

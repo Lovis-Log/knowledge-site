@@ -15,7 +15,7 @@ sources:
     url: "https://drive.google.com/file/d/1PmNuamYKsG5CIToZEbKedAgLsgWc2XZu/view?usp=drivesdk"
 ---
 
-本次作业为滚动截图，含第 1—8 道主观题。解答均为新增，标注「补充解答」。
+本次作业为滚动截图，含第 1—8 道主观题。解答均为新增，标注「补充解答」。标题沿用原卷题号：原卷编号跳过 5，第 5 道题的题面标号为 6，故标题由 4 直接跳到 6。
 
 
 
@@ -174,7 +174,7 @@ $$
 
 行列式非零 $\iff$ 三列线性无关，故 $\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_4$ 线性无关。
 
-**补充说明**：$\boldsymbol\alpha_4\notin\operatorname{span}\{\boldsymbol\alpha_1,\boldsymbol\alpha_2\}$（否则由 (1) 四个向量的秩只有 $2$），所以由相关组中挑出的这三个向量恰好构成该向量组的一个极大无关组，秩为 $3$。
+**补充说明**：由 (2)，$\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_4$ 线性无关，故 $\boldsymbol\alpha_4\notin\operatorname{span}\{\boldsymbol\alpha_1,\boldsymbol\alpha_2\}$。这四个向量都是 $\mathbb{R}^3$ 中的向量，全组秩不超过 $3$；而其中已找到 $3$ 个无关向量，故秩恰为 $3$，这三个向量就构成该向量组的一个极大无关组。
 
 ---
 
@@ -238,7 +238,7 @@ $$
 到基
 
 $$
-\boldsymbol\beta_1=(2,0,1),\ \boldsymbol\beta_2=(0,1,-1),\ \boldsymbol\beta_3=(1,1,2)
+\boldsymbol\beta_1=(2,0,1),\ \boldsymbol\beta_2=(0,1,1),\ \boldsymbol\beta_3=(1,-1,2)
 $$
 
 的过渡矩阵。
@@ -252,6 +252,8 @@ $$
 $$
 
 即 $C$ 的第 $j$ 列就是 $\boldsymbol\beta_j$ 在基 $\{\boldsymbol\alpha_i\}$ 下的坐标。记 $A,B$ 分别是以 $\boldsymbol\alpha_i$、$\boldsymbol\beta_j$ 为列的矩阵，则 $B=AC$，故 $C=A^{-1}B$。
+
+按定义直接做，要分别解三个以 $A$ 为系数矩阵、右端为 $\boldsymbol\beta_1,\boldsymbol\beta_2,\boldsymbol\beta_3$ 的方程组；把三块右端并排，就是对 $(A\mid B)$ 作行变换。下面先求 $A^{-1}$ 再乘 $B$；也可直接把 $(A\mid B)$ 消成 $(E\mid A^{-1}B)$，一遍行变换同时完成三次求解（同 4.4 节方法 2）。
 
 $$
 A=\begin{pmatrix}1&1&-1\\2&-1&2\\-1&1&1\end{pmatrix},\qquad
@@ -275,9 +277,20 @@ C=A^{-1}B=
 \end{pmatrix}.
 $$
 
-**验算**：取 $C$ 的第 1 列 $(\frac58,\frac32,\frac18)^{\mathrm T}$，按坐标组合
-$\frac58\boldsymbol\alpha_1+\frac32\boldsymbol\alpha_2+\frac18\boldsymbol\alpha_3$
-$=(\frac58+\frac32-\frac18,\ \frac54-\frac32+\frac14,\ -\frac58+\frac32+\frac18)=(2,0,1)=\boldsymbol\beta_1$ ✓；第 2、3 列同样可验证得到 $\boldsymbol\beta_2,\boldsymbol\beta_3$ ✓。
+**验算**：$C$ 的三列应分别把 $\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_3$ 组合回 $\boldsymbol\beta_1,\boldsymbol\beta_2,\boldsymbol\beta_3$：
+
+$$
+\begin{aligned}
+\tfrac58\boldsymbol\alpha_1+\tfrac32\boldsymbol\alpha_2+\tfrac18\boldsymbol\alpha_3
+&=(2,0,1)=\boldsymbol\beta_1,\\
+\tfrac18\boldsymbol\alpha_1+\tfrac12\boldsymbol\alpha_2+\tfrac58\boldsymbol\alpha_3
+&=(0,1,1)=\boldsymbol\beta_2,\\
+-\tfrac18\boldsymbol\alpha_1+\tfrac32\boldsymbol\alpha_2+\tfrac38\boldsymbol\alpha_3
+&=(1,-1,2)=\boldsymbol\beta_3.
+\end{aligned}
+$$
+
+三列都回到原题给出的 $\boldsymbol\beta_j$，说明矩阵与题目数据一致。
 
 ---
 

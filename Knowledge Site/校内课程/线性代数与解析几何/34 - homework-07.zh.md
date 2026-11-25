@@ -15,7 +15,7 @@ sources:
     url: "https://drive.google.com/file/d/1EORJ90byiLk-D7cwRe0mcffA_uskB_Dj/view?usp=drivesdk"
 ---
 
-本次作业为滚动截图，含第 1—7 道主观题。解答均为新增，标注「补充解答」。
+本次作业为滚动截图，含第 1—7 道主观题。解答均为新增，标注「补充解答」。标题沿用原卷题号，各题在原卷中并不连续。
 
 
 
@@ -77,13 +77,14 @@ $$
 
 且 $\boldsymbol\xi_3=3\boldsymbol\xi_1+\boldsymbol\xi_2$，$\boldsymbol\xi_5=\boldsymbol\xi_1+\boldsymbol\xi_2+\boldsymbol\xi_4$。
 
-**补充说明**：极大无关组一般不唯一。例如 $\{\boldsymbol\xi_1,\boldsymbol\xi_2,\boldsymbol\xi_5\}$ 也线性无关（因 $\boldsymbol\xi_5$ 含 $\boldsymbol\xi_4$ 的成分），同样是包含 $\boldsymbol\xi_1,\boldsymbol\xi_2$ 的极大无关组；本题给出的是其中最简单的一组。
+**补充说明**：极大无关组一般不唯一。例如 $\{\boldsymbol\xi_1,\boldsymbol\xi_2,\boldsymbol\xi_5\}$ 也线性无关：若 $a\boldsymbol\xi_1+b\boldsymbol\xi_2+c\boldsymbol\xi_5=\boldsymbol 0$，代入 $\boldsymbol\xi_5=\boldsymbol\xi_1+\boldsymbol\xi_2+\boldsymbol\xi_4$ 得
+$(a+c)\boldsymbol\xi_1+(b+c)\boldsymbol\xi_2+c\boldsymbol\xi_4=\boldsymbol 0$，而 $\boldsymbol\xi_1,\boldsymbol\xi_2,\boldsymbol\xi_4$ 无关，故 $c=0$，进而 $a=b=0$。它同样包含 $\boldsymbol\xi_1,\boldsymbol\xi_2$ 且有三个向量，所以也是极大无关组；本题给出的是计算最省的一组。
 
 ---
 
 ## 12.
 
-<!-- homework-topic: 求五个四维向量的秩与极大无关组 -->
+<!-- homework-topic: 求五个五维向量的秩与极大无关组 -->
 
 求下列向量组的秩和一个极大线性无关组：
 
@@ -428,7 +429,7 @@ $$
 
 **补充解答**
 
-用到两条基本事实：$AA^*=|A|E$；$A^*$ 的元素是 $A$ 的 $n-1$ 阶子式（代数余子式），故「$A^*=0$」等价于「$A$ 的所有 $n-1$ 阶子式全为零」。
+用到两条基本事实：$AA^*=|A|E$；$A^*$ 的第 $(i,j)$ 元是 $a_{ji}$ 的代数余子式，也就是某个 $n-1$ 阶子式乘以 $\pm1$。因此「$A^*=0$」等价于「$A$ 的所有 $n-1$ 阶子式全为零」，而「$A^*\neq0$」等价于「存在非零的 $n-1$ 阶子式」。
 
 **情形一：$r(A)=n$。** 此时 $A$ 可逆，$|A|\ne0$，且 $A^*=|A|A^{-1}$，故 $A^*$ 可逆，$r(A^*)=n$。
 
