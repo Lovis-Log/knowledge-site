@@ -31,7 +31,7 @@ sources:
 
 **判断：错。**
 
-**补充解答**：向量之间没有大小顺序，「$\vec a>\vec b$」本身不是有意义的式子。模长只刻画长度，与方向无关：例如 $\vec a=(2,0)$、$\vec b=(0,1)$，有 $|\vec a|=2>1=|\vec b|$，但两向量无法比较「谁大」。可比较的是模长。
+**补充解答**：向量之间没有大小顺序，「$\vec a>\vec b$」本身不是有意义的式子。模长只刻画长度，与方向无关：例如 $\vec a=(2,0,0)$、$\vec b=(0,1,0)$，有 $|\vec a|=2>1=|\vec b|$，但两向量无法比较「谁大」。可比较的是模长。
 
 **(2) 若 $\vec a\cdot\vec b=\vec c\cdot\vec b$，且 $\vec b\ne\vec 0$，则 $\vec a=\vec c$。**
 
@@ -39,7 +39,7 @@ sources:
 
 **判断：错。**
 
-**补充解答**：移项得 $(\vec a-\vec c)\cdot\vec b=0$，这只说明 $\vec a-\vec c$ 与 $\vec b$ 垂直，即「$\vec a,\vec c$ 在 $\vec b$ 方向上的投影相同」，而非二者相等。反例：取 $\vec b=(1,0)$，$\vec a=(1,1)$，$\vec c=(1,2)$，则 $\vec a\cdot\vec b=\vec c\cdot\vec b=1$，但 $\vec a\ne\vec c$。数量积不能「约去」非零向量，这是与实数乘法最关键的区别。
+**补充解答**：移项得 $(\vec a-\vec c)\cdot\vec b=0$，这只说明 $\vec a-\vec c$ 与 $\vec b$ 垂直，即「$\vec a,\vec c$ 在 $\vec b$ 方向上的投影相同」，而非二者相等。反例：取 $\vec b=(1,0,0)$，$\vec a=(1,1,0)$，$\vec c=(1,2,0)$，则 $\vec a\cdot\vec b=\vec c\cdot\vec b=1$，但 $\vec a\ne\vec c$。数量积不能「约去」非零向量，这是与实数乘法最关键的区别。
 
 **(3) $(\vec a\cdot\vec b)\vec c=\vec a(\vec b\cdot\vec c)$。**
 
@@ -69,11 +69,9 @@ sources:
 
 <!-- homework-topic: 两向量同垂直于第三向量与叉积 -->
 
-**判断：对（需 $\vec b,\vec c$ 不共线）。**
+**判断：按本课程约定为对。**
 
-**补充解答**：$\vec b\times\vec c$ 垂直于 $\vec b$ 与 $\vec c$，因此也垂直于 $\vec b,\vec c$ 张成的平面；已知 $\vec a$ 同时垂直于 $\vec b,\vec c$，故 $\vec a$ 与 $\vec b\times\vec c$ 都垂直于同一个平面，二者平行。
-
-**边界情形**：若 $\vec b\parallel\vec c$，则 $\vec b\times\vec c=\vec 0$，谈不上方向，结论失去意义。所以严格的说法是「当 $\vec b\times\vec c\ne\vec 0$ 时 $\vec a\parallel(\vec b\times\vec c)$」，此时 $\vec a=\mu(\vec b\times\vec c)$ 对某 $\mu$ 成立（$\vec a=\vec 0$ 时取 $\mu=0$）。
+**补充解答**：当 $\vec b,\vec c$ 不共线时，它们张成一个平面。$\vec a$ 与 $\vec b\times\vec c$ 都在该平面的同一条法线方向上，因此共线。当 $\vec b,\vec c$ 共线时，$\vec b\times\vec c=\vec 0$，按第 3.1 节的约定，零向量与任意向量共线。如果题目要求叉积给出一个确定的方向，则应另加 $\vec b\times\vec c\ne\vec 0$。
 
 **(7) $\vec a=(1,1,1)$ 是单位向量。**
 

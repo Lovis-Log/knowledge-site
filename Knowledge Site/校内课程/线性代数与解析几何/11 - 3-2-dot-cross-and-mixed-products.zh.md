@@ -110,6 +110,14 @@ $$
 
 反交换律的几何原因是：交换 $\vec a,\vec b$ 的次序后，右手系的方向反转，长度不变，所以向量取反。这也提醒我们外积**不满足交换律**，书写时次序不能随意调换。
 
+外积也**不满足结合律**，括号不能省。取 $\vec i,\vec j$，则 $(\vec i\times\vec i)\times\vec j=\vec 0\times\vec j=\vec 0$，而 $\vec i\times(\vec i\times\vec j)=\vec i\times\vec k=-\vec j$，两者不等。一般情形下的正确公式是二重外积公式
+
+$$
+\vec a\times(\vec b\times\vec c)=(\vec a\cdot\vec c)\vec b-(\vec a\cdot\vec b)\vec c ,
+$$
+
+它说明 $\vec a\times(\vec b\times\vec c)$ 落在 $\vec b,\vec c$ 张成的平面内，与「先算哪一对」直接相关。
+
 ### 坐标表示
 
 设 $\vec a=(a_1,a_2,a_3)$，$\vec b=(b_1,b_2,b_3)$，则
