@@ -48,11 +48,14 @@ export function BookCard({ book, index = 0, priority = false }: { book: Book; in
   const {bookEnglish}=useContent();
   const href = `/books/${book.slug}/`;
   const title = bookTitle(book);
-  const badge = book.collection
-    ? "多来源"
-    : book.contentType
-      ? contentTypeLabel(book.contentType)
-      : "";
+  const isCollection = book.collection && !book.submission;
+  const badge = book.submission
+    ? "投稿"
+    : isCollection
+      ? "多来源"
+      : book.contentType
+        ? contentTypeLabel(book.contentType)
+        : "";
   const byline = book.author ? formatAuthors(book.author) : "";
   const bylineEn = book.author ? formatAuthors(book.author, 2, "en") : "";
   const grade = studyPeriodLabel(book);
@@ -68,8 +71,8 @@ export function BookCard({ book, index = 0, priority = false }: { book: Book; in
           <div className="book-card__top">
             {badge && (
               <span className="book-card__badge">
-                {book.collection ? <CollectionIcon /> : <TagIcon />}
-                <UiText zh={badge} />
+                {isCollection ? <CollectionIcon /> : <TagIcon />}
+                <UiText zh={badge} en={book.submission ? "Submission" : undefined} />
               </span>
             )}
             {grade && (

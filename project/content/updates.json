@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-11-26",
+    "version": "1.11.13",
+    "features": [],
+    "content": [
+      {
+        "title": "Python数学实验与建模 · 新增读者投稿的 20 章学习笔记，涵盖 Python 科学计算、数学规划、统计建模与预测，附原书资料入口 / Python Math Experiments & Modeling · Added 20 chapters of reader-submitted notes on scientific computing, optimization, statistical modeling and forecasting, with a link to the textbook",
+        "href": "/books/python-math-modeling/",
+        "kind": "新增 / Added"
+      }
+    ]
+  },
+  {
     "date": "2026-11-25",
     "version": "1.11.12",
     "features": [],

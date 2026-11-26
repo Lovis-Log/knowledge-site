@@ -20,6 +20,7 @@ export const bookDisplayTitles: Record<string, { zh: string; en: string }> = {
   '3b1b-essence-of-linear-algebra': { zh: '3B1B 线性代数的本质', en: '3B1B Essence of Linear Algebra' },
   '3b1b-differential-equations': { zh: '3B1B 微分方程', en: '3B1B Differential Equations' },
   'cpp-programming-course': { zh: 'C++ 程序设计', en: 'C++ Programming' },
+  'python-math-modeling': { zh: 'Python数学实验与建模', en: 'Python Math Experiments & Modeling' },
   'cs50-python': { zh: '哈佛 Python 程序设计', en: 'Harvard Python Programming' },
   'python-for-ai': { zh: '面向 AI 的 Python', en: 'Python for AI' },
   'english-news-reading': { zh: '外刊精读', en: 'English Close Reading' },

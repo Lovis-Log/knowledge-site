@@ -1253,6 +1253,16 @@ button {
   --cover-accent: #c4a976;
 }
 
+[data-book="python-math-modeling"] {
+  --cover-bg: #653e35;
+  --cover-ink: #f5e9d4;
+  --cover-accent: #dfb488;
+}
+
+.book-cover--sm[data-book="python-math-modeling"] {
+  padding: 7px 9px 5px 13px;
+}
+
 [data-book="python-for-ai"] {
   --cover-bg: #8a5a26;
   --cover-ink: #f9edd9;

@@ -168,6 +168,7 @@ const thumbSources = new Set([
   "/covers/editorial-personal-selection-v1.webp",
   "/covers/editorial-product-design-v1.webp",
   "/covers/editorial-python-ai-v3.webp",
+  "/covers/editorial-python-math-modeling-v1.webp",
   "/covers/editorial-society-and-reasoning-v1.webp"
 ]);
 

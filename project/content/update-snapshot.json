@@ -1426,5 +1426,85 @@
   "campus-cpp-programming/14-oj-homework-05-supplement": {
     "title": "第五次作业补充（字符串、模拟与前后缀）",
     "hash": "c6e5f25a3b10abce4f75265ca3a381c4e12bb4261acfcae145921b623c1b7196"
+  },
+  "python-math-modeling/01-python-basics": {
+    "title": "Python语言快速入门",
+    "hash": "37377d7171fce7c66a2ab4bbb218cabb4ffa4b74ec63823d869a039bd3e9279d"
+  },
+  "python-math-modeling/02-data-processing-and-visualization": {
+    "title": "数据处理与可视化",
+    "hash": "587f72b65896c54b0b01725def62d289356a7e775cfe5c7c65ef3190a7a3dfe5"
+  },
+  "python-math-modeling/03-calculus-and-linear-algebra": {
+    "title": "Python在高等数学和线性代数中的应用",
+    "hash": "6ba52d0082dbede6c937e06c6079d28f9de07f3cade36944a4ea2b635ad050ea"
+  },
+  "python-math-modeling/04-probability-and-statistics": {
+    "title": "概率论与数理统计",
+    "hash": "0ce6ab02b9501ad92ca6b9a0d04d40e448fb3b0817cd5180140e76f78f8178fb"
+  },
+  "python-math-modeling/05-linear-programming": {
+    "title": "线性规划",
+    "hash": "432e4ffdd63939a11efc10a0bc2cd2c10b47e46b13a340450aed7b32cc664ffd"
+  },
+  "python-math-modeling/06-integer-and-nonlinear-programming": {
+    "title": "整数规划与非线性规划",
+    "hash": "ed6991c99b2dbec12646db1b8263e4b7fe6beb10974568f4f63c2b0baaafaabb"
+  },
+  "python-math-modeling/07-interpolation-and-fitting": {
+    "title": "插值与拟合",
+    "hash": "210229f855cc1cc891160d17ddbe173f2ec9fac4f678c31073b1544fa6b6bd1b"
+  },
+  "python-math-modeling/08-differential-equation-models": {
+    "title": "微分方程模型",
+    "hash": "28996b5781f76cfa24527db2d3926e8d08a610499a505519d90aac2355c6a0bc"
+  },
+  "python-math-modeling/09-multicriteria-evaluation": {
+    "title": "综合评价方法",
+    "hash": "f271e89fe673392cfb7fcee8e202df3b7558a31449d40ea17c10ce26e9b74c4b"
+  },
+  "python-math-modeling/10-graph-models": {
+    "title": "图论模型",
+    "hash": "674d0dcdb5234314d5df03dcc5df2c4b837d1017d2b3243dfaaf7220f84fa54a"
+  },
+  "python-math-modeling/11-multivariate-analysis": {
+    "title": "多元分析",
+    "hash": "79346f01e4edf256091bec3cc214b10c787318ccae14c7aa9d8d3c4d6e70e2fa"
+  },
+  "python-math-modeling/12-regression-analysis": {
+    "title": "回归分析",
+    "hash": "8dcf26fd30c8131adaa78aab04808f518977ee2d19fafea54ae9c99eae81ba5b"
+  },
+  "python-math-modeling/13-difference-equation-models": {
+    "title": "差分方程模型",
+    "hash": "62cf96aa34c1647df75dc011e6a43842894e3086843a75c0f9c520764990ae2b"
+  },
+  "python-math-modeling/14-fuzzy-mathematics": {
+    "title": "模糊数学",
+    "hash": "8ac2d3848acb9efcf5575593da3c438655c5e727d212e29a4cd7bf1d6bda142d"
+  },
+  "python-math-modeling/15-grey-system-forecasting": {
+    "title": "灰色系统预测",
+    "hash": "a52d8e0962c9d4976e15aff0cb3a2bdb96d8706b24b24e3ea0bc8d9fa38e3580"
+  },
+  "python-math-modeling/16-monte-carlo-simulation": {
+    "title": "Monte Carlo模拟",
+    "hash": "d15812b048d86459830587fbcb8cb5a824f8a5f2249381496c59acde646f0aae"
+  },
+  "python-math-modeling/17-intelligent-algorithms": {
+    "title": "智能算法",
+    "hash": "0c20045328aff3d989312b89762ab99e5708c674c364c2a5f738b0e1303e06e9"
+  },
+  "python-math-modeling/18-time-series-analysis": {
+    "title": "时间序列分析",
+    "hash": "1d49188111c5af4d9ff50028862bb04d9605e9b88b98be30cb7bf9043fffe644"
+  },
+  "python-math-modeling/19-support-vector-machines": {
+    "title": "支持向量机",
+    "hash": "aafc9e77bb960fbc45dbd365fc660d75e4770f72fd22a87d26cfa95b0d704e0d"
+  },
+  "python-math-modeling/20-digital-image-processing": {
+    "title": "数字图像处理",
+    "hash": "378521bf2421f5a9c6b10cb2db3adacbc65ca3364c3d1f4a0fa62b13ee7bae2f"
   }
 }

@@ -68,6 +68,8 @@ export interface Book {
   links?: BookLink[];
   /** 多来源汇编，卡片显示「多来源」 */
   collection?: boolean;
+  /** Reader submission, displayed as a shelf badge. */
+  submission?: true;
   /** 书本级内容类型，取 content_type */
   contentType?: string;
   /** 校内课程的学期/阶段，如「大一」；显示在目录行与章节顶部，旧书不设置 */

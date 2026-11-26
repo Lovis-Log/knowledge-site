@@ -267,16 +267,22 @@ function linkKey(url: string): string {
 
 /** 手写链接也标上章节号；对不上任何章节来源的保持原样 */
 function withChapterNumbers(links: BookLink[], chapters: Chapter[]): BookLink[] {
-  const byUrl = new Map<string, number>();
+  const byUrl = new Map<string, Set<number>>();
   for (const chapter of chapters) {
     for (const source of chapter.sources) {
       const key = linkKey(source.url);
-      if (!byUrl.has(key)) byUrl.set(key, chapter.number);
+      const numbers = byUrl.get(key) ?? new Set<number>();
+      numbers.add(chapter.number);
+      byUrl.set(key, numbers);
     }
   }
   return links.map((link) => {
-    const number = byUrl.get(linkKey(link.url));
-    return number === undefined ? link : { ...link, chapterNumber: number };
+    const numbers = byUrl.get(linkKey(link.url));
+    if (!numbers) return link;
+    // A source used throughout the book has no single chapter to credit.
+    const [first] = numbers;
+    const chapterNumber = chapters.length > 1 && numbers.size === chapters.length ? undefined : first;
+    return { ...link, chapterNumber };
   });
 }
 
@@ -440,6 +446,7 @@ function loadBook(bookDir: string, folder: string): Book | null {
       chapters,
     ),
     collection: explicitCollection || deriveCollection(chapters),
+    submission: bookMeta.submission === true ? true : undefined,
     contentType: bookMeta.content_type
       ? String(bookMeta.content_type)
       : deriveContentType(chapters),
