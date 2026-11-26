@@ -143,7 +143,7 @@ export function AccountMenu({ children }: { children?: ReactNode }) {
             {user.role === "admin" && (
               <Link href="/admin/users/" onClick={() => setOpen(false)}>
                 <DestinationIcon kind="users" />
-                <UiText zh="管理用户" en="Manage users" />
+                <UiText zh="管理" en="Administration" />
               </Link>
             )}
             <Link href="/settings/" prefetch={false} onClick={() => setOpen(false)}><DestinationIcon kind="settings" /><UiText zh="账号设置" en="Account settings" /></Link>

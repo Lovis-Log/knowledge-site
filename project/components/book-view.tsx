@@ -17,7 +17,7 @@ export default function BookView({ slug }: { slug: string }) {
   const { getBook, getLibrarySections, taxonomyEnglish, bookEnglish } =
     useContent();
   const { state } = useReadingState(slug);
-  const progress = new Map(state?.progress.map((entry) => [entry.chapter, entry.furthest]));
+  const progress = new Map(state?.progress.map((entry) => [entry.chapter, entry.resume]));
   const book = getBook(slug);
   if (!book) notFound();
   const grade = studyPeriodLabel(book);

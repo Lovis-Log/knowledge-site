@@ -16,6 +16,7 @@ export type ReadingHighlight = {
   quote: string;
   prefix: string;
   suffix: string;
+  format?: 0 | 1;
 };
 
 export type ReadingState = {

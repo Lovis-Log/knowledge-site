@@ -1,11 +1,12 @@
 "use client";
 import { RocketLoader } from "./rocket-loader";
-import { ReaderLink as Link, navigateDocument } from "@/components/navigation-feedback";
+import { navigateDocument } from "@/components/navigation-feedback";
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import { api, ApiError } from "@/lib/api";
 import { UiText } from "./ui-text";
 import { CopyButton } from "./copy-button";
 import { PageHeading } from "./page-heading";
+import { AdminNav } from "./admin-nav";
 type User = {
   id: string;
   username: string;
@@ -255,14 +256,7 @@ export function AdminPage({ mode }: { mode: "users" | "invites" }) {
           <UiText zh={`待审核 ${pending}`} en={`${pending} pending`} />
         </span>}
       </header>
-      <nav className="admin-nav">
-        <Link href="/admin/users/" aria-current={mode === "users" ? "page" : undefined}>
-          <UiText zh="用户审核" en="User reviews" />
-        </Link>
-        <Link href="/admin/invites/" aria-current={mode === "invites" ? "page" : undefined}>
-          <UiText zh="邀请码" en="Invites" />
-        </Link>
-      </nav>
+      <AdminNav section={mode} />
       {mode === "users" && summary && (
         <div className="admin-account-counts" aria-live="polite">
           <span className="badge"><UiText zh={`账号总数 ${summary.accountCount}`} en={`Total accounts ${summary.accountCount}`} /></span>

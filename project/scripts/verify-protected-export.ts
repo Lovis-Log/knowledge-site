@@ -70,6 +70,8 @@ for (const route of [
   "favorites/index.html",
   "admin/users/index.html",
   "admin/invites/index.html",
+  "admin/submissions/index.html",
+  "admin/donations/index.html",
 ])
   assert.ok((await stat("out/" + route)).isFile());
 await assert.rejects(stat("out/submissions"), { code: "ENOENT" }, "The standalone submissions page must not be exported");

@@ -26,12 +26,16 @@ export async function getReadingState(
     "SELECT " + progressColumns + " FROM reading_progress WHERE user_id=? AND book=?" + (target.chapter ? " AND chapter=?" : ""),
   ).bind(account, target.book, ...(target.chapter ? [target.chapter] : []));
   const highlights = target.chapter
-    ? db.prepare("SELECT id,view,start,quote,prefix,suffix FROM reading_highlights WHERE user_id=? AND book=? AND chapter=? ORDER BY start,id")
+    ? db.prepare("SELECT id,view,start,quote,prefix,suffix,anchor_format AS format FROM reading_highlights WHERE user_id=? AND book=? AND chapter=? ORDER BY start,id")
       .bind(account, target.book, target.chapter)
     : null;
   if (!highlights) return { account, progress: (await progress.all<ReadingProgressEntry>()).results, highlights: [] };
   const [positions, marks] = await Promise.all([progress.all<ReadingProgressEntry>(), highlights.all<ReadingHighlight>()]);
-  return { account, progress: positions.results, highlights: marks.results };
+  return {
+    account,
+    progress: positions.results,
+    highlights: marks.results.map(({ format, ...mark }) => format === 1 ? { ...mark, format } : mark),
+  };
 }
 
 export async function importReadingProgress(
@@ -88,17 +92,17 @@ export async function saveReadingState(
     const id = data.action === "highlight" ? mark?.id : data.id;
     if (typeof id !== "string" || !/^[a-f0-9-]{36}$/i.test(id)) return invalid();
     if (data.action === "highlight") {
-      if (!mark || (mark.view !== "zh" && mark.view !== "en" && mark.view !== "translation") ||
+      if (!mark || (mark.format !== undefined && mark.format !== 0 && mark.format !== 1) || (mark.view !== "zh" && mark.view !== "en" && mark.view !== "translation") ||
         typeof mark.start !== "number" || !Number.isSafeInteger(mark.start) || mark.start < 0 || mark.start > 10_000_000 ||
         typeof mark.quote !== "string" || !mark.quote.trim() || mark.quote.length > 1200 ||
         typeof mark.prefix !== "string" || mark.prefix.length > 32 ||
         typeof mark.suffix !== "string" || mark.suffix.length > 32) return invalid();
       const inserted = await db.prepare(`
-        INSERT INTO reading_highlights(user_id,book,chapter,id,view,start,quote,prefix,suffix)
-        SELECT ?,?,?,?,?,?,?,?,?
+        INSERT INTO reading_highlights(user_id,book,chapter,id,view,start,quote,prefix,suffix,anchor_format)
+        SELECT ?,?,?,?,?,?,?,?,?,?
         WHERE (SELECT COUNT(*) FROM reading_highlights WHERE user_id=? AND book=? AND chapter=?) < ?
         ON CONFLICT DO NOTHING
-      `).bind(account, book, chapter, id, mark.view, mark.start, mark.quote, mark.prefix, mark.suffix,
+      `).bind(account, book, chapter, id, mark.view, mark.start, mark.quote, mark.prefix, mark.suffix, mark.format ?? 0,
         account, book, chapter, highlightLimit).run();
       if (!inserted.meta.changes && !await db.prepare("SELECT 1 FROM reading_highlights WHERE user_id=? AND book=? AND chapter=? AND id=?")
         .bind(account, book, chapter, id).first())

@@ -165,31 +165,62 @@ function csrf(request: Request) {
   )
     fail(403, "CSRF_FAILED", "页面已过期，请刷新 / Refresh the page");
 }
-async function limit(db: DB, key: string, max: number, seconds: number,
-  error: { code: string; message: string } = { code: "RATE_LIMITED", message: "尝试过多，请稍后再试 / Too many attempts" },
+type RateLimitRow = { count: number; expires_at: number };
+const rateLimitError = { code: "RATE_LIMITED", message: "尝试过多，请稍后再试 / Too many attempts" };
+
+function rateLimitQuery(
+  db: DB, key: string, time: number, seconds: number, userLimit?: { key: string; max: number },
 ) {
-  const time = now();
-  const row = await db
-    .prepare(
-      `INSERT INTO rate_limits(key,count,expires_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires_at<=? THEN 1 ELSE count+1 END, expires_at=CASE WHEN expires_at<=? THEN excluded.expires_at ELSE expires_at END RETURNING count,expires_at`,
-    )
-    .bind(await digest(key), time + seconds, time, time)
-    .first<{ count: number; expires_at: number }>();
+  const source = userLimit
+    ? "SELECT ?,1,? WHERE EXISTS(SELECT 1 FROM rate_limits WHERE key=? AND count<=?)"
+    : "VALUES(?,1,?)";
+  const gate = userLimit ? [userLimit.key, userLimit.max] : [];
+  return db.prepare(`
+    INSERT INTO rate_limits(key,count,expires_at) ${source}
+    ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires_at<=? THEN 1 ELSE count+1 END,
+      expires_at=CASE WHEN expires_at<=? THEN excluded.expires_at ELSE expires_at END
+    RETURNING count,expires_at
+  `).bind(key, time + seconds, ...gate, time, time);
+}
+
+function enforceLimit(row: RateLimitRow | null | undefined, max: number, time: number, seconds: number, error = rateLimitError) {
   if (!row || row.count > max) {
     throw new HttpError(429, error.code, error.message, {
       "Retry-After": String(Math.max(1, (row?.expires_at ?? time + seconds) - time)),
     });
   }
 }
-async function session(request: Request, db: DB) {
+
+async function limit(db: DB, key: string, max: number, seconds: number, error = rateLimitError) {
+  const time = now();
+  const row = await rateLimitQuery(db, await digest(key), time, seconds).first<RateLimitRow>();
+  enforceLimit(row, max, time, seconds, error);
+}
+
+async function limitPasswordVerification(db: DB, userId: string, ip: string) {
+  const time = now();
+  const [userKey, ipKey] = await Promise.all([digest(`account:${userId}`), digest(`account-ip:${ip}`)]);
+  const [user, address] = await db.batch<RateLimitRow>([
+    rateLimitQuery(db, userKey, time, 3600),
+    // A blocked account only consumes its own allowance, as with separate calls.
+    rateLimitQuery(db, ipKey, time, 3600, { key: userKey, max: 5 }),
+  ]);
+  enforceLimit(user.results[0], 5, time, 3600);
+  enforceLimit(address.results[0], 20, time, 3600);
+}
+
+async function session(request: Request, db: DB, includePassword = false, includeSessionHash = false) {
   const token = cookie(request, SESSION);
   if (!/^[a-f0-9]{64}$/.test(token)) return null;
+  const passwordColumn = includePassword ? ",u.password_hash" : "";
+  const sessionColumn = includeSessionHash ? ",s.token_hash AS session_hash" : "";
   return db
     .prepare(
-      "SELECT u.id,u.username,u.username AS nickname,u.role,u.status FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token_hash=? AND s.expires_at>? AND u.status='approved'",
+      `SELECT u.id,u.username,u.username AS nickname,u.role,u.status${passwordColumn}${sessionColumn}
+       FROM users u JOIN sessions s ON s.user_id=u.id WHERE s.token_hash=? AND s.expires_at>? AND u.status='approved'`,
     )
     .bind(await digest(token), now())
-    .first<SessionUser>();
+    .first<SessionUser & { password_hash?: string; session_hash?: string }>();
 }
 function publicUser(u: SessionUser) {
   return {
@@ -464,12 +495,23 @@ function submissionTitle(message: string, url: string, source: string) {
 async function submissionsApi(request: Request, db: DB, path: string) {
     const admin = path === '/api/admin/submissions', user = await requireUser(request, db, admin);
     if (request.method === 'GET') {
-        const params = new URL(request.url).searchParams, before = Number(params.get('before') ?? Number.MAX_SAFE_INTEGER), status = params.get('status') ?? '';
-        if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status))
+        const params = new URL(request.url).searchParams;
+        const before = Number(params.get('before') ?? Number.MAX_SAFE_INTEGER);
+        const status = params.get('status') ?? '';
+        const source = params.get('source') ?? '';
+        if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status) ||
+            (admin && !['', 'submission', 'donation'].includes(source)))
             fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
-        const where = admin ? "id<? AND (?='' OR status=?)" : "user_id=? AND id<?";
-        const query = db.prepare(`SELECT id,title,summary,message,url,status,note,source,version,created_at FROM submissions WHERE ${where} ORDER BY id DESC LIMIT 21`);
-        const { results } = await (admin ? query.bind(before, status, status) : query.bind(user.id, before)).all();
+        const columns = 's.id,s.title,s.summary,s.message,s.url,s.status,s.note,s.source,s.version,s.created_at';
+        const clientQuery = () => db.prepare(`SELECT ${columns} FROM submissions s
+            WHERE s.user_id=? AND s.id<? ORDER BY s.id DESC LIMIT 21`).bind(user.id, before);
+        const adminQuery = () => {
+            const filter = source ? " AND s.source=?" : "";
+            return db.prepare(`SELECT ${columns},u.username AS author FROM submissions s
+                JOIN users u ON s.user_id=u.id WHERE s.id<? AND (?='' OR s.status=?)${filter}
+                ORDER BY s.id DESC LIMIT 21`).bind(before, status, status, ...(source ? [source === 'donation' ? 'donation' : ''] : []));
+        };
+        const { results } = await (admin ? adminQuery() : clientQuery()).all();
         const items = results.slice(0, 20);
         return json({ items, next: results.length > 20 ? items[19].id : null, canModerate: user.role === 'admin' });
     }
@@ -538,28 +580,117 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     }
     return json({ ok: true, id: row.id }, 201);
 }
+async function donationRecordsApi(request: Request, db: DB) {
+    if (request.method === 'GET') {
+        const before = Number(new URL(request.url).searchParams.get('before') ?? Number.MAX_SAFE_INTEGER);
+        if (!Number.isSafeInteger(before) || before < 1)
+            fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
+        const { results } = await db.prepare(
+            'SELECT id,donor,amount_fen AS amountFen,created_at AS createdAt FROM donation_records WHERE id<? ORDER BY id DESC LIMIT 21',
+        ).bind(before).all<{ id: number }>();
+        return json({ items: results.slice(0, 20), next: results.length > 20 ? results[19].id : null });
+    }
+    if (request.method !== 'POST') fail(405, 'METHOD_NOT_ALLOWED', '不支持此操作 / Method not allowed');
+    const data = await body(request);
+    const donor = text(data, 'donor', 1, 100);
+    const requestId = text(data, 'requestId', 36, 36);
+    if (!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(requestId))
+        fail(400, 'INVALID_ID', '请求编号无效 / Invalid request ID');
+    const amount = text(data, 'amount', 1, 10);
+    const match = /^(\d{1,7})(?:\.(\d{1,2}))?$/.exec(amount);
+    const amountFen = match ? Number(match[1]) * 100 + Number((match[2] ?? '').padEnd(2, '0')) : 0;
+    if (amountFen <= 0) fail(400, 'INVALID_AMOUNT', '请输入有效的打赏金额 / Enter a valid donation amount');
+    const result = await db.prepare(
+        'INSERT INTO donation_records(request_id,donor,amount_fen) VALUES(?,?,?) ON CONFLICT(request_id) DO NOTHING',
+    ).bind(requestId, donor, amountFen).run();
+    return json({ ok: true }, result.meta.changes ? 201 : 200);
+}
+
+async function issuePasswordChallenge(db: DB, sessionHash: string, passwordHash: string) {
+    const challenge = randomToken();
+    const challengeHash = await digest(challenge);
+    const inserted = await db.prepare(`
+        INSERT INTO password_change_challenges(session_hash, challenge_hash, expires_at)
+        SELECT s.token_hash, ?, unixepoch()+120
+        FROM sessions s JOIN users u ON u.id=s.user_id
+        WHERE s.token_hash=? AND s.expires_at>unixepoch() AND u.password_hash=? AND u.status='approved'
+        ON CONFLICT(session_hash) DO UPDATE SET challenge_hash=excluded.challenge_hash, expires_at=excluded.expires_at
+    `).bind(challengeHash, sessionHash, passwordHash).run();
+    if (!inserted.meta.changes)
+        fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
+    return json({ challenge });
+}
+
+async function finishPasswordChange(
+    db: DB, request: Request, user: SessionUser, passwordHash: string, data: Record<string, unknown>,
+) {
+    const password = newPassword(data);
+    const challenge = text(data, 'challenge', 64, 64);
+    if (!/^[a-f0-9]{64}$/.test(challenge))
+        fail(400, 'INVALID_INPUT', '验证凭据格式无效 / Invalid verification challenge');
+    const [sessionHash, challengeHash] = await Promise.all([
+        digest(cookie(request, SESSION)), digest(challenge),
+    ]);
+    // Claim before hashing so parallel replays can perform at most one hash.
+    // A failed save can start over with a fresh current-password verification.
+    const claimed = await db.prepare(`
+        DELETE FROM password_change_challenges
+        WHERE session_hash=? AND challenge_hash=? AND expires_at>unixepoch()
+    `).bind(sessionHash, challengeHash).run();
+    if (!claimed.meta.changes)
+        fail(409, 'INVALID_PASSWORD_CHALLENGE', '请重新验证当前密码 / Verify your current password again');
+    const hash = await hashPassword(password);
+    const results = await db.batch([
+        db.prepare(`UPDATE users SET password_hash=?,version=version+1
+            WHERE id=? AND password_hash=? AND status='approved'
+            AND EXISTS(SELECT 1 FROM sessions WHERE token_hash=? AND user_id=users.id AND expires_at>unixepoch())`)
+            .bind(hash, user.id, passwordHash, sessionHash),
+        db.prepare('DELETE FROM reset_tokens WHERE user_id=? AND changes()=1').bind(user.id),
+    ]);
+    if (!results[0].meta.changes)
+        fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
+    return json({ ok: true }, 200, { 'Set-Cookie': setCookie(SESSION, '', 0) });
+}
+
 async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
     const features = { changePassword: env.ACCOUNT_CHANGE_PASSWORD_ENABLED === '1', deleteAccount: env.ACCOUNT_DELETE_ENABLED === '1' };
-    const user = await requireUser(request, db);
-    if (request.method === 'GET' && path === '/api/account/settings')
+    const settings = request.method === 'GET' && path === '/api/account/settings';
+    const verifying = path === '/api/account/password/verify';
+    const user = await session(request, db, !settings, verifying);
+    if (!user) fail(401, "UNAUTHENTICATED", "请先登录 / Please sign in");
+    if (settings)
         return json({ features, username: user.username, nickname: user.nickname, role: user.role });
     const profile = path === '/api/account/profile';
     const deleting = path === '/api/account/delete';
-    if (request.method !== 'POST' || !['/api/account/delete', '/api/account/password', '/api/account/profile'].includes(path))
+    const savingPassword = path === '/api/account/password';
+    if (request.method !== 'POST' || !(profile || deleting || verifying || savingPassword))
         fail(404, 'NOT_FOUND', '接口不存在 / Not found');
     if (!profile && !(deleting ? features.deleteAccount : features.changePassword))
         fail(503, 'FEATURE_UNAVAILABLE', '此功能暂时不可用，请稍后重试 / Feature temporarily unavailable; please try again later');
     if (deleting && user.role === 'admin')
         fail(403, 'ADMIN_DELETE_FORBIDDEN', '管理员不能自助注销 / Administrators cannot delete themselves');
-    await limit(db, `account:${user.id}`, 5, 3600);
-    await limit(db, `account-ip:${request.headers.get('CF-Connecting-IP') ?? 'local'}`, 20, 3600);
-    const data = await body(request), current = await db.prepare('SELECT password_hash FROM users WHERE id=?').bind(user.id).first<{
-        password_hash: string;
-    }>();
-    if (!current || needsPasswordUpgrade(current.password_hash))
+    const passwordHash = user.password_hash;
+    if (savingPassword) {
+        if (!passwordHash || needsPasswordUpgrade(passwordHash))
+            fail(409, 'MIGRATION_REQUIRED', '请先联系管理员迁移密码 / Password migration required');
+        return finishPasswordChange(db, request, user, passwordHash, await body(request));
+    }
+    const ip = request.headers.get('CF-Connecting-IP') ?? 'local';
+    if (verifying) {
+        await limitPasswordVerification(db, user.id, ip);
+    } else {
+        await limit(db, `account:${user.id}`, 5, 3600);
+        await limit(db, `account-ip:${ip}`, 20, 3600);
+    }
+    const data = await body(request);
+    if (!passwordHash || needsPasswordUpgrade(passwordHash))
         fail(409, 'MIGRATION_REQUIRED', '请先联系管理员迁移密码 / Password migration required');
-    if (!await verifyPassword(text(data, 'currentPassword', 1, 128, false), current.password_hash))
+    if (!await verifyPassword(text(data, 'currentPassword', 1, 128, false), passwordHash))
         fail(400, 'INVALID_PASSWORD', '当前密码不正确 / Incorrect current password');
+    if (verifying) {
+        if (!user.session_hash) fail(401, 'UNAUTHENTICATED', '请先登录 / Please sign in');
+        return issuePasswordChallenge(db, user.session_hash, passwordHash);
+    }
     if (profile) {
         const username = text(data, 'username', 3, 32);
         if (!/^[a-z0-9_]+$/i.test(username))
@@ -569,7 +700,7 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         try {
             const results = await db.batch([
                 db.prepare("UPDATE users SET username=?,nickname=?,version=version+1 WHERE id=? AND password_hash=? AND username=? COLLATE BINARY AND status='approved'")
-                    .bind(username, nickname, user.id, current.password_hash, user.username),
+                    .bind(username, nickname, user.id, passwordHash, user.username),
                 // Reply targets store the public name at reply time. Keep old
                 // mentions pointing at the same person after a rename; only run
                 // this when the account update above actually applied.
@@ -585,58 +716,47 @@ async function accountApi(request: Request, db: DB, path: string, env: AppEnv) {
         }
         return json({ ok: true, username, nickname });
     }
-    if (deleting) {
-        const guard = "EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user')";
-        const statement = (sql: string, ...values: unknown[]) => db.prepare(sql).bind(...values);
-        const results = await db.batch([
-            // Keep a visible thread when other readers replied to this member's
-            // root. The placeholder removes the original name and text but
-            // preserves the row id, hidden state and reply target.
-            statement(
-                `INSERT INTO users(id,username,password_hash,nickname,reason,role,status,created_at)
-                 SELECT ?,?,?,?,?,?,?,?
-                 WHERE EXISTS(SELECT 1 FROM guestbook_entries g
-                   WHERE g.user_id=? AND g.parent_id IS NULL
-                     AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=g.id AND r.user_id<>g.user_id))
-                   AND ${guard}
-                 ON CONFLICT(id) DO NOTHING`,
-                DELETED_AUTHOR_ID, DELETED_AUTHOR_USERNAME, '', DELETED_AUTHOR_NICKNAME, '', 'user', 'disabled', 0, user.id, user.id, current.password_hash,
-            ),
-            statement(
-                `UPDATE guestbook_entries SET user_id=?,message=?,placeholder=1,reply_to_nickname=''
-                 WHERE user_id=? AND parent_id IS NULL
-                   AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=guestbook_entries.id AND r.user_id<>?)
-                   AND EXISTS(SELECT 1 FROM users WHERE id=?)
-                   AND ${guard}`,
-                DELETED_AUTHOR_ID, DELETED_AUTHOR_MESSAGE, user.id, user.id, DELETED_AUTHOR_ID, user.id, current.password_hash,
-            ),
-            // Own replies and roots without other readers' replies disappear as
-            // before; the cascade above no longer reaches preserved threads.
-            statement(`DELETE FROM guestbook_entries WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
-            // Old reply targets anywhere in the board pointed at this member's public
-            // name; clear them so the deleted identity is not left behind.
-            statement(
-                `UPDATE guestbook_entries SET reply_to_nickname=''
-                 WHERE reply_to_nickname=? AND placeholder=0
-                   AND ${guard}`,
-                user.username, user.id, current.password_hash,
-            ),
-            statement(`DELETE FROM reset_tokens WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
-            statement(`DELETE FROM review_logs WHERE (user_id=? OR admin_id=?) AND ${guard}`, user.id, user.id, user.id, current.password_hash),
-            statement(`DELETE FROM submissions WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
-            statement(`DELETE FROM favorites WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
-            statement(`DELETE FROM sessions WHERE user_id=? AND ${guard}`, user.id, user.id, current.password_hash),
-            statement("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'", user.id, current.password_hash),
-        ]);
-        if (!results.at(-1)?.meta.changes)
-            fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
-    }
-    else {
-        const hash = await hashPassword(newPassword(data));
-        const results = await db.batch([db.prepare("UPDATE users SET password_hash=?,version=version+1 WHERE id=? AND password_hash=? AND status='approved'").bind(hash, user.id, current.password_hash), db.prepare('DELETE FROM reset_tokens WHERE user_id=? AND EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=?)').bind(user.id, user.id, hash)]);
-        if (!results[0].meta.changes)
-            fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
-    }
+    const guard = "EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user')";
+    const statement = (sql: string, ...values: unknown[]) => db.prepare(sql).bind(...values);
+    const results = await db.batch([
+        // Keep a visible thread when other readers replied to this member's
+        // root. The placeholder removes the original name and text but
+        // preserves the row id, hidden state and reply target.
+        statement(
+            `INSERT INTO users(id,username,password_hash,nickname,reason,role,status,created_at)
+             SELECT ?,?,?,?,?,?,?,?
+             WHERE EXISTS(SELECT 1 FROM guestbook_entries g
+               WHERE g.user_id=? AND g.parent_id IS NULL
+                 AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=g.id AND r.user_id<>g.user_id))
+               AND ${guard}
+             ON CONFLICT(id) DO NOTHING`,
+            DELETED_AUTHOR_ID, DELETED_AUTHOR_USERNAME, '', DELETED_AUTHOR_NICKNAME, '', 'user', 'disabled', 0, user.id, user.id, passwordHash,
+        ),
+        statement(
+            `UPDATE guestbook_entries SET user_id=?,message=?,placeholder=1,reply_to_nickname=''
+             WHERE user_id=? AND parent_id IS NULL
+               AND EXISTS(SELECT 1 FROM guestbook_entries r WHERE r.parent_id=guestbook_entries.id AND r.user_id<>?)
+               AND EXISTS(SELECT 1 FROM users WHERE id=?)
+               AND ${guard}`,
+            DELETED_AUTHOR_ID, DELETED_AUTHOR_MESSAGE, user.id, user.id, DELETED_AUTHOR_ID, user.id, passwordHash,
+        ),
+        // Own replies and roots without other readers' replies disappear as
+        // before; the cascade above no longer reaches preserved threads.
+        statement(`DELETE FROM guestbook_entries WHERE user_id=? AND ${guard}`, user.id, user.id, passwordHash),
+        // Old reply targets anywhere in the board pointed at this member's public
+        // name; clear them so the deleted identity is not left behind.
+        statement(
+            `UPDATE guestbook_entries SET reply_to_nickname=''
+             WHERE reply_to_nickname=? AND placeholder=0
+               AND ${guard}`,
+            user.username, user.id, passwordHash,
+        ),
+        statement(`DELETE FROM reset_tokens WHERE user_id=? AND ${guard}`, user.id, user.id, passwordHash),
+        statement(`DELETE FROM review_logs WHERE (user_id=? OR admin_id=?) AND ${guard}`, user.id, user.id, user.id, passwordHash),
+        statement("DELETE FROM users WHERE id=? AND password_hash=? AND status='approved' AND role='user'", user.id, passwordHash),
+    ]);
+    if (!results.at(-1)?.meta.changes)
+        fail(409, 'STALE_ACCOUNT', '账号已变化，请重新登录 / Account changed; sign in again');
     return json({ ok: true }, 200, { 'Set-Cookie': setCookie(SESSION, '', 0) });
 }
 
@@ -915,6 +1035,7 @@ async function api(request: Request, db: DB, path: string, env: AppEnv) {
   }
   if (path.startsWith("/api/admin/")) {
     const admin = await requireUser(request, db, true);
+    if (path === "/api/admin/donations") return donationRecordsApi(request, db);
     if (method === "GET" && path === "/api/admin/users") {
       const url = new URL(request.url),
         status = url.searchParams.get("status") ?? "",

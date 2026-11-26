@@ -55,19 +55,27 @@ export function AccountSettings() {
     if (action === 'delete' && !window.confirm('永久删除账号与个人内容，无法撤销。若他人已回复你的留言，该留言会保留为不含原用户名和正文的占位，以维持对话。继续？ / Permanently delete your account and personal content? This cannot be undone. If others replied to one of your messages, it stays as an anonymized placeholder without your name or text so the thread remains readable.')) return;
     lock.current = true; setBusy(action);
     try {
-      const result = await api<{ username: string }>('/api/account/' + action, 'POST', values);
       if (action === 'profile') {
-        setSettings(previous => previous && ({ ...previous, username: result.username }));
+        const { username } = await api<{ username: string }>('/api/account/profile', 'POST', values);
+        setSettings(previous => previous && ({ ...previous, username }));
         setEditing(false);
         renameButton.current?.focus();
         window.dispatchEvent(new Event('account:updated'));
         setNotice('用户名已修改 / Username updated');
-      } else {
-        if (action === 'delete') {
-          try { localStorage.removeItem('shufang:progress'); localStorage.removeItem('shufang:last-read'); } catch { /* Storage may be unavailable. */ }
-        }
-        navigateDocument('/login/');
+        return;
       }
+      if (action === 'password') {
+        const { challenge } = await api<{ challenge: string }>('/api/account/password/verify', 'POST', {
+          currentPassword: values.currentPassword,
+        });
+        await api('/api/account/password', 'POST', {
+          challenge, password: values.password, confirmPassword: values.confirmPassword,
+        });
+      } else {
+        await api('/api/account/delete', 'POST', values);
+        try { localStorage.removeItem('shufang:progress'); localStorage.removeItem('shufang:last-read'); } catch { /* Storage may be unavailable. */ }
+      }
+      navigateDocument('/login/');
     } catch (caught) { setError((caught as Error).message); }
     finally { lock.current = false; setBusy(null); }
   }
@@ -85,8 +93,8 @@ export function AccountSettings() {
         <div className="account-settings__actions"><button type="submit"><UiText zh={busy === 'profile' ? '保存中…' : '保存'} en={busy === 'profile' ? 'Saving…' : 'Save'} /></button><button type="button" onClick={() => { setEditing(false); setError(''); renameButton.current?.focus(); }}><UiText zh="取消" en="Cancel" /></button></div>
       </fieldset></form>}
       <div className="account-settings__security-controls">
-        <button ref={passwordButton} type="button" disabled={busy !== null || !settings.features.changePassword} aria-expanded={securityPanel === 'password'} aria-controls="account-password" onClick={() => { setSecurityPanel(value => value === 'password' ? null : 'password'); setEditing(false); setError(''); setNotice(''); }}><UiText zh="修改密码" en="Change password" /></button>
-        <button ref={deleteButton} type="button" className="account-settings__delete-trigger" disabled={busy !== null || settings.role === 'admin' || !settings.features.deleteAccount} title={settings.role === 'admin' ? '管理员不能自助注销 / Administrators cannot delete themselves' : undefined} aria-expanded={securityPanel === 'delete'} aria-controls="account-delete" onClick={() => { setSecurityPanel(value => value === 'delete' ? null : 'delete'); setEditing(false); setError(''); setNotice(''); }}><UiText zh="注销账号" en="Delete account" /></button>
+        <button ref={passwordButton} type="button" disabled={busy !== null} aria-expanded={securityPanel === 'password'} aria-controls="account-password" onClick={() => { setSecurityPanel(value => value === 'password' ? null : 'password'); setEditing(false); setError(''); setNotice(''); }}><UiText zh="修改密码" en="Change password" /></button>
+        <button ref={deleteButton} type="button" className="account-settings__delete-trigger" disabled={busy !== null} aria-expanded={securityPanel === 'delete'} aria-controls="account-delete" onClick={() => { setSecurityPanel(value => value === 'delete' ? null : 'delete'); setEditing(false); setError(''); setNotice(''); }}><UiText zh="注销账号" en="Delete account" /></button>
       </div>
       {securityPanel === 'password' && <section id="account-password" className="account-settings__section account-settings__panel">
         <h2><UiText zh="修改密码" en="Change password" /></h2>

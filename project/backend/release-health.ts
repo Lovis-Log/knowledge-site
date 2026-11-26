@@ -1,12 +1,13 @@
 const requiredTables = [
   "content_versions", "content_current", "users", "sessions", "invites", "reset_tokens",
   "review_logs", "rate_limits", "favorites", "guestbook_entries", "submissions",
-  "reading_progress", "reading_highlights",
+  "reading_progress", "reading_highlights", "donation_records", "password_change_challenges",
 ];
 // SQLite resolves every referenced table and column when preparing this statement.
 // WHERE 0 lets readiness check the schema without scanning personal data.
 const verifySchema = `
-  SELECT guestbook_entries.placeholder, submissions.version
+  SELECT guestbook_entries.placeholder, submissions.version, reading_highlights.anchor_format,
+    donation_records.amount_fen, password_change_challenges.expires_at
   FROM ${requiredTables.join(" CROSS JOIN ")} WHERE 0
 `;
 

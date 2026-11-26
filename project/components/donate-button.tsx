@@ -123,15 +123,21 @@ export function DonateButton() {
                   <UiText zh="本站笔记内容将会持续更新与完善。制作不易，如果这些内容对你有帮助，欢迎打赏支持。谢谢！" />
                 </p>
 
-                <button
-                  type="button"
-                  className="donate-modal__pay"
-                  aria-expanded={showQr}
-                  aria-controls="donate-qr"
-                  onClick={() => { setShowQr((value) => !value); setShowNote(false); }}
-                >
-                  <UiText zh="支持一下" />
-                </button>
+                <div className="donate-modal__actions">
+                  <button
+                    type="button"
+                    className="donate-modal__pay"
+                    aria-expanded={showQr}
+                    aria-controls="donate-qr"
+                    onClick={() => { setShowQr((value) => !value); }}
+                  >
+                    <UiText zh="支持一下" />
+                  </button>
+                  <button className="donate-note-toggle" type="button" aria-expanded={showNote} aria-controls="donate-note" onClick={() => setShowNote(value => !value)}>
+                    <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
+                    <UiText zh="捎信（可选）" en="Send a note (optional)" />
+                  </button>
+                </div>
 
                 <div id="donate-qr" className="donate-modal__qr" hidden={!showQr}>
                   <div className="donate-methods" role="group" {...uiLabel('支付方式', 'Payment method')}>
@@ -148,11 +154,7 @@ export function DonateButton() {
                     {method === 'wechat' ? <UiText zh="打开微信扫一扫" en="Scan with WeChat Pay" /> : <UiText zh="打开支付宝扫一扫" en="Scan with Alipay" />}
                   </p>
                 </div>
-                {showQr && <button className="donate-note-toggle" type="button" aria-expanded={showNote} aria-controls="donate-note" onClick={() => setShowNote(value => !value)}>
-                  <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 6 9 7 9-7" /></svg>
-                  <UiText zh="捎信（可选）" en="Send a note (optional)" />
-                </button>}
-                {showQr && showNote && <form id="donate-note" className="donate-note" onSubmit={async event => {
+                {showNote && <form id="donate-note" className="donate-note" onSubmit={async event => {
                   event.preventDefault();
                   if (sending.current || !note.trim()) return;
                   sending.current = true; setBusy(true); setError('');
@@ -166,7 +168,7 @@ export function DonateButton() {
                   <label htmlFor="donate-note-text"><UiText zh="写给站长" en="A note for the author" /></label>
                   <textarea id="donate-note-text" rows={3} maxLength={2000} required value={note} disabled={busy}
                     onChange={event => { setNote(event.target.value); setSent(false); requestId.current = ''; }} />
-                  <button type="submit" disabled={busy || !note.trim()}>{busy ? <UiText zh="发送中…" en="Sending…" /> : <UiText zh="发送私密捎信" en="Send private note" />}</button>
+                  <button type="submit" disabled={busy || !note.trim()}>{busy ? <UiText zh="发送中…" en="Sending…" /> : <UiText zh="发送" en="Send" />}</button>
                   {sent && <p role="status"><UiText zh="捎信已送达，谢谢你。" en="Your note has been delivered. Thank you." /></p>}
                   {error && <p role="alert">{error} <Link href="/login/" onClick={close}><UiText zh="登录" en="Sign in" /></Link></p>}
                 </form>}

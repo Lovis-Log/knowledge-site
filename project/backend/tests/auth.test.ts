@@ -108,7 +108,7 @@ async function review(username: string, action: string) {
 }
 before(async () => {
   db = await mf.getD1Database("DB");
-  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql", "0007_reading_state.sql", "0008_account_thread_and_review_safety.sql"]) {
+  for (const file of ["0001_auth.sql", "0002_content.sql", "0003_reader_interactions.sql", "0004_recoverable_invites.sql", "0005_submissions.sql", "0006_community_replies.sql", "0007_reading_state.sql", "0008_account_thread_and_review_safety.sql", "0009_highlight_anchors_and_donation_records.sql", "0010_password_change_challenges.sql"]) {
     const sql = await readFile("backend/migrations/" + file, "utf8");
     for (const statement of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|DROP|$))/)) {
       if (statement.trim()) await db.prepare(statement.trim()).run();
@@ -1262,7 +1262,7 @@ test("reading state syncs across sessions, keeps furthest progress and protects 
   assert.equal((await post(first, { action: "progress", resume: 120, furthest: 120, observedAt: at })).status, 400);
   const mark = {
     id: "09a17acd-319b-4006-9d78-ca7cf9598abd",
-    view: "en", start: 10, quote: "a highlighted passage", prefix: "Before ", suffix: " after",
+    view: "en", format: 1, start: 10, quote: "a highlighted passage", prefix: "Before ", suffix: " after",
   };
   assert.equal((await post(first, { action: "highlight", mark })).status, 200);
   assert.equal((await post(first, { action: "highlight", mark })).status, 200);

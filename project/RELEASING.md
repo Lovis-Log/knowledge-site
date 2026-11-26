@@ -108,4 +108,4 @@ npx wrangler d1 migrations apply DB --remote --env production
 
 ## 搜索、投稿与更新公告
 
-元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销默认关闭，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](docs/lightweight-features.md)。
+元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销由环境开关控制，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](docs/lightweight-features.md)。

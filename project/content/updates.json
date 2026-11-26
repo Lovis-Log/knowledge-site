@@ -1,6 +1,33 @@
 [
   {
     "date": "2026-11-26",
+    "version": "1.11.14",
+    "features": [
+      {
+        "zh": "加深笔记高亮底色并提高文字对比度。高亮跟随正文滚动，重新打开笔记时恢复到原来选中的文字。多行公式支持只拖选其中一行。",
+        "en": "Note highlights use stronger colors and higher text contrast. Highlights move with the note and return to the selected text when you reopen it. You can select individual rows in multiline equations."
+      },
+      {
+        "zh": "书目录中的阅读百分比显示上次停留的位置，往回读也会更新。",
+        "en": "Chapter percentages in the book contents now show where you last stopped, including when you scroll back to an earlier position."
+      },
+      {
+        "zh": "「捎信（可选）」移到「支持一下」右边，发送按钮简化为「发送」。",
+        "en": "Moved the optional note button next to Support and shortened the submit label to Send."
+      },
+      {
+        "zh": "管理员可从头像菜单的「管理」审核投稿，在「用户打赏」手动登记打赏人和金额，并查看读者捎信。",
+        "en": "Administrators can review submissions from Administration, manually record donors and amounts, and read notes in User donations."
+      },
+      {
+        "zh": "账号设置开放修改密码和自助注销。修改密码仍只需提交一次，成功后用新密码重新登录。",
+        "en": "Account settings now supports password changes and account deletion. Submit the password form once, then sign in again with your new password."
+      }
+    ],
+    "content": []
+  },
+  {
+    "date": "2026-11-26",
     "version": "1.11.13",
     "features": [],
     "content": [

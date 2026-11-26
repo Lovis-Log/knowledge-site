@@ -2,11 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
-import { hashPassword } from '../password';
+import { digest, hashPassword } from '../password';
 async function fixture(enabled: boolean | null = true) {
     const mf = new Miniflare(convertV4MiniflareOptions({ modules: true, scriptPath: 'out/_worker.js', compatibilityDate: '2026-11-04', compatibilityFlags: ['nodejs_compat'], d1Databases: { DB: 'features' }, bindings: enabled === null ? {} : { ACCOUNT_CHANGE_PASSWORD_ENABLED: enabled ? '1' : '0', ACCOUNT_DELETE_ENABLED: enabled ? '1' : '0' }, serviceBindings: { ASSETS: () => new Response('PAGE') } }));
     const db = await mf.getD1Database('DB');
-    for (const file of ['0001_auth.sql', '0002_content.sql', '0003_reader_interactions.sql', '0004_recoverable_invites.sql', '0005_submissions.sql', '0006_community_replies.sql', '0008_account_thread_and_review_safety.sql']) {
+    for (const file of ['0001_auth.sql', '0002_content.sql', '0003_reader_interactions.sql', '0004_recoverable_invites.sql', '0005_submissions.sql', '0006_community_replies.sql', '0007_reading_state.sql', '0008_account_thread_and_review_safety.sql', '0009_highlight_anchors_and_donation_records.sql', '0010_password_change_challenges.sql']) {
         const sql = await readFile('backend/migrations/' + file, 'utf8');
         for (const stmt of sql.split(/;(?=\s*(?:CREATE|ALTER|PRAGMA|DROP|$))/))
             if (stmt.trim())
@@ -25,7 +25,7 @@ async function fixture(enabled: boolean | null = true) {
     const r = client(), o = client(), a = client();
     for (const [c, name] of [[r, 'reader'], [o, 'other'], [a, 'admin']] as const)
         assert.equal((await c.call('/api/auth/login', { username: name, password: 'test123' })).status, 200);
-    return { mf, db, r, o, a };
+    return { mf, db, r, o, a, client };
 }
 test('private submissions: idempotency, access, moderation, withdrawal and limits', async () => {
     const f = await fixture();
@@ -180,23 +180,77 @@ test('donation notes stay private, carry a server title and source marker, and i
         await f.mf.dispose();
     }
 });
-test('password changes revoke all sessions and invalidate reset credentials', async () => {
+test('administrators see donation notes with their authors and can record exact amounts once', async () => {
+    const f = await fixture();
+    try {
+        const endpoint = '/api/admin/donations';
+        const record = { requestId: crypto.randomUUID(), donor: '小伟', amount: '12.05' };
+        assert.equal((await f.r.call(endpoint)).status, 403);
+        assert.equal((await f.r.call(endpoint, record)).status, 403);
+        assert.equal((await f.a.call(endpoint, { ...record, amount: '1.001' })).status, 400);
+        assert.equal((await f.a.call(endpoint, record)).status, 201);
+        assert.equal((await f.a.call(endpoint, record)).status, 200);
+        const ledger = await (await f.a.call(endpoint)).json() as { items: { donor: string; amountFen: number }[] };
+        assert.deepEqual(ledger.items.map(({ donor, amountFen }) => ({ donor, amountFen })), [
+            { donor: '小伟', amountFen: 1205 },
+        ]);
+        for (const source of ['', 'donation'])
+            assert.equal((await f.r.call('/api/submissions', {
+                requestId: crypto.randomUUID(), source, message: 'example', url: '',
+            })).status, 201);
+        const notes = await (await f.a.call('/api/admin/submissions?source=donation')).json() as {
+            items: { author: string; source: string }[];
+        };
+        assert.deepEqual(notes.items.map(({ author, source }) => ({ author, source })), [{ author: 'reader', source: 'donation' }]);
+        const submissions = await (await f.a.call('/api/admin/submissions?source=submission')).json() as { items: { source: string }[] };
+        assert.deepEqual(submissions.items.map(({ source }) => source), ['']);
+    } finally {
+        await f.mf.dispose();
+    }
+});
+test('password changes require a fresh one-use challenge from the same session and revoke credentials', async () => {
     const f = await fixture();
     try {
         const id = 'reader';
+        const verify = '/api/account/password/verify';
+        const save = '/api/account/password';
+        const password = { password: 'new123', confirmPassword: 'new123' };
+        const otherSession = f.client();
+        assert.equal((await otherSession.call('/api/auth/login', { username: id, password: 'test123' })).status, 200);
         await f.db.prepare("INSERT INTO reset_tokens VALUES('token',?,unixepoch()+100,NULL)").bind(id).run();
-        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'wrong', password: 'new123', confirmPassword: 'new123' })).status, 400);
-        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'new123', confirmPassword: 'new123' })).status, 200);
-        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM sessions WHERE user_id=?').bind(id).first<{
-            n: number;
-        }>())!.n, 0);
-        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM reset_tokens WHERE user_id=?').bind(id).first<{
-            n: number;
-        }>())!.n, 0);
+        assert.equal((await f.r.call(verify, { currentPassword: 'wrong' })).status, 400);
+        assert.equal((await f.r.call(save, { ...password, currentPassword: 'test123' })).status, 400);
+
+        async function verifyPassword() {
+            const response = await f.r.call(verify, { currentPassword: 'test123' });
+            assert.equal(response.status, 200);
+            return (await response.json() as { challenge: string }).challenge;
+        }
+        const expired = await verifyPassword();
+        await f.db.prepare('UPDATE password_change_challenges SET expires_at=unixepoch()').run();
+        assert.equal((await f.r.call(save, { ...password, challenge: expired })).status, 409);
+
+        const challenge = await verifyPassword();
+        const accountLimit = await digest('account:reader');
+        // No other operation changes these counters during the three verify calls.
+        const ipCount = () => f.db.prepare('SELECT sum(count) AS total FROM rate_limits WHERE key!=?')
+            .bind(accountLimit).first<number>('total');
+        const before = (await ipCount())!;
+        for (let attempt = 0; attempt < 2; attempt++)
+            assert.equal((await f.r.call(verify, { currentPassword: 'wrong' })).status, 400);
+        assert.equal((await f.r.call(verify, { currentPassword: 'wrong' })).status, 429);
+        assert.equal(await ipCount(), before + 2);
+        const payload = { ...password, challenge };
+        assert.equal((await otherSession.call(save, payload)).status, 409);
+        const changes = await Promise.all([f.r.call(save, payload), f.r.call(save, payload)]);
+        assert.equal(changes.filter((response) => response.status === 200).length, 1);
+        assert.ok(changes.some((response) => response.status === 409 || response.status === 401));
+        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM password_change_challenges').first<{ n: number }>())!.n, 0);
+        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM sessions WHERE user_id=?').bind(id).first<{ n: number }>())!.n, 0);
+        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM reset_tokens WHERE user_id=?').bind(id).first<{ n: number }>())!.n, 0);
         assert.equal((await f.r.call('/api/auth/login', { username: id, password: 'test123' })).status, 401);
         assert.equal((await f.r.call('/api/auth/login', { username: id, password: 'new123' })).status, 200);
-    }
-    finally {
+    } finally {
         await f.mf.dispose();
     }
 });
@@ -225,7 +279,7 @@ test('deletion removes personal records, rolls back failures, protects admins an
     }
     const off = await fixture(false);
     try {
-        assert.equal((await off.r.call('/api/account/password', { currentPassword: 'test123', password: 'new123', confirmPassword: 'new123' })).status, 503);
+        assert.equal((await off.r.call('/api/account/password/verify', { currentPassword: 'test123' })).status, 503);
         assert.equal((await off.r.call('/api/account/delete', { currentPassword: 'test123', username: 'reader' })).status, 503);
     }
     finally {
@@ -258,8 +312,12 @@ test('account mutation validation leaves credentials and personal records intact
     try {
         const settings = await (await f.r.call('/api/account/settings')).json() as { features: { changePassword: boolean; deleteAccount: boolean } };
         assert.deepEqual(settings.features, { changePassword: true, deleteAccount: true });
-        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'new123', confirmPassword: 'different' })).status, 400);
-        assert.equal((await f.r.call('/api/account/password', { currentPassword: 'test123', password: 'short', confirmPassword: 'short' })).status, 400);
+        const verified = await f.r.call('/api/account/password/verify', { currentPassword: 'test123' });
+        const { challenge } = await verified.json() as { challenge: string };
+        assert.equal(verified.status, 200);
+        assert.equal((await f.r.call('/api/account/password', { challenge, password: 'new123', confirmPassword: 'different' })).status, 400);
+        assert.equal((await f.r.call('/api/account/password', { challenge, password: 'short', confirmPassword: 'short' })).status, 400);
+        assert.equal((await f.db.prepare('SELECT count(*) AS n FROM password_change_challenges WHERE expires_at>unixepoch()').first<{ n: number }>())!.n, 1);
         assert.equal((await f.r.call('/api/account/delete', { currentPassword: 'wrong', username: 'reader' })).status, 400);
         assert.equal((await f.r.call('/api/account/delete', { currentPassword: '' })).status, 400);
         assert.equal((await f.r.call('/api/auth/me')).status, 200);

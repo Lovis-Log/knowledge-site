@@ -19,11 +19,11 @@ type Item = {
   source: string;
   version: number;
   created_at: number;
+  author?: string;
 };
 type Board = {
   items: Item[];
   next: number | null;
-  canModerate: boolean;
 };
 const statuses: Record<string, [string, string]> = {
   pending: ["待处理", "Pending"],
@@ -51,10 +51,9 @@ export function nextSubmissionRequestId(current: string, make: () => string) {
   return current || make();
 }
 
-/** Board, composer and moderation list rendered inside the member submission dialog. */
-export function Submissions() {
+export function Submissions({ mode = "member" }: { mode?: "member" | "submissions" | "donations" }) {
+  const admin = mode !== "member";
   const [board, setBoard] = useState<Board | null>(null);
-  const [admin, setAdmin] = useState(false);
   const [pages, setPages] = useState<number[]>([]);
   const [revision, setRevision] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -75,7 +74,10 @@ export function Submissions() {
     let live = true;
     setLoading(true);
     setBoard(null);
-    api<Board>(endpoint + (before ? "?before=" + before : ""))
+    const query = new URLSearchParams();
+    if (before) query.set("before", String(before));
+    if (admin) query.set("source", mode === "donations" ? "donation" : "submission");
+    api<Board>(`${endpoint}?${query}`)
       .then((value) => {
         if (!live) return;
         setBoard(value);
@@ -84,7 +86,7 @@ export function Submissions() {
       .catch((caught: unknown) => { if (live) setError(submissionFailure("load", caught)); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };
-  }, [endpoint, before, revision]);
+  }, [endpoint, before, revision, admin, mode]);
 
   async function act(path: string, data: unknown) {
     if (lock.current) return;
@@ -171,7 +173,7 @@ export function Submissions() {
 
   return (
     <>
-      <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ""; setNotice(false); }} className={styles.form} noValidate>
+      {!admin && <form ref={form} onSubmit={submit} onChange={() => { requestId.current = ""; setNotice(false); }} className={styles.form} noValidate>
         <label className={styles.field} htmlFor="submission-message">
           <span className={styles.label}>
             <UiText zh="正文" en="Text" />
@@ -199,7 +201,7 @@ export function Submissions() {
             </svg>
           </button>
         </div>
-      </form>
+      </form>}
       {notice && <p className={styles.notice} role="status"><UiText
         zh="已收到投稿，仅你和管理员可见。"
         en="Submission received. Only you and administrators can see it."
@@ -217,21 +219,18 @@ export function Submissions() {
 
       <section className={styles.listSection} aria-labelledby="submission-list-title">
         <div className={styles.listHeader}>
-          <h2 id="submission-list-title"><UiText zh={admin ? "全部投稿" : "我的投稿"} en={admin ? "All submissions" : "My submissions"} /></h2>
-          {board?.canModerate && (
-            <button type="button" className={styles.toggle} disabled={busy}
-              aria-pressed={admin}
-              onClick={() => { setAdmin(!admin); setPages([]); }}>
-              {admin
-                ? <UiText zh="查看我的投稿" en="My submissions" />
-                : <UiText zh="审核全部投稿" en="Review all" />}
-            </button>
-          )}
+          <h2 id="submission-list-title">
+            {mode === "donations" ? <UiText zh="捎信" en="Notes" /> :
+              admin ? <UiText zh="全部投稿" en="All submissions" /> : <UiText zh="我的投稿" en="My submissions" />}
+          </h2>
         </div>
         {loading && !board
           ? <div className={styles.loading}><RocketLoader compact /></div>
           : board && <>
-            {board.items.length === 0 && <p className={styles.empty}><UiText zh="暂无投稿" en="No submissions yet" /></p>}
+            {board.items.length === 0 && <p className={styles.empty}>
+              {mode === "donations" ? <UiText zh="暂无捎信" en="No notes yet" /> :
+                <UiText zh="暂无投稿" en="No submissions yet" />}
+            </p>}
             <ul className={styles.list}>
               {board.items.map((item) => (
                 <li className={styles.item} key={item.id}>
@@ -242,7 +241,8 @@ export function Submissions() {
                     </span>
                   </div>
                   <div className={styles.itemMeta}>
-                    {item.source === "donation" && (
+                    {item.author && <strong>{item.author}</strong>}
+                    {mode !== "donations" && item.source === "donation" && (
                       <span className={styles.sourceBadge}><UiText zh="来自打赏入口" en="From the donation entry" /></span>
                     )}
                     <time dateTime={new Date(item.created_at * 1000).toISOString()}>

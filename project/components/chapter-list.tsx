@@ -50,7 +50,7 @@ export function ChapterList({
                   <span className="chapter-row__progress" data-complete={percent === 100 || undefined}>
                     {percent === 100
                       ? <><span aria-hidden="true">✓</span><span className="reader-sr-only"><UiText zh="已完成" en="Completed" /></span></>
-                      : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`已读 ${percent}%`} en={`${percent}% read`} /></span></>}
+                      : <><span aria-hidden="true">{percent}%</span><span className="reader-sr-only"><UiText zh={`上次读到 ${percent}%`} en={`Last read at ${percent}%`} /></span></>}
                   </span>
                 )}
                 {rowMeta && <span className="chapter-row__date">{rowMeta}</span>}

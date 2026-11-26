@@ -75,7 +75,8 @@ CPU 优化：重复用户名注册会在执行 scrypt 前返回，最终仍依�
 | `POST /api/auth/reset-password` | 兑换 token、password、confirmPassword |
 | `GET /api/account/settings` | 当前账号与功能开关；改密、注销仅当环境显式配置 `...=1` 时开启 |
 | `POST /api/account/profile` | username、currentPassword；同步公开昵称并更新历史回复的 @ 指向 |
-| `POST /api/account/password` | currentPassword、password、confirmPassword；成功后撤销全部会话 |
+| `POST /api/account/password/verify` | currentPassword，验证成功后返回一个绑定当前会话的两分钟一次性凭据 |
+| `POST /api/account/password` | challenge、password、confirmPassword。成功后撤销全部会话 |
 | `POST /api/account/delete` | currentPassword；删除账号与个人数据，保留他人仍在回复的留言占位 |
 | `GET /api/admin/users?status=&page=1` | 每页 30 人、总数及待审核数量 |
 | `PATCH /api/admin/users/:id` | action、note、version；approve/reject/disable/enable |
@@ -154,4 +155,4 @@ npx wrangler d1 execute DB --local --file scripts/maintenance.sql
 
 ## 搜索、投稿与更新公告
 
-元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销默认关闭，仅当目标环境显式配置 `ACCOUNT_CHANGE_PASSWORD_ENABLED=1` 或 `ACCOUNT_DELETE_ENABLED=1` 时分别开启，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](../docs/lightweight-features.md)。
+元数据搜索在浏览器内执行；留言板的投稿仅本人及管理员可见。账号设置中改密码和永久注销由环境开关控制，仅当目标环境显式配置 `ACCOUNT_CHANGE_PASSWORD_ENABLED=1` 或 `ACCOUNT_DELETE_ENABLED=1` 时分别开启，需通过预览平台 CPU 测量才可启用。内容公告工具、隐私规则、迁移与免费额度验收见 [轻量功能说明](../docs/lightweight-features.md)。

@@ -246,7 +246,6 @@
   font-weight: 600;
 }
 
-.toggle,
 .inlineAction {
   display: inline-flex;
   align-items: center;
@@ -261,18 +260,11 @@
   cursor: pointer;
 }
 
-.toggle:hover:not(:disabled),
 .inlineAction:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent-ink);
 }
 
-.toggle[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.toggle:disabled,
 .inlineAction:disabled {
   opacity: 0.55;
   cursor: default;
