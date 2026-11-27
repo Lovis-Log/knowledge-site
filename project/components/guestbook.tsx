@@ -92,7 +92,6 @@ export function GuestbookView() {
     panel.showModal();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    composing.current?.focus();
     return () => {
       panel.close();
       document.body.style.overflow = previousOverflow;

@@ -502,12 +502,12 @@ async function submissionsApi(request: Request, db: DB, path: string) {
         if (!Number.isSafeInteger(before) || before < 1 || !['', 'pending', 'adopted', 'declined'].includes(status) ||
             (admin && !['', 'submission', 'donation'].includes(source)))
             fail(400, 'INVALID_FILTER', '筛选无效 / Invalid filter');
-        const columns = 's.id,s.title,s.summary,s.message,s.url,s.status,s.note,s.source,s.version,s.created_at';
-        const clientQuery = () => db.prepare(`SELECT ${columns} FROM submissions s
+        const columns = 's.id,s.title,s.summary,s.message,s.url,s.status,s.source,s.version,s.created_at';
+        const clientQuery = () => db.prepare(`SELECT ${columns},CASE WHEN s.source='donation' THEN '' ELSE s.note END AS note FROM submissions s
             WHERE s.user_id=? AND s.id<? ORDER BY s.id DESC LIMIT 21`).bind(user.id, before);
         const adminQuery = () => {
             const filter = source ? " AND s.source=?" : "";
-            return db.prepare(`SELECT ${columns},u.username AS author FROM submissions s
+            return db.prepare(`SELECT ${columns},s.note,u.username AS author FROM submissions s
                 JOIN users u ON s.user_id=u.id WHERE s.id<? AND (?='' OR s.status=?)${filter}
                 ORDER BY s.id DESC LIMIT 21`).bind(before, status, status, ...(source ? [source === 'donation' ? 'donation' : ''] : []));
         };
@@ -521,20 +521,22 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     if (admin) {
         // Moderation is compare-and-swap: the panel sends the version it read,
         // and a reader withdrawal or another administrator wins cleanly.
-        if (!Number.isSafeInteger(data.id) || !Number.isSafeInteger(data.version) || (data.version as number) < 0
-            || !['pending', 'adopted', 'declined'].includes(String(data.status)))
-            fail(400, 'INVALID_STATUS', '状态或版本无效 / Invalid status or version');
+        const donationNote = data.action === 'donation-note';
         const status = String(data.status);
-        const updated = await db.prepare('UPDATE submissions SET status=?,note=?,version=version+1 WHERE id=? AND version=? RETURNING version')
-            .bind(status, text(data, 'note', 0, 300), data.id, data.version)
+        if (!Number.isSafeInteger(data.id) || !Number.isSafeInteger(data.version) || (data.version as number) < 0
+            || (!donationNote && !['pending', 'adopted', 'declined'].includes(status)))
+            fail(400, 'INVALID_STATUS', '状态或版本无效 / Invalid status or version');
+        const source = donationNote ? 'donation' : '';
+        const updated = await db.prepare(`UPDATE submissions SET ${donationNote ? '' : 'status=?,'}note=?,version=version+1 WHERE id=? AND version=? AND source=? RETURNING version`)
+            .bind(...(donationNote ? [] : [status]), text(data, 'note', 0, 300), data.id, data.version, source)
             .first<{ version: number }>();
         if (!updated) {
-            const exists = await db.prepare('SELECT 1 AS found FROM submissions WHERE id=?').bind(data.id).first();
+            const exists = await db.prepare('SELECT 1 AS found FROM submissions WHERE id=? AND source=?').bind(data.id, source).first();
             if (!exists)
                 fail(404, 'NOT_FOUND', '投稿不存在 / Submission not found');
             fail(409, 'STALE_SUBMISSION', '投稿已更新，请刷新后重试 / Submission changed; refresh and try again');
         }
-        return json({ ok: true, version: updated.version, status });
+        return json({ ok: true, version: updated.version, ...(donationNote ? {} : { status }) });
     }
     if (data.action === 'withdraw') {
         if (!Number.isSafeInteger(data.id))
@@ -571,7 +573,10 @@ async function submissionsApi(request: Request, db: DB, path: string) {
     const title = submissionTitle(message, url, source);
     await limit(db, `submission-user:${user.id}`, 3, 86400);
     await limit(db, `submission-ip:${request.headers.get('CF-Connecting-IP') ?? 'local'}`, 20, 86400);
-    const row = await db.prepare("INSERT OR IGNORE INTO submissions(user_id,request_id,title,summary,message,url,source) SELECT ?,?,?,?,?,?,? WHERE (SELECT count(*) FROM submissions WHERE user_id=? AND status='pending')<5 RETURNING id").bind(user.id, requestId, title, summary, message, url, source, user.id).first();
+    const row = await db.prepare(`INSERT OR IGNORE INTO submissions(user_id,request_id,title,summary,message,url,source)
+        SELECT ?,?,?,?,?,?,? WHERE ?='donation' OR
+        (SELECT count(*) FROM submissions WHERE user_id=? AND status='pending' AND source='')<5 RETURNING id`)
+        .bind(user.id, requestId, title, summary, message, url, source, source, user.id).first();
     if (!row) {
         const prior = await db.prepare('SELECT id FROM submissions WHERE user_id=? AND request_id=?').bind(user.id, requestId).first();
         if (prior)

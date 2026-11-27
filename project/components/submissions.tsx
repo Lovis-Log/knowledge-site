@@ -192,6 +192,10 @@ export function Submissions({ mode = "member" }: { mode?: "member" | "submission
             placeholder="https://" value={url} onChange={(event) => edit(event.target.value, setUrl)} />
         </label>
         <div className={styles.footer}>
+          <p className={styles.attachment}>
+            <UiText zh="如有附件可发至邮箱：" en="Email attachments to " />
+            <a href="mailto:aspiration653@gmail.com">aspiration653@gmail.com</a>
+          </p>
           <button className={styles.submit} type="submit" disabled={busy || authBlocked || (!message.trim() && !url.trim())}>
             {busy
               ? <UiText zh="提交中…" en="Sending…" />
@@ -236,9 +240,9 @@ export function Submissions({ mode = "member" }: { mode?: "member" | "submission
                 <li className={styles.item} key={item.id}>
                   <div className={styles.itemTop}>
                     <h3>{item.title}</h3>
-                    <span className={styles.status} data-status={item.status}>
+                    {item.source !== "donation" && <span className={styles.status} data-status={item.status}>
                       <UiText zh={statuses[item.status]?.[0] ?? "待处理"} en={statuses[item.status]?.[1] ?? "Pending"} />
-                    </span>
+                    </span>}
                   </div>
                   <div className={styles.itemMeta}>
                     {item.author && <strong>{item.author}</strong>}
@@ -252,23 +256,26 @@ export function Submissions({ mode = "member" }: { mode?: "member" | "submission
                   {item.summary && <p className={styles.body}>{item.summary}</p>}
                   {item.message && <p className={styles.body}>{item.message}</p>}
                   {item.url && <a className={styles.link} href={item.url} target="_blank" rel="noopener noreferrer">{item.url}</a>}
-                  {item.note && <p className={styles.note}><UiText zh="处理说明" en="Review note" />: {item.note}</p>}
+                  {mode === "member" && item.note && <p className={styles.note}><UiText zh="处理说明" en="Review note" />: {item.note}</p>}
                   {admin ? (
                     <form className={styles.review} key={`${item.id}:${item.version}`} onSubmit={(event) => {
                       event.preventDefault();
                       const data = Object.fromEntries(new FormData(event.currentTarget));
-                      void act("/api/admin/submissions", { ...data, id: item.id, version: item.version });
+                      void act(endpoint, {
+                        ...data, id: item.id, version: item.version,
+                        ...(mode === "donations" && { action: "donation-note" }),
+                      });
                     }}>
-                      <label>
+                      {mode === "submissions" && <label>
                         <UiText zh="状态" en="Status" />
                         <select name="status" defaultValue={item.status} disabled={busy}>
                           {Object.keys(statuses).map((value) => (
                             <option key={value} value={value}>{statuses[value][0]} / {statuses[value][1]}</option>
                           ))}
                         </select>
-                      </label>
+                      </label>}
                       <label>
-                        <UiText zh="处理说明" en="Review note" />
+                        {mode === "donations" ? <UiText zh="备注" en="Note" /> : <UiText zh="处理说明" en="Review note" />}
                         <textarea name="note" defaultValue={item.note} maxLength={300} rows={2} disabled={busy} />
                       </label>
                       <button type="submit" className={styles.inlineAction} disabled={busy}>

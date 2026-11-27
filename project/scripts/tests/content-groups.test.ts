@@ -58,6 +58,7 @@ test("campus section sorts first and shows no subcategories", () => {
   const campus = sections[0];
   assert.equal(campus.groupByCategory, false);
   assert.deepEqual(campus.books.map((book) => book.slug), ["campus-basic-physics", "campus-cpp-programming", "campus-engineering-drawing", "campus-linear-algebra-analytic-geometry", "campus-discrete-mathematics", "campus-mathematical-analysis"]);
+  assert.deepEqual(campus.preview.map((book) => book.slug), ["campus-discrete-mathematics", "campus-cpp-programming", "campus-mathematical-analysis", "campus-linear-algebra-analytic-geometry"]);
   for (const slug of ["campus-cpp-programming", "campus-linear-algebra-analytic-geometry"]) {
     const book = campus.books.find((item) => item.slug === slug)!;
     assert.equal(book.author, undefined, slug);

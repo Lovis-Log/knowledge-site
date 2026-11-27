@@ -7,8 +7,8 @@ import type { ReadingProgressEntry } from "@/lib/reading-state-types";
 import { uiLabel } from "@/lib/ui-language";
 import { UiText } from "./ui-text";
 
-function scrollMax(article: Element | null) {
-  const end = article ? article.getBoundingClientRect().bottom + window.scrollY : document.documentElement.scrollHeight;
+function scrollMax(article: Element) {
+  const end = article.getBoundingClientRect().bottom + window.scrollY;
   return Math.max(0, end - window.innerHeight);
 }
 
@@ -30,6 +30,8 @@ export function ReadingProgress({ book, chapter, account, entry }: {
 
   useEffect(() => {
     const article = document.querySelector(".reading-main");
+    if (!article) return;
+    const pathname = window.location.pathname;
     let owner: string | undefined;
     let canOpen = false;
     let opened = false;
@@ -40,10 +42,9 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     let furthest = 0;
     let observedAt = 0;
     let dirty: ReadingProgressEntry | undefined;
-    let frame = 0;
     let saveTimer = 0;
 
-    const measure = () => currentPercent(scrollMax(article));
+    const isCurrentArticle = () => article.isConnected && window.location.pathname === pathname;
     const flush = () => {
       window.clearTimeout(saveTimer);
       saveTimer = 0;
@@ -52,7 +53,8 @@ export function ReadingProgress({ book, chapter, account, entry }: {
       dirty = undefined;
     };
 
-    function updateLayout() {
+    const updateLayout = () => {
+      if (!isCurrentArticle()) return;
       const max = scrollMax(article);
       if (restorePercent !== undefined && document.visibilityState === "visible") {
         const target = max * restorePercent / 100;
@@ -61,7 +63,7 @@ export function ReadingProgress({ book, chapter, account, entry }: {
         lastScrollY = window.scrollY;
       }
       setPercent(currentPercent(max));
-    }
+    };
 
     function restore() {
       if (!mayRestore || !saved || document.visibilityState !== "visible") return;
@@ -83,37 +85,31 @@ export function ReadingProgress({ book, chapter, account, entry }: {
       restorePercent = undefined;
     }
 
-    function updateScroll() {
+    const onScroll = () => {
+      if (!isCurrentArticle() || document.visibilityState !== "visible") return;
       const y = window.scrollY;
-      const position = measure();
+      const position = currentPercent(scrollMax(article));
       setPercent(position);
       if (y === lastScrollY) return;
       lastScrollY = y;
       // Layout growth and scroll anchoring must not replace the saved resume point.
-      if (restorePercent !== undefined || document.visibilityState !== "visible") return;
+      if (restorePercent !== undefined) return;
       stopRestoring();
       furthest = Math.max(furthest, position);
       observedAt = nextObservedAt(observedAt);
       dirty = { book, chapter, resume: position, furthest, observedAt, lastReadAt: Date.now() };
       if (!saveTimer) saveTimer = window.setTimeout(flush, 3500);
-    }
-
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(() => {
-        frame = 0;
-        updateScroll();
-      });
     };
+
     const onKey = (event: KeyboardEvent) => {
       if (/^(Arrow|Page|Home$|End$| $)/.test(event.key)) stopRestoring();
     };
-    const onLeaving = () => { updateScroll(); flush(); };
     const onVisibility = () => {
       if (document.visibilityState === "visible") {
         open();
         restore();
         updateLayout();
-      } else onLeaving();
+      } else flush();
     };
 
     syncProgress.current = (nextOwner, entry) => {
@@ -142,10 +138,10 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     };
 
     const observer = new ResizeObserver(updateLayout);
-    if (article) observer.observe(article);
+    observer.observe(article);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", updateLayout);
-    window.addEventListener("pagehide", onLeaving);
+    window.addEventListener("pagehide", flush);
     window.addEventListener("wheel", stopRestoring, { passive: true });
     window.addEventListener("touchstart", stopRestoring, { passive: true });
     window.addEventListener("pointerdown", stopRestoring, { passive: true });
@@ -155,12 +151,12 @@ export function ReadingProgress({ book, chapter, account, entry }: {
     updateLayout();
     return () => {
       syncProgress.current = null;
-      cancelAnimationFrame(frame);
-      onLeaving();
+      // Routing may already have moved the viewport or detached the chapter.
+      flush();
       observer.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", updateLayout);
-      window.removeEventListener("pagehide", onLeaving);
+      window.removeEventListener("pagehide", flush);
       window.removeEventListener("wheel", stopRestoring);
       window.removeEventListener("touchstart", stopRestoring);
       window.removeEventListener("pointerdown", stopRestoring);

@@ -4,6 +4,12 @@
       "slug": "campus-courses",
       "name": "校内课程",
       "description": "按校内课程整理课堂笔记与作业解析，记录课程讲授的概念、定理、例题和证明，保留课件与作业的原始出处，供课前预习、课后复习与期末查漏补缺。",
+      "featuredBooks": [
+        "campus-discrete-mathematics",
+        "campus-cpp-programming",
+        "campus-mathematical-analysis",
+        "campus-linear-algebra-analytic-geometry"
+      ],
       "groupByCategory": false
     },
     {

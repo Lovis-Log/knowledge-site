@@ -54,10 +54,7 @@ export function AuthModal({
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     document.documentElement.classList.add("lm-modal-open");
-    const focusTimer = window.setTimeout(() => {
-      dialogRef.current?.querySelector<HTMLInputElement>("input")?.focus();
-      if (!dialogRef.current?.querySelector("input")) closeRef.current?.focus();
-    }, 0);
+    closeRef.current?.focus({ preventScroll: true });
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -83,7 +80,6 @@ export function AuthModal({
     };
     document.addEventListener("keydown", onKey);
     return () => {
-      window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", onKey);
       document.documentElement.classList.remove("lm-modal-open");
       previous?.focus?.();

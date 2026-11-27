@@ -1,5 +1,32 @@
 [
   {
+    "date": "2026-11-27",
+    "version": "1.11.15",
+    "features": [
+      {
+        "zh": "修复离开章节时阅读进度跳到 100% 的问题。书目录会显示最近一次阅读停留的位置，往回读也会更新。",
+        "en": "Fixed reading progress jumping to 100% when leaving a chapter. The book contents show the last position you reached, including when you scroll back."
+      },
+      {
+        "zh": "手机打开投稿、登录、注册、留言等表单时，点进输入框才会弹出键盘。",
+        "en": "On mobile, submission, login, registration, guestbook, and other forms wait for you to tap a field before opening the keyboard."
+      },
+      {
+        "zh": "关于页在 onsin.top 后补上 BBC 和 The Guardian 官网链接，投稿表单新增附件邮箱提示。",
+        "en": "Added BBC and The Guardian links to About and an email address for submission attachments."
+      },
+      {
+        "zh": "管理后台的打赏捎信可保存备注，状态审核只用于投稿。提高了打赏记录添加按钮在深色模式下的对比度。",
+        "en": "Administrators can save notes on donation messages. Status review applies to submissions, and the Add donation button has higher contrast in dark mode."
+      },
+      {
+        "zh": "书库首页的校内课程展示改为离散数学、C++程序设计教程、工科数学分析和线性代数与解析几何。",
+        "en": "The library now features Discrete Mathematics, C++ Programming Tutorial, Engineering Mathematical Analysis, and Linear Algebra and Analytic Geometry on the campus shelf."
+      }
+    ],
+    "content": []
+  },
+  {
     "date": "2026-11-26",
     "version": "1.11.14",
     "features": [

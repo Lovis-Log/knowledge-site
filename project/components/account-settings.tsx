@@ -88,7 +88,7 @@ export function AccountSettings() {
         <button ref={renameButton} type="button" className="account-settings__rename" disabled={busy !== null} aria-expanded={editing} aria-controls="account-rename" onClick={() => { setEditing(value => !value); setSecurityPanel(null); setError(''); setNotice(''); }}><UiText zh="修改用户名" en="Change username" /></button>
       </div>
       {editing && <form id="account-rename" className="account-settings__editor" onSubmit={event => void submit(event, 'profile')} autoComplete="off"><fieldset disabled={busy !== null}>
-        <label><UiText zh="新用户名" en="New username" /><input name="username" autoComplete="off" required minLength={3} maxLength={32} pattern="[a-zA-Z0-9_]{3,32}" defaultValue={settings.username} autoFocus /></label>
+        <label><UiText zh="新用户名" en="New username" /><input name="username" autoComplete="off" required minLength={3} maxLength={32} pattern="[a-zA-Z0-9_]{3,32}" defaultValue={settings.username} /></label>
         <label htmlFor="rename-password"><UiText zh="当前密码" en="Current password" /></label><FreshPassword id="rename-password" />
         <div className="account-settings__actions"><button type="submit"><UiText zh={busy === 'profile' ? '保存中…' : '保存'} en={busy === 'profile' ? 'Saving…' : 'Save'} /></button><button type="button" onClick={() => { setEditing(false); setError(''); renameButton.current?.focus(); }}><UiText zh="取消" en="Cancel" /></button></div>
       </fieldset></form>}

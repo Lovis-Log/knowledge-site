@@ -199,9 +199,19 @@ test('administrators see donation notes with their authors and can record exact 
                 requestId: crypto.randomUUID(), source, message: 'example', url: '',
             })).status, 201);
         const notes = await (await f.a.call('/api/admin/submissions?source=donation')).json() as {
-            items: { author: string; source: string }[];
+            items: { id: number; author: string; source: string; version: number }[];
         };
         assert.deepEqual(notes.items.map(({ author, source }) => ({ author, source })), [{ author: 'reader', source: 'donation' }]);
+        const [{ id, version }] = notes.items;
+        const annotation = { action: 'donation-note', id, version, note: 'Internal donation note' };
+        assert.equal((await f.r.call('/api/admin/submissions', annotation)).status, 403);
+        assert.equal((await f.a.call('/api/admin/submissions', { id, version, status: 'adopted' })).status, 404);
+        assert.equal((await f.a.call('/api/admin/submissions', annotation)).status, 200);
+        assert.equal((await f.a.call('/api/admin/submissions', annotation)).status, 409);
+        const saved = await f.db.prepare('SELECT note,status FROM submissions WHERE id=?').bind(id).first();
+        assert.deepEqual(saved, { note: annotation.note, status: 'pending' });
+        const member = await (await f.r.call('/api/submissions')).json() as { items: { id: number; note: string }[] };
+        assert.equal(member.items.find((item) => item.id === id)?.note, '');
         const submissions = await (await f.a.call('/api/admin/submissions?source=submission')).json() as { items: { source: string }[] };
         assert.deepEqual(submissions.items.map(({ source }) => source), ['']);
     } finally {

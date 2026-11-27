@@ -29,7 +29,6 @@ export function SubmissionDialog() {
     if (!dialog.open) dialog.showModal();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    dialog.querySelector<HTMLElement>("textarea")?.focus();
     return () => {
       if (dialog.open) dialog.close();
       document.body.style.overflow = previousOverflow;
