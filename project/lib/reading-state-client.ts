@@ -8,6 +8,7 @@ import { classifyReadingFailure, readingRetryDelay } from "./reading-queue-polic
 import type { ReadingProgressEntry, ReadingState } from "./reading-state-types";
 
 const endpoint = "/api/reading-state";
+const positionSavedEvent = "lovismind:reading-position-saved";
 const legacyOwnerKey = "shufang:reading-state-import-owner";
 const migratedKey = "shufang:reading-state-imported";
 const pending = new Map<string, ReadingProgressEntry>();
@@ -97,6 +98,7 @@ function flushPosition(account: string, entry: ReadingProgressEntry) {
       progressAttempts.delete(key);
       if (pending.get(key) && pending.get(key) !== entry) return;
       forgetPosition(account, entry);
+      window.dispatchEvent(new CustomEvent(positionSavedEvent, { detail: entry.book }));
     })
     .catch((error) => {
       const kind = classifyReadingFailure(error);
@@ -235,14 +237,20 @@ export function useReadingState(book?: string, chapter?: string) {
       }
     };
     const onVisible = () => { if (document.visibilityState === "visible") void refresh(); };
+    const onPositionSaved = (event: Event) => {
+      // The contents request can finish before the chapter's exit write.
+      if (!book || (event as CustomEvent<string>).detail === book) void refresh();
+    };
     void refresh();
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("online", refresh);
+    if (!chapter) window.addEventListener(positionSavedEvent, onPositionSaved);
     return () => {
       active = false;
       clearRetry();
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", refresh);
+      window.removeEventListener(positionSavedEvent, onPositionSaved);
     };
   }, [book, chapter, key, revision]);
   const current = snapshot?.key === key ? snapshot : undefined;
